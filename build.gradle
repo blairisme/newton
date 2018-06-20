@@ -22,6 +22,7 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'war'
+apply plugin: 'jacoco'
 apply plugin: 'checkstyle'
 apply plugin: 'org.akhikhl.gretty'
 
@@ -50,17 +51,34 @@ dependencies {
 	testCompile group: 'org.mockito', name:'mockito-core', version: '2.7.22'
 }
 
-/*
-war {
-    baseName = 'newton'
-    version =  '1.0.0'
-}*/
-
 gretty {
   contextPath = '/'
   httpPort = 8090
 }
 
 checkstyle {
-    sourceSets = [project.sourceSets.main]
+  sourceSets = [project.sourceSets.main]
+}
+
+jacocoTestReport {
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
+}
+
+task report(dependsOn: ['jacocoTestReport']){
+  //todo: include junit and checkstyle reports
+}
+
+project.tasks.check.dependsOn jacocoTestCoverageVerification
+
+jacocoTestCoverageVerification {
+  violationRules {
+    rule {
+      limit {
+        minimum = 0.5
+      }
+    }
+  }
 }
