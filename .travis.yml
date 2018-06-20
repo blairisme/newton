@@ -6,7 +6,7 @@ jdk:
   - oraclejdk8
 
 script:
-  - gradle clean build
+  - gradle clean build report
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

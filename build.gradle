@@ -68,7 +68,6 @@ jacocoTestReport {
 }
 
 task report(dependsOn: ['jacocoTestReport']){
-  //todo: include junit and checkstyle reports
 }
 
 project.tasks.check.dependsOn jacocoTestCoverageVerification
