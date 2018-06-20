@@ -68,6 +68,7 @@ jacocoTestReport {
 }
 
 task report(dependsOn: ['jacocoTestReport']){
+  //
 }
 
 project.tasks.check.dependsOn jacocoTestCoverageVerification
