@@ -1,0 +1,61 @@
+/*
+ * MIT License (c)
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ *
+ * Author: Blair Butterworth
+ */
+
+ buildscript {
+   repositories {
+     jcenter()
+   }
+
+   dependencies {
+     classpath 'org.akhikhl.gretty:gretty:2.0.0'
+   }
+ }
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+
+group = 'org.ucl.newton'
+version = '0.0.1'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+	compile group: 'javax.inject', name: 'javax.inject', version: '1'
+
+	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+  compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.0.RELEASE'
+  compile group: 'org.thymeleaf', name: 'thymeleaf-spring4', version: '3.0.0.RELEASE'
+
+	compile group: 'org.springframework', name: 'spring-web', version: '5.0.2.RELEASE'
+	compile group: 'org.springframework', name: 'spring-webmvc', version: '5.0.2.RELEASE'
+
+	testCompile group: 'junit', name:'junit', version: '4.11'
+	testCompile group: 'org.mockito', name:'mockito-core', version: '2.7.22'
+}
+
+/*
+war {
+    baseName = 'newton'
+    version =  '1.0.0'
+}*/
+
+gretty {
+  contextPath = '/'
+  httpPort = 8090
+}
