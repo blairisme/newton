@@ -22,6 +22,7 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'war'
+apply plugin: 'checkstyle'
 apply plugin: 'org.akhikhl.gretty'
 
 group = 'org.ucl.newton'
@@ -58,4 +59,8 @@ war {
 gretty {
   contextPath = '/'
   httpPort = 8090
+}
+
+checkstyle {
+    sourceSets = [project.sourceSets.main]
 }
