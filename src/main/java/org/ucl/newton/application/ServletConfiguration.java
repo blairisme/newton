@@ -1,5 +1,5 @@
 /*
- * Newton (c) 2018 - Blair Butterworth
+ * Newton (c) 2018
  *
  * This work is licensed under the MIT License. To view a copy of this
  * license, visit
@@ -35,7 +35,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"org.ucl.newton.application"})
+@ComponentScan(basePackages = {"org.ucl.newton"})
 @SuppressWarnings("unused")
 public class ServletConfiguration implements WebMvcConfigurer, ApplicationContextAware
 {
@@ -76,23 +76,3 @@ public class ServletConfiguration implements WebMvcConfigurer, ApplicationContex
         return resolver;
     }
 }
-
-/*
-public class ServletConfiguration implements WebMvcConfigurer
-{
-    @Override
-    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-    }
-
-    @Bean
-    public ViewResolver viewResolver()
-    {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix("/WEB-INF/views/");
-        viewResolver.setSuffix(".jsp");
-        return viewResolver;
-    }
-}
- */

@@ -1,5 +1,5 @@
 /*
- * Newton (c) 2018 - Blair Butterworth
+ * Newton (c) 2018
  *
  * This work is licensed under the MIT License. To view a copy of this
  * license, visit

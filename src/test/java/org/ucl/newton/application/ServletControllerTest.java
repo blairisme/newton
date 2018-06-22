@@ -1,3 +1,12 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.application;
 
 import org.junit.Assert;
@@ -9,18 +18,6 @@ public class ServletControllerTest
     @Test
     public void testRoot(){
         ServletController controller = new ServletController();
-        Assert.assertEquals("redirect:/home", controller.root(new ModelMap()));
-    }
-
-    @Test
-    public void testHome(){
-        ServletController controller = new ServletController();
-        Assert.assertEquals("home", controller.home("Blair", new ModelMap()));
-    }
-
-    @Test
-    public void testSignin(){
-        ServletController controller = new ServletController();
-        Assert.assertEquals("signin", controller.signin(new ModelMap()));
+        Assert.assertEquals("redirect:/projects", controller.root(new ModelMap()));
     }
 }
