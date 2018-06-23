@@ -7,29 +7,28 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.application;
+package org.ucl.newton.ui;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Instances of this class declare web pages used by the Newton user interface,
- * and provide the business logic that allows them to operate.
+ * Instances of this class provide an MVC controller for web pages used to
+ * display the sign in page.
  *
  * @author Blair Butterworth
  */
 @Controller
+@Scope("session")
 @RequestMapping("/")
 @SuppressWarnings("unused")
-public class ServletController
+public class LoginController
 {
-    public ServletController(){
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(ModelMap model) {
+        return "Login";
     }
-
-//    @RequestMapping(value = "/", method = RequestMethod.GET)
-//    public String root(ModelMap model) {
-//        return "redirect:/projects";
-//    }
 }
