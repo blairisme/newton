@@ -9,6 +9,10 @@
 
 package org.ucl.newton.framework;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.util.Date;
+
 /**
  * Instances of this class represent a research project, a container for
  * experiments and associated data sources.
@@ -19,10 +23,14 @@ public class Project
 {
     private String id;
     private String name;
+    private Date updated;
+    private int stars;
 
-    public Project(String id, String name) {
+    public Project(String id, String name, Date updated, int stars) {
         this.id = id;
         this.name = name;
+        this.updated = updated;
+        this.stars = stars;
     }
 
     public String getId() {
@@ -31,5 +39,18 @@ public class Project
 
     public String getName() {
         return name;
+    }
+
+    public Date getLastUpdated() {
+        return updated;
+    }
+
+    public String getLastUpdatedDescription() {
+        PrettyTime timeFormatter = new PrettyTime();
+        return timeFormatter.format(updated);
+    }
+
+    public int getStars() {
+        return stars;
     }
 }

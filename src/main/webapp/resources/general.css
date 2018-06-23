@@ -1,0 +1,43 @@
+.star {
+    width: 1em;
+    height: 1em;
+    content: url("/resources/star.svg");
+}
+
+.avatar {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.navbar {
+    background-color: #00467d;
+}
+
+.nav-link {
+    padding: 10px 20px 10px 20px;
+    color: #707070;
+}
+
+.nav-tabs .nav-link.active {
+    color: #000000;
+    font-weight: 600;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom: 2px solid #00467d;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #000000;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom: 2px solid #707070;
+}
+
+.nav-tabs .nav-link:focus {
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+}
+

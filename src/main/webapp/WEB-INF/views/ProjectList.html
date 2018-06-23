@@ -1,30 +1,98 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Newton</title>
+        <title>Newton - Projects</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="/resources/home.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/general.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/project.css"/>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
     </head>
     <body>
-        <p th:text="'Hello, ' + ${user.name} + '!'" />
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="/resources/logo-white.png" width="30" height="30" alt="">
+                Newton
+            </a>
 
+            <!-- Button for menu containing nav items that cannot be displayed due to available window width -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <table>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-            </tr>
-            <tr th:each="project : ${projects}">
-                <td th:text="${project.id}"></td>
-                <td th:text="${project.name}"></td>
-            </tr>
-        </table>
+            <!-- Navigation Entries -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+
+                <!-- Site Navigation -->
+                <ul class="navbar-nav mr-auto">
+                    <!--<li class="nav-item active">-->
+                        <!--<a class="nav-link" href="#">Projects</a>-->
+                    <!--</li>-->
+                </ul>
+
+                <!-- Profile and Settings -->
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown pull-right">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="/resources/profile.jpg" class="rounded-circle avatar" alt="Profile picture">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                            <span th:text="${user.name}" class="p-4 text-muted">User name</span>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Profile</a>
+                            <a class="dropdown-item" href="#">Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Sign out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Page Content -->
+        <div class="container-fluid">
+            <h1 class="page-title">Projects</h1>
+
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Your projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Starred projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">All projects</a>
+                </li>
+            </ul>
+
+            <table class="project-list">
+                <tr th:each="project, iteration : ${projects}" th:class="${not iteration.last} ? 'project-row project-row-underline' : 'project-row'">
+                    <td class="project-column project-icon-container">
+                        <a href="/projects" th:href="@{'/project/' + ${project.id}}">
+                            <img src="/resources/gosh-logo.jpg" class="rounded" alt="Project icon" width="48" height="48">
+                        </a>
+                    </td>
+                    <td class="project-column project-column-expand project-name-container">
+                        <a href="/projects" th:href="@{'/project/' + ${project.id}}">
+                            <span th:text="${project.name}">project name</span>
+                        </a>
+                    </td>
+                    <td class="project-column project-state-container">
+                        <div class="aligned-cell aligned-right">
+                            <img class="star">
+                            <span th:text="${project.stars}">0</span>
+                        </div>
+                        <span th:text="${project.lastUpdatedDescription}" th:class="cell-text">last updated</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
     </body>
 </html>

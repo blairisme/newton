@@ -13,10 +13,8 @@ import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
 
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Instances of this interface provide access to project data.
@@ -30,8 +28,9 @@ public class ProjectService
 
     public ProjectService() {
         projects = new ArrayList<>();
-        projects.add(new Project("project-fizzyo", "Project Fizzyo"));
-        projects.add(new Project("cancer-research", "Cancer Research Trial 4"));
+        projects.add(new Project("project-fizzyo", "Project Fizzyo", new Date(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(12)), 2));
+        projects.add(new Project("cancer-research", "Cancer Research Trial 4", new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7)), 0));
+        projects.add(new Project("aids-research", "AIDS Research", new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2)), 7));
     }
 
     public Collection<Project> getProjects(User user) {
