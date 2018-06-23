@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.ui.project;
+package org.ucl.newton.ui;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,7 +15,6 @@ import org.mockito.Mockito;
 import org.springframework.ui.ModelMap;
 import org.ucl.newton.service.ProjectService;
 import org.ucl.newton.service.UserService;
-import org.ucl.newton.ui.ProjectController;
 
 public class ProjectControllerTest
 {

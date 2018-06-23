@@ -1,0 +1,24 @@
+.content-grid {
+    display: grid;
+    grid-gap: 5rem;
+    grid-template-columns: 450px 450px;
+    max-width: 1024px;
+
+    margin-top: 8em;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0.6em 1em;
+}
+
+.content-block {
+    display: block;
+}
+
+.content-block h1, p {
+    padding-bottom: 1em;
+}
+
+.computer-graphic {
+    width: 400px;
+    content: url("/resources/front.png");
+}

@@ -7,17 +7,17 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.application;
+package org.ucl.newton.ui;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
 
-public class ServletControllerTest
+public class FrontPageControllerTest
 {
     @Test
-    public void testRoot(){
-        ServletController controller = new ServletController();
-        Assert.assertEquals("redirect:/projects", controller.root(new ModelMap()));
+    public void frontPageTest(){
+        FrontPageController controller = new FrontPageController();
+        Assert.assertEquals("Front", controller.frontPage(new ModelMap()));
     }
 }

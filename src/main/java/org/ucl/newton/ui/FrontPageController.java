@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class FrontPageController
 {
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String root(ModelMap model) {
+    public String frontPage(ModelMap model) {
         return "Front";
     }
 }
