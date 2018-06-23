@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.ui.project;
+package org.ucl.newton.ui;
 
 import org.junit.Assert;
 import org.junit.Test;

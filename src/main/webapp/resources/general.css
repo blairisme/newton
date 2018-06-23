@@ -1,3 +1,11 @@
+.logo-black {
+    content: url("/resources/logo-black.png");
+}
+
+.logo-white {
+    content: url("/resources/logo-white.png");
+}
+
 .star {
     width: 1em;
     height: 1em;

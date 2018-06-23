@@ -7,15 +7,17 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.ui.experiment;
+package org.ucl.newton.ui;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
- * list and manage experiments.
+ * display the front page.
  *
  * @author Blair Butterworth
  */
@@ -23,6 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Scope("session")
 @RequestMapping("/")
 @SuppressWarnings("unused")
-public class ExperimentController
+public class FrontPageController
 {
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String frontPage(ModelMap model) {
+        return "Front";
+    }
 }
