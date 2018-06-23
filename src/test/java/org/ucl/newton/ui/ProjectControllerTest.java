@@ -33,6 +33,6 @@ public class ProjectControllerTest
         ProjectService projectService = Mockito.mock(ProjectService.class);
 
         ProjectController controller = new ProjectController(userService, projectService);
-        Assert.assertEquals("ProjectDetails_new", controller.details("test", new ModelMap()));
+        Assert.assertEquals("ProjectDetails", controller.details("test", new ModelMap()));
     }
 }

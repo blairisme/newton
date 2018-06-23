@@ -11,6 +11,7 @@ package org.ucl.newton.framework;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -24,6 +25,7 @@ public class Project
     private String id;
     private String name;
     private Date updated;
+    private ArrayList<User> members;
     private int stars;
 
     public Project(String id, String name, Date updated, int stars) {
@@ -31,6 +33,7 @@ public class Project
         this.name = name;
         this.updated = updated;
         this.stars = stars;
+        this.members = new ArrayList<User>();
     }
 
     public String getId() {
@@ -49,6 +52,7 @@ public class Project
         PrettyTime timeFormatter = new PrettyTime();
         return timeFormatter.format(updated);
     }
+    public ArrayList<User> getMembers(){ return members; }
 
     public int getStars() {
         return stars;

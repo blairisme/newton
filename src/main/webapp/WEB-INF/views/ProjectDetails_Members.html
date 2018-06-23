@@ -61,30 +61,17 @@
 
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" href="#">Experiments</a>
+                <a class="nav-link" href="#" th:href="@{'/project/' + ${project.id}}">Experiments</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Project Setting</a>
+                <a class="nav-link" href="#" th:href="@{'/setting/' + ${project.id}}">Project Setting</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Members</a>
+                <a class="nav-link active" href="#">Members</a>
             </li>
         </ul>
 
-        <table class="project-list">
-            <tr th:each="experiment, iteration : ${experiments}" th:class="${not iteration.last} ? 'experiment-row experiment-row-underline' : 'experiment-row'">
-                <td class="experiment-column experiment-icon-container">
-                    <a href="#">
-                        <img src="/resources/profile.jpg" class="rounded" alt="Experiment icon" width="48" height="48">
-                    </a>
-                </td>
-                <td class="experiment-column experiment-column-expand experiment-name-container">
-                    <a href="#">
-                        <span th:text="${experiment.name}">experiment name</span>
-                    </a>
-                </td>
-            </tr>
-        </table>
+
     </div>
 
 

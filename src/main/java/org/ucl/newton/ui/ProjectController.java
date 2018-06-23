@@ -58,6 +58,21 @@ public class ProjectController
         model.addAttribute("user", userService.getAuthenticatedUser());
         model.addAttribute("project", projectService.getProject(name));
         model.addAttribute("experiments",experimentService.getExperiments());
-        return "ProjectDetails_new";
+        return "ProjectDetails";
+    }
+
+    @RequestMapping(value = "/setting/{name}", method = RequestMethod.GET)
+    public String setting(@PathVariable("name")String name, ModelMap model) {
+        model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("project", projectService.getProject(name));
+        return "ProjectDetails_Setting";
+    }
+
+    @RequestMapping(value = "/members/{name}", method = RequestMethod.GET)
+    public String members(@PathVariable("name")String name, ModelMap model) {
+        model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("project", projectService.getProject(name));
+
+        return "ProjectDetails_Members";
     }
 }
