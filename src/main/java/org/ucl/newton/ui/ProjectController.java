@@ -39,10 +39,10 @@ public class ProjectController
     private ExperimentService experimentService;
 
     @Inject
-    public ProjectController(UserService userService, ProjectService projectService, ExperimentService experimentService) {
+    public ProjectController(UserService userService, ProjectService projectService) {
         this.userService = userService;
         this.projectService = projectService;
-        this.experimentService = experimentService;
+        this.experimentService = new ExperimentService();
     }
 
     @RequestMapping(value = "/projects", method = RequestMethod.GET)
