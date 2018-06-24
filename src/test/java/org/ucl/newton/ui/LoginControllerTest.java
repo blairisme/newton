@@ -18,6 +18,6 @@ public class LoginControllerTest
     @Test
     public void frontPageTest(){
         LoginController controller = new LoginController();
-        Assert.assertEquals("login", controller.login(false, new ModelMap()));
+        Assert.assertEquals("auth/login", controller.login(false, new ModelMap()));
     }
 }

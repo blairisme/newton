@@ -39,10 +39,14 @@ public class ProjectController
     private ExperimentService experimentService;
 
     @Inject
-    public ProjectController(UserService userService, ProjectService projectService) {
+    public ProjectController(
+            UserService userService,
+            ProjectService projectService,
+            ExperimentService experimentService)
+    {
         this.userService = userService;
         this.projectService = projectService;
-        this.experimentService = new ExperimentService();
+        this.experimentService = experimentService;
     }
 
     @RequestMapping(value = "/projects", method = RequestMethod.GET)
@@ -50,7 +54,7 @@ public class ProjectController
         User user = userService.getAuthenticatedUser();
         model.addAttribute("user", user);
         model.addAttribute("projects", projectService.getProjects(user));
-        return "ProjectList";
+        return "project/list";
     }
 
     @RequestMapping(value = "/project/{name}", method = RequestMethod.GET)
@@ -58,21 +62,20 @@ public class ProjectController
         model.addAttribute("user", userService.getAuthenticatedUser());
         model.addAttribute("project", projectService.getProject(name));
         model.addAttribute("experiments",experimentService.getExperiments());
-        return "ProjectDetails";
+        return "project/details";
     }
 
     @RequestMapping(value = "/setting/{name}", method = RequestMethod.GET)
     public String setting(@PathVariable("name")String name, ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
         model.addAttribute("project", projectService.getProject(name));
-        return "ProjectDetails_Setting";
+        return "project/settings";
     }
 
     @RequestMapping(value = "/members/{name}", method = RequestMethod.GET)
     public String members(@PathVariable("name")String name, ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
         model.addAttribute("project", projectService.getProject(name));
-
-        return "ProjectDetails_Members";
+        return "project/members";
     }
 }

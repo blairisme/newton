@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.ui.ModelMap;
+import org.ucl.newton.service.ExperimentService;
 import org.ucl.newton.service.ProjectService;
 import org.ucl.newton.service.UserService;
 
@@ -22,17 +23,19 @@ public class ProjectControllerTest
     public void listTest(){
         UserService userService = Mockito.mock(UserService.class);
         ProjectService projectService = Mockito.mock(ProjectService.class);
+        ExperimentService experimentService = Mockito.mock(ExperimentService.class);
 
-        ProjectController controller = new ProjectController(userService, projectService);
-        Assert.assertEquals("ProjectList", controller.list(new ModelMap()));
+        ProjectController controller = new ProjectController(userService, projectService, experimentService);
+        Assert.assertEquals("project/list", controller.list(new ModelMap()));
     }
 
     @Test
     public void detailsTest(){
         UserService userService = Mockito.mock(UserService.class);
         ProjectService projectService = Mockito.mock(ProjectService.class);
+        ExperimentService experimentService = Mockito.mock(ExperimentService.class);
 
-        ProjectController controller = new ProjectController(userService, projectService);
-        Assert.assertEquals("ProjectDetails", controller.details("test", new ModelMap()));
+        ProjectController controller = new ProjectController(userService, projectService, experimentService);
+        Assert.assertEquals("project/details", controller.details("test", new ModelMap()));
     }
 }

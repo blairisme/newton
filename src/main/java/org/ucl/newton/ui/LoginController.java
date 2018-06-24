@@ -27,6 +27,6 @@ public class LoginController
     @RequestMapping(value = "/login")
     public String login(@RequestParam(value = "error", defaultValue = "false")boolean error, ModelMap model) {
         model.addAttribute("error", error);
-        return "login";
+        return "auth/login";
     }
 }

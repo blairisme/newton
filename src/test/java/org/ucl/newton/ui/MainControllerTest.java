@@ -13,11 +13,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
 
-public class FrontPageControllerTest
+public class MainControllerTest
 {
     @Test
     public void frontPageTest(){
-        FrontPageController controller = new FrontPageController();
-        Assert.assertEquals("Front", controller.frontPage(new ModelMap()));
+        MainController controller = new MainController();
+        Assert.assertEquals("main/landing", controller.main(new ModelMap()));
     }
 }

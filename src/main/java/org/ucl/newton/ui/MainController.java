@@ -25,10 +25,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Scope("session")
 @RequestMapping("/")
 @SuppressWarnings("unused")
-public class FrontPageController
+public class MainController
 {
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String frontPage(ModelMap model) {
-        return "Front";
+    public String main(ModelMap model) {
+        return "main/landing";
     }
 }
