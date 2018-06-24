@@ -26,9 +26,11 @@ public class ExperimentService
     private Collection<Experiment> experiments;
 
     public ExperimentService() {
-        this.experiments = new ArrayList<>();
+        experiments = new ArrayList<>();
+        experiments.add(new Experiment("1","first experiment"));
+        experiments.add(new Experiment("2","second experiment"));
+        experiments.add(new Experiment("3","third experiment"));
     }
-
     public Collection<Experiment> getExperiments() {
         return experiments;
     }

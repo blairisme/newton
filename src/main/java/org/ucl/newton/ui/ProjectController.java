@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.ucl.newton.framework.User;
+import org.ucl.newton.service.ExperimentService;
 import org.ucl.newton.service.ProjectService;
 import org.ucl.newton.service.UserService;
 
@@ -35,11 +36,13 @@ public class ProjectController
 {
     private UserService userService;
     private ProjectService projectService;
+    private ExperimentService experimentService;
 
     @Inject
     public ProjectController(UserService userService, ProjectService projectService) {
         this.userService = userService;
         this.projectService = projectService;
+        this.experimentService = new ExperimentService();
     }
 
     @RequestMapping(value = "/projects", method = RequestMethod.GET)
@@ -54,6 +57,22 @@ public class ProjectController
     public String details(@PathVariable("name")String name, ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
         model.addAttribute("project", projectService.getProject(name));
+        model.addAttribute("experiments",experimentService.getExperiments());
         return "ProjectDetails";
+    }
+
+    @RequestMapping(value = "/setting/{name}", method = RequestMethod.GET)
+    public String setting(@PathVariable("name")String name, ModelMap model) {
+        model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("project", projectService.getProject(name));
+        return "ProjectDetails_Setting";
+    }
+
+    @RequestMapping(value = "/members/{name}", method = RequestMethod.GET)
+    public String members(@PathVariable("name")String name, ModelMap model) {
+        model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("project", projectService.getProject(name));
+
+        return "ProjectDetails_Members";
     }
 }

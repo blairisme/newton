@@ -1,0 +1,51 @@
+.page-title {
+    font-size: 1.2em;
+    margin-top: 1em;
+}
+.experiment-list {
+    display: flex;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.experiment-list tbody{
+    width: 100%;
+}
+
+.experiment-row {
+    display: flex;
+    align-items: center;
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+}
+
+.experiment-row-underline {
+    border-bottom: 1px solid #eee;
+}
+
+.experiment-column-expand {
+    width: 99%
+}
+
+.aligned-cell {
+    display: flex;
+    align-items: center;
+}
+
+.aligned-right {
+    justify-content: flex-end;
+}
+
+.cell-text {
+    display: block;
+    white-space: nowrap;
+}
+
+.experiment-icon-container {
+    margin-right: 0.6em;
+}
+
+.experiment-name-container a {
+    color: #000000;
+    font-weight: 600;
+}
