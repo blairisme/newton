@@ -6,6 +6,7 @@
  *
  *      https://opensource.org/licenses/MIT
  */
+
 package org.ucl.newton.ui;
 
 import org.springframework.stereotype.Controller;

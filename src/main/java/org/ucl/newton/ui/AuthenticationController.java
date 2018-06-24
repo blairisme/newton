@@ -13,11 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.ucl.newton.service.ExperimentService;
-import org.ucl.newton.service.ProjectService;
-import org.ucl.newton.service.UserService;
-
-import javax.inject.Inject;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
