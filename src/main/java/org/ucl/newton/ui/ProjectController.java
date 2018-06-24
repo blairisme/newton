@@ -30,7 +30,6 @@ import javax.inject.Inject;
  */
 @Controller
 @Scope("session")
-@RequestMapping("/")
 @SuppressWarnings("unused")
 public class ProjectController
 {
@@ -65,17 +64,23 @@ public class ProjectController
         return "project/details";
     }
 
-    @RequestMapping(value = "/setting/{name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/project/{name}/settings", method = RequestMethod.GET)
     public String setting(@PathVariable("name")String name, ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
         model.addAttribute("project", projectService.getProject(name));
         return "project/settings";
     }
 
-    @RequestMapping(value = "/members/{name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/project/{name}/members", method = RequestMethod.GET)
     public String members(@PathVariable("name")String name, ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
         model.addAttribute("project", projectService.getProject(name));
+        return "project/members";
+    }
+
+    @RequestMapping(value = "/project/new", method = RequestMethod.GET)
+    public String newProject(ModelMap model) {
+        model.addAttribute("user", userService.getAuthenticatedUser());
         return "project/members";
     }
 }

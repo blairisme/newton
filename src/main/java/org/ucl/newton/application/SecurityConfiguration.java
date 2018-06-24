@@ -37,6 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/resources/**").permitAll()
+                .antMatchers("/settings").hasAnyRole("ADMINISTRATOR")
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
@@ -45,11 +46,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 .permitAll()
                 .and()
             .logout()
-                .permitAll();
-                //.and().exceptionHandling().accessDeniedPage("/access_denied");
-
-                //.antMatchers("/admin/*").hasAnyRole("ROLE_ADMIN")
-
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .permitAll()
+                .and()
+            .exceptionHandling()
+                .accessDeniedPage("/access_denied");
     }
 
     @Bean
@@ -68,11 +70,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
     @Bean
     @Override
     protected UserDetailsService userDetailsService() {
-        UserDetails user = User
+        UserDetails contributor = User
                 .withUsername("user")
                 .password(passwordEncoder().encode("password"))
-                .roles("USER")
+                .roles("CONTRIBUTOR")
                 .build();
-        return new InMemoryUserDetailsManager(user);
+        UserDetails administrator = User
+                .withUsername("admin")
+                .password(passwordEncoder().encode("password"))
+                .roles("ADMINISTRATOR")
+                .build();
+        return new InMemoryUserDetailsManager(contributor, administrator);
     }
 }

@@ -13,11 +13,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
 
-public class LoginControllerTest
+public class AuthenticationControllerTest
 {
     @Test
     public void frontPageTest(){
-        LoginController controller = new LoginController();
+        AuthenticationController controller = new AuthenticationController();
         Assert.assertEquals("auth/login", controller.login(false, new ModelMap()));
     }
 }

@@ -49,3 +49,7 @@
     border-right-color: transparent;
 }
 
+.page-title {
+    font-size: 1.2em;
+    margin-top: 1em;
+}

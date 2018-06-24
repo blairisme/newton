@@ -13,6 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.ucl.newton.service.ExperimentService;
+import org.ucl.newton.service.ProjectService;
+import org.ucl.newton.service.UserService;
+
+import javax.inject.Inject;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
@@ -22,11 +27,16 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 @SuppressWarnings("unused")
-public class LoginController
+public class AuthenticationController
 {
     @RequestMapping(value = "/login")
     public String login(@RequestParam(value = "error", defaultValue = "false")boolean error, ModelMap model) {
         model.addAttribute("error", error);
         return "auth/login";
+    }
+
+    @RequestMapping(value = "/access_denied")
+    public String accessDenied(ModelMap model) {
+        return "auth/denied";
     }
 }

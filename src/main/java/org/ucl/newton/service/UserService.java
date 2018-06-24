@@ -28,6 +28,7 @@ public class UserService
     }
 
     public User getAuthenticatedUser() {
+        //SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return authenticatedUser;
     }
 }

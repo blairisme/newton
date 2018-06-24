@@ -9,9 +9,7 @@
 
 package org.ucl.newton.ui;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Blair Butterworth
  */
 @Controller
-@Scope("session")
-@RequestMapping("/")
 @SuppressWarnings("unused")
 public class ExperimentController
 {

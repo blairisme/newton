@@ -1,93 +1,86 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Newton - Projects</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+        <title>Newton - Projects</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/styles/experiment.css"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/experiment.css"/>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <!-- Logo -->
-        <a class="navbar-brand" href="#">
-            <img src="/resources/images/logo-white.png" width="30" height="30" alt="">
-            Newton
-        </a>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="/resources/images/logo-white.png" width="30" height="30" alt="">
+                Newton
+            </a>
 
-        <!-- Button for menu containing nav items that cannot be displayed due to available window width -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <!-- Button for menu containing nav items that cannot be displayed due to available window width -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <!-- Navigation Entries -->
-        <div class="collapse navbar-collapse" id="navbarContent">
+            <!-- Navigation Entries -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- Profile and Settings -->
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown pull-right">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="/resources/images/profile.jpg" class="rounded-circle avatar" alt="Profile picture">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                            <span th:text="${user.name}" class="p-4 text-muted">User name</span>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/profile">Profile</a>
+                            <a class="dropdown-item" href="/settings" sec:authorize="hasRole('ROLE_ADMINISTRATOR')">Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <form name="logoutForm" th:action="@{/logout}" method="post">
+                                <input class="dropdown-item btn" type="submit" value="Sign Out"/>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-            <!-- Site Navigation -->
-            <ul class="navbar-nav mr-auto">
-                <!--<li class="nav-item active">-->
-                <!--<a class="nav-link" href="#">Projects</a>-->
-                <!--</li>-->
-            </ul>
+        <!-- Page Content -->
+        <div class="container-fluid">
+            <h1 class="page-title" > <a  href="/projects"> Projects</a>  <a  th:text="@{'/ '+${project.name}}" > / project name</a> </h1>
 
-            <!-- Profile and Settings -->
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown pull-right">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="/resources/images/profile.jpg" class="rounded-circle avatar" alt="Profile picture">
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                        <span th:text="${user.name}" class="p-4 text-muted">User name</span>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Profile</a>
-                        <a class="dropdown-item" href="#">Settings</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Sign out</a>
-                    </div>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Experiments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{'/setting/' + ${project.id}}">Project Setting</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" th:href="@{'/members/' + ${project.id}}"> Members</a>
                 </li>
             </ul>
+
+            <table class="experiment-list">
+                <tr th:each="experiment, iteration : ${experiments}" th:class="${not iteration.last} ? 'experiment-row experiment-row-underline' : 'experiment-row'">
+                    <td class="experiment-column experiment-icon-container">
+                        <a href="#">
+                            <img src="/resources/images/profile.jpg" class="rounded" alt="Experiment icon" width="48" height="48">
+                        </a>
+                    </td>
+                    <td class="experiment-column experiment-column-expand experiment-name-container">
+                        <a href="#">
+                            <span th:text="${experiment.name}">experiment name</span>
+                        </a>
+                    </td>
+                </tr>
+            </table>
         </div>
-    </nav>
-
-    <!-- Page Content -->
-    <div class="container-fluid">
-        <h1 class="page-title" > <a  href="/projects"> Projects</a>  <a  th:text="@{'/ '+${project.name}}" > / project name</a> </h1>
-
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Experiments</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" th:href="@{'/setting/' + ${project.id}}">Project Setting</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" th:href="@{'/members/' + ${project.id}}"> Members</a>
-            </li>
-        </ul>
-
-        <table class="experiment-list">
-            <tr th:each="experiment, iteration : ${experiments}" th:class="${not iteration.last} ? 'experiment-row experiment-row-underline' : 'experiment-row'">
-                <td class="experiment-column experiment-icon-container">
-                    <a href="#">
-                        <img src="/resources/images/profile.jpg" class="rounded" alt="Experiment icon" width="48" height="48">
-                    </a>
-                </td>
-                <td class="experiment-column experiment-column-expand experiment-name-container">
-                    <a href="#">
-                        <span th:text="${experiment.name}">experiment name</span>
-                    </a>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-
-
-</body>
+    </body>
 </html>

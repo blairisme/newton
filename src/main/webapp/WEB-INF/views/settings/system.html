@@ -3,12 +3,12 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
     <head>
-        <title>Newton - Projects</title>
+        <title>Newton - Settings</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
-        <link rel="stylesheet" type="text/css" href="/resources/styles/experiment.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/system.css"/>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -53,19 +53,8 @@
 
         <!-- Page Content -->
         <div class="container-fluid">
-            <h1 class="page-title" > <a  href="/projects"> Projects</a>  <a  th:text="@{'/ '+${project.name}}" > / project name</a> </h1>
-
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{'/project/' + ${project.id}}">Experiments</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{'/setting/' + ${project.id}}">Project Setting</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Members</a>
-                </li>
-            </ul>
+            <h1 class="page-title">System Settings</h1>
         </div>
+
     </body>
 </html>
