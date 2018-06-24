@@ -11,18 +11,20 @@ package org.ucl.newton.application;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.springframework.context.ApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRegistration;
 
 public class ApplicationInitializerTest
 {
-//    @Test
-//    public void testInitializer(){
-//        ApplicationContext context = Mockito.mock(ApplicationContext.class);
-//        ApplicationRegistration.Dynamic registration = Mockito.mock(ApplicationRegistration.Dynamic.class);
-//        Mockito.when(context.addApplication(Mockito.any(), Mockito.any(DispatcherApplication.class))).thenReturn(registration);
-//
-//        ApplicationInitializer initializer = new ApplicationInitializer();
-//        initializer.onStartup(context);
-//    }
+    @Test
+    public void testInitializer(){
+        ServletContext context = Mockito.mock(ServletContext.class);
+        ServletRegistration.Dynamic registration = Mockito.mock(ServletRegistration.Dynamic.class);
+        Mockito.when(context.addServlet(Mockito.any(), Mockito.any(DispatcherServlet.class))).thenReturn(registration);
+
+        ApplicationInitializer initializer = new ApplicationInitializer();
+        initializer.onStartup(context);
+    }
 }
