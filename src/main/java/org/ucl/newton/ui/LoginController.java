@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @SuppressWarnings("unused")
 public class LoginController
 {
-    @RequestMapping(value = "/login.html")
+    @RequestMapping(value = "/login")
     public String login(@RequestParam(value = "error", defaultValue = "false")boolean error, ModelMap model) {
         model.addAttribute("error", error);
         return "login";
