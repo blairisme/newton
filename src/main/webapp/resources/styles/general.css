@@ -1,15 +1,15 @@
 .logo-black {
-    content: url("/resources/logo-black.png");
+    content: url("/resources/images/logo-black.png");
 }
 
 .logo-white {
-    content: url("/resources/logo-white.png");
+    content: url("/resources/images/logo-white.png");
 }
 
 .star {
     width: 1em;
     height: 1em;
-    content: url("/resources/star.svg");
+    content: url("/resources/images/star.svg");
 }
 
 .avatar {
