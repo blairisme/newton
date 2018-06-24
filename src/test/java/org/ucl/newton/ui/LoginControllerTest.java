@@ -15,9 +15,9 @@ import org.springframework.ui.ModelMap;
 
 public class LoginControllerTest
 {
-    @Test
-    public void frontPageTest(){
-        LoginController controller = new LoginController();
-        Assert.assertEquals("Login", controller.login(new ModelMap()));
-    }
+//    @Test
+//    public void frontPageTest(){
+//        LoginController controller = new LoginController();
+//        Assert.assertEquals("Login", controller.login(new ModelMap()));
+//    }
 }

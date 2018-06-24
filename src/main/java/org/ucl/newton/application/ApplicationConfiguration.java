@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -37,7 +38,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @EnableWebMvc
 @ComponentScan(basePackages = {"org.ucl.newton"})
 @SuppressWarnings("unused")
-public class ServletConfiguration implements WebMvcConfigurer, ApplicationContextAware
+public class ApplicationConfiguration implements WebMvcConfigurer, ApplicationContextAware
 {
     private ApplicationContext applicationContext;
 

@@ -12,17 +12,17 @@ package org.ucl.newton.application;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ServletConfigurationTest
+public class ApplicationConfigurationTest
 {
     @Test
     public void testTemplateEngine(){
-        ServletConfiguration configuration = new ServletConfiguration();
+        ApplicationConfiguration configuration = new ApplicationConfiguration();
         Assert.assertNotNull(configuration.templateEngine());
     }
 
     @Test
     public void testViewResolver(){
-        ServletConfiguration configuration = new ServletConfiguration();
+        ApplicationConfiguration configuration = new ApplicationConfiguration();
         Assert.assertNotNull(configuration.viewResolver());
     }
 }

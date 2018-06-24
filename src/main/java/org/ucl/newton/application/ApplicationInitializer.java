@@ -23,16 +23,16 @@ import org.springframework.web.servlet.DispatcherServlet;
  * @author Blair Butterworth
  */
 @SuppressWarnings("unused")
-public class ServletInitializer implements WebApplicationInitializer
+public class ApplicationInitializer implements WebApplicationInitializer
 {
-    public void onStartup(ServletContext container)
-    {
+    public void onStartup(ServletContext container) {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.register(ServletConfiguration.class);
+        context.register(ApplicationConfiguration.class);
         context.setServletContext(container);
 
         ServletRegistration.Dynamic servlet = container.addServlet("dispatcher", new DispatcherServlet(context));
         servlet.setLoadOnStartup(1);
         servlet.addMapping("/");
+
     }
 }
