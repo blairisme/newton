@@ -31,13 +31,30 @@ public class UserRepositoryTest
     private UserRepository repository;
 
     @Test
-    public void saveTest() {
-        User expected = new User(1l, "blair", "password", "Blair Butterworth", "ADMINISTRATOR");
-        //repository.save(expected);
-        User actual = repository.read(1L);
-        //List<User> users = repository.getAll();
-        //User actual = users.get(0);
+    public void getUserTest() {
+        User expected = new User("user", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m", "Test User", "CONTRIBUTOR");
+        User actual = repository.getUser("user");
         Assert.assertEquals(expected, actual);
+    }
 
+    @Test
+    public void addUserTest() {
+        User expected = new User("test1", "password", "Test User A", "ADMINISTRATOR");
+        repository.addUser(expected);
+        User actual = repository.getUser("test1");
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void removeUserTest() {
+        User user = new User("test2", "password", "Test User B", "ADMINISTRATOR");
+
+        repository.addUser(user);
+        User before = repository.getUser("test2");
+        Assert.assertNotNull(before);
+
+        repository.removeUser(before);
+        User after = repository.getUser("test2");
+        Assert.assertNull(after);
     }
 }

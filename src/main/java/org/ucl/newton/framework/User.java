@@ -12,9 +12,15 @@ package org.ucl.newton.framework;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Instances of this class represent a user.
@@ -23,20 +29,17 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "USERS")
-public class User implements Serializable
+public class User implements Serializable, UserDetails
 {
     @Id
     @Column(name = "id")
-    private Long id;
-
-    @Column(name = "username")
-    private String username;
+    private String id;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "display_name")
-    private String displayName;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "role")
     private String role;
@@ -44,37 +47,49 @@ public class User implements Serializable
     public User() {
     }
 
-    public User(Long id, String username, String password, String displayName, String role) {
+    public User(String id, String password, String name, String role) {
         this.id = id;
-        this.username = username;
         this.password = password;
-        this.displayName = displayName;
+        this.name = name;
         this.role = role;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    @Deprecated
     public String getName() {
-        return displayName;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public String getUsername() {
-        return username;
+        return name;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public String getRole() {
-        return role;
+    @Override
+    public String getUsername() {
+        return id;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + role));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     @Override
@@ -87,8 +102,7 @@ public class User implements Serializable
         User user = (User)obj;
         return new EqualsBuilder()
             .append(id, user.id)
-            .append(displayName, user.displayName)
-            .append(username, user.username)
+            .append(name, user.name)
             .append(password, user.password)
             .append(role, user.role)
             .isEquals();
@@ -98,8 +112,7 @@ public class User implements Serializable
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
             .append(id)
-            .append(displayName)
-            .append(username)
+            .append(name)
             .append(password)
             .append(role)
             .toHashCode();
@@ -109,8 +122,7 @@ public class User implements Serializable
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", id)
-            .append("username", username)
-            .append("displayName", displayName)
+            .append("name", name)
             .append("role", role)
             .toString();
     }

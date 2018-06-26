@@ -9,11 +9,15 @@
 
 package org.ucl.newton.service;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.ucl.newton.framework.User;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -24,19 +28,25 @@ import javax.inject.Named;
 @Named
 public class UserService implements UserDetailsService
 {
-    private User authenticatedUser;
+    private UserRepository repository;
 
-    public UserService() {
-        //this.authenticatedUser = new User("Blair");
+    @Inject
+    public UserService(UserRepository repository) {
+        this.repository = repository;
     }
 
     public User getAuthenticatedUser() {
-        //SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return authenticatedUser;
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        return (User)authentication.getPrincipal();
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        User user = repository.getUser(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return user;
     }
 }

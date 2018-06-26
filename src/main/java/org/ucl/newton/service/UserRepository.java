@@ -12,10 +12,10 @@ package org.ucl.newton.service;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.User;
 
 import javax.inject.Inject;
-import java.io.Serializable;
 
 /**
  * Instances of this class provide access to persisted user data.
@@ -23,6 +23,7 @@ import java.io.Serializable;
  * @author Blair Butterworth
  */
 @Repository
+@Transactional
 public class UserRepository
 {
     private SessionFactory sessionFactory;
@@ -32,13 +33,19 @@ public class UserRepository
         this.sessionFactory = sessionFactory;
     }
 
-    public void save(User user) {
+    public void addUser(User user) {
         Session session = getSession();
         session.save(user);
     }
 
-    public User read(long id) {
-        return getSession().get(User.class, id);
+    public User getUser(String id) {
+        Session session = getSession();
+        return session.get(User.class, id);
+    }
+
+    public void removeUser(User user) {
+        Session session = getSession();
+        session.delete(user);
     }
 
     private Session getSession() {

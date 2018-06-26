@@ -28,8 +28,10 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
- * Instances of this class configure which endpoints require authentication and
- * which do not.
+ * Instances of this class configure the systems data persistence
+ * infrastructure. Specifically this class starts an in memory database and
+ * populates it with mock data. This database is then provided to the Hibernate
+ * framework, through which queries will be made and data accessed.
  *
  * @author Blair Butterworth
  */
@@ -79,7 +81,7 @@ public class DeveloperPersistenceConfiguration
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", "org.hibernate.dialect.DerbyTenSevenDialect");
+        properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         properties.put("hibernate.show_sql", "true");
         properties.put("hibernate.format_sql", "true");
         return properties;

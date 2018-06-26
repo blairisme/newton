@@ -85,12 +85,10 @@ jacocoTestReport {
 }
 
 task report(dependsOn: ['jacocoTestReport']){
-  //
 }
 
 project.tasks.check.dependsOn jacocoTestCoverageVerification
 
-/*
 jacocoTestCoverageVerification {
   violationRules {
     rule {
@@ -100,4 +98,3 @@ jacocoTestCoverageVerification {
     }
   }
 }
-*/

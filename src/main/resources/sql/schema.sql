@@ -1,7 +1,8 @@
+/* Create USERS table to contain user accounts */
+
 CREATE TABLE IF NOT EXISTS `USERS` (
-  `id` INT NOT NULL,
-  `username` VARCHAR(45) NULL,
-  `password` VARCHAR(45) NULL,
-  `display_name` VARCHAR(45) NULL,
-  `role` VARCHAR(45) NULL,
+  `id` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(80) NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `role` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`));

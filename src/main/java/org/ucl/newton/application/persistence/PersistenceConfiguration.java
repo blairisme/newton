@@ -27,7 +27,10 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
- * Instances of this class configure the database used by the webapp.
+ * Instances of this class configure the systems data persistence
+ * infrastructure. Specifically this class establishes a a connection to a
+ * local MySQL database instance and provides this to the Hibernate framework,
+ * through which queries will be made and data accessed.
  *
  * @author Blair Butterworth
  */
@@ -38,15 +41,6 @@ import java.util.Properties;
 @SuppressWarnings("unused")
 public class PersistenceConfiguration
 {
-    @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[]{"org.ucl.newton.framework"});
-        sessionFactory.setHibernateProperties(hibernateProperties());
-        return sessionFactory;
-    }
-
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -59,14 +53,6 @@ public class PersistenceConfiguration
     }
 
     @Bean
-    @Inject
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory);
-        return transactionManager;
-    }
-
-    @Bean
     public DataSourceInitializer dataSourceInitializer() {
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
         resourceDatabasePopulator.addScript(new ClassPathResource("/sql/schema.sql"));
@@ -75,6 +61,23 @@ public class PersistenceConfiguration
         dataSourceInitializer.setDataSource(dataSource());
         dataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);
         return dataSourceInitializer;
+    }
+
+    @Bean
+    public LocalSessionFactoryBean sessionFactory() {
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setPackagesToScan("org.ucl.newton.framework");
+        sessionFactory.setHibernateProperties(hibernateProperties());
+        return sessionFactory;
+    }
+
+    @Bean
+    @Inject
+    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory);
+        return transactionManager;
     }
 
     private Properties hibernateProperties() {
