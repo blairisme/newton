@@ -81,6 +81,6 @@ public class ProjectController
     @RequestMapping(value = "/project/new", method = RequestMethod.GET)
     public String newProject(ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
-        return "project/members";
+        return "project/new";
     }
 }
