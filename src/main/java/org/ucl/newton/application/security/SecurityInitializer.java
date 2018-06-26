@@ -7,14 +7,14 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.application;
+package org.ucl.newton.application.security;
 
 import org.springframework.core.annotation.Order;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
 /**
  * Instances of this class configure the Spring MVC security frame used to
- * control access to pages provided by the application.
+ * control access to pages provided by the webapp.
  *
  * @author Blair Butterworth
  */

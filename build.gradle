@@ -47,21 +47,30 @@ dependencies {
 
 	compile group: 'org.springframework', name: 'spring-web', version: '5.0.2.RELEASE'
 	compile group: 'org.springframework', name: 'spring-webmvc', version: '5.0.2.RELEASE'
+    compile group: 'org.springframework', name: 'spring-orm', version: '5.0.7.RELEASE'
 
     compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.0.6.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-web', version: '5.0.6.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.0.6.RELEASE'
 
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.3.1.Final'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.11'
+    compile group: 'com.h2database', name: 'h2', version: '1.4.195'
+
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile group: 'org.ocpsoft.prettytime', name: 'prettytime', version: '4.0.1.Final'
 
-	testCompile group: 'junit', name:'junit', version: '4.11'
+	testCompile group: 'junit', name:'junit', version: '4.12'
 	testCompile group: 'org.mockito', name:'mockito-core', version: '2.7.22'
+    testCompile group: 'org.springframework', name: 'spring-test', version: '5.0.7.RELEASE'
+    
 }
 
 gretty {
-  contextPath = '/'
-  httpPort = 8090
-  jacocoEnabled false
+    servletContainer = 'jetty9.4'
+    contextPath = '/'
+    httpPort = 8090
+    jacocoEnabled false
 }
 
 checkstyle {
@@ -81,6 +90,7 @@ task report(dependsOn: ['jacocoTestReport']){
 
 project.tasks.check.dependsOn jacocoTestCoverageVerification
 
+/*
 jacocoTestCoverageVerification {
   violationRules {
     rule {
@@ -90,3 +100,4 @@ jacocoTestCoverageVerification {
     }
   }
 }
+*/

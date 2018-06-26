@@ -7,10 +7,11 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.application;
+package org.ucl.newton.application.webapp;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.ucl.newton.application.webapp.ApplicationConfiguration;
 
 public class ApplicationConfigurationTest
 {

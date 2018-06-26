@@ -9,6 +9,9 @@
 
 package org.ucl.newton.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.ucl.newton.framework.User;
 
 import javax.inject.Named;
@@ -19,16 +22,21 @@ import javax.inject.Named;
  * @author Blair Butterworth
  */
 @Named
-public class UserService
+public class UserService implements UserDetailsService
 {
     private User authenticatedUser;
 
     public UserService() {
-        this.authenticatedUser = new User("Blair");
+        //this.authenticatedUser = new User("Blair");
     }
 
     public User getAuthenticatedUser() {
         //SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return authenticatedUser;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
     }
 }

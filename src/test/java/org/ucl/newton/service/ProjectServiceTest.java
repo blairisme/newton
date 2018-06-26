@@ -11,14 +11,14 @@ package org.ucl.newton.service;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.ucl.newton.framework.User;
 
 public class ProjectServiceTest
 {
     @Test
     public void getProjectsTest() {
-        User user = new User("test");
-
+        User user = Mockito.mock(User.class);
         ProjectService projectService = new ProjectService();
         Assert.assertNotNull(projectService.getProjects(user));
     }

@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.application;
+package org.ucl.newton.application.webapp;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
@@ -33,6 +33,6 @@ public class ApplicationInitializer implements WebApplicationInitializer
         ServletRegistration.Dynamic servlet = container.addServlet("dispatcher", new DispatcherServlet(context));
         servlet.setLoadOnStartup(1);
         servlet.addMapping("/");
-
+        servlet.setInitParameter("spring.profiles.active", "production");
     }
 }
