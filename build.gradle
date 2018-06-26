@@ -70,7 +70,8 @@ gretty {
     servletContainer = 'jetty9.4'
     contextPath = '/'
     httpPort = 8090
-    jacocoEnabled false
+    jvmArgs = ['-Drun.profile=' + getProperty('run.profile')]
+    jacocoEnabled = false
 }
 
 checkstyle {
