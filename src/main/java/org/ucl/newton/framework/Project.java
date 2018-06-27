@@ -9,10 +9,17 @@
 
 package org.ucl.newton.framework;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.ocpsoft.prettytime.PrettyTime;
 
-import java.util.ArrayList;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Instances of this class represent a research project, a container for
@@ -20,28 +27,55 @@ import java.util.Date;
  *
  * @author Blair Butterworth
  */
-public class Project
+@Entity
+@Table(name = "PROJECTS")
+public class Project implements Serializable
 {
+    @Id
+    @Column(name = "id")
     private String id;
-    private String name;
-    private Date updated;
-    private ArrayList<User> members;
-    private int stars;
 
-    public Project(String id, String name, Date updated, int stars) {
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "updated")
+    private Date updated;
+
+    public Project() {
+    }
+
+    public Project(String id, String name, String description, Date updated) {
         this.id = id;
         this.name = name;
         this.updated = updated;
-        this.stars = stars;
-        this.members = new ArrayList<User>();
+        this.description = description;
     }
 
     public String getId() {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getLastUpdated() {
@@ -50,13 +84,56 @@ public class Project
 
     public long getLastUpdatedAsEpoch(){ return updated.getTime(); }
 
+    public void setLastUpdated(Date updated){
+        this.updated = updated;
+    }
+
     public String getLastUpdatedDescription() {
         PrettyTime timeFormatter = new PrettyTime();
         return timeFormatter.format(updated);
     }
-    public ArrayList<User> getMembers(){ return members; }
+
+    public Collection<User> getMembers() {
+        return Collections.emptyList();
+    }
 
     public int getStars() {
-        return stars;
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) { return false; }
+        if (obj == this) { return true; }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        Project project = (Project)obj;
+        return new EqualsBuilder()
+                .append(id, project.id)
+                .append(name, project.name)
+                .append(description, project.description)
+                .append(updated, project.updated)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(id)
+                .append(name)
+                .append(description)
+                .append(updated)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("name", name)
+                .append("description", description)
+                .append("updated", updated)
+                .toString();
     }
 }

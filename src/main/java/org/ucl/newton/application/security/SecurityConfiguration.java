@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.application;
+package org.ucl.newton.application.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +15,12 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.ucl.newton.service.user.UserService;
+
+import javax.inject.Inject;
 
 /**
  * Instances of this class configure which endpoints require authentication and
@@ -60,26 +60,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
     }
 
     @Bean
-    protected DaoAuthenticationProvider authProvider() {
+    protected DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
-    @Bean
+    @Inject
+    protected UserService userService;
+
     @Override
     protected UserDetailsService userDetailsService() {
-        UserDetails contributor = User
-                .withUsername("user")
-                .password(passwordEncoder().encode("password"))
-                .roles("CONTRIBUTOR")
-                .build();
-        UserDetails administrator = User
-                .withUsername("admin")
-                .password(passwordEncoder().encode("password"))
-                .roles("ADMINISTRATOR")
-                .build();
-        return new InMemoryUserDetailsManager(contributor, administrator);
+        return userService;
     }
 }

@@ -13,7 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.ui.ModelMap;
-import org.ucl.newton.service.UserService;
+import org.ucl.newton.service.user.UserService;
 
 public class SettingsControllerTest
 {

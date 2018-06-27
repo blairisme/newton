@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.ucl.newton.service.UserService;
+import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
 

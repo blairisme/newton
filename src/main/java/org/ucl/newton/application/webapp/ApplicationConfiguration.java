@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.application;
+package org.ucl.newton.application.webapp;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
