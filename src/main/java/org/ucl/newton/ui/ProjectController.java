@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.service.ExperimentService;
-import org.ucl.newton.service.ProjectService;
-import org.ucl.newton.service.UserService;
+import org.ucl.newton.service.experiment.ExperimentService;
+import org.ucl.newton.service.project.ProjectService;
+import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
 

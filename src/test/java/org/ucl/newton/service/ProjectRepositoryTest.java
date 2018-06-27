@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.Project;
+import org.ucl.newton.service.project.ProjectRepository;
 
 import javax.inject.Inject;
 import java.text.ParseException;
@@ -36,7 +37,7 @@ public class ProjectRepositoryTest
 
     @Test
     public void getProjectTest() throws Exception {
-        Project expected = new Project("project-fizzyo", "Project Fizzyo", "Project Fizzyo Description", getDate("2018-06-20 12:34:56"));
+        Project expected = new Project("project-fizzyo", "project Fizzyo", "project Fizzyo Description", getDate("2018-06-20 12:34:56"));
         Project actual = repository.getProject("project-fizzyo");
         Assert.assertEquals(expected, actual);
     }
@@ -49,7 +50,7 @@ public class ProjectRepositoryTest
 
     @Test
     public void addProjectTest() throws Exception {
-        Project expected = new Project("project-a", "Project A", "Project A Description", getDate("2018-06-20 12:34:56"));
+        Project expected = new Project("project-a", "project A", "project A Description", getDate("2018-06-20 12:34:56"));
         repository.addProject(expected);
         Project actual = repository.getProject("project-a");
         Assert.assertEquals(expected, actual);
@@ -57,7 +58,7 @@ public class ProjectRepositoryTest
 
     @Test
     public void removeProjectTest() throws Exception {
-        Project project = new Project("project-b", "Project B", "Project B Description", getDate("2018-06-20 12:34:56"));
+        Project project = new Project("project-b", "project B", "project B Description", getDate("2018-06-20 12:34:56"));
 
         repository.addProject(project);
         Project before = repository.getProject("project-b");
