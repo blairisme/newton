@@ -13,9 +13,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.ui.ModelMap;
-import org.ucl.newton.service.ExperimentService;
-import org.ucl.newton.service.ProjectService;
-import org.ucl.newton.service.UserService;
+import org.ucl.newton.service.experiment.ExperimentService;
+import org.ucl.newton.service.project.ProjectService;
+import org.ucl.newton.service.user.UserService;
 
 public class ProjectControllerTest
 {

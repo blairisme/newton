@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.service;
+package org.ucl.newton.service.project;
 
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
@@ -15,7 +15,6 @@ import org.ucl.newton.framework.User;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Instances of this interface provide access to project data.
@@ -39,7 +38,7 @@ public class ProjectService
     public Project getProject(String id) {
         Project project = repository.getProject(id);
         if (project == null) {
-            throw new IllegalStateException("Unknown Project - " + id);
+            throw new IllegalStateException("Unknown project - " + id);
         }
         return project;
     }

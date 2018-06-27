@@ -11,11 +11,10 @@ package org.ucl.newton.service;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.ucl.newton.framework.User;
+import org.ucl.newton.service.user.UserRepository;
+import org.ucl.newton.service.user.UserService;
 
 public class UserServiceTest
 {
