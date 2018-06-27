@@ -12,9 +12,15 @@ package org.ucl.newton.service;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.Project;
 
 import javax.inject.Inject;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 /**
  * Instances of this class provide access to persisted project data.
@@ -22,6 +28,7 @@ import javax.inject.Inject;
  * @author Blair Butterworth
  */
 @Repository
+@Transactional
 public class ProjectRepository
 {
     private SessionFactory sessionFactory;
@@ -31,17 +38,39 @@ public class ProjectRepository
         this.sessionFactory = sessionFactory;
     }
 
-    public void save(Project project) {
-        getSession().save(project);
+    public void addProject(Project project) {
+        Session session = getSession();
+        session.save(project);
     }
 
-    protected Session getSession() {
+    public Project getProject(String id) {
+        Session session = getSession();
+        return session.get(Project.class, id);
+    }
+
+    public List<Project> getProjects(int index, int size) {
+        Session session = getSession();
+
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Project> criteriaQuery = criteriaBuilder.createQuery(Project.class);
+        Root<Project> from = criteriaQuery.from(Project.class);
+        CriteriaQuery<Project> select = criteriaQuery.select(from);
+
+        TypedQuery<Project> typedQuery = session.createQuery(select);
+        typedQuery.setFirstResult(index);
+        typedQuery.setMaxResults(size);
+
+        return typedQuery.getResultList();
+    }
+
+    public void removeProject(Project project) {
+        Session session = getSession();
+        session.delete(project);
+    }
+
+    private Session getSession() {
         return this.sessionFactory.getCurrentSession();
     }
-
-//    public Employee findById(final Serializable id) {
-//        return getSession().get(Employee.class, id);
-//    }
 }
 
 

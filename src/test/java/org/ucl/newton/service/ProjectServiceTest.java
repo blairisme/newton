@@ -19,7 +19,9 @@ public class ProjectServiceTest
     @Test
     public void getProjectsTest() {
         User user = Mockito.mock(User.class);
-        ProjectService projectService = new ProjectService();
+        ProjectRepository repository = Mockito.mock(ProjectRepository.class);
+
+        ProjectService projectService = new ProjectService(repository);
         Assert.assertNotNull(projectService.getProjects(user));
     }
 }

@@ -19,14 +19,6 @@ import org.ucl.newton.framework.User;
 
 public class UserServiceTest
 {
-//    @Test
-//    public void getAuthenticatedUserTest() {
-//        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
-//        SecurityContextHolder.setContext(securityContext);
-//
-//
-//    }
-
     @Test
     public void loadUserByUsernameTest() {
         User expected = Mockito.mock(User.class);

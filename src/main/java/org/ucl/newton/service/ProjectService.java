@@ -12,6 +12,7 @@ package org.ucl.newton.service;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -24,25 +25,22 @@ import java.util.concurrent.TimeUnit;
 @Named
 public class ProjectService
 {
-    private List<Project> projects;
+    private ProjectRepository repository;
 
-    public ProjectService() {
-        projects = new ArrayList<>();
-        projects.add(new Project("project-fizzyo", "Project Fizzyo", new Date(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(12)), 2));
-        projects.add(new Project("cancer-research", "Cancer Research Trial 4", new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(7)), 0));
-        projects.add(new Project("aids-research", "AIDS Research", new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(2)), 7));
+    @Inject
+    public ProjectService(ProjectRepository repository) {
+        this.repository = repository;
     }
 
     public Collection<Project> getProjects(User user) {
-        return projects;
+        return repository.getProjects(0, 20);
     }
 
     public Project getProject(String id) {
-        for (Project project: projects) {
-            if (Objects.equals(id, project.getId())){
-                return project;
-            }
+        Project project = repository.getProject(id);
+        if (project == null) {
+            throw new IllegalStateException("Unknown Project - " + id);
         }
-        throw new IllegalStateException("Unknown Project - " + id);
+        return project;
     }
 }
