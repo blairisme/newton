@@ -25,7 +25,7 @@ public class Project
     private String id;
     private String name;
     private Date updated;
-    private ArrayList<User> members;
+    private ArrayList<String> members;
     private int stars;
 
     public Project(String id, String name, Date updated, int stars) {
@@ -33,7 +33,7 @@ public class Project
         this.name = name;
         this.updated = updated;
         this.stars = stars;
-        this.members = new ArrayList<User>();
+        this.members = new ArrayList<String>();
     }
 
     public String getId() {
@@ -52,8 +52,10 @@ public class Project
         PrettyTime timeFormatter = new PrettyTime();
         return timeFormatter.format(updated);
     }
-    public ArrayList<User> getMembers(){ return members; }
-
+    public ArrayList<String> getMembers(){ return members; }
+    public void addMember(String contributor){
+        members.add(contributor);
+    }
     public int getStars() {
         return stars;
     }

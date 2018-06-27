@@ -37,67 +37,70 @@
                     </ul>
                 </div>
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <div class="tab-content">
-                        <div class="tab-pane col-md-4 active" id="general">
-                            <h2>Project name <span class="text-danger">*</span> </h2>
-                            <input type="text" id="project_name" name="project_name" class="form-control" placeholder="Project name" required/>
-                            <h2>Project description</h2>
-                            <textarea id="project_description" name="project_description" class="form-control" rows="5" placeholder="Optional"> </textarea>
-                            <div class="input-group">
-                                <p class="h4"> Project icon </p>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="icon_file">
-                                    <label class="custom-file-label" for="icon_file">Choose file</label>
+                    <form method="POST" th:action="@{/project/new}" >
+                        <div class="tab-content">
+                            <div class="tab-pane col-md-4 active" id="general">
+                                <h2>Project name <span class="text-danger">*</span> </h2>
+                                <input type="text" id="project_name" name="project_name" class="form-control" placeholder="Project name" required/>
+                                <h2>Project description</h2>
+                                <textarea id="project_description" name="project_description" class="form-control" rows="5" > </textarea>
+                                <!--<div class="input-group">-->
+                                    <!--<p class="h4"> Project icon </p>-->
+                                    <!--<div class="custom-file">-->
+                                        <!--<input type="file" class="custom-file-input" id="icon_file">-->
+                                        <!--<label class="custom-file-label" for="icon_file">Choose file</label>-->
+                                    <!--</div>-->
+                                    <!--<div class="input-group-append">-->
+                                        <!--<button class="btn btn-outline-secondary" type="button">Upload</button>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            </div>
+                            <div class="tab-pane col-md-4" id="contributors">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        Current Contributor
+                                    </div>
+                                    <div class="col-md-5">
+                                        <ul class="list-group list-group-flush" id="current_contributors">
+                                            <li class="list-group-item"> Blair <input type="button" class="remove_button" value="remove" /> </li>
+                                            <li class="list-group-item"> Jhon <input type="button" class="remove_button" value="remove" /> </li>
+                                            <li class="list-group-item"> Xiaolong <input type="button" class="remove_button" value="remove" /> </li>
+                                            <li class="list-group-item"> Ziad <input type="button" class="remove_button" value="remove" /> </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button">Upload</button>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        Add new contributor
+                                    </div>
+                                    <div class="col-md-5 input-group mb-3">
+                                        <input type="text" class="form-control" id="new_contributor">
+                                        <div class="input-group-append">
+                                            <input type="button" value="Add" class="btn btn-outline-secondary" id="add_new_contributor" onclick="addNewContributor()" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tab-pane col-md-4" id="contributors">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    Current Contributor
-                                </div>
-                                <div class="col-md-5">
-                                    <ul class="list-group list-group-flush" id="current_contributors">
-                                        <li class="list-group-item">Blair <input type="button" class="remove_button" value="remove" /> </li>
-                                        <li class="list-group-item">Jhon <input type="button" class="remove_button" value="remove" /> </li>
-                                        <li class="list-group-item">Xiaolong <input type="button" class="remove_button" value="remove" /> </li>
-                                        <li class="list-group-item">Ziad <input type="button" class="remove_button" value="remove" /> </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-5">
-                                    Add new contributor
-                                </div>
-                                <div class="col-md-5 input-group mb-3">
-                                    <input type="text" class="form-control" id="new_contributor">
-                                    <div class="input-group-append">
-                                        <input type="button" value="Add" class="btn btn-outline-secondary" id="add_new_contributor" onclick="addNewContributor()" />
+                            <div class="tab-pane col-md-4" id="data_sources">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        Available data sources
+                                    </div>
+                                    <div class="col-md-5">
+                                        <ul class="list-group" id="datasources_selecet">
+                                            <li class="list-group-item"> <input type="checkbox"/>Fizzyo HR data</li>
+                                            <li class="list-group-item"> <input type="checkbox"/>Fizzyo steps data</li>
+                                            <li class="list-group-item"> <input type="checkbox"/>Fizzyo ACT data</li>
+                                            <li class="list-group-item"> <input type="checkbox"/>Weather data</li>
+                                            <li class="list-group-item"> <input type="checkbox"/>Air pollution data</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane col-md-4" id="data_sources">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    Available data sources
-                                </div>
-                                <div class="col-md-5">
-                                    <ul class="list-group" id="datasources_selecet">
-                                        <li class="list-group-item"> <input type="checkbox"/>Fizzyo HR data</li>
-                                        <li class="list-group-item"> <input type="checkbox"/>Fizzyo steps data</li>
-                                        <li class="list-group-item"> <input type="checkbox"/>Fizzyo ACT data</li>
-                                        <li class="list-group-item"> <input type="checkbox"/>Weather data</li>
-                                        <li class="list-group-item"> <input type="checkbox"/>Air pollution data</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Create Project"/>
+                        <input type="button" class="btn btn-lg btn-primary btn-block" onclick="javascript:history.back(-1)" value="Cancel"/>
+                    </form>
                 </main>
             </div>
         </div>
@@ -110,9 +113,8 @@
             if (name == null || name == "")
                 alert("please input the new contributor");
             else {
-
-                var removeButton = "<input type=\"button\" class=\"remove_button\"  value=\"remove\" />"
-                newName = "<li class=\"list-group-item\">" + name + removeButton +"</li>";
+                var removeButton = "<input type=\"button\" class=\"remove_button\"  value=\"remove\" />";
+                newName = "<li class=\"list-group-item\">"  + name + removeButton + "</li>";
 
                 $("#current_contributors").append(newName);
                 $("#current_contributors li:last input.remove_button").click(function () {

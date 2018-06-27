@@ -15,12 +15,15 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.service.ExperimentService;
 import org.ucl.newton.service.ProjectService;
 import org.ucl.newton.service.UserService;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
@@ -82,5 +85,12 @@ public class ProjectController
     public String newProject(ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
         return "project/new";
+    }
+
+    @RequestMapping(value = "/project/new", method = RequestMethod.POST)
+    public String createProject(ModelMap model) {
+        System.out.println("i'm here!");
+        model.addAttribute("user", userService.getAuthenticatedUser());
+        return "project/list";
     }
 }
