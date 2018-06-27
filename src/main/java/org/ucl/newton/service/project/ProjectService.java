@@ -31,6 +31,10 @@ public class ProjectService
         this.repository = repository;
     }
 
+    public void addProject(Project project) {
+        repository.addProject(project);
+    }
+
     public Collection<Project> getProjects(User user) {
         return repository.getProjects(0, 20);
     }

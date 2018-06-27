@@ -58,16 +58,32 @@ public class Project implements Serializable
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getLastUpdated() {
         return updated;
+    }
+
+    public void setLastUpdated(Date updated){
+        this.updated = updated;
     }
 
     public String getLastUpdatedDescription() {

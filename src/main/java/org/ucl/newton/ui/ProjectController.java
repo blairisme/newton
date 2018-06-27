@@ -12,10 +12,7 @@ package org.ucl.newton.ui;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.service.experiment.ExperimentService;
@@ -24,6 +21,7 @@ import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
@@ -88,9 +86,9 @@ public class ProjectController
     }
 
     @RequestMapping(value = "/project/new", method = RequestMethod.POST)
-    public String createProject(ModelMap model) {
-        System.out.println("i'm here!");
-        model.addAttribute("user", userService.getAuthenticatedUser());
-        return "project/list";
+    public String createProject(@ModelAttribute Project project, ModelMap model) {
+        project.setLastUpdated(new Date());
+        projectService.addProject(project);
+        return "redirect:/projects";
     }
 }
