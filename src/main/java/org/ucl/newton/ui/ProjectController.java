@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.service.ExperimentService;
-import org.ucl.newton.service.ProjectService;
-import org.ucl.newton.service.UserService;
+import org.ucl.newton.service.experiment.ExperimentService;
+import org.ucl.newton.service.project.ProjectService;
+import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
 import java.util.ArrayList;

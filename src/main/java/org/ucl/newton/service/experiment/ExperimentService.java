@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.service;
+package org.ucl.newton.service.experiment;
 
 import org.ucl.newton.framework.Experiment;
 

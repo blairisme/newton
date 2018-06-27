@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.service;
+package org.ucl.newton.service.user;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
