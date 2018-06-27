@@ -48,6 +48,8 @@ public class Project
         return updated;
     }
 
+    public long getLastUpdatedAsEpoch(){ return updated.getTime(); }
+
     public String getLastUpdatedDescription() {
         PrettyTime timeFormatter = new PrettyTime();
         return timeFormatter.format(updated);

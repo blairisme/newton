@@ -45,3 +45,23 @@
     color: #000000;
     font-weight: 600;
 }
+
+.page-title {
+    display: inline-block;
+}
+
+#projectList {
+    width:100%;
+}
+
+#projectList thead {
+    display:none;
+}
+
+#dropdownMenuButton {
+    margin-left: 1em;
+}
+
+#newProjectBtn {
+    margin-top: 0.5em;
+}
