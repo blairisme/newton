@@ -28,7 +28,6 @@ import java.util.List;
  * @author Blair Butterworth
  */
 @Repository
-@Transactional
 public class ProjectRepository
 {
     private SessionFactory sessionFactory;
@@ -38,16 +37,19 @@ public class ProjectRepository
         this.sessionFactory = sessionFactory;
     }
 
+    @Transactional
     public void addProject(Project project) {
         Session session = getSession();
         session.save(project);
     }
 
+    @Transactional(readOnly=true)
     public Project getProject(String id) {
         Session session = getSession();
         return session.get(Project.class, id);
     }
 
+    @Transactional(readOnly=true)
     public List<Project> getProjects(int index, int size) {
         Session session = getSession();
 
@@ -63,6 +65,7 @@ public class ProjectRepository
         return typedQuery.getResultList();
     }
 
+    @Transactional
     public void removeProject(Project project) {
         Session session = getSession();
         session.delete(project);

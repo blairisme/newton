@@ -12,6 +12,10 @@ package org.ucl.newton.framework;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +34,7 @@ import java.util.Collection;
  * @author Blair Butterworth
  */
 @Entity
+@Indexed
 @Table(name = "USERS")
 public class User implements Serializable, UserDetails
 {
@@ -40,6 +45,7 @@ public class User implements Serializable, UserDetails
     @Column(name = "password")
     private String password;
 
+    @Field
     @Column(name = "name")
     private String name;
 

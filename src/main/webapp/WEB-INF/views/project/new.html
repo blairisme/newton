@@ -6,104 +6,117 @@
         <title>Newton - Projects</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/typeahead.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
-        <link rel="stylesheet" type="text/css" href="/resources/styles/project.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/new_project.css"/>
 
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+        <script src="/resources/scripts/libraries/jquery.js"></script>
+        <script src="/resources/scripts/libraries/popper.js"></script>
+        <script src="/resources/scripts/libraries/bootstrap.js"></script>
+        <script src="/resources/scripts/libraries/typeahead.js"></script>
+        <script src="/resources/scripts/views/new_project.js"></script>
     </head>
     <body>
         <!-- Navigation -->
         <div th:replace="fragments/header :: header"></div>
 
         <!-- Page Content -->
-        <div class="container-fluid">
-            <h1 class="page-title">New Project</h1>
-            <div class="row">
-                <div class="col-md-2">
-                    <ul class="nav nav-pills flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#general"> General </a>
+        <div class="container-fluid restricted-width-container">
+            <div class="section-divider">
+                <h1 class="page-title">New Project</h1>
+                <p>A project contains all the files for your project, including the revision history.</p>
+            </div>
+
+            <form method="POST" th:action="@{/project/new}" novalidate>
+
+                <!-- General Project Settings -->
+                <section class="form-section section-divider">
+                    <h4>General Project Settings</h4>
+                    <p>Update your project name, description, icon, and other general settings.</p>
+
+                    <div class="form-group">
+                        <input type="hidden" id="projectId" name="id" value="foo"/>
+
+                        <label for="projectNameInput">Project name <span class="text-danger">*</span></label>
+                        <input id="projectNameInput" name="name" type="text" class="form-control" aria-describedby="projectNameHelp" placeholder="" required="">
+                        <small id="projectNameHelp" class="form-text text-muted">Great project names are short and memorable.</small>
+                        <div class="invalid-feedback">
+                            Please provide a project name.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectDescriptionInput">Project Description (optional)</label>
+                        <textarea id="projectDescriptionInput" name="description" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectIconInput">Project Icon (optional)</label>
+                        <input id="projectIconInput" name="icon" type="file" class="form-control-file" >
+                    </div>
+                </section>
+
+                <!-- Project Membership Settings -->
+                <section class="form-section section-divider">
+                    <h4>Project Members</h4>
+                    <p>Choose who can access this project.</p>
+
+                    <ul class="list-group list-group-flush" id="projectMembers">
+                        <li class="list-group-item">
+                            <span>Blair</span>
+                            <input type="button" class="remove_button" value="remove" />
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#contributors"> Contributors </a>
+                        <li class="list-group-item">
+                            <span>John</span>
+                            <input type="button" class="remove_button" value="remove" />
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#data_sources"> Project Data Sources </a>
+                        <li class="list-group-item">
+                            <span>Xiaolong</span>
+                            <input type="button" class="remove_button" value="remove" />
+                        </li>
+                        <li class="list-group-item">
+                            <span>Ziad</span>
+                            <input type="button" class="remove_button" value="remove" />
                         </li>
                     </ul>
-                </div>
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <form method="POST" th:action="@{/project/new}" >
-                        <div class="tab-content">
-                            <div class="tab-pane col-md-4 active" id="general">
-                                <h2>Project name <span class="text-danger">*</span> </h2>
-                                <input type="hidden" id="id" name="id" value="foo"/>
-                                <input type="text" id="name" name="name" class="form-control" placeholder="Project name" required/>
-                                <h2>Project description</h2>
-                                <textarea id="description" name="description" class="form-control" rows="5" > </textarea>
-                                <!--<div class="input-group">-->
-                                    <!--<p class="h4"> Project icon </p>-->
-                                    <!--<div class="custom-file">-->
-                                        <!--<input type="file" class="custom-file-input" id="icon_file">-->
-                                        <!--<label class="custom-file-label" for="icon_file">Choose file</label>-->
-                                    <!--</div>-->
-                                    <!--<div class="input-group-append">-->
-                                        <!--<button class="btn btn-outline-secondary" type="button">Upload</button>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            </div>
-                            <div class="tab-pane col-md-4" id="contributors">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        Current Contributor
-                                    </div>
-                                    <div class="col-md-5">
-                                        <ul class="list-group list-group-flush" id="current_contributors">
-                                            <li class="list-group-item"> Blair <input type="button" class="remove_button" value="remove" /> </li>
-                                            <li class="list-group-item"> Jhon <input type="button" class="remove_button" value="remove" /> </li>
-                                            <li class="list-group-item"> Xiaolong <input type="button" class="remove_button" value="remove" /> </li>
-                                            <li class="list-group-item"> Ziad <input type="button" class="remove_button" value="remove" /> </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        Add new contributor
-                                    </div>
-                                    <div class="col-md-5 input-group mb-3">
-                                        <input type="text" class="form-control" id="new_contributor">
-                                        <div class="input-group-append">
-                                            <input type="button" value="Add" class="btn btn-outline-secondary" id="add_new_contributor" onclick="addNewContributor()" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane col-md-4" id="data_sources">
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        Available data sources
-                                    </div>
-                                    <div class="col-md-5">
-                                        <ul class="list-group" id="datasources_selecet">
-                                            <li class="list-group-item"> <input type="checkbox"/>Fizzyo HR data</li>
-                                            <li class="list-group-item"> <input type="checkbox"/>Fizzyo steps data</li>
-                                            <li class="list-group-item"> <input type="checkbox"/>Fizzyo ACT data</li>
-                                            <li class="list-group-item"> <input type="checkbox"/>Weather data</li>
-                                            <li class="list-group-item"> <input type="checkbox"/>Air pollution data</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-8">
+                            <label for="projectMemberInput">Begin typing to select a new member</label>
+                            <input id="projectMemberInput" type="text" class="typeahead form-control" placeholder="">
                         </div>
-                        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Create Project"/>
-                        <input type="button" class="btn btn-lg btn-primary btn-block" onclick="javascript:history.back(-1)" value="Cancel"/>
-                    </form>
-                </main>
-            </div>
+                        <input type="button" class="btn btn-primary col-sm-2 col-form-label" value="Add Member" />
+                    </div>
+                </section>
+
+                <section class="form-section section-divider">
+                    <h4>Project Data Sources</h4>
+                    <p>Choose which data sources are available to experiments in this project</p>
+
+                    <ul class="list-group list-group-flush" id="projectDataSources">
+                        <li class="list-group-item">
+                            <span>Fizzyo heart rate data</span>
+                            <input type="button" class="remove_button" value="remove" />
+                        </li>
+                        <li class="list-group-item">
+                            <span>Fizzyo pressure data</span>
+                            <input type="button" class="remove_button" value="remove" />
+                        </li>
+                        <li class="list-group-item">
+                            <span>Weather data</span>
+                            <input type="button" class="remove_button" value="remove" />
+                        </li>
+                    </ul>
+                    <div class="form-group row">
+                        <div class="col-sm-8">
+                            <label for="projectDataAdd">Begin typing to select a data source</label>
+                            <input id="projectDataAdd" type="text" class="form-control" placeholder="">
+                        </div>
+                        <input type="button" class="btn btn-primary col-sm-2 col-form-label" value="Add Data Source" />
+                    </div>
+                </section>
+
+                <input type="submit" class="btn btn-lg btn-primary" value="Create Project"/>
+            </form>
         </div>
     
     </body>
@@ -131,5 +144,23 @@
                 })
             });
         });
+
+
+        var matchingUsers = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+          remote: {
+            url: '/api/user?matching=%QUERY',
+            wildcard: '%QUERY'
+          }
+        });
+
+        $('#projectMemberInput').typeahead(null, {
+          name: 'users',
+          display: 'name',
+          source: matchingUsers
+        });
+
     </script>
 </html>

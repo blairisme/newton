@@ -19,6 +19,7 @@ import org.ucl.newton.framework.User;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Collection;
 
 /**
  * Instances of this interface provide access to user data.
@@ -48,5 +49,9 @@ public class UserService implements UserDetailsService
             throw new UsernameNotFoundException(username);
         }
         return user;
+    }
+
+    public Collection<User> findUsers(String matching) {
+        return repository.findUsers(matching);
     }
 }

@@ -22,9 +22,11 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.ucl.newton.common.SystemUtils;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import java.nio.file.Path;
 import java.util.Properties;
 
 /**
@@ -82,8 +84,15 @@ public class DeveloperPersistenceConfiguration
     private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-        properties.put("hibernate.show_sql", "true");
-        properties.put("hibernate.format_sql", "true");
+//        properties.put("hibernate.show_sql", "true");
+//        properties.put("hibernate.format_sql", "true");
+        properties.put("hibernate.search.default.directory_provider", "filesystem");
+        properties.put("hibernate.search.default.indexBase", getIndexPath());
         return properties;
+    }
+
+    private String getIndexPath() {
+        Path indexPath = SystemUtils.newTempDirectory("developer/index");
+        return indexPath.toString();
     }
 }

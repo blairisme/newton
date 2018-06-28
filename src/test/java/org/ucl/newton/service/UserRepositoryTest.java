@@ -21,10 +21,11 @@ import org.ucl.newton.framework.User;
 import org.ucl.newton.service.user.UserRepository;
 
 import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.Collection;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DeveloperPersistenceConfiguration.class})
-@Transactional
 @ActiveProfiles("development")
 public class UserRepositoryTest
 {
@@ -35,6 +36,22 @@ public class UserRepositoryTest
     public void getUserTest() {
         User expected = new User("user", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m", "Test User", "CONTRIBUTOR");
         User actual = repository.getUser("user");
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void findUserTest() throws Exception{
+        User user1 = new User("testa", "password", "John A", "ADMINISTRATOR");
+        User user2 = new User("testb", "password", "John B", "ADMINISTRATOR");
+        User user3 = new User("testc", "password", "Test User A", "ADMINISTRATOR");
+
+        repository.addUser(user1);
+        repository.addUser(user2);
+        repository.addUser(user3);
+
+        Collection<User> expected = Arrays.asList(user1, user2);
+        Collection<User> actual = repository.findUsers("John");
+
         Assert.assertEquals(expected, actual);
     }
 

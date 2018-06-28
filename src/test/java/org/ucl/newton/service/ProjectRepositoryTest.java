@@ -28,7 +28,6 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DeveloperPersistenceConfiguration.class})
-@Transactional
 @ActiveProfiles("development")
 public class ProjectRepositoryTest
 {

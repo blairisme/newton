@@ -1,3 +1,20 @@
 .remove_button {
     float: right;
 }
+
+
+
+
+.restricted-width-container {
+    max-width: 1000px;
+}
+
+.section-divider {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-section {
+    padding: 20px;
+    margin-top: 20px;
+}
