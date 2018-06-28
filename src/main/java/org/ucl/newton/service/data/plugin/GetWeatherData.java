@@ -11,9 +11,12 @@ import javax.swing.plaf.synth.SynthEditorPaneUI;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Instances of this class provide weather data to the Newton system.
+ *
+ * @author Xiaolong Chen
+ */
 public class GetWeatherData implements Runnable {
-
     @Override
     public void run() {
 
@@ -22,10 +25,10 @@ public class GetWeatherData implements Runnable {
         String longitude="-0.134046";
         String url = "https://api.awhere.com";
         url = url + "/v2/weather/locations/"+latitude + "," + longitude + "/observations";
-        Map<String,String> header = new HashMap<String, String>();
+        Map<String,String> header = new HashMap<>();
         header.put("Content-Type","application/json");
         header.put("Authorization","Bearer " + token);
-        Map<String,String> params = new HashMap<String, String>();
+        Map<String,String> params = new HashMap<>();
 
         String data = HttpUtils.doGet(url,params,header);
 
@@ -37,7 +40,6 @@ public class GetWeatherData implements Runnable {
         String key = "QdF64BXLjzYMNvX2KHUgsQf8G0pGrBkp";
         String secret = "ecOFwYAdJ6Z8llGr";
         String credential = key + ":" + secret;
-
         BASE64Encoder encoder = new BASE64Encoder();
         String hashed = "";
         try {
@@ -45,13 +47,11 @@ public class GetWeatherData implements Runnable {
         }catch ( Exception e){
             e.printStackTrace();
         }
-
-
-        Map<String,String> header = new HashMap<String, String>();
+        Map<String,String> header = new HashMap<>();
         header.put("Content-Type","application/x-www-form-urlencoded");
         header.put("Authorization",hashed);
 
-        Map<String,String> params = new HashMap<String, String>();
+        Map<String,String> params = new HashMap<>();
         params.put("grant_type","client_credentials");
 
         String response = HttpUtils.doPost(url,params,header);
