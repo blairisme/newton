@@ -82,6 +82,8 @@ public class Project implements Serializable
         return updated;
     }
 
+    public long getLastUpdatedAsEpoch(){ return updated.getTime(); }
+
     public void setLastUpdated(Date updated){
         this.updated = updated;
     }

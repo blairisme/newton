@@ -7,12 +7,17 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/css/dataTables.bootstrap4.min.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/project.css"/>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/dataTables.bootstrap4.min.js"></script>
+        <script type="text/javascript" src="/resources/scripts/projectList.js"></script>
     </head>
     <body>
         <!-- Navigation -->
@@ -20,7 +25,13 @@
 
         <!-- Page Content -->
         <div class="container-fluid">
-            <h1 class="page-title">Projects</h1>
+
+            <div>
+                <h1 class="page-title">Projects</h1>
+                <span class="float-right" sec:authorize="hasRole('ROLE_ADMINISTRATOR')">
+                    <a class="btn btn-primary" href="/project/new" role="button" id="newProjectBtn">New Project</a>
+                </span>
+            </div>
 
             <ul class="nav nav-tabs">
                 <li class="nav-item">
@@ -29,16 +40,32 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Starred projects</a>
                 </li>
+                <li class="nav-item ml-auto">
+                    <input class="form-control" id="filterInput" type="text" placeholder="Filter..">
+                </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">All projects</a>
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Most recently updated
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#">Most recently updated</a></li>
+                            <li><a class="dropdown-item" href="#">Least recently updated</a></li>
+                            <li><a class="dropdown-item" href="#">Project name A-Z</a></li>
+                            <li><a class="dropdown-item" href="#">Project name Z-A</a></li>
+                        </ul>
+                    </div>
                 </li>
-                <li class="nav-item ml-auto" sec:authorize="hasRole('ROLE_ADMINISTRATOR')">
-                    <a class="btn btn-primary" href="/project/new" role="button">New Project</a>
-                </li>
+
             </ul>
 
-            <table class="project-list">
-                <tr th:each="project, iteration : ${projects}" th:class="${not iteration.last} ? 'project-row project-row-underline' : 'project-row'">
+            <table class="project-list" id="projectList" style="width:100%">
+                <thead>
+                    <th>icon</th>
+                    <th>name</th>
+                    <th>details</th>
+                </thead>
+                <tr th:each="project, iteration : ${projects}" class="project-row project-row-underline">
                     <td class="project-column project-icon-container">
                         <a href="/projects" th:href="@{'/project/' + ${project.id}}">
                             <img src="/resources/images/gosh-logo.jpg" class="rounded" alt="Project icon" width="48" height="48">
@@ -49,16 +76,17 @@
                             <span th:text="${project.name}">project name</span>
                         </a>
                     </td>
-                    <td class="project-column project-state-container">
+                    <td class="project-column project-state-container" th:attr="data-order=${project.getLastUpdatedAsEpoch()}">
                         <div class="aligned-cell aligned-right">
                             <img class="star">
                             <span th:text="${project.stars}">0</span>
                         </div>
-                        <span th:text="${project.lastUpdatedDescription}" th:class="cell-text">last updated</span>
+                        <span th:text="${project.getLastUpdatedDescription()}" th:class="cell-text">last updated</span>
                     </td>
                 </tr>
             </table>
         </div>
+
 
     </body>
 </html>

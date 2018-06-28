@@ -13,6 +13,7 @@ import org.ucl.newton.service.data.sdk.DataProvider;
 import org.ucl.newton.service.data.sdk.DataProviderObserver;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
+
 /**
  * Instances of this class provide weather data to the Newton system.
  *
@@ -23,6 +24,8 @@ public class WeatherDataProvider implements DataProvider
 {
     @Override
     public void start(StorageProvider storageProvider) {
+        Thread thread = new Thread(new GetWeatherData());
+        thread.start();
 
     }
 
