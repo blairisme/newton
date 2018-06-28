@@ -14,4 +14,5 @@ CREATE TABLE IF NOT EXISTS `PROJECTS` (
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(200) NOT NULL,
   `updated` DATETIME NOT NULL,
+  `owner_id` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`));
