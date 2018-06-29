@@ -6,7 +6,7 @@
  *
  *      https://opensource.org/licenses/MIT
  */
-package org.ucl.newton.service;
+package org.ucl.newton.service.experiment;
 
 import org.junit.Assert;
 import org.junit.Test;

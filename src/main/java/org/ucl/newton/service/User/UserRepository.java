@@ -40,13 +40,14 @@ public class UserRepository
     }
 
     @Transactional
-    public void addUser(User user) {
+    public User addUser(User user) {
         Session session = getSession();
-        session.save(user);
+        Integer generatedId = (Integer)session.save(user);
+        return user.setId(generatedId);
     }
 
     @Transactional(readOnly=true)
-    public User getUser(String id) {
+    public User getUser(int id) {
         Session session = getSession();
         return session.get(User.class, id);
     }

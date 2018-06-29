@@ -12,21 +12,11 @@ package org.ucl.newton.framework;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * Instances of this class represent a user.
@@ -35,69 +25,51 @@ import java.util.Collection;
  */
 @Entity
 @Indexed
-@Table(name = "USERS")
-public class User implements Serializable, UserDetails
+@Table(name = "users")
+public class User implements Serializable
 {
     @Id
     @Column(name = "id")
-    private String id;
-
-    @Column(name = "password")
-    private String password;
+    @GeneratedValue(generator = "increment")
+    private int id;
 
     @Field
     @Column(name = "name")
     private String name;
 
-    @Column(name = "role")
-    private String role;
+    @Field
+    @Column(name = "email")
+    private String email;
 
     public User() {
+        this(0, "", "");
     }
 
-    public User(String id, String password, String name, String role) {
+    public User(String name, String email) {
+        this(0, name, email);
+    }
+
+    public User(int id, String name, String email) {
         this.id = id;
-        this.password = password;
         this.name = name;
-        this.role = role;
+        this.email = email;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmail() {
+        return email;
     }
 
-    @Override
-    public String getUsername() {
-        return id;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + role));
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public User setId(int id) {
+        this.id = id;
+        return this;
     }
 
     @Override
@@ -111,8 +83,7 @@ public class User implements Serializable, UserDetails
         return new EqualsBuilder()
             .append(id, user.id)
             .append(name, user.name)
-            .append(password, user.password)
-            .append(role, user.role)
+            .append(email, user.email)
             .isEquals();
     }
 
@@ -121,8 +92,7 @@ public class User implements Serializable, UserDetails
         return new HashCodeBuilder(17, 37)
             .append(id)
             .append(name)
-            .append(password)
-            .append(role)
+            .append(email)
             .toHashCode();
     }
 
@@ -131,7 +101,7 @@ public class User implements Serializable, UserDetails
         return new ToStringBuilder(this)
             .append("id", id)
             .append("name", name)
-            .append("role", role)
+            .append("email", email)
             .toString();
     }
 }

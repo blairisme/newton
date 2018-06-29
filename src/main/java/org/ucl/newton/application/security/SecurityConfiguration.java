@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.ucl.newton.service.authentication.AuthenticationService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
@@ -68,10 +69,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
     }
 
     @Inject
-    protected UserService userService;
+    protected AuthenticationService authenticationService;
 
     @Override
     protected UserDetailsService userDetailsService() {
-        return userService;
+        return authenticationService;
     }
 }
