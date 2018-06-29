@@ -2,11 +2,21 @@ package org.ucl.newton.service.authentication;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.Credential;
 
 import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
+/**
+ * Instances of this class provide access to persisted credential data.
+ *
+ * @author Blair Butterworth
+ */
+@Repository
 public class CredentialRepository
 {
     private SessionFactory sessionFactory;
@@ -17,15 +27,30 @@ public class CredentialRepository
     }
 
     @Transactional
-    public void addCredential(Credential credential) {
+    public Credential addCredential(Credential credential) {
         Session session = getSession();
-        session.save(credential);
+        Integer generatedId = (Integer)session.save(credential);
+        return credential.setId(generatedId);
     }
 
     @Transactional(readOnly=true)
-    public Credential getCredential(String id) {
+    public Credential getCredentialById(int id) {
         Session session = getSession();
         return session.get(Credential.class, id);
+    }
+
+    @Transactional(readOnly=true)
+    public Credential getCredentialByName(String username) {
+        Session session = getSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Credential> criteria = builder.createQuery(Credential.class);
+        Root<Credential> credentials = criteria.from( Credential.class );
+
+        criteria.select(credentials);
+        criteria.where(builder.equal(credentials.get("username"), username));
+
+        return session.createQuery(criteria).getSingleResult();
     }
 
     @Transactional

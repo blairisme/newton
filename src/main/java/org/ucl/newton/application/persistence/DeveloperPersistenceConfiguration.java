@@ -93,6 +93,7 @@ public class DeveloperPersistenceConfiguration
 
     private String getIndexPath() {
         Path indexPath = SystemUtils.newTempDirectory("developer/index");
+        indexPath.toFile().delete();
         return indexPath.toString();
     }
 }

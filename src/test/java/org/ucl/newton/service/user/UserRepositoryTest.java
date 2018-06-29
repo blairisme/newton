@@ -32,8 +32,8 @@ public class UserRepositoryTest
 
     @Test
     public void getUserTest() {
-        User expected = new User(0, "user", "user@ucl.ac.uk");
-        User actual = repository.getUser(0);
+        User expected = new User(1, "user", "user@ucl.ac.uk");
+        User actual = repository.getUser(1);
         Assert.assertEquals(expected, actual);
     }
 

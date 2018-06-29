@@ -14,10 +14,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.ocpsoft.prettytime.PrettyTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 
@@ -28,7 +25,7 @@ import java.util.*;
  * @author Blair Butterworth
  */
 @Entity
-@Table(name = "PROJECTS")
+@Table(name = "projects")
 public class Project implements Serializable
 {
     @Id
@@ -44,14 +41,18 @@ public class Project implements Serializable
     @Column(name = "updated")
     private Date updated;
 
+    @ManyToOne
+    private User owner;
+
     public Project() {
     }
 
-    public Project(String id, String name, String description, Date updated) {
+    public Project(String id, String name, String description, Date updated, User owner) {
         this.id = id;
         this.name = name;
         this.updated = updated;
         this.description = description;
+        this.owner = owner;
     }
 
     public String getId() {
@@ -93,6 +94,14 @@ public class Project implements Serializable
         return timeFormatter.format(updated);
     }
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
     public Collection<User> getMembers() {
         return Collections.emptyList();
     }
@@ -114,6 +123,7 @@ public class Project implements Serializable
                 .append(name, project.name)
                 .append(description, project.description)
                 .append(updated, project.updated)
+                .append(owner, project.owner)
                 .isEquals();
     }
 
@@ -124,6 +134,7 @@ public class Project implements Serializable
                 .append(name)
                 .append(description)
                 .append(updated)
+                .append(owner)
                 .toHashCode();
     }
 
