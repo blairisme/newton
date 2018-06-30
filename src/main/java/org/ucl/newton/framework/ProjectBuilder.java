@@ -13,6 +13,8 @@ import org.apache.commons.lang3.Validate;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -22,19 +24,30 @@ import java.util.Date;
  */
 public class ProjectBuilder
 {
-    private String id;
+    private String link;
     private String name;
     private String description;
     private Date updated;
     private User owner;
+    private Collection<User> members;
 
-    public void generateId(String text) {
+    public ProjectBuilder() {
+        this.description = "";
+        this.updated = new Date();
+        this.members = Collections.emptyList();
+    }
+
+    public void generateLink(String text) {
         try {
-            this.id = URLEncoder.encode(text, "UTF-8");
+            this.link = URLEncoder.encode(text, "UTF-8");
         }
         catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public void setName(String name) {
@@ -53,12 +66,14 @@ public class ProjectBuilder
         this.owner = owner;
     }
 
+    public void setMembers(Collection<User> members) {
+        this.members = members;
+    }
+
     public Project build() {
-        Validate.notNull(id);
+        Validate.notNull(link);
         Validate.notNull(name);
-        Validate.notNull(description);
-        Validate.notNull(updated);
         Validate.notNull(owner);
-        return new Project(id, name, description, updated, owner);
+        return new Project(0, link, name, description, updated, owner, members);
     }
 }

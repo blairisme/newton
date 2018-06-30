@@ -48,20 +48,32 @@ public class Project implements Serializable
     @ManyToOne
     private User owner;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "project_membership",
+        joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
+    private Collection<User> members;
+
     public Project() {
     }
 
-    public Project(String link, String name, String description, Date updated, User owner) {
-        this(0, link, name, description, updated, owner);
-    }
-
-    public Project(int id, String link, String name, String description, Date updated, User owner) {
+    public Project(
+        int id,
+        String link,
+        String name,
+        String description,
+        Date updated,
+        User owner,
+        Collection<User> members)
+    {
         this.id = id;
         this.link = link;
         this.name = name;
         this.updated = updated;
         this.description = description;
         this.owner = owner;
+        this.members = members;
     }
 
     public int getId() {
@@ -99,7 +111,7 @@ public class Project implements Serializable
     }
 
     public Collection<User> getMembers() {
-        return Collections.emptyList();
+        return members;
     }
 
     public int getStars() {
@@ -115,32 +127,32 @@ public class Project implements Serializable
         }
         Project project = (Project)obj;
         return new EqualsBuilder()
-                .append(id, project.id)
-                .append(name, project.name)
-                .append(description, project.description)
-                .append(updated, project.updated)
-                .append(owner, project.owner)
-                .isEquals();
+            .append(id, project.id)
+            .append(name, project.name)
+            .append(description, project.description)
+            .append(updated, project.updated)
+            .append(owner, project.owner)
+            .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(id)
-                .append(name)
-                .append(description)
-                .append(updated)
-                .append(owner)
-                .toHashCode();
+            .append(id)
+            .append(name)
+            .append(description)
+            .append(updated)
+            .append(owner)
+            .toHashCode();
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("id", id)
-                .append("name", name)
-                .append("description", description)
-                .append("updated", updated)
-                .toString();
+            .append("id", id)
+            .append("name", name)
+            .append("description", description)
+            .append("updated", updated)
+            .toString();
     }
 }

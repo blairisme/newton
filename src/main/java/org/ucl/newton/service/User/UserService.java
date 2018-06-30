@@ -17,6 +17,7 @@ import org.ucl.newton.framework.User;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -43,5 +44,17 @@ public class UserService
 
     public Collection<User> findUsers(String matching) {
         return repository.findUsers(matching);
+    }
+
+    public User getUser(int identifier) {
+        return repository.getUser(identifier);
+    }
+
+    public Collection<User> getUsers(Collection<Integer> identifiers) {
+        Collection<User> result = new ArrayList<>();
+        for (Integer identifier: identifiers) {
+            result.add(getUser(identifier));
+        }
+        return result;
     }
 }

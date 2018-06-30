@@ -51,7 +51,7 @@ function addMember(id, name, email) {
     );
 
     $('#projectMembersData').append(
-        `<option id="dataItem${id}" value="${name}" selected="selected"></option>`
+        `<option id="dataItem${id}" value="${id}" selected="selected"></option>`
     );
 }
 

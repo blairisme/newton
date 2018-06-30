@@ -19,12 +19,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.Project;
+import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.service.project.ProjectRepository;
 
 import javax.inject.Inject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -39,10 +41,7 @@ public class ProjectRepositoryTest
 
     @Test
     public void addProjectTest() throws Exception {
-        User owner = new User(2, "admin", "admin@ucl.ac.uk");
-        Date updated = getDate("2018-06-20 12:34:56");
-
-        Project expected = new Project("project-a", "project A", "project A Description", updated, owner);
+        Project expected = createProject("project-a", "project A");
         repository.addProject(expected);
 
         Project actual = repository.getProjectByLink("project-a");
@@ -57,9 +56,7 @@ public class ProjectRepositoryTest
 
     @Test
     public void removeProjectTest() throws Exception {
-        User owner = new User(2, "admin", "admin@ucl.ac.uk");
-        Date updated = getDate("2018-06-20 12:34:56");
-        Project project = new Project("project-b", "project B", "project B Description", updated, owner);
+        Project project = createProject("project-b", "project B");
 
         repository.addProject(project);
         Project before = repository.getProjectByLink("project-b");
@@ -72,16 +69,34 @@ public class ProjectRepositoryTest
 
     @Test
     public void testProjectOwner() throws Exception {
-        User owner = new User(2, "admin", "admin@ucl.ac.uk");
-        Date updated = getDate("2018-06-20 12:34:56");
-        Project expected = new Project("project-c", "project c", "Project C Description", updated, owner);
-
+        Project expected = createProject("project-c", "project c");
         repository.addProject(expected);
         Project actual = repository.getProjectByLink("project-c");
         Assert.assertEquals(expected.getOwner(), actual.getOwner());
     }
 
-    private Date getDate(String date) throws ParseException  {
+    @Test
+    public void membersTest() {
+        Project project = repository.getProjectByLink("project-fizzyo");
+        Collection<User> members = project.getMembers();
+        Assert.assertEquals(2, members.size());
+    }
+
+    private Project createProject(String link, String name) throws Exception {
+        ProjectBuilder projectBuilder = new ProjectBuilder();
+        projectBuilder.setLink(link);
+        projectBuilder.setName(name);
+        projectBuilder.setDescription("project A Description");
+        projectBuilder.setOwner(createUser());
+        projectBuilder.setUpdated(createDate("2018-06-20 12:34:56"));
+        return projectBuilder.build();
+    }
+
+    private User createUser() {
+        return new User(2, "admin", "admin@ucl.ac.uk");
+    }
+
+    private Date createDate(String date) throws ParseException  {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return dateFormat.parse(date);
     }

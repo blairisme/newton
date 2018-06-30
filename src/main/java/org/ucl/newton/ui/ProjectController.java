@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
@@ -25,7 +26,13 @@ import javax.inject.Inject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+
+import static java.util.Collections.emptyList;
+import static org.ucl.newton.common.Objects.ensureNotNull;
+import static org.ucl.newton.common.Integers.parse;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
@@ -94,21 +101,18 @@ public class ProjectController
         @RequestParam String name,
         @RequestParam(required=false) String description,
         @RequestParam(required=false) MultipartFile icon,
-        @RequestParam(required=false) String[] members,
-        @RequestParam(required=false) String[] sources,
+        @RequestParam(required=false) Collection<String> members,
+        @RequestParam(required=false) Collection<String> sources,
         ModelMap modelMap)
     {
-        addProject(name, description);
-        return "redirect:/projects";
-    }
-
-    private void addProject(String name, String description) {
         ProjectBuilder projectBuilder = new ProjectBuilder();
-        projectBuilder.generateId(name);
+        projectBuilder.generateLink(name);
         projectBuilder.setName(name);
         projectBuilder.setDescription(description);
         projectBuilder.setUpdated(new Date());
         projectBuilder.setOwner(userService.getAuthenticatedUser());
+        projectBuilder.setMembers(userService.getUsers(parse(ensureNotNull(members))));
         projectService.addProject(projectBuilder.build());
+        return "redirect:/projects";
     }
 }
