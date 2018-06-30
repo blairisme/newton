@@ -64,7 +64,7 @@ public class ProjectController
     @RequestMapping(value = "/project/{name}", method = RequestMethod.GET)
     public String details(@PathVariable("name")String name, ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
-        model.addAttribute("project", projectService.getProject(name));
+        model.addAttribute("project", projectService.getProjectByLink(name));
         model.addAttribute("experiments",experimentService.getExperiments());
         return "project/details";
     }
@@ -72,14 +72,14 @@ public class ProjectController
     @RequestMapping(value = "/project/{name}/settings", method = RequestMethod.GET)
     public String setting(@PathVariable("name")String name, ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
-        model.addAttribute("project", projectService.getProject(name));
+        model.addAttribute("project", projectService.getProjectByLink(name));
         return "project/settings";
     }
 
     @RequestMapping(value = "/project/{name}/members", method = RequestMethod.GET)
     public String members(@PathVariable("name")String name, ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
-        model.addAttribute("project", projectService.getProject(name));
+        model.addAttribute("project", projectService.getProjectByLink(name));
         return "project/members";
     }
 
@@ -98,14 +98,17 @@ public class ProjectController
         @RequestParam(required=false) String[] sources,
         ModelMap modelMap)
     {
+        addProject(name, description);
+        return "redirect:/projects";
+    }
+
+    private void addProject(String name, String description) {
         ProjectBuilder projectBuilder = new ProjectBuilder();
         projectBuilder.generateId(name);
         projectBuilder.setName(name);
         projectBuilder.setDescription(description);
         projectBuilder.setUpdated(new Date());
         projectBuilder.setOwner(userService.getAuthenticatedUser());
-
         projectService.addProject(projectBuilder.build());
-        return "redirect:/projects";
     }
 }

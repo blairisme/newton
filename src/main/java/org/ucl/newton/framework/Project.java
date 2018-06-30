@@ -30,7 +30,11 @@ public class Project implements Serializable
 {
     @Id
     @Column(name = "id")
-    private String id;
+    @GeneratedValue(generator = "increment")
+    private int id;
+
+    @Column(name = "link")
+    private String link;
 
     @Column(name = "name")
     private String name;
@@ -47,46 +51,42 @@ public class Project implements Serializable
     public Project() {
     }
 
-    public Project(String id, String name, String description, Date updated, User owner) {
+    public Project(String link, String name, String description, Date updated, User owner) {
+        this(0, link, name, description, updated, owner);
+    }
+
+    public Project(int id, String link, String name, String description, Date updated, User owner) {
         this.id = id;
+        this.link = link;
         this.name = name;
         this.updated = updated;
         this.description = description;
         this.owner = owner;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public Project setId(int id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Date getLastUpdated() {
         return updated;
     }
 
-    public long getLastUpdatedAsEpoch(){ return updated.getTime(); }
-
-    public void setLastUpdated(Date updated){
-        this.updated = updated;
+    public long getLastUpdatedAsEpoch() {
+        return updated.getTime();
     }
 
     public String getLastUpdatedDescription() {
@@ -96,10 +96,6 @@ public class Project implements Serializable
 
     public User getOwner() {
         return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
     }
 
     public Collection<User> getMembers() {

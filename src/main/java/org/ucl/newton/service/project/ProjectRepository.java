@@ -13,6 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.ucl.newton.framework.Credential;
 import org.ucl.newton.framework.Project;
 
 import javax.inject.Inject;
@@ -38,15 +39,30 @@ public class ProjectRepository
     }
 
     @Transactional
-    public void addProject(Project project) {
+    public Project addProject(Project project) {
         Session session = getSession();
-        session.save(project);
+        Integer generatedId = (Integer)session.save(project);
+        return project.setId(generatedId);
     }
 
     @Transactional(readOnly=true)
-    public Project getProject(String id) {
+    public Project getProjectById(int id) {
         Session session = getSession();
         return session.get(Project.class, id);
+    }
+
+    @Transactional(readOnly=true)
+    public Project getProjectByLink(String link) {
+        Session session = getSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Project> criteria = builder.createQuery(Project.class);
+        Root<Project> projects = criteria.from(Project.class);
+
+        criteria.select(projects);
+        criteria.where(builder.equal(projects.get("link"), link));
+
+        return session.createQuery(criteria).getSingleResult();
     }
 
     @Transactional(readOnly=true)

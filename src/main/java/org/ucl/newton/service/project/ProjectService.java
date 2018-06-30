@@ -39,10 +39,18 @@ public class ProjectService
         return repository.getProjects(0, 20);
     }
 
-    public Project getProject(String id) {
-        Project project = repository.getProject(id);
+    public Project getProjectById(int id) {
+        Project project = repository.getProjectById(id);
         if (project == null) {
-            throw new IllegalStateException("Unknown project - " + id);
+            throw new UnknownProjectException(id);
+        }
+        return project;
+    }
+
+    public Project getProjectByLink(String link) {
+        Project project = repository.getProjectByLink(link);
+        if (project == null) {
+            throw new UnknownProjectException(link);
         }
         return project;
     }

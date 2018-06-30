@@ -35,18 +35,17 @@ public class ProjectRepositoryTest
 {
     @Inject
     private ProjectRepository repository;
-    private User owner;
 
-    @Before
-    public void set_up(){
-        owner = new User(2, "admin", "admin@ucl.ac.uk");
-    }
 
     @Test
-    public void getProjectTest() throws Exception {
-        Project expected = new Project("project-fizzyo", "project Fizzyo", "project Fizzyo Description",
-                getDate("2018-06-20 12:34:56"), owner);
-        Project actual = repository.getProject("project-fizzyo");
+    public void addProjectTest() throws Exception {
+        User owner = new User(2, "admin", "admin@ucl.ac.uk");
+        Date updated = getDate("2018-06-20 12:34:56");
+
+        Project expected = new Project("project-a", "project A", "project A Description", updated, owner);
+        repository.addProject(expected);
+
+        Project actual = repository.getProjectByLink("project-a");
         Assert.assertEquals(expected, actual);
     }
 
@@ -57,33 +56,28 @@ public class ProjectRepositoryTest
     }
 
     @Test
-    public void addProjectTest() throws Exception {
-        Project expected = new Project("project-a", "project A", "project A Description",
-                getDate("2018-06-20 12:34:56"), owner);
-        repository.addProject(expected);
-        Project actual = repository.getProject("project-a");
-        Assert.assertEquals(expected, actual);
-    }
-
-    @Test
     public void removeProjectTest() throws Exception {
-        Project project = new Project("project-b", "project B", "project B Description",
-                getDate("2018-06-20 12:34:56"), owner);
+        User owner = new User(2, "admin", "admin@ucl.ac.uk");
+        Date updated = getDate("2018-06-20 12:34:56");
+        Project project = new Project("project-b", "project B", "project B Description", updated, owner);
 
         repository.addProject(project);
-        Project before = repository.getProject("project-b");
+        Project before = repository.getProjectByLink("project-b");
         Assert.assertNotNull(before);
 
         repository.removeProject(before);
-        Project after = repository.getProject("project-b");
+        Project after = repository.getProjectById(project.getId());
         Assert.assertNull(after);
     }
 
     @Test
     public void testProjectOwner() throws Exception {
-        Project expected = new Project("project-c", "project c", "Project C Description", getDate("2018-06-20 12:34:56"), owner);
+        User owner = new User(2, "admin", "admin@ucl.ac.uk");
+        Date updated = getDate("2018-06-20 12:34:56");
+        Project expected = new Project("project-c", "project c", "Project C Description", updated, owner);
+
         repository.addProject(expected);
-        Project actual = repository.getProject("project-c");
+        Project actual = repository.getProjectByLink("project-c");
         Assert.assertEquals(expected.getOwner(), actual.getOwner());
     }
 

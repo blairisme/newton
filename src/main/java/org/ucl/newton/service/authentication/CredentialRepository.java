@@ -45,7 +45,7 @@ public class CredentialRepository
 
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Credential> criteria = builder.createQuery(Credential.class);
-        Root<Credential> credentials = criteria.from( Credential.class );
+        Root<Credential> credentials = criteria.from(Credential.class);
 
         criteria.select(credentials);
         criteria.where(builder.equal(credentials.get("username"), username));
