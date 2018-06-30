@@ -14,7 +14,7 @@ import org.ucl.newton.framework.User;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.*;
+import java.util.Collection;
 
 /**
  * Instances of this interface provide access to project data.
@@ -48,7 +48,7 @@ public class ProjectService
     }
 
     public Project getProjectByLink(String link) {
-        Project project = repository.getProjectByLink(link);
+        Project project = repository.getProjectByIdentifier(link);
         if (project == null) {
             throw new UnknownProjectException(link);
         }

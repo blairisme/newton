@@ -26,7 +26,6 @@ public class WeatherDataProvider implements DataProvider
     public void start(StorageProvider storageProvider) {
         Thread thread = new Thread(new GetWeatherData());
         thread.start();
-
     }
 
     @Override

@@ -1,13 +1,10 @@
 package org.ucl.newton.service.data.plugin;
 
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import sun.misc.BASE64Encoder;
 
-
-import javax.swing.plaf.synth.SynthEditorPaneUI;
 import java.util.HashMap;
 import java.util.Map;
 

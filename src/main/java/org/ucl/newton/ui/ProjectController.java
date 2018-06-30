@@ -14,8 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.service.experiment.ExperimentService;
@@ -23,16 +21,11 @@ import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 
-import static java.util.Collections.emptyList;
-import static org.ucl.newton.common.Objects.ensureNotNull;
 import static org.ucl.newton.common.Integers.parse;
+import static org.ucl.newton.common.Objects.ensureNotNull;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
@@ -106,7 +99,7 @@ public class ProjectController
         ModelMap modelMap)
     {
         ProjectBuilder projectBuilder = new ProjectBuilder();
-        projectBuilder.generateLink(name);
+        projectBuilder.generateIdentifier(name);
         projectBuilder.setName(name);
         projectBuilder.setDescription(description);
         projectBuilder.setUpdated(new Date());

@@ -13,7 +13,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.ucl.newton.framework.Credential;
 import org.ucl.newton.framework.Project;
 
 import javax.inject.Inject;
@@ -52,7 +51,7 @@ public class ProjectRepository
     }
 
     @Transactional(readOnly=true)
-    public Project getProjectByLink(String link) {
+    public Project getProjectByIdentifier(String identifier) {
         Session session = getSession();
 
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -60,7 +59,7 @@ public class ProjectRepository
         Root<Project> projects = criteria.from(Project.class);
 
         criteria.select(projects);
-        criteria.where(builder.equal(projects.get("link"), link));
+        criteria.where(builder.equal(projects.get("identifier"), identifier));
 
         return session.createQuery(criteria).getSingleResult();
     }

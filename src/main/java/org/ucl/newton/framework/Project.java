@@ -16,7 +16,8 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
 
 /**
  * Instances of this class represent a research project, a container for
@@ -33,8 +34,8 @@ public class Project implements Serializable
     @GeneratedValue(generator = "increment")
     private int id;
 
-    @Column(name = "link")
-    private String link;
+    @Column(name = "identifier")
+    private String identifier;
 
     @Column(name = "name")
     private String name;
@@ -60,7 +61,7 @@ public class Project implements Serializable
 
     public Project(
         int id,
-        String link,
+        String identifier,
         String name,
         String description,
         Date updated,
@@ -68,7 +69,7 @@ public class Project implements Serializable
         Collection<User> members)
     {
         this.id = id;
-        this.link = link;
+        this.identifier = identifier;
         this.name = name;
         this.updated = updated;
         this.description = description;
@@ -83,6 +84,10 @@ public class Project implements Serializable
     public Project setId(int id) {
         this.id = id;
         return this;
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 
     public String getName() {

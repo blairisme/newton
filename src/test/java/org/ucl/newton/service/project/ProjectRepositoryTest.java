@@ -10,18 +10,15 @@
 package org.ucl.newton.service.project;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.service.project.ProjectRepository;
 
 import javax.inject.Inject;
 import java.text.ParseException;
@@ -44,7 +41,7 @@ public class ProjectRepositoryTest
         Project expected = createProject("project-a", "project A");
         repository.addProject(expected);
 
-        Project actual = repository.getProjectByLink("project-a");
+        Project actual = repository.getProjectByIdentifier("project-a");
         Assert.assertEquals(expected, actual);
     }
 
@@ -59,7 +56,7 @@ public class ProjectRepositoryTest
         Project project = createProject("project-b", "project B");
 
         repository.addProject(project);
-        Project before = repository.getProjectByLink("project-b");
+        Project before = repository.getProjectByIdentifier("project-b");
         Assert.assertNotNull(before);
 
         repository.removeProject(before);
@@ -71,20 +68,20 @@ public class ProjectRepositoryTest
     public void testProjectOwner() throws Exception {
         Project expected = createProject("project-c", "project c");
         repository.addProject(expected);
-        Project actual = repository.getProjectByLink("project-c");
+        Project actual = repository.getProjectByIdentifier("project-c");
         Assert.assertEquals(expected.getOwner(), actual.getOwner());
     }
 
     @Test
     public void membersTest() {
-        Project project = repository.getProjectByLink("project-fizzyo");
+        Project project = repository.getProjectByIdentifier("project-fizzyo");
         Collection<User> members = project.getMembers();
         Assert.assertEquals(2, members.size());
     }
 
-    private Project createProject(String link, String name) throws Exception {
+    private Project createProject(String identifier, String name) throws Exception {
         ProjectBuilder projectBuilder = new ProjectBuilder();
-        projectBuilder.setLink(link);
+        projectBuilder.setIdentifier(identifier);
         projectBuilder.setName(name);
         projectBuilder.setDescription("project A Description");
         projectBuilder.setOwner(createUser());

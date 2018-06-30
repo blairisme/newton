@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS credentials (
 CREATE TABLE IF NOT EXISTS projects (
     id INT NOT NULL AUTO_INCREMENT,
     owner_id INT NOT NULL,
-    link VARCHAR(45) NOT NULL,
+    identifier VARCHAR(45) NOT NULL,
     name VARCHAR(45) NOT NULL,
     description VARCHAR(200) NOT NULL,
     updated DATETIME NOT NULL,
