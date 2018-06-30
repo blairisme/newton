@@ -15,6 +15,7 @@
         <script src="/resources/scripts/libraries/popper.js"></script>
         <script src="/resources/scripts/libraries/bootstrap.js"></script>
         <script src="/resources/scripts/libraries/typeahead.js"></script>
+        <script src="/resources/scripts/libraries/handlebars.js"></script>
         <script src="/resources/scripts/views/new_project.js"></script>
     </head>
     <body>
@@ -28,16 +29,13 @@
                 <p>A project contains all the files for your project, including the revision history.</p>
             </div>
 
-            <form method="POST" th:action="@{/project/new}" novalidate>
-
-                <!-- General Project Settings -->
+            <form id="projectDetails" th:action="@{/project/new}" method="POST" enctype="multipart/form-data" novalidate="novalidate">
+                <!-- General Settings -->
                 <section class="form-section section-divider">
                     <h4>General Project Settings</h4>
                     <p>Update your project name, description, icon, and other general settings.</p>
 
                     <div class="form-group">
-                        <input type="hidden" id="projectId" name="id" value="foo"/>
-
                         <label for="projectNameInput">Project name <span class="text-danger">*</span></label>
                         <input id="projectNameInput" name="name" type="text" class="form-control" aria-describedby="projectNameHelp" placeholder="" required="">
                         <small id="projectNameHelp" class="form-text text-muted">Great project names are short and memorable.</small>
@@ -55,63 +53,49 @@
                     </div>
                 </section>
 
-                <!-- Project Membership Settings -->
+                <!-- Project Members -->
                 <section class="form-section section-divider">
                     <h4>Project Members</h4>
                     <p>Choose who can access this project.</p>
 
-                    <ul class="list-group list-group-flush" id="projectMembers">
-                        <li class="list-group-item">
-                            <span>Blair</span>
-                            <input type="button" class="remove_button" value="remove" />
-                        </li>
-                        <li class="list-group-item">
-                            <span>John</span>
-                            <input type="button" class="remove_button" value="remove" />
-                        </li>
-                        <li class="list-group-item">
-                            <span>Xiaolong</span>
-                            <input type="button" class="remove_button" value="remove" />
-                        </li>
-                        <li class="list-group-item">
-                            <span>Ziad</span>
-                            <input type="button" class="remove_button" value="remove" />
-                        </li>
+                    <ul id="projectMembersList" class="list-group list-group-flush">
+                        <p id="projectMembersListEmpty" class="empty_message project-list-item">This project doesn’t have any members yet. Use the form below to add a members.</p>
                     </ul>
 
-                    <div class="form-group row">
-                        <div class="col-sm-8">
+                    <select id="projectMembersData" form="projectDetails" name="members" multiple="multiple" hidden="hidden">
+                    </select>
+
+                    <div class="form-row add_form_group">
+                        <div class="form-group col-sm-10">
                             <label for="projectMemberInput">Begin typing to select a new member</label>
                             <input id="projectMemberInput" type="text" class="typeahead form-control" placeholder="">
                         </div>
-                        <input type="button" class="btn btn-primary col-sm-2 col-form-label" value="Add Member" />
+                        <div class="form-group col-sm-2">
+                            <input type="button" class="btn btn-primary add_button" value="Add Member" />
+                        </div>
                     </div>
                 </section>
 
+                <!-- Project Data Sources -->
                 <section class="form-section section-divider">
                     <h4>Project Data Sources</h4>
                     <p>Choose which data sources are available to experiments in this project</p>
 
-                    <ul class="list-group list-group-flush" id="projectDataSources">
-                        <li class="list-group-item">
-                            <span>Fizzyo heart rate data</span>
-                            <input type="button" class="remove_button" value="remove" />
-                        </li>
-                        <li class="list-group-item">
-                            <span>Fizzyo pressure data</span>
-                            <input type="button" class="remove_button" value="remove" />
-                        </li>
-                        <li class="list-group-item">
-                            <span>Weather data</span>
-                            <input type="button" class="remove_button" value="remove" />
-                        </li>
+                    <ul id="projectSourceList" class="list-group list-group-flush">
+                        <p id="projectSourceListEmpty" class="empty_message project-list-item">This project doesn’t have any data sources yet. Use the form below to add a data source.</p>
                     </ul>
-                    <div class="form-group row">
-                        <div class="col-sm-8">
-                            <label for="projectDataAdd">Begin typing to select a data source</label>
-                            <input id="projectDataAdd" type="text" class="form-control" placeholder="">
+
+                    <select id="projectSourceData" form="projectDetails" name="sources" multiple="multiple" hidden="hidden">
+                    </select>
+
+                    <div class="form-row add_form_group">
+                        <div class="form-group col-sm-10">
+                            <label for="projectDataInput">Begin typing to select a data source</label>
+                            <input id="projectDataInput" type="text" class="typeahead form-control" placeholder="">
                         </div>
-                        <input type="button" class="btn btn-primary col-sm-2 col-form-label" value="Add Data Source" />
+                        <div class="form-group col-sm-2">
+                            <input type="button" class="btn btn-primary add_button" value="Add Data Source" />
+                        </div>
                     </div>
                 </section>
 
@@ -120,47 +104,4 @@
         </div>
     
     </body>
-    <script>
-        function addNewContributor(){
-            var name = $("#new_contributor").val();
-
-            if (name == null || name == "")
-                alert("please input the new contributor");
-            else {
-                var removeButton = "<input type=\"button\" class=\"remove_button\"  value=\"remove\" />";
-                newName = "<li class=\"list-group-item\">"  + name + removeButton + "</li>";
-
-                $("#current_contributors").append(newName);
-                $("#current_contributors li:last input.remove_button").click(function () {
-                    $(this).parent().remove();
-                });
-            }
-        }
-        $(document).ready(function(){
-            var allbutton = $("li input.remove_button");
-            allbutton.each(function () {
-                $(this).click(function(){
-                    $(this).parent().remove();
-                })
-            });
-        });
-
-
-        var matchingUsers = new Bloodhound({
-          datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-          queryTokenizer: Bloodhound.tokenizers.whitespace,
-
-          remote: {
-            url: '/api/user?matching=%QUERY',
-            wildcard: '%QUERY'
-          }
-        });
-
-        $('#projectMemberInput').typeahead(null, {
-          name: 'users',
-          display: 'name',
-          source: matchingUsers
-        });
-
-    </script>
 </html>

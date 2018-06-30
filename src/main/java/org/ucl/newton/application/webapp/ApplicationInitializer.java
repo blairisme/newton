@@ -9,12 +9,16 @@
 
 package org.ucl.newton.application.webapp;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.ucl.newton.common.SystemUtils;
+
+import java.nio.file.Path;
 
 /**
  * Instances of this class configure the Spring MVC servlet engine used to
@@ -34,6 +38,15 @@ public class ApplicationInitializer implements WebApplicationInitializer
         servlet.setLoadOnStartup(1);
         servlet.addMapping("/");
         servlet.setInitParameter("spring.profiles.active", getProfile());
+
+
+
+        Path indexPath = SystemUtils.newTempDirectory("developer/uploads");
+        int MAX_UPLOAD_SIZE = 5 * 1024 * 1024;
+        MultipartConfigElement multipartConfigElement = new MultipartConfigElement(indexPath.toString(),
+                MAX_UPLOAD_SIZE, MAX_UPLOAD_SIZE * 2, MAX_UPLOAD_SIZE / 2);
+
+        servlet.setMultipartConfig(multipartConfigElement);
     }
 
     private String getProfile() {

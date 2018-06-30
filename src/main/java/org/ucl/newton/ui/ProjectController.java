@@ -13,13 +13,17 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.ucl.newton.framework.Project;
+import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -85,10 +89,23 @@ public class ProjectController
         return "project/new";
     }
 
-    @RequestMapping(value = "/project/new", method = RequestMethod.POST)
-    public String createProject(@ModelAttribute Project project, ModelMap model) {
-        project.setLastUpdated(new Date());
-        projectService.addProject(project);
+    @PostMapping("/project/new")
+    public String commitNewProject(
+        @RequestParam String name,
+        @RequestParam(required=false) String description,
+        @RequestParam(required=false) MultipartFile icon,
+        @RequestParam(required=false) String[] members,
+        @RequestParam(required=false) String[] sources,
+        ModelMap modelMap)
+    {
+        ProjectBuilder projectBuilder = new ProjectBuilder();
+        projectBuilder.generateId(name);
+        projectBuilder.setName(name);
+        projectBuilder.setDescription(description);
+        projectBuilder.setUpdated(new Date());
+        projectBuilder.setOwner(userService.getAuthenticatedUser());
+
+        projectService.addProject(projectBuilder.build());
         return "redirect:/projects";
     }
 }
