@@ -22,25 +22,27 @@ import org.ucl.newton.service.data.sdk.StorageProvider;
  */
 public class WeatherDataProvider implements DataProvider
 {
+    private DataProviderObserver observer;
+    private Thread thread;
     @Override
     public void start(StorageProvider storageProvider) {
-        Thread thread = new Thread(new GetWeatherData());
+        this.thread = new Thread(new GetWeatherData(storageProvider));
         thread.start();
 
     }
 
     @Override
     public void stop() {
-
+        thread.stop();
     }
 
     @Override
     public void addObserver(DataProviderObserver observer) {
-
+        this.observer = observer;
     }
 
     @Override
     public void removeObserver(DataProviderObserver observer) {
-
+        this.observer = null;
     }
 }
