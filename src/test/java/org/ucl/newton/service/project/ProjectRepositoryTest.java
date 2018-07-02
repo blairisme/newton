@@ -48,8 +48,14 @@ public class ProjectRepositoryTest
 
     @Test
     public void getProjectsTest() {
-        List<Project> projects = repository.getProjects(0, 20);
-        Assert.assertEquals(3, projects.size());
+        User user1 = new User(1, "user", "user@ucl.ac.uk");
+        Project fizzyo = repository.getProjectById(1);
+        Project cancerRes = repository.getProjectById(2);
+        List<Project> projects = repository.getProjects(user1);
+
+        Assert.assertEquals(2, projects.size());
+        Assert.assertTrue(projects.contains(fizzyo));
+        Assert.assertTrue(projects.contains(cancerRes));
     }
 
     @Test
@@ -101,14 +107,14 @@ public class ProjectRepositoryTest
     public void testRemoveMemberFromProject() {
         int projCancerResId = 2;
         Project projCancerRes = repository.getProjectById(projCancerResId);
-        Collection<User> memberList= projCancerRes.getMembers();
+        Collection<User> memberList;
         User user5 = new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk");
 
         addUserToProjectMembers(user5, projCancerRes);
         projCancerRes = repository.getProjectById(projCancerResId);
         memberList= projCancerRes.getMembers();
         Assert.assertTrue(memberList.contains(user5));
-        
+
         memberList.remove(user5);
         projCancerRes.setMembers(memberList);
         repository.updateProject(projCancerRes);
