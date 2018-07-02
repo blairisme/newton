@@ -7,10 +7,8 @@ import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 
-
 import java.net.URI;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Map;
 /**

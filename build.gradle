@@ -9,14 +9,14 @@
  * Author: Blair Butterworth
  */
 
- buildscript {
-   repositories {
-     jcenter()
-   }
+buildscript {
+    repositories {
+        jcenter()
+    }
 
-   dependencies {
-     classpath 'org.akhikhl.gretty:gretty:2.0.0'
-   }
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:2.0.0'
+    }
  }
 
 apply plugin: 'java'
@@ -53,6 +53,7 @@ dependencies {
     compile group: 'org.springframework.security', name: 'spring-security-web', version: '5.0.6.RELEASE'
     compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.0.6.RELEASE'
 
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile group: 'org.ocpsoft.prettytime', name: 'prettytime', version: '4.0.1.Final'
 
@@ -76,7 +77,7 @@ gretty {
     servletContainer = 'jetty9.4'
     contextPath = '/'
     httpPort = 8090
-    jvmArgs = ['-Drun.profile=' + getProperty('run.profile')]
+    jvmArgs = ['-Dnewton.profile=' + getProperty('run.profile')]
     jacocoEnabled = false
 }
 

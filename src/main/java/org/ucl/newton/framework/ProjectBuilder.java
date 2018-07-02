@@ -24,30 +24,32 @@ import java.util.Date;
  */
 public class ProjectBuilder
 {
-    private String link;
+    private String identifier;
     private String name;
     private String description;
+    private String image;
     private Date updated;
     private User owner;
     private Collection<User> members;
 
     public ProjectBuilder() {
         this.description = "";
+        this.image = "default.png";
         this.updated = new Date();
         this.members = Collections.emptyList();
     }
 
-    public void generateLink(String text) {
+    public void generateIdentifier(String text) {
         try {
-            this.link = URLEncoder.encode(text, "UTF-8");
+            this.identifier = URLEncoder.encode(text, "UTF-8");
         }
         catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public void setName(String name) {
@@ -56,6 +58,10 @@ public class ProjectBuilder
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public void setUpdated(Date updated) {
@@ -71,9 +77,9 @@ public class ProjectBuilder
     }
 
     public Project build() {
-        Validate.notNull(link);
+        Validate.notNull(identifier);
         Validate.notNull(name);
         Validate.notNull(owner);
-        return new Project(0, link, name, description, updated, owner, members);
+        return new Project(0, identifier, name, description, image, updated, owner, members);
     }
 }

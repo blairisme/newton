@@ -11,19 +11,22 @@ package org.ucl.newton.application.webapp;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.ucl.newton.application.webapp.ApplicationConfiguration;
 
 public class ApplicationConfigurationTest
 {
     @Test
     public void testTemplateEngine(){
-        ApplicationConfiguration configuration = new ApplicationConfiguration();
+        ApplicationStorage applicationStorage = Mockito.mock(ApplicationStorage.class);
+        ApplicationConfiguration configuration = new ApplicationConfiguration(applicationStorage);
         Assert.assertNotNull(configuration.templateEngine());
     }
 
     @Test
     public void testViewResolver(){
-        ApplicationConfiguration configuration = new ApplicationConfiguration();
+        ApplicationStorage applicationStorage = Mockito.mock(ApplicationStorage.class);
+        ApplicationConfiguration configuration = new ApplicationConfiguration(applicationStorage);
         Assert.assertNotNull(configuration.viewResolver());
     }
 }

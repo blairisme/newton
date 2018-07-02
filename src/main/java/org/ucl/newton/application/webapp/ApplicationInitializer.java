@@ -9,16 +9,13 @@
 
 package org.ucl.newton.application.webapp;
 
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
-
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.ucl.newton.common.SystemUtils;
 
-import java.nio.file.Path;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRegistration;
 
 /**
  * Instances of this class configure the Spring MVC servlet engine used to
@@ -34,26 +31,17 @@ public class ApplicationInitializer implements WebApplicationInitializer
         context.register(ApplicationConfiguration.class);
         context.setServletContext(container);
 
+        ApplicationPreferences applicationPreferences = new ApplicationPreferences();
+        MultipartConfigElement multipartConfig = new MultipartConfigElement(
+            applicationPreferences.getUploadDirectory(),
+            applicationPreferences.getUploadMaximumSize(),
+            applicationPreferences.getUploadMaximumSize() * 2,
+            applicationPreferences.getUploadMaximumSize() / 2);
+
         ServletRegistration.Dynamic servlet = container.addServlet("dispatcher", new DispatcherServlet(context));
         servlet.setLoadOnStartup(1);
         servlet.addMapping("/");
-        servlet.setInitParameter("spring.profiles.active", getProfile());
-
-
-
-        Path indexPath = SystemUtils.newTempDirectory("developer/uploads");
-        int MAX_UPLOAD_SIZE = 5 * 1024 * 1024;
-        MultipartConfigElement multipartConfigElement = new MultipartConfigElement(indexPath.toString(),
-                MAX_UPLOAD_SIZE, MAX_UPLOAD_SIZE * 2, MAX_UPLOAD_SIZE / 2);
-
-        servlet.setMultipartConfig(multipartConfigElement);
-    }
-
-    private String getProfile() {
-        String profile = System.getProperty("run.profile");
-        if (profile == null) {
-            profile = "production";
-        }
-        return profile;
+        servlet.setInitParameter("spring.profiles.active", applicationPreferences.getProfile());
+        servlet.setMultipartConfig(multipartConfig);
     }
 }

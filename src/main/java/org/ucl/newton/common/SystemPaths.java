@@ -23,4 +23,10 @@ public class SystemPaths
         String tmpdir = System.getProperty("java.io.tmpdir");
         return Paths.get(tmpdir);
     }
+
+    public static Path getUserDirectory() {
+        String userDirectory = System.getProperty("user.home");
+        return Paths.get(userDirectory);
+    }
+
 }

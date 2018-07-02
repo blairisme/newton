@@ -56,7 +56,6 @@
                         </ul>
                     </div>
                 </li>
-
             </ul>
 
             <table class="project-list" id="projectList" style="width:100%">
@@ -67,12 +66,12 @@
                 </thead>
                 <tr th:each="project, iteration : ${projects}" class="project-row project-row-underline">
                     <td class="project-column project-icon-container">
-                        <a href="/projects" th:href="@{'/project/' + ${project.id}}">
-                            <img src="/resources/images/gosh-logo.jpg" class="rounded" alt="Project icon" width="48" height="48">
+                        <a href="/projects" th:href="@{'/project/' + ${project.identifier}}">
+                            <img th:src="@{'/resources/images/project/' + ${project.image}}" class="rounded" alt="Project image" width="48" height="48">
                         </a>
                     </td>
                     <td class="project-column project-column-expand project-name-container">
-                        <a href="/projects" th:href="@{'/project/' + ${project.id}}">
+                        <a href="/projects" th:href="@{'/project/' + ${project.identifier}}">
                             <span th:text="${project.name}">project name</span>
                         </a>
                     </td>
@@ -86,7 +85,5 @@
                 </tr>
             </table>
         </div>
-
-
     </body>
 </html>

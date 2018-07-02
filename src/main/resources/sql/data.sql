@@ -28,9 +28,9 @@ INSERT INTO credentials (id, user_id, username, password) VALUES (6, 6, 'john', 
 
 /* Projects */
 
-INSERT INTO projects (id, owner_id, link, name, description, updated) VALUES (1, 2, 'project-fizzyo', 'project Fizzyo', 'project Fizzyo Description', '2018-06-20 12:34:56');
-INSERT INTO projects (id, owner_id, link, name, description, updated) VALUES (2, 2, 'cancer-research', 'Cancer Research Trial 4', 'Cancer Research Trial 4 Description', '2018-05-19 11:12:13');
-INSERT INTO projects (id, owner_id, link, name, description, updated) VALUES (3, 2, 'aids-research', 'AIDS Research', 'AIDS Research Description', '2018-04-07 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (1, 2, 'project-fizzyo', 'project Fizzyo', 'project Fizzyo Description', 'default.png', '2018-06-20 12:34:56');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (2, 2, 'cancer-research', 'Cancer Research Trial 4', 'Cancer Research Trial 4 Description', 'default.png', '2018-05-19 11:12:13');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (3, 2, 'aids-research', 'AIDS Research', 'AIDS Research Description', 'default.png', '2018-04-07 10:09:08');
 
 INSERT INTO project_membership (project_id, user_id) VALUES (1, 1);
 INSERT INTO project_membership (project_id, user_id) VALUES (2, 1);
