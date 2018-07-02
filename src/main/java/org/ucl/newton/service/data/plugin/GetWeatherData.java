@@ -26,7 +26,6 @@ public class GetWeatherData implements Runnable{
     }
     @Override
     public void run() {
-
         String token = getToken();
 
         String latitude ="51.524566";
@@ -44,8 +43,11 @@ public class GetWeatherData implements Runnable{
         header.put("Authorization","Bearer " + token);
 
         Map<String,String> params = new HashMap<>();
+        displayOutput(url, header, params);
+    }
 
-        String data = HttpUtils.doGet(url,header,params);
+    private void displayOutput(String url, Map<String, String> header, Map<String, String> params){
+        String data = HttpUtils.doGet(url, header, params);
         try {
             OutputStream output = storageProvider.getOutputStream("weather");
             if(output!=null)
