@@ -17,6 +17,7 @@
         <script src="/resources/scripts/libraries/typeahead.js"></script>
         <script src="/resources/scripts/libraries/handlebars.js"></script>
         <script src="/resources/scripts/views/new_project.js"></script>
+        <script src="/resources/scripts/views/form_validation.js"></script>
     </head>
     <body>
         <!-- Navigation -->
@@ -29,7 +30,7 @@
                 <p>A project contains all the files for your project, including the revision history.</p>
             </div>
 
-            <form id="projectDetails" th:action="@{/project/new}" method="POST" enctype="multipart/form-data" novalidate="novalidate">
+            <form id="projectDetails" th:action="@{/project/new}" method="POST" enctype="multipart/form-data" class="requires-validation" novalidate="novalidate">
                 <!-- General Settings -->
                 <section class="form-section section-divider">
                     <h4>General Project Settings</h4>
@@ -37,19 +38,24 @@
 
                     <div class="form-group">
                         <label for="projectNameInput">Project name <span class="text-danger">*</span></label>
-                        <input id="projectNameInput" name="name" type="text" class="form-control" aria-describedby="projectNameHelp" placeholder="" required="">
-                        <small id="projectNameHelp" class="form-text text-muted">Great project names are short and memorable.</small>
-                        <div class="invalid-feedback">
-                            Please provide a project name.
-                        </div>
+                        <input id="projectNameInput" name="name" type="text" class="form-control" aria-describedby="projectNameHelp" placeholder="" required="required">
+                        <div class="invalid-feedback">Please provide a project name.</div>
                     </div>
+
                     <div class="form-group">
                         <label for="projectDescriptionInput">Project Description (optional)</label>
                         <textarea id="projectDescriptionInput" name="description" class="form-control" rows="3"></textarea>
                     </div>
+
                     <div class="form-group">
-                        <label for="projectIconInput">Project Icon (optional)</label>
-                        <input id="projectIconInput" name="image" type="file" accept="image/*" class="form-control-file" >
+                        <label>Project Icon (optional)</label>
+                        <div class="custom-file">
+                            <input id="projectIconInput" name="image" type="file" accept="image/*" class="custom-file-input" >
+                            <label id="projectIconLabel" class="custom-file-label" for="projectIconInput">
+                                Choose image...
+                            </label>
+                            <div class="invalid-feedback">Please provide an image (JPEG, PNG, GIF) smaller than 1MB.</div>
+                        </div>
                     </div>
                 </section>
 

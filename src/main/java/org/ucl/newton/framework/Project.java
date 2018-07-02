@@ -24,6 +24,7 @@ import java.util.Date;
  * experiments and associated data sources.
  *
  * @author Blair Butterworth
+ * @author John Wilkie
  */
 @Entity
 @Table(name = "projects")

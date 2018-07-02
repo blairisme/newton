@@ -38,7 +38,32 @@ $(document).ready(function() {
     $("#projectMemberInput").bind("typeahead:select", function(ev, member) {
         addMember(member.id, member.name, member.email);
     });
+
+    $("#projectIconInput:file").change(function() {
+        var files = $(this)[0].files;
+        if (files.length > 0) {
+
+            var file = files[0];
+            $("#projectIconLabel").html(file.name);
+
+            if (file.size > 1024 * 1024) {
+                this.setCustomValidity("Please provide an image smaller than 1MB.");
+            }
+            else if (! (file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/gif")) {
+                this.setCustomValidity("Please provide an image smaller than 1MB.");
+            }
+            else {
+                this.setCustomValidity("");
+            }
+        }
+        else {
+            $("#projectIconLabel").html("");
+            this.setCustomValidity("");
+        }
+    });
 });
+
+
 
 function addMember(id, name, email) {
     $("#projectMemberInput").typeahead("close");
