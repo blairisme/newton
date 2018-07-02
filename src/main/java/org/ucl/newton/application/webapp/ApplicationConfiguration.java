@@ -28,6 +28,8 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import javax.inject.Inject;
+
 /**
  * Instances of this class configure the Spring MVC servlet engine, setting the
  * location of the JSP files and resources used by the Newton user
@@ -42,6 +44,12 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 public class ApplicationConfiguration implements WebMvcConfigurer, ApplicationContextAware
 {
     private ApplicationContext applicationContext;
+    private ApplicationStorage applicationStorage;
+
+    @Inject
+    public ApplicationConfiguration(ApplicationStorage applicationStorage) {
+        this.applicationStorage = applicationStorage;
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -50,7 +58,8 @@ public class ApplicationConfiguration implements WebMvcConfigurer, ApplicationCo
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/", "file:" + applicationStorage.getRootPath());
     }
 
     @Bean

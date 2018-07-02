@@ -125,7 +125,7 @@ public class ProjectRepositoryTest
         repository.updateProject(project);
     }
 
-    private Project createProject(String link, String name) throws Exception {
+    private Project createProject(String identifier, String name) throws Exception {
         ProjectBuilder projectBuilder = new ProjectBuilder();
         projectBuilder.setIdentifier(identifier);
         projectBuilder.setName(name);

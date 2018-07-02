@@ -31,8 +31,8 @@ public class ProjectService
         this.repository = repository;
     }
 
-    public void addProject(Project project) {
-        repository.addProject(project);
+    public Project addProject(Project project) {
+        return repository.addProject(project);
     }
 
     public Collection<Project> getProjects(User user) {

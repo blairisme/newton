@@ -43,6 +43,9 @@ public class Project implements Serializable
     @Column(name = "description")
     private String description;
 
+    @Column(name = "image")
+    private String image;
+
     @Column(name = "updated")
     private Date updated;
 
@@ -64,6 +67,7 @@ public class Project implements Serializable
         String identifier,
         String name,
         String description,
+        String image,
         Date updated,
         User owner,
         Collection<User> members)
@@ -71,8 +75,9 @@ public class Project implements Serializable
         this.id = id;
         this.identifier = identifier;
         this.name = name;
-        this.updated = updated;
         this.description = description;
+        this.image = image;
+        this.updated = updated;
         this.owner = owner;
         this.members = members;
     }
@@ -96,6 +101,10 @@ public class Project implements Serializable
 
     public String getDescription() {
         return description;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public Date getLastUpdated() {
@@ -137,10 +146,10 @@ public class Project implements Serializable
         Project project = (Project)obj;
         return new EqualsBuilder()
             .append(id, project.id)
+            .append(identifier, project.identifier)
             .append(name, project.name)
             .append(description, project.description)
-            .append(updated, project.updated)
-            .append(owner, project.owner)
+            .append(image, project.image)
             .isEquals();
     }
 
@@ -148,10 +157,10 @@ public class Project implements Serializable
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
             .append(id)
+            .append(identifier)
             .append(name)
             .append(description)
-            .append(updated)
-            .append(owner)
+            .append(image)
             .toHashCode();
     }
 
@@ -159,8 +168,10 @@ public class Project implements Serializable
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", id)
+            .append("identifier", identifier)
             .append("name", name)
             .append("description", description)
+            .append("image", image)
             .append("updated", updated)
             .toString();
     }

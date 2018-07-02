@@ -27,12 +27,14 @@ public class ProjectBuilder
     private String identifier;
     private String name;
     private String description;
+    private String image;
     private Date updated;
     private User owner;
     private Collection<User> members;
 
     public ProjectBuilder() {
         this.description = "";
+        this.image = "default.png";
         this.updated = new Date();
         this.members = Collections.emptyList();
     }
@@ -58,6 +60,10 @@ public class ProjectBuilder
         this.description = description;
     }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public void setUpdated(Date updated) {
         this.updated = updated;
     }
@@ -74,6 +80,6 @@ public class ProjectBuilder
         Validate.notNull(identifier);
         Validate.notNull(name);
         Validate.notNull(owner);
-        return new Project(0, identifier, name, description, updated, owner, members);
+        return new Project(0, identifier, name, description, image, updated, owner, members);
     }
 }
