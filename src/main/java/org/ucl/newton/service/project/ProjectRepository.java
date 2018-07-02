@@ -9,12 +9,15 @@
 
 package org.ucl.newton.service.project;
 
+import org.apache.lucene.search.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.Credential;
 import org.ucl.newton.framework.Project;
+import org.ucl.newton.framework.User;
 
 import javax.inject.Inject;
 import javax.persistence.TypedQuery;
@@ -64,7 +67,7 @@ public class ProjectRepository
 
         return session.createQuery(criteria).getSingleResult();
     }
-
+    /*
     @Transactional(readOnly=true)
     public List<Project> getProjects(int index, int size) {
         Session session = getSession();
@@ -79,6 +82,16 @@ public class ProjectRepository
         typedQuery.setMaxResults(size);
 
         return typedQuery.getResultList();
+    }
+*/
+    @Transactional(readOnly=true)
+    public List<Project> getProjects(User user) {
+        Session session = getSession();
+        String sql = String.format("SELECT * FROM projects AS p INNER JOIN project_membership AS pm " +
+                "ON p.id = pm.project_id WHERE pm.user_id = %s", user.getId());
+        NativeQuery query = session.createNativeQuery(sql).addEntity(Project.class);
+        List<Project> result = query.list();
+        return result;
     }
 
     @Transactional

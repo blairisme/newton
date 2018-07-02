@@ -36,7 +36,7 @@ public class ProjectService
     }
 
     public Collection<Project> getProjects(User user) {
-        return repository.getProjects(0, 20);
+        return repository.getProjects(user);
     }
 
     public Project getProjectById(int id) {
