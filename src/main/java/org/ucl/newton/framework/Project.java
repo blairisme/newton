@@ -119,6 +119,10 @@ public class Project implements Serializable
         return members;
     }
 
+    public void setMembers(Collection<User> newMember) {
+        this.members = members;
+    }
+
     public int getStars() {
         return 0;
     }

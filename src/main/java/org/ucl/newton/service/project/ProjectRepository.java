@@ -86,6 +86,12 @@ public class ProjectRepository
         session.delete(project);
     }
 
+    @Transactional
+    public void updateProject(Project project) {
+        Session session = getSession();
+        session.update(project);
+    }
+
     private Session getSession() {
         return this.sessionFactory.getCurrentSession();
     }

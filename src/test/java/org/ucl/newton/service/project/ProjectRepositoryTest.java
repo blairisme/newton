@@ -23,6 +23,7 @@ import org.ucl.newton.framework.User;
 import javax.inject.Inject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -79,18 +80,73 @@ public class ProjectRepositoryTest
         Assert.assertEquals(2, members.size());
     }
 
-    private Project createProject(String identifier, String name) throws Exception {
+    @Test
+    public void testAddMemberToProject() {
+        int projCancerResId = 2;
+        Project projCancerRes = repository.getProjectById(projCancerResId);
+        Collection<User> memberList= projCancerRes.getMembers();
+        User newUser = new User(6, "John Wilkie", "john.wilkie.17@ucl.ac.uk");
+
+        Assert.assertEquals(2, memberList.size());
+        Assert.assertFalse(memberList.contains(newUser));
+
+        addUserToProjectMembers(newUser, projCancerRes);
+        projCancerRes = repository.getProjectById(projCancerResId);
+
+        Assert.assertEquals(3, projCancerRes.getMembers().size());
+        Assert.assertTrue(projCancerRes.getMembers().contains(newUser));
+    }
+
+    @Test
+    public void testRemoveMemberFromProject() {
+        int projCancerResId = 2;
+        Project projCancerRes = repository.getProjectById(projCancerResId);
+        Collection<User> memberList= projCancerRes.getMembers();
+        User user5 = new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk");
+
+        addUserToProjectMembers(user5, projCancerRes);
+        projCancerRes = repository.getProjectById(projCancerResId);
+        memberList= projCancerRes.getMembers();
+        Assert.assertTrue(memberList.contains(user5));
+        
+        memberList.remove(user5);
+        projCancerRes.setMembers(memberList);
+        repository.updateProject(projCancerRes);
+        projCancerRes = repository.getProjectById(projCancerResId);
+        memberList= projCancerRes.getMembers();
+
+        Assert.assertFalse(memberList.contains(user5));
+    }
+
+    private void addUserToProjectMembers(User user, Project project) {
+        Collection<User> memberList = project.getMembers();
+        memberList.add(user);
+        project.setMembers(memberList);
+        repository.updateProject(project);
+    }
+
+    private Project createProject(String link, String name) throws Exception {
         ProjectBuilder projectBuilder = new ProjectBuilder();
         projectBuilder.setIdentifier(identifier);
         projectBuilder.setName(name);
         projectBuilder.setDescription("project A Description");
         projectBuilder.setOwner(createUser());
         projectBuilder.setUpdated(createDate("2018-06-20 12:34:56"));
+        projectBuilder.setMembers(createMembersList());
         return projectBuilder.build();
     }
 
     private User createUser() {
         return new User(2, "admin", "admin@ucl.ac.uk");
+    }
+
+    private Collection<User> createMembersList(){
+        User user3 = new User(3, "Blair Butterworth", "blair.butterworth.17@ucl.ac.uk");
+        User user4 = new User(4, "Xiaolong Chen", "xiaolong.chen@ucl.ac.uk");
+        ArrayList<User> members = new ArrayList<>();
+        members.add(user3);
+        members.add(user4);
+        return members;
     }
 
     private Date createDate(String date) throws ParseException  {
