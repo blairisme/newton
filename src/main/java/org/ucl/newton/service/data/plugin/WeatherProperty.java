@@ -1,5 +1,10 @@
 package org.ucl.newton.service.data.plugin;
 
+/**
+ * Temporary comment to fix build by passing checkstyle violation
+ *
+ * @author Xiaolong Chen
+ */
 public class WeatherProperty{
     private String city;
     private String country;
