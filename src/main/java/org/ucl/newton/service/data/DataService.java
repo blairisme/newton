@@ -13,6 +13,8 @@ import org.ucl.newton.service.data.plugin.WeatherDataProvider;
 import org.ucl.newton.service.data.sdk.DataProvider;
 import org.ucl.newton.service.data.sdk.DataProviderObserver;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
 import java.util.Collection;
 
 /**
@@ -25,11 +27,15 @@ public class DataService
 {
     private Collection<DataProvider> dataProviders;
 
-    public DataService() {
+    @Inject
+    public DataService(Provider<DataStorage> storageProvider) {
+
+        DataStorage dataStorage = storageProvider.get();
+        dataStorage.setProviderId("weather");
 
         DataProvider weatherDataProvider = new WeatherDataProvider();
         weatherDataProvider.addObserver(new ProviderObserver());
-        weatherDataProvider.start(new DataStorage("weather"));
+        weatherDataProvider.start(dataStorage);
 
         this.dataProviders.add(weatherDataProvider);
     }

@@ -9,6 +9,7 @@
 
 package org.ucl.newton.service.data.sdk;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -19,7 +20,7 @@ import java.io.OutputStream;
  */
 public interface StorageProvider
 {
-    InputStream getInputStream(String id);
+    InputStream getInputStream(String id) throws IOException;
 
-    OutputStream getOutputStream(String id);
+    OutputStream getOutputStream(String id) throws IOException;
 }

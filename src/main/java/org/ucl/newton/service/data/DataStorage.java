@@ -9,8 +9,11 @@
 
 package org.ucl.newton.service.data;
 
+import org.ucl.newton.application.webapp.ApplicationStorage;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
+import javax.inject.Inject;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -22,18 +25,24 @@ import java.io.OutputStream;
 public class DataStorage implements StorageProvider
 {
     private String providerId;
+    private ApplicationStorage applicationStorage;
 
-    public DataStorage(String providerId) {
+    @Inject
+    public DataStorage(ApplicationStorage applicationStorage) {
+        this.applicationStorage = applicationStorage;
+    }
 
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
     }
 
     @Override
-    public InputStream getInputStream(String id) {
-        return null;
+    public InputStream getInputStream(String id) throws IOException {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public OutputStream getOutputStream(String id) {
-        return null;
+    public OutputStream getOutputStream(String id) throws IOException {
+        return applicationStorage.getOutputStream("data/" + providerId, id);
     }
 }

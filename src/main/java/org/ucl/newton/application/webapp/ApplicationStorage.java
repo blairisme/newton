@@ -39,13 +39,17 @@ public class ApplicationStorage
     }
 
     public void write(String group, String identifier, InputStream inputStream) throws IOException {
+        try (OutputStream outputStream = getOutputStream(group, identifier)) {
+            IOUtils.copy(inputStream, outputStream);
+        }
+    }
+
+    public OutputStream getOutputStream(String group, String identifier) throws IOException {
         Path path = getPath(group, identifier);
         File file = path.toFile();
         file.mkdirs();
         file.delete();
-        try (OutputStream outputStream = new FileOutputStream(file)) {
-            IOUtils.copy(inputStream, outputStream);
-        }
+        return new FileOutputStream(file);
     }
 
     private Path getPath(String group, String identifier) {
