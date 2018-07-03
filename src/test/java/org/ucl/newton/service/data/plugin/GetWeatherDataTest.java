@@ -25,7 +25,7 @@ public class GetWeatherDataTest
     public void runTest() throws IOException {
         StorageProvider storageProvider = mock(StorageProvider.class);
         when(storageProvider.getOutputStream(anyString())).thenReturn(mock(OutputStream.class));
-
+//        when(storageProvider.getOutputStream(anyString())).thenReturn(new FileOutputStream("D:\\Code\\Newton\\newton\\weather"));
         GetWeatherData getWeatherData = new GetWeatherData(storageProvider);
         getWeatherData.run();
     }

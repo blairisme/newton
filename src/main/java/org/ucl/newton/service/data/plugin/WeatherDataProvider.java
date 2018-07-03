@@ -13,6 +13,10 @@ import org.ucl.newton.service.data.sdk.DataProvider;
 import org.ucl.newton.service.data.sdk.DataProviderObserver;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * Instances of this class provide weather data to the Newton system.
@@ -23,17 +27,17 @@ import org.ucl.newton.service.data.sdk.StorageProvider;
 public class WeatherDataProvider implements DataProvider
 {
     private DataProviderObserver observer;
-    private Thread thread;
+    private ScheduledExecutorService scheduler;
 
     @Override
     public void start(StorageProvider storageProvider) {
-        this.thread = new Thread(new GetWeatherData(storageProvider));
-        thread.start();
+        this.scheduler = Executors.newSingleThreadScheduledExecutor();
+        this.scheduler.scheduleAtFixedRate(new GetWeatherData(storageProvider),0,1,TimeUnit.HOURS); //run every hour
     }
 
     @Override
     public void stop() {
-        thread.stop();
+        this.scheduler.shutdown();
     }
 
     @Override
