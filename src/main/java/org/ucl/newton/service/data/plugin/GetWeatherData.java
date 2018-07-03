@@ -11,6 +11,7 @@ import org.ucl.newton.service.data.sdk.StorageProvider;
 
 import java.io.OutputStream;
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +27,51 @@ public class GetWeatherData implements Runnable{
     }
     @Override
     public void run() {
+//        String data = getDataFromAwhere();
+        String data = getDataFromWWO();
+
+        displayOutput(data);
+    }
+
+
+    private String getDataFromWWO() {
+        String url = "https://api.worldweatheronline.com/premium/v1/past-weather.ashx";
+        Map<String,String> header = new HashMap<>();
+        Map<String,String> params = new HashMap<>();
+        params.put("key","0252e94bd710446c908123539182906");
+        params.put("format","json");
+
+        String city = "london";
+        String country = "united kingdom";
+        String location = locationBuilder(city,country);    //location format q=city(,country)
+        params.put("q",location);
+
+        String date = "2018-07-03"; // yyyy-mm-dd
+        if (date !=null || date != "")
+            params.put("date",date);
+        String data = HttpUtils.doGet(url, header, params);
+        return data;
+    }
+
+    private String locationBuilder(String city, String country) {
+        city = city.replace(" ","+");
+        if (country==null||country=="")
+            return city;
+        country = country.replace(" ", "+");
+        return city + ","+country;
+    }
+
+    private void displayOutput(String data){
+        try {
+            OutputStream output = storageProvider.getOutputStream("weather");
+            if(output!=null)
+                output.write(data.getBytes("utf-8"));
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(data);
+    }
+    private String getDataFromAwhere() {
         String token = getToken();
 
         String latitude ="51.524566";
@@ -43,21 +89,9 @@ public class GetWeatherData implements Runnable{
         header.put("Authorization","Bearer " + token);
 
         Map<String,String> params = new HashMap<>();
-        displayOutput(url, header, params);
-    }
-
-    private void displayOutput(String url, Map<String, String> header, Map<String, String> params){
         String data = HttpUtils.doGet(url, header, params);
-        try {
-            OutputStream output = storageProvider.getOutputStream("weather");
-            if(output!=null)
-                output.write(data.getBytes("utf-8"));
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println(data);
+        return  data;
     }
-
     private String getToken(){
         String url = "https://api.awhere.com/oauth/token";
         String hashed = getHashedCredential();
