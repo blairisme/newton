@@ -19,7 +19,7 @@ $(document).ready( function() {
     // Data table order when drop down changed
     $(".dropdown-menu li a").on("click", function(){
         var selText = $(this).text();
-        $(this).parents(".dropdown").find(".btn").html(selText+'<span class="caret"></span>');
+        $(this).parents(".dropdown").find(".btn").html(selText+"<span class=\"caret\"></span>");
         var tableToUpdate = findActiveDataTable(dTable, dTableStarred);
         switch(selText){
             case "Most recently updated":
@@ -47,10 +47,10 @@ $(document).ready( function() {
     });
 
     // Reset table on tab change
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        var target = $(e.target).attr("href") // activated tab
+    $("a[data-toggle=\"tab\"]").on("shown.bs.tab", function (e) {
+        var target = $(e.target).attr("href"); // activated tab
         $("#filterInput").val("");
-        $("#dropdownMenuButton").html("Most recently updated"+'<span class="caret"></span>');
+        $("#dropdownMenuButton").html("Most recently updated"+"<span class=\"caret\"></span>");
         if(target === "Starred projects") {
             dTableStarred.search("").draw();
             dTableStarred.order([2, "desc"]).draw();

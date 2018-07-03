@@ -9,7 +9,6 @@
 
 package org.ucl.newton.service.project;
 
-import org.apache.lucene.search.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
@@ -19,7 +18,6 @@ import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
 
 import javax.inject.Inject;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;

@@ -26,7 +26,6 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.Date;
 import java.util.UUID;
 
 import static org.ucl.newton.common.Integers.stringToInt;
