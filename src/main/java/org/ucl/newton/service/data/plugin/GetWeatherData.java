@@ -27,26 +27,30 @@ public class GetWeatherData implements Runnable{
     }
     @Override
     public void run() {
-//        String data = getDataFromAwhere();
-        String data = getDataFromWWO();
+//        String latitude ="51.524566";                       // required
+//        String longitude="-0.134046";                       // required
+//        String date = "2017-06-28";                         // can be null
+//        String data = getDataFromAwhere(latitude, longitude, date);
+        String city = "london";                             // required
+        String country = "united kingdom";                  // can be null
+        String date = "2018-07-03";                         // required and format yyyy-mm-dd
+
+        String data = getDataFromWWO(city,country,date);
 
         displayOutput(data);
     }
 
 
-    private String getDataFromWWO() {
+    private String getDataFromWWO(String city,String country,String date) {
         String url = "https://api.worldweatheronline.com/premium/v1/past-weather.ashx";
         Map<String,String> header = new HashMap<>();
         Map<String,String> params = new HashMap<>();
         params.put("key","0252e94bd710446c908123539182906");
         params.put("format","json");
 
-        String city = "london";
-        String country = "united kingdom";
         String location = locationBuilder(city,country);    //location format q=city(,country)
         params.put("q",location);
 
-        String date = "2018-07-03"; // yyyy-mm-dd
         if (date !=null || date != "")
             params.put("date",date);
         String data = HttpUtils.doGet(url, header, params);
@@ -71,19 +75,16 @@ public class GetWeatherData implements Runnable{
         }
         System.out.println(data);
     }
-    private String getDataFromAwhere() {
+    private String getDataFromAwhere(String latitude, String longitude,String date) {
         String token = getToken();
 
-        String latitude ="51.524566";
-        String longitude="-0.134046";
         String url = "https://api.awhere.com";
-        String day = "28";
-        String month = "06";
-        String year = "2017";
-        String date = year+"-"+month+"-"+day;
-        url = url + "/v2/weather/locations/"+latitude + "," + longitude + "/observations"; //" + date+"?properties=temperatures,precipitation" ;
 
-        System.out.println(url);
+        url = url + "/v2/weather/locations/"+latitude + "," + longitude + "/observations";
+        if( date != null || date != ""){
+            url += "/"+ date;
+        }
+
         Map<String,String> header = new HashMap<>();
         header.put("Content-Type","application/json");
         header.put("Authorization","Bearer " + token);
