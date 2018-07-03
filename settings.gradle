@@ -1,0 +1,13 @@
+/*
+ * MIT License (c)
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ *
+ * Author: Blair Butterworth
+ */
+
+include 'application:master'
+include 'application:slave'
