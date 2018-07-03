@@ -30,6 +30,10 @@
                 <p>A project contains all the files for your project, including the revision history.</p>
             </div>
 
+            <div th:if="${error != null}" class="alert alert-danger" role="alert" >
+                <span th:text="${error}">Error message</span>
+            </div>
+
             <form id="projectDetails" th:action="@{/project/new}" method="POST" enctype="multipart/form-data" class="requires-validation" novalidate="novalidate">
                 <!-- General Settings -->
                 <section class="form-section section-divider">

@@ -19,7 +19,7 @@ import java.util.Collection;
  */
 public class Integers
 {
-    public static Collection<Integer> parse(Collection<String> values){
+    public static Collection<Integer> stringToInt(Collection<String> values){
         Collection<Integer> result = new ArrayList<>();
         for (String value: values) {
             result.add(Integer.parseInt(value));

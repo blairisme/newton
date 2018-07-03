@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
-import static org.ucl.newton.common.Integers.parse;
+import static org.ucl.newton.common.Integers.stringToInt;
 import static org.ucl.newton.common.Objects.ensureNotNull;
 
 /**
@@ -104,38 +104,40 @@ public class ProjectController
         @RequestParam(required=false) MultipartFile image,
         @RequestParam(required=false) Collection<String> members,
         @RequestParam(required=false) Collection<String> sources,
-        ModelMap modelMap)
+        ModelMap model)
     {
-        ProjectBuilder projectBuilder = new ProjectBuilder();
-        projectBuilder.generateIdentifier(name);
-        projectBuilder.setName(name);
-        projectBuilder.setDescription(description);
-        projectBuilder.setImage(persistProjectImage(image));
-        projectBuilder.setUpdated(new Date());
-        projectBuilder.setOwner(userService.getAuthenticatedUser());
-        projectBuilder.setMembers(userService.getUsers(parse(ensureNotNull(members))));
-        projectService.addProject(projectBuilder.build());
-        return "redirect:/projects";
+        try {
+            ProjectBuilder projectBuilder = new ProjectBuilder();
+            projectBuilder.generateIdentifier(name);
+            projectBuilder.setName(name);
+            projectBuilder.setDescription(description);
+            projectBuilder.setImage(persistProjectImage(image));
+            projectBuilder.setOwner(userService.getAuthenticatedUser());
+            projectBuilder.setMembers(userService.getUsers(stringToInt(ensureNotNull(members))));
+            projectService.addProject(projectBuilder.build());
+            return "redirect:/projects";
+        }
+        catch (Throwable exception) {
+            model.addAttribute("error", exception.getMessage());
+            model.addAttribute("user", userService.getAuthenticatedUser());
+            return "project/new";
+        }
     }
 
-    private String persistProjectImage(MultipartFile image) {
+    private String persistProjectImage(MultipartFile image) throws IOException {
         if (image != null) {
-            String group = "images/project";
-            String extension = FilenameUtils.getExtension(image.getOriginalFilename());
-            String identifier = generateImageName() + "." + extension;
-
             try (InputStream stream = image.getInputStream()) {
-                applicationStorage.write(group, identifier, stream);
+                String identifier = generateImageName(image);
+                applicationStorage.write("images/project", identifier, stream);
+                return identifier;
             }
-            catch (IOException cause) {
-                throw new RuntimeException(cause);
-            }
-            return identifier;
         }
         return "default.png";
     }
 
-    private String generateImageName() {
-        return UUID.randomUUID().toString();
+    private String generateImageName(MultipartFile image) {
+        String extension = FilenameUtils.getExtension(image.getOriginalFilename());
+        String identifier = UUID.randomUUID().toString();
+        return identifier + "." + extension;
     }
 }

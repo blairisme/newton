@@ -13,6 +13,7 @@ import org.apache.commons.lang3.Validate;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -36,7 +37,7 @@ public class ProjectBuilder
         this.description = "";
         this.image = "default.png";
         this.updated = new Date();
-        this.members = Collections.emptyList();
+        this.members = new ArrayList<>();
     }
 
     public void generateIdentifier(String text) {
@@ -70,10 +71,11 @@ public class ProjectBuilder
 
     public void setOwner(User owner) {
         this.owner = owner;
+        this.members.add(owner);
     }
 
     public void setMembers(Collection<User> members) {
-        this.members = members;
+        this.members.addAll(members);
     }
 
     public Project build() {
