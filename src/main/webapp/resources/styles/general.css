@@ -12,6 +12,12 @@
     content: url("/resources/images/star.svg");
 }
 
+.no-star {
+    width: 1em;
+    height: 1em;
+    content: url("/resources/images/no-star.svg");
+}
+
 .avatar {
     width: 1.5em;
     height: 1.5em;

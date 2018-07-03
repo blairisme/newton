@@ -66,6 +66,7 @@ public class ProjectController
         User user = userService.getAuthenticatedUser();
         model.addAttribute("user", user);
         model.addAttribute("projects", projectService.getProjects(user));
+        model.addAttribute("projectsStarred", projectService.getStarredProjects(user));
         return "project/list";
     }
 

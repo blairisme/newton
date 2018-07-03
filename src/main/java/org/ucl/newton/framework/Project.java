@@ -12,6 +12,8 @@ package org.ucl.newton.framework;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import javax.persistence.*;
@@ -59,6 +61,14 @@ public class Project implements Serializable
         inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
     private Collection<User> members;
+
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "project_starred",
+            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_project_star")),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_user_star"))
+    )
+    private Collection<User> membersThatStar;
 
     public Project() {
     }
@@ -129,12 +139,16 @@ public class Project implements Serializable
         return members;
     }
 
-    public void setMembers(Collection<User> newMember) {
+    public void setMembers(Collection<User> members) {
         this.members = members;
     }
 
-    public int getStars() {
-        return 0;
+    public Collection<User> getMembersThatStar() {
+        return membersThatStar;
+    }
+
+    public void setMembersThatStar(Collection<User> membersThatStar) {
+        this.membersThatStar = membersThatStar;
     }
 
     @Override

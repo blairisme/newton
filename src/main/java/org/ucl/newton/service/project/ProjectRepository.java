@@ -105,6 +105,16 @@ public class ProjectRepository
         session.update(project);
     }
 
+    @Transactional(readOnly=true)
+    public List<Project> getProjectsStarredByUser(User user) {
+        Session session = getSession();
+        String sql = String.format("SELECT * FROM projects AS p INNER JOIN project_starred AS ps " +
+                "ON p.id = ps.project_id WHERE ps.user_id = %s", user.getId());
+        NativeQuery query = session.createNativeQuery(sql).addEntity(Project.class);
+        List<Project> result = query.list();
+        return result;
+    }
+
     private Session getSession() {
         return this.sessionFactory.getCurrentSession();
     }

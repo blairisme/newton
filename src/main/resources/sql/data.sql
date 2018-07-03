@@ -32,8 +32,14 @@ INSERT INTO projects (id, owner_id, identifier, name, description, image, update
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (2, 2, 'cancer-research', 'Cancer Research Trial 4', 'Cancer Research Trial 4 Description', 'default.png', '2018-05-19 11:12:13');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (3, 2, 'aids-research', 'AIDS Research', 'AIDS Research Description', 'default.png', '2018-04-07 10:09:08');
 
+/* Project membership */
 INSERT INTO project_membership (project_id, user_id) VALUES (1, 1);
 INSERT INTO project_membership (project_id, user_id) VALUES (2, 1);
 INSERT INTO project_membership (project_id, user_id) VALUES (1, 2);
 INSERT INTO project_membership (project_id, user_id) VALUES (2, 2);
 INSERT INTO project_membership (project_id, user_id) VALUES (3, 2);
+
+/* Project stars */
+INSERT INTO project_starred (project_id, user_id) VALUES (1, 1);
+INSERT INTO project_starred (project_id, user_id) VALUES (1, 2);
+INSERT INTO project_starred (project_id, user_id) VALUES (2, 1);

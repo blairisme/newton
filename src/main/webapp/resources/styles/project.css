@@ -54,7 +54,7 @@
     width:100%;
 }
 
-#projectList thead {
+#projectList thead, #projectListStarred thead {
     display:none;
 }
 
@@ -63,5 +63,5 @@
 }
 
 #newProjectBtn {
-    margin-top: 0.5em;
+    margin-left: 1em;
 }

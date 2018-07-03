@@ -35,7 +35,8 @@ public class ProjectRepositoryTest
 {
     @Inject
     private ProjectRepository repository;
-
+    private final int fizzyoId = 1;
+    private final int projCancerResId = 2;
 
     @Test
     public void addProjectTest() throws Exception {
@@ -49,8 +50,8 @@ public class ProjectRepositoryTest
     @Test
     public void getProjectsTest() {
         User user1 = new User(1, "user", "user@ucl.ac.uk");
-        Project fizzyo = repository.getProjectById(1);
-        Project cancerRes = repository.getProjectById(2);
+        Project fizzyo = repository.getProjectById(fizzyoId);
+        Project cancerRes = repository.getProjectById(projCancerResId);
         List<Project> projects = repository.getProjects(user1);
 
         Assert.assertEquals(2, projects.size());
@@ -105,7 +106,7 @@ public class ProjectRepositoryTest
 
     @Test
     public void testRemoveMemberFromProject() {
-        int projCancerResId = 2;
+
         Project projCancerRes = repository.getProjectById(projCancerResId);
         Collection<User> memberList;
         User user5 = new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk");
@@ -128,6 +129,65 @@ public class ProjectRepositoryTest
         Collection<User> memberList = project.getMembers();
         memberList.add(user);
         project.setMembers(memberList);
+        repository.updateProject(project);
+    }
+
+    @Test
+    public void testGetStaredProjects() {
+        User user2 = new User(2, "admin", "admin@ucl.ac.uk");
+        User user1 = new User(1, "user", "user@ucl.ac.uk");
+        Project fizzyo = repository.getProjectById(1);
+        List<Project> projects = repository.getProjectsStarredByUser(user2);
+
+        Assert.assertEquals(1, projects.size());
+        Assert.assertTrue(projects.contains(fizzyo));
+
+        projects = repository.getProjectsStarredByUser(user1);
+        Assert.assertEquals(2, projects.size());
+    }
+
+    @Test
+    public void testStarAProject() {
+        User user4 = new User(4, "Xiaolong Chen", "xiaolong.chen@ucl.ac.uk");
+        Project fizzyo = repository.getProjectById(fizzyoId);
+        Collection<User> starredMembers = fizzyo.getMembersThatStar();
+        Assert.assertEquals(2, starredMembers.size());
+        Assert.assertFalse(starredMembers.contains(user4));
+
+        starAProject(user4, fizzyo);
+
+        fizzyo = repository.getProjectById(fizzyoId);
+        starredMembers = fizzyo.getMembersThatStar();
+
+        Assert.assertEquals(3, starredMembers.size());
+        Assert.assertTrue(starredMembers.contains(user4));
+    }
+
+    @Test
+    public void testUnstarAProject() {
+        User user5 = new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk");
+        Project aidsRes = repository.getProjectById(3);
+        starAProject(user5, aidsRes);
+
+        aidsRes = repository.getProjectById(3);
+        Collection<User> starredMembers = aidsRes.getMembersThatStar();
+        Assert.assertEquals(1, starredMembers.size());
+        Assert.assertTrue(starredMembers.contains(user5));
+
+        starredMembers.remove(user5);
+        aidsRes.setMembersThatStar(starredMembers);
+        repository.updateProject(aidsRes);
+        aidsRes = repository.getProjectById(3);
+        starredMembers = aidsRes.getMembersThatStar();
+
+        Assert.assertEquals(0, starredMembers.size());
+        Assert.assertFalse(starredMembers.contains(user5));
+    }
+
+    private void starAProject(User user, Project project){
+        Collection<User> starredMembers = project.getMembersThatStar();
+        starredMembers.add(user);
+        project.setMembersThatStar(starredMembers);
         repository.updateProject(project);
     }
 

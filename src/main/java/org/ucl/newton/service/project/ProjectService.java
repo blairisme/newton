@@ -39,6 +39,8 @@ public class ProjectService
         return repository.getProjects(user);
     }
 
+    public Collection<Project> getStarredProjects(User user) { return repository.getProjectsStarredByUser(user); }
+
     public Project getProjectById(int id) {
         Project project = repository.getProjectById(id);
         if (project == null) {

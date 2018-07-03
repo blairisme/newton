@@ -28,17 +28,17 @@
 
             <div>
                 <h1 class="page-title">Projects</h1>
-                <span class="float-right" sec:authorize="hasRole('ROLE_ADMINISTRATOR')">
+                <!--<span class="float-right" sec:authorize="hasRole('ROLE_ADMINISTRATOR')">
                     <a class="btn btn-primary" href="/project/new" role="button" id="newProjectBtn">New Project</a>
-                </span>
+                </span>-->
             </div>
 
             <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Your projects</a>
+                <li class="nav-item active">
+                    <a class="nav-link active" data-toggle="tab" href="#allProjects">Your projects</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Starred projects</a>
+                    <a class="nav-link" data-toggle="tab" href="#starredProjects">Starred projects</a>
                 </li>
                 <li class="nav-item ml-auto">
                     <input class="form-control" id="filterInput" type="text" placeholder="Filter..">
@@ -56,34 +56,19 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMINISTRATOR')">
+                    <a class="btn btn-primary" href="/project/new" role="button" id="newProjectBtn">New Project</a>
+                </li>
             </ul>
 
-            <table class="project-list" id="projectList" style="width:100%">
-                <thead>
-                    <th>icon</th>
-                    <th>name</th>
-                    <th>details</th>
-                </thead>
-                <tr th:each="project, iteration : ${projects}" class="project-row project-row-underline">
-                    <td class="project-column project-icon-container">
-                        <a href="/projects" th:href="@{'/project/' + ${project.identifier}}">
-                            <img th:src="@{'/resources/images/project/' + ${project.image}}" class="rounded" alt="Project image" width="48" height="48">
-                        </a>
-                    </td>
-                    <td class="project-column project-column-expand project-name-container">
-                        <a href="/projects" th:href="@{'/project/' + ${project.identifier}}">
-                            <span th:text="${project.name}">project name</span>
-                        </a>
-                    </td>
-                    <td class="project-column project-state-container" th:attr="data-order=${project.getLastUpdatedAsEpoch()}">
-                        <div class="aligned-cell aligned-right">
-                            <img class="star">
-                            <span th:text="${project.stars}">0</span>
-                        </div>
-                        <span th:text="${project.getLastUpdatedDescription()}" th:class="cell-text">last updated</span>
-                    </td>
-                </tr>
-            </table>
+            <div class="tab-content">
+                <div id="allProjects" class="tab-pane active fade show">
+                    <div th:replace="fragments/project_list :: project_list(*{__@{projects}__}, 'projectList')"></div>
+                </div>
+                <div id="starredProjects" class="tab-pane fade">
+                    <div th:replace="fragments/project_list :: project_list(*{__@{projectsStarred}__}, 'projectListStarred')"></div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

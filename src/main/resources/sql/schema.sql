@@ -53,3 +53,11 @@ CREATE TABLE IF NOT EXISTS project_membership (
     CONSTRAINT fk_project FOREIGN KEY (project_id) REFERENCES projects(id),
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE TABLE IF NOT EXISTS project_starred (
+    project_id INT NOT NULL,
+    user_id INT NOT NULL,
+    PRIMARY KEY (project_id, user_id),
+    CONSTRAINT fk_project_star FOREIGN KEY (project_id) REFERENCES projects(id),
+    CONSTRAINT fk_user_star FOREIGN KEY (user_id) REFERENCES users(id)
+);
