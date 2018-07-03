@@ -11,27 +11,27 @@ package org.ucl.newton.service.experiment;
 
 import org.ucl.newton.framework.Experiment;
 
+import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Instances of this interface provide access to experiment data.
  *
  * @author Blair Butterworth
+ * @author John Wilkie
  */
 @Named
 public class ExperimentService
 {
-    private Collection<Experiment> experiments;
+    private ExperimentRepository repository;
 
-    public ExperimentService() {
-        experiments = new ArrayList<>();
-        experiments.add(new Experiment("1","first experiment"));
-        experiments.add(new Experiment("2","second experiment"));
-        experiments.add(new Experiment("3","third experiment"));
-    }
-    public Collection<Experiment> getExperiments() {
+    @Inject
+    public ExperimentService(ExperimentRepository repository) { this.repository = repository; }
+
+    public Collection<Experiment> getExperiments(String projectName) {
+        Collection<Experiment> experiments = repository.getExperimentsForProject(projectName);
+        // check experiments not null
         return experiments;
     }
 }

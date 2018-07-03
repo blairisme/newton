@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS projects (
     CONSTRAINT fk_owner_id FOREIGN KEY (owner_id) REFERENCES users(id)
 );
 
+/* Create join table to connect users to a project as members */
 CREATE TABLE IF NOT EXISTS project_membership (
     project_id INT NOT NULL,
     user_id INT NOT NULL,
@@ -54,10 +55,18 @@ CREATE TABLE IF NOT EXISTS project_membership (
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+/* Create join table to connect users that have stare a project */
 CREATE TABLE IF NOT EXISTS project_starred (
     project_id INT NOT NULL,
     user_id INT NOT NULL,
     PRIMARY KEY (project_id, user_id),
     CONSTRAINT fk_project_star FOREIGN KEY (project_id) REFERENCES projects(id),
     CONSTRAINT fk_user_star FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+/* Create experiment table to store data relating to experiments */
+CREATE TABLE IF NOT EXISTS experiments (
+    exp_id INT NOT NULL AUTO_INCREMENT,
+    exp_name VARCHAR(45) NOT NULL,
+    PRIMARY KEY (exp_id)
 );

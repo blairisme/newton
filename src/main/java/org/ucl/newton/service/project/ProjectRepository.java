@@ -64,23 +64,7 @@ public class ProjectRepository
 
         return session.createQuery(criteria).getSingleResult();
     }
-    /*
-    @Transactional(readOnly=true)
-    public List<Project> getProjects(int index, int size) {
-        Session session = getSession();
 
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<Project> criteriaQuery = criteriaBuilder.createQuery(Project.class);
-        Root<Project> from = criteriaQuery.from(Project.class);
-        CriteriaQuery<Project> select = criteriaQuery.select(from);
-
-        TypedQuery<Project> typedQuery = session.createQuery(select);
-        typedQuery.setFirstResult(index);
-        typedQuery.setMaxResults(size);
-
-        return typedQuery.getResultList();
-    }
-*/
     @Transactional(readOnly=true)
     public List<Project> getProjects(User user) {
         Session session = getSession();
