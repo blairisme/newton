@@ -9,6 +9,7 @@
 
 package org.ucl.newton.common;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -21,7 +22,7 @@ import java.util.Collections;
 public class Objects
 {
     public static <T> Collection<T> ensureNotNull(Collection<T> values) {
-        return ensureNotNull(values, Collections.emptyList());
+        return ensureNotNull(values, new ArrayList<T>());
     }
 
     public static <T> T ensureNotNull(T value, T alternative) {
