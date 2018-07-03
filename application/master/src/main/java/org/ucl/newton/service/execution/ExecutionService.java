@@ -16,4 +16,6 @@ package org.ucl.newton.service.execution;
  */
 public class ExecutionService
 {
+    public ExecutionService() {
+    }
 }
