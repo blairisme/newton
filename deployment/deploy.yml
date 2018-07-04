@@ -34,12 +34,12 @@
       args:
         chdir: /root/code/newton
 
-    - name: Get MySQL root password
+    - name: Update database properties
       shell: |
         initial_password=`awk '/A temporary password is generated for/ {a=$0} END{ print a }' /var/log/mysqld.log | awk '{print $(NF)}'`
-        echo database.user=root > /root/code/newton/database.properties
-        echo database.password=${initial_password} >> \n/root/code/newton/database.properties
-        echo database.populate=true >> \n/root/code/newton/database.properties
+        echo 'database.populate=true
+            database.user=root
+            database.password='${initial_password} > /root/code/newton/database.properties
 
 #    - name: Run project
 #      shell: ./gradlew appStartDaemon

@@ -109,6 +109,7 @@ public class PersistenceConfiguration
     private Properties mysqlProperties() {
         Properties properties = new Properties();
         properties.setProperty("useSSL", "false");
+        properties.setProperty("allowPublicKeyRetrieval", "true");
         return properties;
     }
 }
