@@ -6,9 +6,8 @@
 #
 #      https://opensource.org/licenses/MIT
 #
-# This script deploys the Newton application across master and slave servers.
+# This script deploys the Newton web server to slave servers.
 #
 # Author: Blair Butterworth
 #
-- import_playbook: deploy_master.yml
-- import_playbook: deploy_slave.yml
+- hosts: slave_servers

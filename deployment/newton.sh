@@ -1,4 +1,5 @@
----
+#!/usr/bin/env sh
+
 # Newton (c)
 #
 # This work is licensed under the MIT License. To view a copy of this
@@ -6,9 +7,11 @@
 #
 #      https://opensource.org/licenses/MIT
 #
-# This script deploys the Newton application across master and slave servers.
+# This script starts the Newton web server application using the production
+# profile.
 #
 # Author: Blair Butterworth
 #
-- import_playbook: deploy_master.yml
-- import_playbook: deploy_slave.yml
+
+cd /root/code/newton
+./gradlew appStart -Prun.profile=production
