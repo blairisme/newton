@@ -79,13 +79,6 @@ gretty {
     jacocoEnabled = false
 }
 
-task appStartDaemon(dependsOn: 'appBeforeIntegrationTest'){
-}
-
-task appStopDaemon(dependsOn: 'appAfterIntegrationTest'){
-}
-
-
 checkstyle {
   sourceSets = [project.sourceSets.main]
 }
