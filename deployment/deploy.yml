@@ -1,0 +1,44 @@
+---
+- hosts: master_servers
+  vars:
+    mysql_root_password: Newton*123
+
+  tasks:
+    - name: Add MySQL Yum repository
+      yum:
+        name: https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm
+        state: present
+
+    - name: Install MySQL
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - mysql-server
+        - MySQL-python
+
+    - name: Start MySQL
+      service:
+        name: mysqld
+        state: started
+        enabled: yes
+
+    - name: Download project
+      git:
+        repo: 'https://github.com/blairisme/newton.git'
+        dest: /root/code/newton
+
+    - name: Build project
+      shell: ./gradlew clean build
+      args:
+        chdir: /root/code/newton
+
+    - name: Get MySQL root password
+      shell: |
+        initial_password=`awk '/A temporary password is generated for/ {a=$0} END{ print a }' /var/log/mysqld.log | awk '{print $(NF)}'`
+        echo database.password=${initial_password} >> /root/code/newton/gradle.properties
+
+    - name: Run project
+      shell: ./gradlew addStartDaemon
+      args:
+        chdir: /root/code/newton
