@@ -67,6 +67,46 @@ CREATE TABLE IF NOT EXISTS experiments (
     exp_id INT NOT NULL AUTO_INCREMENT,
     exp_name VARCHAR(45) NOT NULL,
     parentProject_id INT NOT NULL,
+    creator_id INT NOT NULL,
     PRIMARY KEY (exp_id),
-    CONSTRAINT fk_project_parent FOREIGN KEY (parentProject_id) REFERENCES projects(id)
+    CONSTRAINT fk_experiment_parent FOREIGN KEY (parentProject_id) REFERENCES projects(id),
+    CONSTRAINT fk_experiment_creator FOREIGN KEY (creator_id) REFERENCES users(id)
 );
+
+/* Create table to store data relating to data sources */
+CREATE TABLE IF NOT EXISTS datasources (
+    ds_id INT NOT NULL AUTO_INCREMENT,
+    ds_name VARCHAR(45) NOT NULL,
+    ds_version INT NOT NULL,
+    ds_data_location VARCHAR(100) NOT NULL,
+    PRIMARY KEY (ds_id)
+);
+
+/* Create table to store data relating to the script to run*/
+CREATE TABLE IF NOT EXISTS process (
+    proc_id INT NOT NULL AUTO_INCREMENT,
+    proc_repo_url VARCHAR(100) NOT NULL,
+    proc_initial_script VARCHAR(100) NOT NULL,
+    proc_engine VARCHAR(45) NOT NULL,
+    PRIMARY KEY (proc_id)
+);
+
+/* Create table to store experiment versions */
+CREATE TABLE IF NOT EXISTS versions (
+    ver_id INT NOT NULL AUTO_INCREMENT,
+    ver_number INT NOT NULL,
+    ver_name VARCHAR(45) NOT NULL,
+    process_id INT NOT NULL,
+    PRIMARY KEY (ver_id),
+    CONSTRAINT fk_versions_process FOREIGN KEY (process_id) REFERENCES process(proc_id)
+);
+
+/* Create table that stores the relationship between experiments and versions */
+CREATE TABLE IF NOT EXISTS experiment_versions (
+    experiment_id INT NOT NULL,
+    version_id INT NOT NULL,
+    PRIMARY KEY (experiment_id, version_id),
+    CONSTRAINT fk_experiment_versions_exp FOREIGN  KEY (experiment_id) REFERENCES experiments(exp_id),
+    CONSTRAINT fk_experiment_versions_ver FOREIGN  KEY (version_id) REFERENCES  versions(ver_id)
+);
+
