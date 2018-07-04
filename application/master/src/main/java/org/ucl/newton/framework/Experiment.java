@@ -48,7 +48,7 @@ public class Experiment
             joinColumns = @JoinColumn(name = "experiment_id", referencedColumnName = "exp_id", foreignKey = @ForeignKey(name = "fk_experiment_versions_exp")),
             inverseJoinColumns = @JoinColumn(name = "version_id", referencedColumnName = "ver_id", foreignKey = @ForeignKey(name = "fk_experiment_versions_ver"))
     )
-    Collection<ExperimentVersion> versions;
+    private Collection<ExperimentVersion> expVersions;
 
     public Experiment() {}
 
@@ -63,7 +63,7 @@ public class Experiment
         this.name = name;
         this.parentProject = parentProject;
         this.creator = creator;
-        this.versions = versions;
+        this.expVersions = versions;
     }
 
     public int getId() {
@@ -83,5 +83,5 @@ public class Experiment
 
     public User getCreator() { return creator; }
 
-    public Collection<ExperimentVersion> getVersions() { return versions; }
+    public Collection<ExperimentVersion> getVersions() { return expVersions; }
 }

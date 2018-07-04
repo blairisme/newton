@@ -6,6 +6,8 @@ import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.Experiment;
+import org.ucl.newton.framework.ExperimentProcess;
+import org.ucl.newton.framework.ExperimentVersion;
 
 import javax.inject.Inject;
 import java.util.Collection;

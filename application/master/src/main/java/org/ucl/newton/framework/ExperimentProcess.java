@@ -31,12 +31,18 @@ public class ExperimentProcess {
     public ExperimentProcess() {}
 
     public ExperimentProcess(
+        int id,
         String repoUrl,
-        String nameOfInitialScript)
+        String nameOfInitialScript,
+        String processEngine)
     {
+        this.id = id;
         this.repoUrl = repoUrl;
         this.nameOfInitialScript = nameOfInitialScript;
+        this.processEngine = processEngine;
     }
+
+    public int getId() { return id; }
 
     public String getRepoUrl() { return repoUrl; }
 
