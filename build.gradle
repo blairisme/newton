@@ -20,6 +20,10 @@ idea {
   }
 }
 
+Properties props = new Properties()
+props.load(new FileInputStream("$project.rootDir/database.properties"))
+props.each { prop -> project.ext.set(prop.key, prop.value) }
+
 allprojects {
   repositories {
     mavenCentral()

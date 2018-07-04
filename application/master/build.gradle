@@ -70,7 +70,12 @@ gretty {
     servletContainer = 'jetty9.4'
     contextPath = '/'
     httpPort = 8090
-    jvmArgs = ['-Dnewton.profile=' + getProperty('run.profile')]
+    jvmArgs = [
+      '-Dnewton.profile=' + getProperty('run.profile'),
+      '-Dnewton.database.user=' + getProperty('database.user'),
+      '-Dnewton.database.password=' + getProperty('database.password'),
+      '-Dnewton.database.populate=' + getProperty('database.populate')
+    ]
     jacocoEnabled = false
 }
 

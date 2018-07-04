@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.ucl.newton.application.webapp.ApplicationPreferences;
 
 import javax.sql.DataSource;
 
@@ -23,29 +24,33 @@ public class PersistenceConfigurationTest
 {
     @Test
     public void dataSourceTest() {
-        PersistenceConfiguration configuration = new PersistenceConfiguration();
+        ApplicationPreferences applicationPreferences = Mockito.mock(ApplicationPreferences.class);
+        PersistenceConfiguration configuration = new PersistenceConfiguration(applicationPreferences);
         DataSource dataSource = configuration.dataSource();
         Assert.assertNotNull(dataSource);
     }
 
     @Test
     public void dataSourceInitializerTest() {
-        PersistenceConfiguration configuration = new PersistenceConfiguration();
+        ApplicationPreferences applicationPreferences = Mockito.mock(ApplicationPreferences.class);
+        PersistenceConfiguration configuration = new PersistenceConfiguration(applicationPreferences);
         DataSourceInitializer dataSourceInitializer = configuration.dataSourceInitializer();
         Assert.assertNotNull(dataSourceInitializer);
     }
 
     @Test
     public void transationManagerTest() {
+        ApplicationPreferences applicationPreferences = Mockito.mock(ApplicationPreferences.class);
         SessionFactory sessionFactory = Mockito.mock(SessionFactory.class);
-        PersistenceConfiguration configuration = new PersistenceConfiguration();
+        PersistenceConfiguration configuration = new PersistenceConfiguration(applicationPreferences);
         HibernateTransactionManager transactionManager = configuration.transactionManager(sessionFactory);
         Assert.assertNotNull(transactionManager);
     }
 
     @Test
     public void sessionFactoryTest() {
-        PersistenceConfiguration configuration = new PersistenceConfiguration();
+        ApplicationPreferences applicationPreferences = Mockito.mock(ApplicationPreferences.class);
+        PersistenceConfiguration configuration = new PersistenceConfiguration(applicationPreferences);
         LocalSessionFactoryBean sessionFactory = configuration.sessionFactory();
         Assert.assertNotNull(sessionFactory);
     }

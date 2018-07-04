@@ -16,10 +16,9 @@ CREATE TABLE IF NOT EXISTS users (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
+    INDEX ix_user_name (name),
     PRIMARY KEY (id)
 );
-
-CREATE INDEX ix_user_name ON users(name);
 
 /* Create credentials table to contain user passwords */
 

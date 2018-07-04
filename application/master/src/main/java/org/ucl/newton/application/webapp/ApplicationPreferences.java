@@ -23,6 +23,31 @@ import javax.inject.Named;
 @Named
 public class ApplicationPreferences
 {
+    public String getDatabaseUser() {
+        return System.getProperty("newton.database.user", getDatabaseUserDefault());
+    }
+
+    private String getDatabaseUserDefault() {
+        return "root";
+    }
+
+    public String getDatabasePassword() {
+        return System.getProperty("newton.database.password", getDatabasePasswordDefault());
+    }
+
+    private String getDatabasePasswordDefault() {
+        return "password";
+    }
+
+    public boolean getDatabasePopulate() {
+        String value = System.getProperty("newton.database.populate", getDatabasePopulateDefault());
+        return Boolean.valueOf(value);
+    }
+
+    private String getDatabasePopulateDefault() {
+        return "false";
+    }
+
     public String getProfile() {
         return System.getProperty("newton.profile", getProfileDefault());
     }

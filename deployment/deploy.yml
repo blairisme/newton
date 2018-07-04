@@ -27,6 +27,7 @@
       git:
         repo: 'https://github.com/blairisme/newton.git'
         dest: /root/code/newton
+        force: yes
 
     - name: Build project
       shell: ./gradlew clean build
@@ -36,9 +37,11 @@
     - name: Get MySQL root password
       shell: |
         initial_password=`awk '/A temporary password is generated for/ {a=$0} END{ print a }' /var/log/mysqld.log | awk '{print $(NF)}'`
-        echo database.password=${initial_password} >> /root/code/newton/gradle.properties
+        echo database.user=root > /root/code/newton/database.properties
+        echo database.password=${initial_password} >> \n/root/code/newton/database.properties
+        echo database.populate=true >> \n/root/code/newton/database.properties
 
-    - name: Run project
-      shell: ./gradlew appStartDaemon
-      args:
-        chdir: /root/code/newton
+#    - name: Run project
+#      shell: ./gradlew appStartDaemon
+#      args:
+#        chdir: /root/code/newton
