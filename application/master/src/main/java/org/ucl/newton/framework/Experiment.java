@@ -29,13 +29,15 @@ public class Experiment
     @Column(name = "exp_name")
     private String name;
 
-    //private Project owningProject;
+    @ManyToOne
+    private Project parentProject;
 
     public Experiment() {}
 
-    public Experiment(int id, String name) {
+    public Experiment(int id, String name, Project parentProject) {
         this.id = id;
         this.name = name;
+        this.parentProject = parentProject;
     }
 
     public int getId() {
@@ -50,4 +52,6 @@ public class Experiment
     public String getName() {
         return name;
     }
+
+    public Project getParentProject() { return parentProject; }
 }
