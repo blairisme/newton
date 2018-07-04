@@ -4,7 +4,7 @@
     mysql_root_password: Newton*123
 
   tasks:
-    - name: Add MySQL Yum repository
+    - name: Register MySQL repository
       yum:
         name: https://dev.mysql.com/get/mysql80-community-release-el7-1.noarch.rpm
         state: present
@@ -23,23 +23,16 @@
         state: started
         enabled: yes
 
-    - name: Download project
-      git:
-        repo: 'https://github.com/blairisme/newton.git'
-        dest: /root/code/newton
-        force: yes
-
-    - name: Build project
-      shell: ./gradlew clean build
-      args:
-        chdir: /root/code/newton
-
     - name: Update database properties
       shell: |
         initial_password=`awk '/A temporary password is generated for/ {a=$0} END{ print a }' /var/log/mysqld.log | awk '{print $(NF)}'`
+        mysql -uroot -p"${initial_password}" --connect-expired-password -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'Newton*123'; flush privileges; "
         echo 'database.populate=true
             database.user=root
-            database.password='${initial_password} > /root/code/newton/database.properties
+            database.password=Newton*123' > /root/code/newton/database.properties
+
+
+
 
 #    - name: Run project
 #      shell: ./gradlew appStartDaemon
