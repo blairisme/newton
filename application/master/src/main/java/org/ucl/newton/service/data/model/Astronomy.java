@@ -1,5 +1,10 @@
 package org.ucl.newton.service.data.model;
 
+/**
+ * Instances of this class provide weather data to the Newton system.
+ *
+ * @author Xiaolong Chen
+ */
 public class Astronomy {
     private String sunrise;
     private String sunset;
