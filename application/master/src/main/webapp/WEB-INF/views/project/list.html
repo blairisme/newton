@@ -26,13 +26,12 @@
         <!-- Page Content -->
         <div class="container-fluid">
 
+            <!-- Title -->
             <div>
                 <h1 class="page-title">Projects</h1>
-                <!--<span class="float-right" sec:authorize="hasRole('ROLE_ADMINISTRATOR')">
-                    <a class="btn btn-primary" href="/project/new" role="button" id="newProjectBtn">New Project</a>
-                </span>-->
             </div>
 
+            <!-- Tabs and list filters -->
             <ul class="nav nav-tabs">
                 <li class="nav-item active">
                     <a class="nav-link active" data-toggle="tab" href="#allProjects">Your projects</a>
@@ -61,6 +60,7 @@
                 </li>
             </ul>
 
+            <!-- Project list panel -->
             <div class="tab-content">
                 <div id="allProjects" class="tab-pane active fade show">
                     <div th:replace="fragments/project_list :: project_list(*{__@{projects}__}, 'projectList')"></div>
