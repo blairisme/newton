@@ -110,3 +110,27 @@ CREATE TABLE IF NOT EXISTS experiment_versions (
     CONSTRAINT fk_experiment_versions_ver FOREIGN  KEY (version_id) REFERENCES  versions(ver_id)
 );
 
+/* Create table to link versions to the data sources used */
+CREATE TABLE IF NOT EXISTS version_data_sources (
+    ver_id INT NOT NULL,
+    ds_id INT NOT NULL,
+    PRIMARY KEY (ver_id, ds_id),
+    CONSTRAINT fk_vds_ver FOREIGN KEY (ver_id) REFERENCES  versions(ver_id),
+    CONSTRAINT fk_vds_ds FOREIGN KEY (ds_id) REFERENCES  datasources(ds_id),
+);
+
+/* Create table for experiment outcomes */
+CREATE TABLE IF NOT EXISTS outcomes (
+    outcome_id INT NOT NULL AUTO_INCREMENT,
+    outcome_loc VARCHAR(100) NOT NULL,
+    PRIMARY KEY (outcome_id)
+);
+
+/* Create table to link outcomes to versions */
+CREATE TABLE IF NOT EXISTS version_outcomes (
+    ver_id INT NOT NULL,
+    out_id INT NOT NULL,
+    PRIMARY KEY (ver_id, out_id),
+    CONSTRAINT fk_vo_ver FOREIGN KEY (ver_id) REFERENCES  versions(ver_id),
+    CONSTRAINT fk_vo_out FOREIGN KEY (out_id) REFERENCES  outcomes(outcome_id),
+);

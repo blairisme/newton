@@ -64,3 +64,15 @@ INSERT INTO versions (ver_id, ver_number, ver_name, process_id) VALUES (1, 1, 'V
 
 /* Link versions to experiments */
 INSERT INTO experiment_versions (experiment_id, version_id) VALUES (1, 1);
+
+/* Link data sources to versions */
+INSERT INTO version_data_sources (ver_id, ds_id) VALUES (1, 1);
+INSERT INTO version_data_sources (ver_id, ds_id) VALUES (1, 2);
+
+/* Outcomes */
+INSERT INTO outcomes (outcome_id, outcome_loc) VALUES (1, 'outcomes/v1.csv');
+INSERT INTO outcomes (outcome_id, outcome_loc) VALUES (2, 'outcomes/v2.csv');
+
+/* Link outcomes to versions */
+INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 1);
+INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 2);
