@@ -39,6 +39,6 @@
         echo database.password=${initial_password} >> /root/code/newton/gradle.properties
 
     - name: Run project
-      shell: ./gradlew addStartDaemon
+      shell: ./gradlew appStartDaemon
       args:
         chdir: /root/code/newton
