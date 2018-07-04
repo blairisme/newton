@@ -73,7 +73,7 @@ public class ProjectController
     public String details(@PathVariable("name")String name, ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
         model.addAttribute("project", projectService.getProjectByLink(name));
-        model.addAttribute("experiments", experimentService.getExperiments(name));
+        model.addAttribute("experiments", experimentService.getExperimentsByParentProjectName(name));
         return "project/details";
     }
 

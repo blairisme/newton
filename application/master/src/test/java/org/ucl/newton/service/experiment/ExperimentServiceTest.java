@@ -17,6 +17,6 @@ public class ExperimentServiceTest
     @Test
     public void getExperimentsTest() {
         //ExperimentService experimentService = new ExperimentService(new ExperimentRepository());
-        //Assert.assertNotNull(experimentService.getExperiments());
+        //Assert.assertNotNull(experimentService.getExperimentsByParentProjectName());
     }
 }

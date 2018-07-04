@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <title>Newton - Experiment</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/css/dataTables.bootstrap4.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/project.css"/>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <div th:replace="fragments/header :: header"></div>
+
+    <!-- Page Content -->
+    <div class="container-fluid">
+
+        <!-- Breadcrumbs -->
+        <h1 class="page-title" >
+            <a  href="/projects"> Projects</a>
+            <a  href="#" th:href="@{'/project/' + ${project.identifier}}" th:text="@{'/ '+${project.name}}" > / project name</a>
+            <a  th:text="@{'/ '+${experiment.name}}" > / project name</a>
+        </h1>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item active">
+                <a class="nav-link active" data-toggle="tab" href="#expOverviewTab">Overview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#expSetupTab">Setup</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#expOutputTab">Output</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#expVersionsTab">Versions</a>
+            </li>
+        </ul>
+
+        <!-- Tab pane -->
+        <div class="tab-content">
+            <div id="expOverviewTab" class="tab-pane active fade show">
+                <p>Overview placeholder</p>
+            </div>
+            <div id="expSetupTab" class="tab-pane fade">
+                <p>Setup placeholder</p>
+            </div>
+            <div id="expOutputTab" class="tab-pane fade">
+                <p>Output placeholder</p>
+            </div>
+            <div id="expVersionsTab" class="tab-pane fade">
+                <p>Versions placeholder</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
