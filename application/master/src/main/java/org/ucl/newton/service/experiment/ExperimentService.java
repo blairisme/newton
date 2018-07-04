@@ -29,9 +29,13 @@ public class ExperimentService
     @Inject
     public ExperimentService(ExperimentRepository repository) { this.repository = repository; }
 
-    public Collection<Experiment> getExperiments(String projectName) {
+    public Collection<Experiment> getExperimentsByParentProjectName(String projectName) {
         Collection<Experiment> experiments = repository.getExperimentsForProject(projectName);
         // check experiments not null
         return experiments;
+    }
+
+    public Experiment getExperimentById(int experimentId) {
+        return repository.getExperimentById(experimentId);
     }
 }

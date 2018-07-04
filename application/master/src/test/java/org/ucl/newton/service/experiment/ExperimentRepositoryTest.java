@@ -10,6 +10,7 @@ import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.Experiment;
 
 import javax.inject.Inject;
+import java.util.Collection;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DeveloperPersistenceConfiguration.class})
@@ -23,5 +24,15 @@ public class ExperimentRepositoryTest {
     public void testGetExperimentById() {
         Experiment experiment = repository.getExperimentById(1);
         Assert.assertEquals("Experiment 1", experiment.getName());
+    }
+
+    @Test
+    public void testGetExperimentsForProject() {
+        String fizzyoName = "project-fizzyo";
+        Collection<Experiment> experiments = repository.getExperimentsForProject(fizzyoName);
+        Assert.assertEquals(3, experiments.size());
+        for(Experiment experiment: experiments){
+            Assert.assertEquals(fizzyoName, experiment.getParentProject().getIdentifier());
+        }
     }
 }

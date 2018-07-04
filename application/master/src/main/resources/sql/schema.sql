@@ -68,5 +68,7 @@ CREATE TABLE IF NOT EXISTS project_starred (
 CREATE TABLE IF NOT EXISTS experiments (
     exp_id INT NOT NULL AUTO_INCREMENT,
     exp_name VARCHAR(45) NOT NULL,
-    PRIMARY KEY (exp_id)
+    parentProject_id INT NOT NULL,
+    PRIMARY KEY (exp_id),
+    CONSTRAINT fk_project_parent FOREIGN KEY (parentProject_id) REFERENCES projects(id)
 );

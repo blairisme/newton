@@ -1,5 +1,9 @@
 package org.ucl.newton.service.data.plugin;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+import org.ucl.newton.service.data.model.Weather;
+import org.ucl.newton.service.data.model.WeatherData;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
 import java.io.OutputStream;
@@ -82,9 +86,21 @@ public class GetWeatherData implements Runnable{
         }catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(data);
-    }
+//        System.out.println(data);
+        String dataStr = getDataStr(data);
 
+        Gson gson = new Gson();
+        WeatherData weatherData = gson.fromJson(dataStr,WeatherData.class);
+        dataStr = gson.toJson(weatherData,WeatherData.class);
+
+        System.out.println(dataStr);
+
+    }
+    private String getDataStr(String data){
+        String weather = new JsonParser().parse(data).getAsJsonObject()
+                                         .get("data").toString();
+        return weather;
+    }
 
 }
 

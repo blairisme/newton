@@ -30,22 +30,22 @@
                     <a class="nav-link active" href="#">Experiments</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{'/project/' + ${project.id} + '/settings'}">Project Settings</a>
+                    <a class="nav-link" href="#" th:href="@{'/project/' + ${project.identifier} + '/settings'}">Project Settings</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{'/project/' + ${project.id} + '/members'}"> Members</a>
+                    <a class="nav-link" href="#" th:href="@{'/project/' + ${project.identifier} + '/members'}"> Members</a>
                 </li>
             </ul>
 
             <table class="experiment-list">
-                <tr th:each="experiment, iteration : ${experiments}" th:class="${not iteration.last} ? 'experiment-row experiment-row-underline' : 'experiment-row'">
+                <tr th:each="experiment, iteration : ${experiments}" class="experiment-row experiment-row-underline">
                     <td class="experiment-column experiment-icon-container">
-                        <a href="#">
+                        <a href="#" th:href="@{'/project/' + ${project.identifier} + '/experiment/' + ${experiment.id}}">
                             <img src="/resources/images/profile.jpg" class="rounded" alt="Experiment icon" width="48" height="48">
                         </a>
                     </td>
                     <td class="experiment-column experiment-column-expand experiment-name-container">
-                        <a href="#">
+                        <a href="#" th:href="@{'/project/' + ${project.identifier} + '/experiment/' + ${experiment.id}}">
                             <span th:text="${experiment.name}">experiment name</span>
                         </a>
                     </td>
