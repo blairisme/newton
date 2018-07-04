@@ -45,6 +45,22 @@ INSERT INTO project_starred (project_id, user_id) VALUES (1, 2);
 INSERT INTO project_starred (project_id, user_id) VALUES (2, 1);
 
 /* Experiments */
-INSERT INTO experiments (exp_id, exp_name, parentProject_id) VALUES (1, 'Experiment 1', 1);
-INSERT INTO experiments (exp_id, exp_name, parentProject_id) VALUES (2, 'Experiment 2', 1);
-INSERT INTO experiments (exp_id, exp_name, parentProject_id) VALUES (3, 'Experiment 3', 1);
+INSERT INTO experiments (exp_id, exp_name, parentProject_id, creator_id) VALUES (1, 'Experiment 1', 1, 3);
+INSERT INTO experiments (exp_id, exp_name, parentProject_id, creator_id) VALUES (2, 'Experiment 2', 1, 4);
+INSERT INTO experiments (exp_id, exp_name, parentProject_id, creator_id) VALUES (3, 'Experiment 3', 1, 3);
+
+/* Data sources */
+INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (1, 'Weather temp', 1, 'some/loc1');
+INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (2, 'Weather rain', 1, 'some/loc2');
+INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (3, 'Fizzyo HR', 1, 'some/loc3');
+INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (4, 'Fizzyo ACT use', 1, 'some/loc4');
+INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (5, 'Fizzyo steps', 2, 'some/loc5');
+
+/* Experiment processes */
+INSERT INTO process (proc_id, proc_repo_url, proc_initial_script, proc_engine) VALUES (1, 'https://github.com/blairisme/newton', 'test.py', 'python');
+
+/* Insert experiment version data */
+INSERT INTO versions (ver_id, ver_number, ver_name, process_id) VALUES (1, 1, 'Version 1', 1);
+
+/* Link versions to experiments */
+INSERT INTO experiment_versions (experiment_id, version_id) VALUES (1, 1);
