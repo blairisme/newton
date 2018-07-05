@@ -4,6 +4,7 @@ import helpers.FilesHelper;
 import helpers.LogHelper;
 
 import java.io.File;
+import java.net.MalformedURLException;
 
 public class AnalysisResults {
 
@@ -32,8 +33,8 @@ public class AnalysisResults {
     }
 
     public AnalysisResponse toAnalysisResponse(){
-        String logFileUrl = FilesHelper.getFileUrl(mLogFile.getAbsolutePath());
-        String zipOutputUrl = FilesHelper.getFileUrl(mZipOutputFile.getAbsolutePath());
+        String logFileUrl = FilesHelper.getFileUrl(mLogFile);
+        String zipOutputUrl = FilesHelper.getFileUrl(mZipOutputFile);
         return new AnalysisResponse(mId, "", logFileUrl, zipOutputUrl);
     }
 }

@@ -1,5 +1,6 @@
 package org.ucl.newton.service.data.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,6 +11,27 @@ import java.util.List;
 public class WeatherData {
     private List<Request> request;
     private List<Weather> weather;
+
+    public List<String> getKeys(){
+        List<String> keys = new ArrayList<>();
+        Request request = new Request();
+        keys.addAll(request.getKeys());
+
+        Weather weather = new Weather();
+        keys.addAll(weather.getKeys());
+
+        return keys;
+    }
+
+    public List<String> getValues(){
+        List<String> values = new ArrayList<>();
+        for(Request re : request)
+            values.addAll(re.getValues());
+
+        for(Weather we : weather)
+            values.addAll(we.getValues());
+        return values;
+    }
 
     public List<Request> getRequest() {
         return request;

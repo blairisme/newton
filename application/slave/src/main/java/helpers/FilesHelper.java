@@ -1,12 +1,18 @@
 package helpers;
 
+import com.sun.jndi.toolkit.url.Uri;
+import org.apache.commons.io.FilenameUtils;
+
+import java.io.File;
+
 public class FilesHelper {
 
 
-    public static String getFileUrl(String path){
+    public static String getFileUrl(File file) {
+
         return Constants.SERVER_URL
                 .concat("/download/?filename=")
-                .concat(path);
+                .concat(FilenameUtils.separatorsToUnix(file.getAbsolutePath()));
 
     }
 }

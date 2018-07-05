@@ -1,47 +1,70 @@
 package engine;
 
+import exceptions.AnalysisException;
 import helpers.LogHelper;
 import helpers.Constants;
 import pojo.AnalysisRequest;
 import pojo.AnalysisResponse;
 import pojo.AnalysisResults;
+import security.PluginClassLoader;
 
 import java.io.File;
-
+import java.net.URL;
 
 
 public class RequestHandler {
 
 
-    public AnalysisResponse process(AnalysisRequest request){
-        Engine engine = null;
+    public AnalysisResponse process(AnalysisRequest request) {
+        IEngine engine = null;
         AnalysisRequest.ENGINE_TYPE engine_type = AnalysisRequest.ENGINE_TYPE.values()[request.getType()];
-        switch (engine_type){
+        switch (engine_type) {
             case PYTHON:
-                engine = new PythonEngine(request.getId(), request.getRepoUrl(), request.getMainFilename(), request.getOutputPattern(), null);
+                engine = new PythonEngine();
                 break;
             case R:
-                engine = new REngine(request.getId(), request.getRepoUrl(), request.getMainFilename(), request.getOutputPattern(),null);
+                engine = new REngine();
                 break;
+            case PLUGIN:
+                engine = getPluginEngine(request.getPluginJarUrl());
+                break;
+
+            //...handle custom engines
         }
+
+        System.out.println("^^^^^^^HERE");
+        Executor executor = new Executor(request.getId(), engine, request.getRepoUrl(), request.getMainFilename(), request.getOutputPattern(), null);
 
         AnalysisResponse response;
         try {
-            AnalysisResults results = engine.run();
-          //  String output = LogHelper.getOutputLog(request.getId());
-          //  String logFileUrl = LogHelper.getLogFileUrl(request.getId());
-          //  String zipOutputFileUrl = engine.getZipOutputFileUrl();
+            AnalysisResults results = executor.run();
             response = results.toAnalysisResponse();
-            response.setStatus( AnalysisResponse.RESPONSE_STATUS.SUCCESS.ordinal());
+            response.setStatus(AnalysisResponse.RESPONSE_STATUS.SUCCESS.ordinal());
 
-        } catch (Exception e)
-        {
-            response = new AnalysisResponse(request.getId(), null, null, null);
+        } catch (AnalysisException ae) {
+            response = new AnalysisResponse(request.getId(), ae.getMessage(), null, null);
             response.setStatus(AnalysisResponse.RESPONSE_STATUS.FAILURE.ordinal());
-
+            ae.printStackTrace();
+        } catch (Exception e) {
+            response = new AnalysisResponse(request.getId(), "Error", null, null);
+            response.setStatus(AnalysisResponse.RESPONSE_STATUS.FAILURE.ordinal());
             e.printStackTrace();
         }
         return response;
     }
 
+    private IEngine getPluginEngine(String url) {
+        try {
+            System.out.println("**** get Plugin Engin url="+url);
+            URL jarURL = new URL(url);
+            ClassLoader pluginLoader = new PluginClassLoader(jarURL);
+
+            Class<?> pluginClass = pluginLoader.loadClass("engine.ZEngine");
+            return (IEngine) pluginClass.newInstance();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

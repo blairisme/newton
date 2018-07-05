@@ -17,6 +17,7 @@ import pojo.AnalysisRequest;
 import pojo.AnalysisResponse;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 
 
 @RestController
@@ -30,14 +31,16 @@ public class Controller {
                                     @RequestParam(value="mainFilename") String mainFilename,
                                     @RequestParam(value="repoUrl") String repoUrl,
                                     @RequestParam(value="type") int type,
-                                    @RequestParam(value="outputPattern") String outputPattern) {
+                                    @RequestParam(value="outputPattern") String outputPattern,
+                                    @RequestParam(value="pluginJarUrl", required = false) String pluginJarUrl) {
 
-        return mRequestHandler.process(new AnalysisRequest(id, mainFilename, repoUrl, type, outputPattern));
+        System.out.println("pluginJarUrl="+pluginJarUrl);
+        return mRequestHandler.process(new AnalysisRequest(id, mainFilename, repoUrl, type, outputPattern, pluginJarUrl));
     }
 
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public ResponseEntity<Resource> download(@RequestParam("filename") String filename, HttpServletRequest request) {
+    public ResponseEntity<Resource> download(@PathParam("filename") String filename, HttpServletRequest request) {
 
 
         try {

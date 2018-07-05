@@ -6,6 +6,7 @@ public class AnalysisRequest {
     public enum ENGINE_TYPE {
         PYTHON,
         R,
+        PLUGIN
     }
 
     private String mMainFilename;
@@ -13,13 +14,15 @@ public class AnalysisRequest {
     private int mType;
     private final String mId;
     private final String mOutputPattern;
+    private final String mPluginJarUrl;
 
-    public AnalysisRequest(String id, String mainFilename, String repoUrl, int type, String outputPattern) {
+    public AnalysisRequest(String id, String mainFilename, String repoUrl, int type, String outputPattern, String jarUrl) {
         this.mMainFilename = mainFilename;
         this.mRepoUrl = repoUrl;
         this.mType = type;
         this.mId = id;
         this.mOutputPattern = outputPattern;
+        this.mPluginJarUrl = jarUrl;
     }
 
     public String getId(){
@@ -32,6 +35,10 @@ public class AnalysisRequest {
 
     public String getRepoUrl() {
         return mRepoUrl;
+    }
+
+    public String getPluginJarUrl(){
+        return mPluginJarUrl;
     }
 
     public int getType() {

@@ -1,25 +1,21 @@
 package engine;
 
-import datasets.Dataset;
 import helpers.LogHelper;
+import helpers.Constants;
 
 
 import java.io.File;
-import java.util.List;
 
 
+public class PythonEngine implements IEngine {
 
-public class PythonEngine extends Engine {
-
-    public PythonEngine(String id, String repoUrl, String mainFilename, String outputPattern, List<Dataset> datasets) {
-        super(id, repoUrl, mainFilename,outputPattern, datasets);
-    }
 
     @Override
-    public void build() {
-        String cmnd = "python "+ mMainFile.getAbsolutePath();
-        System.out.println("zzz cmnd = " + cmnd);
-        mLogFile = LogHelper.executeCmnd(cmnd, true, mProjectFile.getAbsolutePath());
+    public File build(String workspacePath, String mainScriptPath) {
+        String cmnd = "/usr/local/bin/python";
+        File output = LogHelper.startProcess(cmnd, mainScriptPath, true, workspacePath);
+        return output;
 
     }
+
 }

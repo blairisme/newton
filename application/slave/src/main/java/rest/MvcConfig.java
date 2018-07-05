@@ -19,6 +19,7 @@ public class MvcConfig implements WebMvcConfigurer {
         String path = new File("").getAbsolutePath();
         registry
                 .addResourceHandler("/files/**")
-                .addResourceLocations("file:///" + path +"/");
+                .addResourceLocations("file://" + path +"/");
+            //    .addResourceLocations("file:///" + path +"/");//Windows
     }
 }

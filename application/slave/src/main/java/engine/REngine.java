@@ -2,16 +2,14 @@ package engine;
 
 import datasets.Dataset;
 
+import java.io.File;
 import java.util.List;
 
-public class REngine extends Engine {
+public class REngine implements IEngine {
 
-    public REngine(String id, String repoUrl, String mainFilename, String outputPattern, List<Dataset> datasets) {
-        super(id, repoUrl, mainFilename, outputPattern, datasets);
-    }
 
     @Override
-    public void build() {
-
+    public File build(String workspacePath, String mainScript) {
+        return null;
     }
 }
