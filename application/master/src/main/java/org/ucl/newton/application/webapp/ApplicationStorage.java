@@ -11,8 +11,7 @@ package org.ucl.newton.application.webapp;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
-import org.ucl.newton.common.FilePathUtils;
-import org.ucl.newton.common.SystemPaths;
+import org.ucl.newton.common.file.FilePathUtils;
 
 import javax.inject.Inject;
 import java.io.*;

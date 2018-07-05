@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.common;
+package org.ucl.newton.common.file;
 
 import java.io.File;
 

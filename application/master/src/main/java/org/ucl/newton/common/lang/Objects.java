@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.common;
+package org.ucl.newton.common.lang;
 
 import java.util.ArrayList;
 import java.util.Collection;

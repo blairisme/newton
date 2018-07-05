@@ -28,8 +28,8 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.UUID;
 
-import static org.ucl.newton.common.Integers.stringToInt;
-import static org.ucl.newton.common.Objects.ensureNotNull;
+import static org.ucl.newton.common.lang.Integers.stringToInt;
+import static org.ucl.newton.common.lang.Objects.ensureNotNull;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to

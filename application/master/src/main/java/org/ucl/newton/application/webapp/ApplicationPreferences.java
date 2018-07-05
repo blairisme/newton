@@ -9,8 +9,8 @@
 
 package org.ucl.newton.application.webapp;
 
-import org.ucl.newton.common.SystemPaths;
-import org.ucl.newton.common.SystemUtils;
+import org.ucl.newton.common.file.SystemPaths;
+import org.ucl.newton.common.file.SystemUtils;
 
 import javax.inject.Named;
 

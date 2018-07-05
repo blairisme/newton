@@ -22,7 +22,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.ucl.newton.application.webapp.ApplicationPreferences;
-import org.ucl.newton.common.SystemUtils;
+import org.ucl.newton.common.file.SystemUtils;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;

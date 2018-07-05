@@ -48,7 +48,7 @@
         <!-- Tab pane -->
         <div class="tab-content">
             <div id="expOverviewTab" class="tab-pane active fade show">
-                <a class="btn btn-primary" href="#" role="button" id="runExperimentBtn">Run Experiment</a>
+                <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/experiment/' + ${experiment.id} + '/run'}" role="button" id="runExperimentBtn">Run Experiment</a>
             </div>
             <div id="expSetupTab" class="tab-pane fade">
                 <p>Setup placeholder</p>

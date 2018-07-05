@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.User;
+import org.ucl.newton.service.execution.ExecutionService;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.user.UserService;
 
@@ -34,17 +35,22 @@ import javax.inject.Inject;
 @SuppressWarnings("unused")
 public class ExperimentController
 {
-    private ExperimentService experimentService;
     private UserService userService;
+    private ExperimentService experimentService;
+    private ExecutionService executionService;
 
     @Inject
-    public ExperimentController(ExperimentService experimentService, UserService userService) {
-        this.experimentService = experimentService;
+    public ExperimentController(
+            UserService userService,
+            ExperimentService experimentService,
+            ExecutionService executionService) {
         this.userService = userService;
+        this.experimentService = experimentService;
+        this.executionService = executionService;
     }
 
     @RequestMapping(value = "/project/{projectName}/experiment/{experimentId}", method = RequestMethod.GET)
-    public String experimentDetails(@PathVariable("projectName") String projectName,
+    public String details(@PathVariable("projectName") String projectName,
                                     @PathVariable("experimentId") int experimentId, ModelMap model) {
         User user = userService.getAuthenticatedUser();
         model.addAttribute("user", user);
@@ -52,5 +58,12 @@ public class ExperimentController
         model.addAttribute("experiment", selectedExperiment);
         model.addAttribute("project", selectedExperiment.getParentProject());
         return "project/experiment/overview";
+    }
+
+    @RequestMapping(value = "/project/{projectName}/experiment/{experimentId}/run", method = RequestMethod.GET)
+    public String execute(@PathVariable("projectName") String projectName,
+                          @PathVariable("experimentId") int experimentId, ModelMap model) {
+        executionService.run(null);
+        return "redirect:/project/" + projectName + "/experiment/" + Integer.toString(experimentId);
     }
 }
