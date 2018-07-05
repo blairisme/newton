@@ -32,6 +32,8 @@ bootJar {
 }
 
 dependencies {
+    compile project(':application:bridge')
+
     compile group: 'commons-io', name: 'commons-io', version: '2.4'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 
@@ -45,4 +47,14 @@ bootRun {
 }
 
 task slaveStart(dependsOn: bootRun){
+}
+
+task slaveStartDebug(dependsOn: bootRun){
+    gradle.taskGraph.whenReady { graph ->
+        if (graph.hasTask(slaveStartDebug)) {
+            bootRun {
+                jvmArgs=["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=6006"]
+            }
+        }
+    }
 }

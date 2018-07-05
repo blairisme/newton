@@ -1,32 +1,52 @@
 package rest;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicLong;
-
 import engine.RequestHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.ucl.newton.bridge.ExecutionCoordinator;
+import org.ucl.newton.bridge.ExecutionNode;
+import org.ucl.newton.bridge.ExecutionRequest;
 import pojo.AnalysisRequest;
 import pojo.AnalysisResponse;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
+import java.io.File;
+import java.io.FileInputStream;
 
+@Named
+@Qualifier("server")
+public class Controller implements ExecutionNode {
 
-@RestController
-public class Controller {
+    private RequestHandler requestHandler;
+    private ExecutionCoordinator executionCoordinator;
 
+    @Autowired
+    public Controller(@Qualifier("client") ExecutionCoordinator executionCoordinator) {
+        this.requestHandler = new RequestHandler();
+        this.executionCoordinator = executionCoordinator;
+    }
 
-    private RequestHandler mRequestHandler = new RequestHandler();
+    @Override
+    public void execute(ExecutionRequest request) {
+        analyse(
+            request.getId(),
+            request.getMainFilename(),
+            request.getRepoUrl(),
+            request.getType(),
+            request.getOutputPattern(),
+            "");
+    }
 
-    @RequestMapping("/analyse")
+//    @RequestMapping("/analyse")
     public AnalysisResponse analyse(@RequestParam(value="id") String id,
                                     @RequestParam(value="mainFilename") String mainFilename,
                                     @RequestParam(value="repoUrl") String repoUrl,
@@ -35,43 +55,37 @@ public class Controller {
                                     @RequestParam(value="pluginJarUrl", required = false) String pluginJarUrl) {
 
         System.out.println("pluginJarUrl="+pluginJarUrl);
-        return mRequestHandler.process(new AnalysisRequest(id, mainFilename, repoUrl, type, outputPattern, pluginJarUrl));
+        return requestHandler.process(new AnalysisRequest(id, mainFilename, repoUrl, type, outputPattern, pluginJarUrl));
     }
 
-
-    @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public ResponseEntity<Resource> download(@PathParam("filename") String filename, HttpServletRequest request) {
-
-
-        try {
-            File file = new File(filename);
-            System.out.println("^^^^^^^^^^^ f exist=" + file.exists() + " " + filename);
-            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-
-            // Try to determine file's content type
-            String contentType;
-            try {
-                contentType = request.getServletContext().getMimeType(file.getAbsolutePath());
-            } catch (Exception ex) {
-                contentType = "application/octet-stream";
-            }
-
-            System.out.println("contenttype= " + contentType);
-
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
-                    .contentLength(file.length())
-                    .contentType(MediaType.parseMediaType(contentType))
-                    .body(resource);
-        }catch (Exception e){
-            System.out.println("^^^^^^^^^^^^ Exception");
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
-
-
-
+//    @RequestMapping(value = "/download", method = RequestMethod.GET)
+//    public ResponseEntity<Resource> download(@PathParam("filename") String filename, HttpServletRequest request) {
+//
+//
+//        try {
+//            File file = new File(filename);
+//            System.out.println("^^^^^^^^^^^ f exist=" + file.exists() + " " + filename);
+//            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+//
+//            // Try to determine file's content type
+//            String contentType;
+//            try {
+//                contentType = request.getServletContext().getMimeType(file.getAbsolutePath());
+//            } catch (Exception ex) {
+//                contentType = "application/octet-stream";
+//            }
+//
+//            System.out.println("contenttype= " + contentType);
+//
+//            return ResponseEntity.ok()
+//                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+//                    .contentLength(file.length())
+//                    .contentType(MediaType.parseMediaType(contentType))
+//                    .body(resource);
+//        }catch (Exception e){
+//            System.out.println("^^^^^^^^^^^^ Exception");
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 }

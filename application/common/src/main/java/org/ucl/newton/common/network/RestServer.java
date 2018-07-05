@@ -14,6 +14,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
+import org.ucl.newton.common.serialization.JsonSerializer;
 import org.ucl.newton.common.serialization.Serializer;
 
 import javax.inject.Inject;
@@ -35,6 +36,9 @@ public class RestServer
     @Inject
     @SuppressWarnings("unused")
     public RestServer() {
+        this.address = "http://localhost:8080";
+        this.serializer = new JsonSerializer();
+        this.headers = new HashMap<>();
     }
 
     public RestServer(RestServer another) {
@@ -59,12 +63,13 @@ public class RestServer
         this.serializer = serializer;
     }
 
-    public void setHeader(Object key, Object value) {
+    public void addHeader(Object key, Object value) {
         this.headers.put(convert(key), convert(value));
     }
 
     public void setHeaders(Map<Object, Object> values) {
-        this.headers = convertHeaders(values);
+        this.headers.clear();
+        this.headers.putAll(convertHeaders(values));
     }
 
     public RestRequest get(RestResource resource) {

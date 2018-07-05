@@ -7,14 +7,15 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.service.execution;
+package org.ucl.newton.bridge;
 
 /**
- * Instances of this class represent work that can be executed on an
- * {@link ExecutionNode}.
+ * Instances of this class represent a remote system capable of executing an
+ * experiment.
  *
  * @author Blair Butterworth
  */
-public interface ExecutionRequest
+public interface ExecutionNode
 {
+    void execute(ExecutionRequest executionRequest);
 }

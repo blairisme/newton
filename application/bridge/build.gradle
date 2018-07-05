@@ -1,0 +1,22 @@
+/*
+ * MIT License (c)
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ *
+ * Author: Blair Butterworth
+ */
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+group = 'org.ucl.newton'
+version = '0.0.1'
+
+dependencies {
+  compile project(':application:common')
+  compile group: 'org.springframework', name: 'spring-web', version: '5.0.7.RELEASE'
+  compile group: 'org.springframework', name: 'spring-webmvc', version: '5.0.7.RELEASE'
+}

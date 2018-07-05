@@ -9,5 +9,7 @@
  * Author: Blair Butterworth
  */
 
+include 'application:bridge'
+include 'application:common'
 include 'application:master'
 include 'application:slave'
