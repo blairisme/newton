@@ -12,39 +12,28 @@ public class LogHelper {
 
 
     public static final String LOG_FILENAME = "log.txt";
-	
-	public static File executeCmnd(String cmnd, boolean writeToFile, String directory){
-		
-		try {
-			String temp, standardLog = "", errorLog = "", output = "";
-	        Process p = Runtime.getRuntime().exec(cmnd);
-            
-            BufferedReader stdInput = new BufferedReader(new 
-                 InputStreamReader(p.getInputStream()));
 
-            BufferedReader stdError = new BufferedReader(new 
-                 InputStreamReader(p.getErrorStream()));
+    public static File startProcess(String cmnd, String mainFilePath, boolean writeToFile, String directory){
 
-            output = output.concat("Standard output of the command:\n");
-            while ((temp = stdInput.readLine()) != null) {
-                standardLog = standardLog.concat(temp).concat("\n");
+        try {
+            ProcessBuilder pb =
+                    new ProcessBuilder( cmnd, mainFilePath);
+
+            pb.directory(new File(directory));
+            File f = pb.directory();
+            System.out.println(f.exists());
+
+            File log = new File(directory,"log.txt");
+            if(writeToFile) {
+                pb.redirectErrorStream(true);
+                pb.redirectOutput(ProcessBuilder.Redirect.appendTo(log));
             }
-            
-            output = output.concat(standardLog).concat("Standard error of the command (if any):\n");
-            while ((temp = stdError.readLine()) != null) {
-                errorLog = errorLog.concat(temp).concat("\n");
-            }
-            output = output.concat(errorLog);
-            if(writeToFile){
-            	return writeToFile(output, directory);
-            }
-            return null;
-      //      return new String[]{standardLog, errorLog};
-        }
-        catch (IOException e) {
+            Process p = pb.start();
+            return log;
+        }catch (Exception e){
             e.printStackTrace();
-            return null;
         }
+        return null;
 	}
 
 /*	public static String getOutputLog(String projectId){

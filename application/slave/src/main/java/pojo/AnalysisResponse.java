@@ -8,14 +8,14 @@ public class AnalysisResponse {
     }
 
     private final String mId;
-    private final String mOutput;
+    private final String mErrorMessage;
     private int mStatus;
     private String mLogFileUrl;
     private String mZipOutputFile;
 
     public AnalysisResponse(String id, String output, String logFileUrl, String zipOutputFile) {
         this.mId = id;
-        this.mOutput = output;
+        this.mErrorMessage = output;
         this.mLogFileUrl = logFileUrl;
         this.mZipOutputFile = zipOutputFile;
     }
@@ -32,16 +32,17 @@ public class AnalysisResponse {
         return mStatus;
     }
 
-   // public String getOutput() {
-    //    return mOutput;
-    //}
-
     public String getLogFileUrl() {
         return mLogFileUrl;
     }
 
     public String getZipOutputFileUrl() {
         return mZipOutputFile;
+    }
+
+
+    public String getErrorMessage() {
+        return mErrorMessage;
     }
 
 

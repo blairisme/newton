@@ -1,10 +1,13 @@
+import com.sun.jndi.toolkit.url.Uri;
 import datasets.Dataset;
 import engine.PythonEngine;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileOutputStream;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -14,6 +17,15 @@ import java.util.zip.ZipOutputStream;
 public class Main {
 	
 	public static void main(String args[]) {
+
+	    File f = new File("projects/log.txt");
+        try {
+            String s = FilenameUtils.separatorsToUnix(f.getAbsolutePath());
+            Uri uri = new Uri(f.getAbsolutePath());
+            System.out.println(s);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
 /*
         try {
