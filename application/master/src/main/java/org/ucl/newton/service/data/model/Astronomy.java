@@ -1,5 +1,8 @@
 package org.ucl.newton.service.data.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Instances of this class provide weather data to the Newton system.
  *
@@ -13,13 +16,33 @@ public class Astronomy {
     private String moon_phase;
     private String moon_illumination;
 
+    public List<String> getKeys(){
+        List<String> keys = new ArrayList<>();
+        keys.add("sunrise");
+        keys.add("sunset");
+        keys.add("moonrise");
+        keys.add("moonset");
+        keys.add("moon_phase");
+        keys.add("moon_illumination");
+        return keys;
+    }
+
+    public List<String> getValues(){
+        List<String> values = new ArrayList<>();
+        values.add(sunrise);
+        values.add(sunset);
+        values.add(moonrise);
+        values.add(moonset);
+        values.add(moon_phase);
+        values.add(moon_illumination);
+        return values;
+    }
+
     public String getSunrise() {
         return sunrise;
     }
 
-    public void setSunrise(String sunrise) {
-        this.sunrise = sunrise;
-    }
+    public void setSunrise(String sunrise) { this.sunrise = sunrise; }
 
     public String getSunset() {
         return sunset;

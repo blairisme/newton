@@ -1,5 +1,8 @@
 package org.ucl.newton.service.data.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Instances of this class provide weather data to the Newton system.
  *
@@ -8,6 +11,18 @@ package org.ucl.newton.service.data.model;
 public class Request {
     private String type;
     private String query;
+
+    public List<String> getKeys(){
+        List<String> keys = new ArrayList<>();
+        keys.add("location");
+        return keys;
+    }
+
+    public List<String> getValues(){
+        List<String> values = new ArrayList<>();
+        values.add(query.replace(",",""));
+        return values;
+    }
 
     public String getType() {
         return type;
@@ -18,10 +33,12 @@ public class Request {
     }
 
     public String getQuery() {
-        return query;
+        return query.replace(",","");
     }
 
     public void setQuery(String query) {
         this.query = query;
     }
+
+
 }
