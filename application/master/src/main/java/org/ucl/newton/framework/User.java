@@ -41,18 +41,24 @@ public class User implements Serializable
     @Column(name = "email")
     private String email;
 
+    @Field
+    @Column(name = "role")
+    @Enumerated( EnumType.STRING )
+    private UserRole role;
+
     public User() {
-        this(0, "", "");
+        this(0, "", "", null);
     }
 
-    public User(String name, String email) {
-        this(0, name, email);
+    public User(String name, String email, UserRole role) {
+        this(0, name, email, role);
     }
 
-    public User(int id, String name, String email) {
+    public User(int id, String name, String email, UserRole role) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.role = role;
     }
 
     public int getId() {
@@ -66,6 +72,8 @@ public class User implements Serializable
     public String getEmail() {
         return email;
     }
+
+    public UserRole getRole() { return role; }
 
     public User setId(int id) {
         this.id = id;
@@ -84,6 +92,7 @@ public class User implements Serializable
             .append(id, user.id)
             .append(name, user.name)
             .append(email, user.email)
+            .append(role, user.role)
             .isEquals();
     }
 
@@ -93,6 +102,7 @@ public class User implements Serializable
             .append(id)
             .append(name)
             .append(email)
+            .append(role)
             .toHashCode();
     }
 
@@ -102,6 +112,7 @@ public class User implements Serializable
             .append("id", id)
             .append("name", name)
             .append("email", email)
+            .append("role", role)
             .toString();
     }
 }
