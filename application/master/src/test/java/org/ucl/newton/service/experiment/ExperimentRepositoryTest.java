@@ -115,12 +115,13 @@ public class ExperimentRepositoryTest {
         Assert.assertEquals(2, outcomes.size());
         Iterator<Outcome> it = outcomes.iterator();
         Outcome outcome = it.next();
-        Outcome expectedOutcome = new Outcome(1, "outcomes/v1.csv");
+        Outcome expectedOutcome = new Outcome(1, "outcomes/v1.csv", OutcomeType.EXPERIMENTRESULT);
         Assert.assertEquals(expectedOutcome, outcome);
 
         outcome = it.next();
         Assert.assertEquals(2, outcome.getId());
-        Assert.assertEquals("outcomes/v2.csv", outcome.getOutcomeLocation());
+        Assert.assertEquals("outcomes/log.txt", outcome.getOutcomeLocation());
+        Assert.assertEquals(OutcomeType.EXPERIMENTLOG, outcome.getType());
     }
 
 }
