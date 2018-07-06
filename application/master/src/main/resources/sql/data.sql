@@ -70,8 +70,8 @@ INSERT INTO version_data_sources (ver_id, ds_id) VALUES (1, 1);
 INSERT INTO version_data_sources (ver_id, ds_id) VALUES (1, 2);
 
 /* Outcomes */
-INSERT INTO outcomes (outcome_id, outcome_loc) VALUES (1, 'outcomes/v1.csv');
-INSERT INTO outcomes (outcome_id, outcome_loc) VALUES (2, 'outcomes/v2.csv');
+INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (1, 'outcomes/v1.csv', 'EXPERIMENTRESULT');
+INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (2, 'outcomes/log.txt', 'EXPERIMENTLOG');
 
 /* Link outcomes to versions */
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 1);

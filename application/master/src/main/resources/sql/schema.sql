@@ -123,6 +123,7 @@ CREATE TABLE IF NOT EXISTS version_data_sources (
 CREATE TABLE IF NOT EXISTS outcomes (
     outcome_id INT NOT NULL AUTO_INCREMENT,
     outcome_loc VARCHAR(100) NOT NULL,
+    outcome_type VARCHAR NOT NULL,
     PRIMARY KEY (outcome_id)
 );
 

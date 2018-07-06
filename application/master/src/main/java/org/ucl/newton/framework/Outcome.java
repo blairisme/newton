@@ -33,19 +33,27 @@ public class Outcome {
     @Column(name = "outcome_loc")
     private String outcomeLocation;
 
+    @Enumerated( EnumType.STRING )
+    @Column(name = "outcome_type")
+    private OutcomeType type;
+
     public Outcome() { }
 
     public Outcome(
         int id,
-        String outcomeLocation)
+        String outcomeLocation,
+        OutcomeType type)
     {
         this.id = id;
         this.outcomeLocation = outcomeLocation;
+        this.type = type;
     }
 
     public int getId() { return id; }
 
     public String getOutcomeLocation() { return outcomeLocation; }
+
+    public OutcomeType getType() { return type; }
 
     @Override
     public boolean equals(Object obj) {
@@ -58,6 +66,7 @@ public class Outcome {
         return new EqualsBuilder()
                 .append(id, outcome.id)
                 .append(outcomeLocation, outcome.outcomeLocation)
+                .append(type, outcome.type)
                 .isEquals();
     }
 
@@ -66,6 +75,7 @@ public class Outcome {
         return new HashCodeBuilder(17, 37)
                 .append(id)
                 .append(outcomeLocation)
+                .append(type)
                 .toHashCode();
     }
 }
