@@ -18,6 +18,7 @@ package org.ucl.newton.bridge;
 public class ExecutionRequest
 {
     private String id;
+    private String projectId;
     private String mainFilename;
     private String repoUrl;
     private int type;

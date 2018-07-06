@@ -17,5 +17,9 @@ package org.ucl.newton.bridge;
  */
 public interface ExecutionNode
 {
-    void execute(ExecutionRequest executionRequest);
+    void execute(ExecutionRequest executionRequest) throws ExecutionException;
+//
+//    InputStream getExecutionResults(String projectId);
+//
+//    InputStream getExecutionLog(String projectId);
 }

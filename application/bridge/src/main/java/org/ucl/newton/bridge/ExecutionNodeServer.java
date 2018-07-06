@@ -9,37 +9,12 @@
 
 package org.ucl.newton.bridge;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
 /**
- * Instances of this class represent a remote system capable of executing an
- * experiment.
+ * Implementors of this interface provide methods that are called when
+ * {@link ExecutionNodeClient} methods are invoked.
  *
  * @author Blair Butterworth
  */
-@RestController
-public class ExecutionNodeServer
+public interface ExecutionNodeServer extends ExecutionNode
 {
-    private ExecutionNode delegate;
-
-    @Autowired
-    public ExecutionNodeServer(@Nullable @Qualifier(value="server") ExecutionNode delegate) {
-        this.delegate = delegate;
-    }
-
-    @PostMapping("/execute")
-    public ResponseEntity<?> execute(@RequestBody ExecutionRequest executionRequest)
-    {
-        if (delegate != null) {
-            delegate.execute(executionRequest);
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
 }

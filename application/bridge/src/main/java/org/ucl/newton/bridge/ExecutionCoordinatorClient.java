@@ -19,13 +19,12 @@ import org.ucl.newton.common.network.RestServer;
 import org.ucl.newton.common.serialization.JsonSerializer;
 
 /**
- * Instances of this class represent the system controlling remote execution on
- * {@link ExecutionNode ExecutionNodes}.
+ * Instances of this class make requests to the remote system controlling
+ * execution on {@link ExecutionNode ExecutionNodes}.
  *
  * @author Blair Butterworth
  */
 @Component
-@Qualifier("client")
 public class ExecutionCoordinatorClient implements ExecutionCoordinator
 {
     private String address;

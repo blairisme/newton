@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.ucl.newton.bridge.ExecutionCoordinator;
 import org.ucl.newton.bridge.ExecutionNode;
+import org.ucl.newton.bridge.ExecutionNodeServer;
 import org.ucl.newton.bridge.ExecutionRequest;
 import pojo.AnalysisRequest;
 import pojo.AnalysisResponse;
@@ -21,16 +22,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.UUID;
 
 @Named
-@Qualifier("server")
-public class Controller implements ExecutionNode {
+public class Controller implements ExecutionNodeServer {
 
     private RequestHandler requestHandler;
     private ExecutionCoordinator executionCoordinator;
 
     @Autowired
-    public Controller(@Qualifier("client") ExecutionCoordinator executionCoordinator) {
+    public Controller(ExecutionCoordinator executionCoordinator) {
         this.requestHandler = new RequestHandler();
         this.executionCoordinator = executionCoordinator;
     }
@@ -46,6 +47,8 @@ public class Controller implements ExecutionNode {
             "");
     }
 
+
+
 //    @RequestMapping("/analyse")
     public AnalysisResponse analyse(@RequestParam(value="id") String id,
                                     @RequestParam(value="mainFilename") String mainFilename,
@@ -53,6 +56,7 @@ public class Controller implements ExecutionNode {
                                     @RequestParam(value="type") int type,
                                     @RequestParam(value="outputPattern") String outputPattern,
                                     @RequestParam(value="pluginJarUrl", required = false) String pluginJarUrl) {
+
 
         System.out.println("pluginJarUrl="+pluginJarUrl);
         return requestHandler.process(new AnalysisRequest(id, mainFilename, repoUrl, type, outputPattern, pluginJarUrl));

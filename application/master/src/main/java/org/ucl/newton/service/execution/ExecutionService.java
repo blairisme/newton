@@ -10,12 +10,8 @@
 package org.ucl.newton.service.execution;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.ucl.newton.bridge.ExecutionNodeClient;
+import org.ucl.newton.bridge.*;
 import org.ucl.newton.framework.Experiment;
-import org.ucl.newton.bridge.ExecutionCoordinator;
-import org.ucl.newton.bridge.ExecutionNode;
-import org.ucl.newton.bridge.ExecutionRequest;
-import org.ucl.newton.bridge.ExecutionResult;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -31,8 +27,7 @@ import java.util.List;
  */
 @Named
 @Singleton
-@Qualifier("server")
-public class ExecutionService implements ExecutionCoordinator
+public class ExecutionService implements ExecutionCoordinatorServer
 {
     private SlaveRepository slaveRepository;
     private List<ExecutionNode> executionNodes;

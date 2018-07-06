@@ -19,30 +19,18 @@ package org.ucl.newton.bridge;
 public class ExecutionResult
 {
     private String id;
-    private String zipOutputFileUrl;
-    private String logFileUrl;
     private String errorMessage;
 
     public ExecutionResult() {
     }
 
-    public ExecutionResult(String id, String zipOutputFileUrl, String logFileUrl, String errorMessage) {
+    public ExecutionResult(String id, String errorMessage) {
         this.id = id;
-        this.zipOutputFileUrl = zipOutputFileUrl;
-        this.logFileUrl = logFileUrl;
         this.errorMessage = errorMessage;
     }
 
     public String getId() {
         return id;
-    }
-
-    public String getZipOutputFileUrl() {
-        return zipOutputFileUrl;
-    }
-
-    public String getLogFileUrl() {
-        return logFileUrl;
     }
 
     public String getErrorMessage() {
