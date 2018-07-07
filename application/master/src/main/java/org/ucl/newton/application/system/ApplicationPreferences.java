@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.application.webapp;
+package org.ucl.newton.application.system;
 
 import org.ucl.newton.common.file.SystemPaths;
 import org.ucl.newton.common.file.SystemUtils;

@@ -15,6 +15,7 @@ package org.ucl.newton.bridge;
  *
  * @author Blair Butterworth
  */
-public interface ExecutionNodeServer extends ExecutionNode
+public interface ExecutionNodeServer //extends ExecutionNode
 {
+    void execute(ExecutionRequest executionRequest) throws ExecutionException;
 }

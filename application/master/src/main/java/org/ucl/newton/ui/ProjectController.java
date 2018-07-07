@@ -19,7 +19,7 @@ import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.project.ProjectService;
-import org.ucl.newton.application.webapp.ApplicationStorage;
+import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;

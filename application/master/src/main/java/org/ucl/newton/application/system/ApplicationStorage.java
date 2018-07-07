@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.application.webapp;
+package org.ucl.newton.application.system;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;

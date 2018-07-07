@@ -9,6 +9,8 @@
 
 package org.ucl.newton.service.experiment;
 
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.ucl.newton.framework.Experiment;
 
 import javax.inject.Inject;
@@ -21,13 +23,15 @@ import java.util.Collection;
  * @author Blair Butterworth
  * @author John Wilkie
  */
-@Named
+@Service
 public class ExperimentService
 {
     private ExperimentRepository repository;
 
     @Inject
-    public ExperimentService(ExperimentRepository repository) { this.repository = repository; }
+    public ExperimentService(ExperimentRepository repository) {
+        this.repository = repository;
+    }
 
     public Collection<Experiment> getExperimentsByParentProjectName(String projectName) {
         Collection<Experiment> experiments = repository.getExperimentsForProject(projectName);

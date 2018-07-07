@@ -32,9 +32,8 @@ public class ExecutionNodeController
         this.delegate = delegate;
     }
 
-    @PostMapping("/execute")
-    public ResponseEntity<?> execute(@RequestBody ExecutionRequest executionRequest)
-    {
+    @PostMapping("/api/experiment/execute")
+    public ResponseEntity<?> execute(@RequestBody ExecutionRequest executionRequest) {
         if (delegate != null) {
             delegate.execute(executionRequest);
             return ResponseEntity.ok().build();
@@ -42,3 +41,5 @@ public class ExecutionNodeController
         return ResponseEntity.notFound().build();
     }
 }
+
+
