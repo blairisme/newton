@@ -16,6 +16,9 @@ import org.ucl.newton.common.network.RestRequest;
 import org.ucl.newton.common.network.RestServer;
 import org.ucl.newton.common.serialization.JsonSerializer;
 
+import java.io.InputStream;
+import java.net.URL;
+
 /**
  * Instances of this class make requests to a remote system capable of
  * executing an experiment.
@@ -36,9 +39,31 @@ public class ExecutionNodeClient implements ExecutionNode
     public void execute(ExecutionRequest executionRequest) throws ExecutionException {
         try {
             RestServer server = getServer();
-            RestRequest request = server.post("execute");
+            RestRequest request = server.post("api/experiment/execute");
             request.setBody(executionRequest, ExecutionRequest.class);
             request.make();
+        }
+        catch (Exception cause) {
+            throw new ExecutionException(cause);
+        }
+    }
+
+    @Override
+    public InputStream getExecutionLog(String projectId) throws ExecutionException {
+        try {
+            URL url = new URL(address + "/files/projects/" + projectId + "/log.txt");
+            return url.openStream();
+        }
+        catch (Exception cause) {
+            throw new ExecutionException(cause);
+        }
+    }
+
+    @Override
+    public InputStream getExecutionOutput(String projectId) throws ExecutionException {
+        try {
+            URL url = new URL(address + "/files/projects/" + projectId + "/output.zip");
+            return url.openStream();
         }
         catch (Exception cause) {
             throw new ExecutionException(cause);

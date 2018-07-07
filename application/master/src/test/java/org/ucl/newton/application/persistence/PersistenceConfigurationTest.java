@@ -16,7 +16,7 @@ import org.mockito.Mockito;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.ucl.newton.application.webapp.ApplicationPreferences;
+import org.ucl.newton.application.system.ApplicationPreferences;
 
 import javax.sql.DataSource;
 

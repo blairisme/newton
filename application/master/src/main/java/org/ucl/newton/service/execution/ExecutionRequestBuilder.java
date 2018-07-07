@@ -1,0 +1,32 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
+package org.ucl.newton.service.execution;
+
+import org.ucl.newton.bridge.ExecutionRequest;
+import org.ucl.newton.framework.Experiment;
+
+public class ExecutionRequestBuilder
+{
+    public ExecutionRequestBuilder() {
+
+    }
+
+
+
+    public static ExecutionRequest getExecutionRequest(Experiment experiment) {
+
+        return new ExecutionRequest(
+                "12345",
+                "test.py",
+                "https://github.com/ziad-alhalabi/python-test/archive/master.zip",
+                0,
+                "*.py");
+    }
+}

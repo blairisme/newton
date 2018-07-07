@@ -38,7 +38,7 @@ public class ExecutionCoordinatorClient implements ExecutionCoordinator
     public void executionComplete(ExecutionResult executionResult) {
         try {
             RestServer server = getServer();
-            RestRequest request = server.post("complete");
+            RestRequest request = server.post("api/experiment/complete");
             request.setBody(executionResult, ExecutionResult.class);
             request.make();
         }

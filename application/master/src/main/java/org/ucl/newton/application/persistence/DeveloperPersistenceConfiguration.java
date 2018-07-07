@@ -40,7 +40,7 @@ import java.util.Properties;
 @Configuration
 @Profile("development")
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"org.ucl.newton.service", "org.ucl.newton.framework"})
+@ComponentScan(basePackages = {"org.ucl.newton.service", "org.ucl.newton.framework", "org.ucl.newton.application.system"})
 @SuppressWarnings("unused")
 public class DeveloperPersistenceConfiguration
 {
