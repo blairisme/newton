@@ -35,35 +35,50 @@ public class Experiment
     private String name;
 
     @ManyToOne
-    private Project parentProject;
-
-    @ManyToOne
+    @JoinColumn(name = "creator_id")
     private User creator;
 
-    // Visualizer visualization
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+    @ManyToOne
+    @JoinColumn(name="processor_configuration_id")
+    private DataProcessorConfiguration processorConfiguration;
+
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "experiment_datasources",
+        joinColumns = @JoinColumn(name = "experiement_id", referencedColumnName = "exp_id"),
+        inverseJoinColumns = @JoinColumn( name = "datasource_id", referencedColumnName = "ds_id"))
+    private Collection<DataSource> dataSources;
 
     @OneToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "experiment_versions",
-            joinColumns = @JoinColumn(name = "experiment_id", referencedColumnName = "exp_id", foreignKey = @ForeignKey(name = "fk_experiment_versions_exp")),
-            inverseJoinColumns = @JoinColumn(name = "version_id", referencedColumnName = "ver_id", foreignKey = @ForeignKey(name = "fk_experiment_versions_ver"))
-    )
-    private Collection<ExperimentVersion> expVersions;
+        joinColumns = @JoinColumn(name = "experiment_id", referencedColumnName = "exp_id"),
+        inverseJoinColumns = @JoinColumn(name = "version_id", referencedColumnName = "ver_id"))
+    private Collection<ExperimentVersion> versions;
 
-    public Experiment() {}
+    public Experiment() {
+    }
 
     public Experiment(
         int id,
         String name,
-        Project parentProject,
         User creator,
+        Project project,
+        DataProcessorConfiguration processorConfiguration,
+        Collection<DataSource> dataSources,
         Collection<ExperimentVersion> versions)
     {
         this.id = id;
         this.name = name;
-        this.parentProject = parentProject;
         this.creator = creator;
-        this.expVersions = versions;
+        this.project = project;
+        this.processorConfiguration = processorConfiguration;
+        this.dataSources = dataSources;
+        this.versions = versions;
     }
 
     public int getId() {
@@ -79,9 +94,25 @@ public class Experiment
         return name;
     }
 
-    public Project getParentProject() { return parentProject; }
+    public User getCreator() {
+        return creator;
+    }
 
-    public User getCreator() { return creator; }
+    public Project getProject() {
+        return project;
+    }
 
-    public Collection<ExperimentVersion> getVersions() { return expVersions; }
+    public DataProcessorConfiguration getProcessorConfiguration() {
+        return processorConfiguration;
+    }
+
+    public Collection<DataSource> getDataSources() {
+        return dataSources;
+    }
+
+    public Collection<ExperimentVersion> getVersions() {
+        return versions;
+    }
+
+
 }

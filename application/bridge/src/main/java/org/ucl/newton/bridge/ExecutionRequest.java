@@ -18,7 +18,7 @@ package org.ucl.newton.bridge;
 public class ExecutionRequest
 {
     private String id;
-    private String projectId;
+    private int experimentId;
     private String mainFilename;
     private String repoUrl;
     private int type;
@@ -27,8 +27,9 @@ public class ExecutionRequest
     public ExecutionRequest() {
     }
 
-    public ExecutionRequest(String id, String mainFilename, String repoUrl, int type, String outputPattern) {
+    public ExecutionRequest(String id, int experimentId, String mainFilename, String repoUrl, int type, String outputPattern) {
         this.id = id;
+        this.experimentId = experimentId;
         this.mainFilename = mainFilename;
         this.repoUrl = repoUrl;
         this.type = type;
@@ -37,6 +38,10 @@ public class ExecutionRequest
 
     public String getId() {
         return id;
+    }
+
+    public int getExperimentId() {
+        return experimentId;
     }
 
     public String getMainFilename() {

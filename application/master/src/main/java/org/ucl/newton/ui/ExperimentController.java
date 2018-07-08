@@ -56,7 +56,7 @@ public class ExperimentController
         model.addAttribute("user", user);
         Experiment selectedExperiment = experimentService.getExperimentById(experimentId);
         model.addAttribute("experiment", selectedExperiment);
-        model.addAttribute("project", selectedExperiment.getParentProject());
+        model.addAttribute("project", selectedExperiment.getProject());
         return "project/experiment/overview";
     }
 

@@ -1,7 +1,18 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.framework;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import javax.persistence.*;
 
 /**
@@ -9,8 +20,8 @@ import javax.persistence.*;
  * data for an experiment.
  *
  * @author John Wilkie
+ * @author Blair Butterworth
  */
-
 @Entity
 @Table(name = "datasources")
 public class DataSource {
@@ -29,7 +40,8 @@ public class DataSource {
     @Column(name = "ds_data_location")
     private String dataLocation;
 
-    public DataSource() {}
+    public DataSource() {
+    }
 
     public DataSource(int id, String name, int version, String dataLocation) {
         this.id = id;
@@ -38,27 +50,34 @@ public class DataSource {
         this.dataLocation = dataLocation;
     }
 
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public int getVersion() { return version; }
+    public int getVersion() {
+        return version;
+    }
 
-    public String getDataLocation() { return dataLocation; }
+    public String getDataLocation() {
+        return dataLocation;
+    }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) { return false; }
-        if (obj == this) { return true; }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        DataSource dataSource = (DataSource)obj;
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (obj.getClass() != getClass()) return false;
+
+        DataSource other = (DataSource)obj;
         return new EqualsBuilder()
-            .append(id, dataSource.id)
-            .append(name, dataSource.name)
-            .append(version, dataSource.version)
-            .append(dataLocation, dataSource.dataLocation)
+            .append(this.id, other.id)
+            .append(this.name, other.name)
+            .append(this.version, other.version)
+            .append(this.dataLocation, other.dataLocation)
             .isEquals();
     }
 
@@ -70,6 +89,16 @@ public class DataSource {
             .append(version)
             .append(dataLocation)
             .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("id", id)
+            .append("name", name)
+            .append("version", version)
+            .append("dataLocation", dataLocation)
+            .toString();
     }
 }
 

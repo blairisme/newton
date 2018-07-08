@@ -9,12 +9,10 @@
 
 package org.ucl.newton.service.experiment;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.framework.Experiment;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.Collection;
 
 /**
@@ -41,5 +39,9 @@ public class ExperimentService
 
     public Experiment getExperimentById(int experimentId) {
         return repository.getExperimentById(experimentId);
+    }
+
+    public void update(Experiment experiment) {
+        
     }
 }

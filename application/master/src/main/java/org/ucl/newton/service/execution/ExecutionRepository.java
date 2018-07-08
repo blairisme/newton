@@ -14,7 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.bridge.ExecutionNode;
-import org.ucl.newton.bridge.ExecutionResult;
+import org.ucl.newton.bridge.ExecutionRequest;
+import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.service.experiment.ExperimentService;
 
 import java.io.InputStream;
@@ -26,21 +27,22 @@ import java.io.OutputStream;
  * @author Blair Butterworth
  */
 @Service
-public class ExecutionResultRepository
+public class ExecutionRepository
 {
     private ApplicationStorage applicationStorage;
     private ExperimentService experimentService;
 
     @Autowired
-    public ExecutionResultRepository(ApplicationStorage applicationStorage, ExperimentService experimentService) {
+    public ExecutionRepository(ApplicationStorage applicationStorage, ExperimentService experimentService) {
         this.applicationStorage = applicationStorage;
         this.experimentService = experimentService;
     }
 
-    public void add(ExecutionNode executionNode, ExecutionResult executionResult) {
-        String experimentId = executionResult.getId();
+    public void add(ExecutionNode executionNode, ExecutionRequest executionRequest) {
+        String experimentId = Integer.toString(executionRequest.getExperimentId());
         persistLog(executionNode, experimentId);
         persistOutput(executionNode, experimentId);
+        persistExperiment(executionRequest);
     }
 
     private void persistLog(ExecutionNode executionNode, String experimentId) {
@@ -52,6 +54,7 @@ public class ExecutionResultRepository
             error.printStackTrace();
         }
     }
+
     private void persistOutput(ExecutionNode executionNode, String experimentId) {
         try(InputStream inputStream = executionNode.getExecutionOutput(experimentId);
             OutputStream outputStream = applicationStorage.getOutputStream("experiment/" + experimentId, "output.zip")) {
@@ -60,5 +63,12 @@ public class ExecutionResultRepository
         catch (Exception error){
             error.printStackTrace();
         }
+    }
+
+    private void persistExperiment(ExecutionRequest executionRequest) {
+        Experiment experiment = experimentService.getExperimentById(executionRequest.getExperimentId());
+
+
+
     }
 }

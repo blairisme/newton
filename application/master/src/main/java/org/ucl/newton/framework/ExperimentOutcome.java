@@ -11,6 +11,7 @@ package org.ucl.newton.framework;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 
@@ -23,7 +24,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "outcomes")
-public class Outcome {
+public class ExperimentOutcome {
 
     @Id
     @Column(name = "outcome_id")
@@ -31,29 +32,36 @@ public class Outcome {
     private int id;
 
     @Column(name = "outcome_loc")
-    private String outcomeLocation;
+    private String path;
 
-    @Enumerated( EnumType.STRING )
+    @Enumerated(EnumType.STRING)
     @Column(name = "outcome_type")
-    private OutcomeType type;
+    private ExperimentOutcomeType type;
 
-    public Outcome() { }
+    public ExperimentOutcome() {
+    }
 
-    public Outcome(
+    public ExperimentOutcome(
         int id,
-        String outcomeLocation,
-        OutcomeType type)
+        String path,
+        ExperimentOutcomeType type)
     {
         this.id = id;
-        this.outcomeLocation = outcomeLocation;
+        this.path = path;
         this.type = type;
     }
 
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getOutcomeLocation() { return outcomeLocation; }
+    public String getPath() {
+        return path;
+    }
 
-    public OutcomeType getType() { return type; }
+    public ExperimentOutcomeType getType() {
+        return type;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -62,20 +70,29 @@ public class Outcome {
         if (obj.getClass() != getClass()) {
             return false;
         }
-        Outcome outcome = (Outcome)obj;
+        ExperimentOutcome other = (ExperimentOutcome)obj;
         return new EqualsBuilder()
-                .append(id, outcome.id)
-                .append(outcomeLocation, outcome.outcomeLocation)
-                .append(type, outcome.type)
-                .isEquals();
+            .append(this.id, other.id)
+            .append(this.path, other.path)
+            .append(this.type, other.type)
+            .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(id)
-                .append(outcomeLocation)
-                .append(type)
-                .toHashCode();
+            .append(id)
+            .append(path)
+            .append(type)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("id", id)
+            .append("path", path)
+            .append("type", type)
+            .toString();
     }
 }

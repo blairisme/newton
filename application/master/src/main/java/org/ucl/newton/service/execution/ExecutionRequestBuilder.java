@@ -12,6 +12,8 @@ package org.ucl.newton.service.execution;
 import org.ucl.newton.bridge.ExecutionRequest;
 import org.ucl.newton.framework.Experiment;
 
+import java.util.UUID;
+
 /**
  * Instances of this class build {@link ExecutionRequest} objects.
  *
@@ -19,10 +21,10 @@ import org.ucl.newton.framework.Experiment;
  */
 public class ExecutionRequestBuilder
 {
-    public static ExecutionRequest getExecutionRequest(Experiment experiment) {
-
+    public static ExecutionRequest forExperiment(Experiment experiment) {
         return new ExecutionRequest(
-                "12345",
+                UUID.randomUUID().toString(),
+                experiment.getId(),
                 "test.py",
                 "https://github.com/ziad-alhalabi/python-test/archive/master.zip",
                 0,

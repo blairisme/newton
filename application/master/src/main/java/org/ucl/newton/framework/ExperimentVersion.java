@@ -1,5 +1,17 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.framework;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -26,54 +38,89 @@ public class ExperimentVersion {
     @Column(name = "ver_name")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name="process_id")
-    private ExperimentProcess process;
-
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "version_data_sources",
-            joinColumns = @JoinColumn(name = "ver_id", referencedColumnName = "ver_id", foreignKey = @ForeignKey(name = "fk_vds_ver")),
-            inverseJoinColumns = @JoinColumn(name = "ds_id", referencedColumnName = "ds_id", foreignKey = @ForeignKey(name = "fk_vds_ds"))
-    )
-    private Collection<DataSource> dataSources;
-
     @OneToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "version_outcomes",
             joinColumns = @JoinColumn(name = "ver_id", referencedColumnName = "ver_id", foreignKey = @ForeignKey(name = "fk_vo_ver")),
             inverseJoinColumns = @JoinColumn(name = "out_id", referencedColumnName = "outcome_id", foreignKey = @ForeignKey(name = "fk_vo_out"))
     )
-    private Collection<Outcome> outcomes;
+    private Collection<ExperimentOutcome> outcomes;
 
-    // Likely to need console output, when it ran, duration, if it failed etc here but could go in outcomes or a status class
-
-    public ExperimentVersion(){ }
+    public ExperimentVersion(){
+    }
 
     public ExperimentVersion(
+        int number,
+        String name,
+        DataProcessor process,
+        Collection<DataSource> dataSources,
+        Collection<ExperimentOutcome> outcomes)
+    {
+        this(0, number, name, process, dataSources, outcomes);
+    }
+
+    private ExperimentVersion(
         int id,
         int number,
         String name,
-        ExperimentProcess process,
+        DataProcessor process,
         Collection<DataSource> dataSources,
-        Collection<Outcome> outcomes)
+        Collection<ExperimentOutcome> outcomes)
     {
         this.id = id;
         this.number = number;
         this.name = name;
-        this.process = process;
-        this.dataSources = dataSources;
         this.outcomes = outcomes;
     }
 
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
 
-    public int getNumber() { return number; }
+    public int getNumber() {
+        return number;
+    }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public ExperimentProcess getProcess() { return process; }
+    public Collection<ExperimentOutcome> getOutcomes() {
+        return outcomes;
+    }
 
-    public Collection<DataSource> getDataSources() { return dataSources; }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (obj.getClass() != getClass()) return false;
 
-    public Collection<Outcome> getOutcomes() { return outcomes; }
+        ExperimentVersion other = (ExperimentVersion)obj;
+        return new EqualsBuilder()
+            .append(this.id, other.id)
+            .append(this.number, other.number)
+            .append(this.name, other.name)
+            .append(this.outcomes, other.outcomes)
+            .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+            .append(id)
+            .append(number)
+            .append(name)
+            .append(outcomes)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("id", id)
+            .append("number", number)
+            .append("name", name)
+            .append("outcomes", outcomes)
+            .toString();
+    }
 }

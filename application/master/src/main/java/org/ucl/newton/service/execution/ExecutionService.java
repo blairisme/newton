@@ -9,7 +9,6 @@
 
 package org.ucl.newton.service.execution;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.ucl.newton.bridge.*;
 import org.ucl.newton.framework.Experiment;
 
@@ -22,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.ucl.newton.service.execution.ExecutionRequestBuilder.forExperiment;
+
 /**
  * Instances of this class run experiments.
  *
@@ -32,36 +33,40 @@ import java.util.Map;
 public class ExecutionService implements ExecutionCoordinatorServer
 {
     private SlaveRepository slaveRepository;
-    private ExecutionResultRepository resultRepository;
+    private ExecutionRepository resultRepository;
+    private Provider<ExecutionNodeClient> executionNodeFactory;
 
     private List<ExecutionNode> executionNodes;
-    private Map<String, ExecutionNode> executionRequests;
-    private Provider<ExecutionNodeClient> executionNodeFactory;
+    private Map<String, ExecutionNode> executingNodes;
+    private Map<String, ExecutionRequest> executingRequests;
 
     @Inject
     public ExecutionService(
         SlaveRepository slaveRepository,
-        ExecutionResultRepository resultRepository,
+        ExecutionRepository resultRepository,
         Provider<ExecutionNodeClient> executionNodeFactory)
     {
         this.slaveRepository = slaveRepository;
         this.resultRepository = resultRepository;
         this.executionNodeFactory = executionNodeFactory;
-        this.executionRequests = new HashMap<>();
+        this.executingNodes = new HashMap<>();
+        this.executingRequests = new HashMap<>();
     }
 
     public void run(Experiment experiment) {
-        ExecutionRequest executionRequest = ExecutionRequestBuilder.getExecutionRequest(experiment);
+        ExecutionRequest executionRequest = forExperiment(experiment);
         ExecutionNode executionNode = getAvailableExecutionNode();
 
-        executionRequests.put(executionRequest.getId(), executionNode);
+        executingNodes.put(executionRequest.getId(), executionNode);
+        executingRequests.put(executionRequest.getId(), executionRequest);
         executionNode.execute(executionRequest);
     }
 
     @Override
     public void executionComplete(ExecutionResult executionResult) {
-        ExecutionNode executionNode = executionRequests.remove(executionResult.getId());
-        resultRepository.add(executionNode, executionResult);
+        ExecutionNode executionNode = executingNodes.remove(executionResult.getId());
+        ExecutionRequest executionRequest = executingRequests.remove(executionResult.getId());
+        resultRepository.add(executionNode, executionRequest);
     }
 
     private ExecutionNode getAvailableExecutionNode(){
