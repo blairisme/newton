@@ -35,9 +35,6 @@ public class ExperimentVersion {
     @Column(name = "ver_number")
     private int number;
 
-    @Column(name = "ver_name")
-    private String name;
-
     @OneToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "version_outcomes",
@@ -51,25 +48,18 @@ public class ExperimentVersion {
 
     public ExperimentVersion(
         int number,
-        String name,
-        DataProcessor process,
-        Collection<DataSource> dataSources,
         Collection<ExperimentOutcome> outcomes)
     {
-        this(0, number, name, process, dataSources, outcomes);
+        this(0, number, outcomes);
     }
 
     private ExperimentVersion(
         int id,
         int number,
-        String name,
-        DataProcessor process,
-        Collection<DataSource> dataSources,
         Collection<ExperimentOutcome> outcomes)
     {
         this.id = id;
         this.number = number;
-        this.name = name;
         this.outcomes = outcomes;
     }
 
@@ -79,10 +69,6 @@ public class ExperimentVersion {
 
     public int getNumber() {
         return number;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public Collection<ExperimentOutcome> getOutcomes() {
@@ -99,7 +85,6 @@ public class ExperimentVersion {
         return new EqualsBuilder()
             .append(this.id, other.id)
             .append(this.number, other.number)
-            .append(this.name, other.name)
             .append(this.outcomes, other.outcomes)
             .isEquals();
     }
@@ -109,7 +94,6 @@ public class ExperimentVersion {
         return new HashCodeBuilder(17, 37)
             .append(id)
             .append(number)
-            .append(name)
             .append(outcomes)
             .toHashCode();
     }
@@ -119,7 +103,6 @@ public class ExperimentVersion {
         return new ToStringBuilder(this)
             .append("id", id)
             .append("number", number)
-            .append("name", name)
             .append("outcomes", outcomes)
             .toString();
     }

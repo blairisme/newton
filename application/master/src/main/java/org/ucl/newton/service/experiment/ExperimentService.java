@@ -42,6 +42,6 @@ public class ExperimentService
     }
 
     public void update(Experiment experiment) {
-        
+        repository.update(experiment);
     }
 }

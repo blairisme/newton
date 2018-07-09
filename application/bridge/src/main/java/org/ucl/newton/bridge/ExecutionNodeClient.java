@@ -17,6 +17,7 @@ import org.ucl.newton.common.network.RestServer;
 import org.ucl.newton.common.serialization.JsonSerializer;
 
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 
 /**
@@ -49,10 +50,11 @@ public class ExecutionNodeClient implements ExecutionNode
     }
 
     @Override
-    public InputStream getExecutionLog(String projectId) throws ExecutionException {
+    public InputStream getExecutionLog(ExecutionResult executionResult) throws ExecutionException {
         try {
-            URL url = new URL(address + "/files/projects/" + projectId + "/log.txt");
-            return url.openStream();
+            URI logUri = executionResult.getLogPath();
+            URL logUrl = logUri.toURL();
+            return logUrl.openStream();
         }
         catch (Exception cause) {
             throw new ExecutionException(cause);
@@ -60,10 +62,11 @@ public class ExecutionNodeClient implements ExecutionNode
     }
 
     @Override
-    public InputStream getExecutionOutput(String projectId) throws ExecutionException {
+    public InputStream getExecutionOutput(ExecutionResult executionResult) throws ExecutionException {
         try {
-            URL url = new URL(address + "/files/projects/" + projectId + "/output.zip");
-            return url.openStream();
+            URI outputUri = executionResult.getOutputPath();
+            URL outputUrl = outputUri.toURL();
+            return outputUrl.openStream();
         }
         catch (Exception cause) {
             throw new ExecutionException(cause);

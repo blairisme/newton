@@ -38,7 +38,6 @@ public class ExecutionService implements ExecutionCoordinatorServer
 
     private List<ExecutionNode> executionNodes;
     private Map<String, ExecutionNode> executingNodes;
-    private Map<String, ExecutionRequest> executingRequests;
 
     @Inject
     public ExecutionService(
@@ -50,7 +49,6 @@ public class ExecutionService implements ExecutionCoordinatorServer
         this.resultRepository = resultRepository;
         this.executionNodeFactory = executionNodeFactory;
         this.executingNodes = new HashMap<>();
-        this.executingRequests = new HashMap<>();
     }
 
     public void run(Experiment experiment) {
@@ -58,15 +56,13 @@ public class ExecutionService implements ExecutionCoordinatorServer
         ExecutionNode executionNode = getAvailableExecutionNode();
 
         executingNodes.put(executionRequest.getId(), executionNode);
-        executingRequests.put(executionRequest.getId(), executionRequest);
         executionNode.execute(executionRequest);
     }
 
     @Override
     public void executionComplete(ExecutionResult executionResult) {
         ExecutionNode executionNode = executingNodes.remove(executionResult.getId());
-        ExecutionRequest executionRequest = executingRequests.remove(executionResult.getId());
-        resultRepository.add(executionNode, executionRequest);
+        resultRepository.add(executionNode, executionResult);
     }
 
     private ExecutionNode getAvailableExecutionNode(){

@@ -10,7 +10,10 @@
 package org.ucl.newton.framework;
 
 import org.apache.commons.lang3.Validate;
-import org.ucl.newton.bridge.ExecutionResult;
+
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Instances of this class build {@link ExperimentVersion ExperimentVersions}.
@@ -19,30 +22,32 @@ import org.ucl.newton.bridge.ExecutionResult;
  */
 public class ExperimentVersionBuilder
 {
-    private Experiment experiment;
-    private ExecutionResult result;
+    private Integer number;
+    private Collection<ExperimentOutcome> outcomes;
 
     public ExperimentVersionBuilder() {
-        experiment = null;
-        result = null;
+        number = null;
+        outcomes = new ArrayList<>();
     }
 
     public ExperimentVersionBuilder forExperiemnt(Experiment experiment) {
-        this.experiment = experiment;
+        this.number = experiment.getVersions().size() + 1;
         return this;
     }
 
-    public ExperimentVersionBuilder fromExecution(ExecutionResult result) {
-        this.result = result;
+    public ExperimentVersionBuilder setExperimentLog(Path path) {
+        outcomes.add(new ExperimentOutcome(path.toString(), ExperimentOutcomeType.EXPERIMENTLOG));
+        return this;
+    }
+
+    public ExperimentVersionBuilder setExperimentOutput(Path path) {
+        outcomes.add(new ExperimentOutcome(path.toString(), ExperimentOutcomeType.EXPERIMENTRESULT));
         return this;
     }
 
     public ExperimentVersion build() {
-        Validate.notNull(experiment);
-        Validate.notNull(result);
-
-
-        throw new UnsupportedOperationException();
-
+        Validate.notNull(number);
+        Validate.notEmpty(outcomes);
+        return new ExperimentVersion(number, outcomes);
     }
 }

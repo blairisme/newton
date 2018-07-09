@@ -69,7 +69,6 @@ public class ExperimentRepositoryTest {
 
         ExperimentVersion v1 = versions.iterator().next();
         Assert.assertEquals(1, v1.getId());
-        Assert.assertEquals("Version 1", v1.getName());
         Assert.assertEquals(1, v1.getNumber());
     }
 

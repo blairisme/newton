@@ -40,6 +40,10 @@ public class ExecutionRequest
         return id;
     }
 
+    public String getExperiment() {
+        return Integer.toString(experimentId);
+    }
+
     public int getExperimentId() {
         return experimentId;
     }

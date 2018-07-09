@@ -21,7 +21,7 @@ public interface ExecutionNode
 {
     void execute(ExecutionRequest executionRequest) throws ExecutionException;
 
-    InputStream getExecutionLog(String projectId) throws ExecutionException;
+    InputStream getExecutionLog(ExecutionResult executionResult) throws ExecutionException;
 
-    InputStream getExecutionOutput(String projectId) throws ExecutionException;
+    InputStream getExecutionOutput(ExecutionResult executionResult) throws ExecutionException;
 }

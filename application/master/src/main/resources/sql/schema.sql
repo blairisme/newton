@@ -124,7 +124,6 @@ CREATE TABLE IF NOT EXISTS experiment_datasources (
 CREATE TABLE IF NOT EXISTS versions (
     ver_id INT NOT NULL AUTO_INCREMENT,
     ver_number INT NOT NULL,
-    ver_name VARCHAR(45) NOT NULL,
     PRIMARY KEY (ver_id)
 );
 

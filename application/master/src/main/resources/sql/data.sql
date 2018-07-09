@@ -71,7 +71,7 @@ INSERT INTO experiment_datasources (experiement_id, datasource_id) VALUES (3, 5)
 INSERT INTO experiment_datasources (experiement_id, datasource_id) VALUES (3, 2);
 
 /* Insert experiment version data */
-INSERT INTO versions (ver_id, ver_number, ver_name) VALUES (1, 1, 'Version 1');
+INSERT INTO versions (ver_id, ver_number) VALUES (1, 1);
 
 /* Link versions to experiments */
 INSERT INTO experiment_versions (experiment_id, version_id) VALUES (1, 1);

@@ -42,6 +42,12 @@ public class ExperimentRepository {
         return session.get(Experiment.class, id);
     }
 
+    @Transactional
+    public void update(Experiment experiment) {
+        Session session = getSession();
+        session.update(experiment);
+    }
+
     private Session getSession() {
         return this.sessionFactory.getCurrentSession();
     }

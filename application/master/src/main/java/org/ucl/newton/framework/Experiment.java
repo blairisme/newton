@@ -9,6 +9,9 @@
 
 package org.ucl.newton.framework;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -114,5 +117,47 @@ public class Experiment
         return versions;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (obj.getClass() != getClass()) return false;
 
+        Experiment that = (Experiment)obj;
+        return new EqualsBuilder()
+            .append(this.id, that.id)
+            .append(this.name, that.name)
+            .append(this.creator, that.creator)
+            .append(this.project, that.project)
+            .append(this.processorConfiguration, that.processorConfiguration)
+            .append(this.dataSources, that.dataSources)
+            .append(this.versions, that.versions)
+            .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+            .append(id)
+            .append(name)
+            .append(creator)
+            .append(project)
+            .append(processorConfiguration)
+            .append(dataSources)
+            .append(versions)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("id", id)
+            .append("name", name)
+            .append("creator", creator)
+            .append("project", project)
+            .append("processorConfiguration", processorConfiguration)
+            .append("dataSources", dataSources)
+            .append("versions", versions)
+            .toString();
+    }
 }

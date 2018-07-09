@@ -63,7 +63,7 @@ public class ExperimentController
     @RequestMapping(value = "/project/{projectName}/experiment/{experimentId}/run", method = RequestMethod.GET)
     public String execute(@PathVariable("projectName") String projectName,
                           @PathVariable("experimentId") int experimentId, ModelMap model) {
-        executionService.run(null);
+        executionService.run(experimentService.getExperimentById(experimentId));
         return "redirect:/project/" + projectName + "/experiment/" + Integer.toString(experimentId);
     }
 }

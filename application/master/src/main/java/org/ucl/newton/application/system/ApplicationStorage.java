@@ -51,6 +51,10 @@ public class ApplicationStorage
         return new FileOutputStream(file);
     }
 
+    public Path getOutputPath(String group, String identifier) {
+        return Paths.get(group, identifier);
+    }
+
     private Path getPath(String group, String identifier) {
         return rootPath.resolve(group).resolve(identifier);
     }

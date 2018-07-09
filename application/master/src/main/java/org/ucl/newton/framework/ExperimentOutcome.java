@@ -42,6 +42,13 @@ public class ExperimentOutcome {
     }
 
     public ExperimentOutcome(
+        String path,
+        ExperimentOutcomeType type)
+    {
+        this(0, path, type);
+    }
+
+    public ExperimentOutcome(
         int id,
         String path,
         ExperimentOutcomeType type)
