@@ -9,19 +9,19 @@
 
 package org.ucl.newton.service.execution;
 
-import org.ucl.newton.bridge.*;
+import org.ucl.newton.bridge.ExecutionCoordinatorServer;
+import org.ucl.newton.bridge.ExecutionNode;
+import org.ucl.newton.bridge.ExecutionRequest;
+import org.ucl.newton.bridge.ExecutionResult;
 import org.ucl.newton.framework.Experiment;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.inject.Provider;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static org.ucl.newton.service.execution.ExecutionRequestBuilder.forExperiment;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Instances of this class run experiments.
@@ -32,53 +32,75 @@ import static org.ucl.newton.service.execution.ExecutionRequestBuilder.forExperi
 @Singleton
 public class ExecutionService implements ExecutionCoordinatorServer
 {
-    private SlaveRepository slaveRepository;
-    private ExecutionRepository resultRepository;
-    private Provider<ExecutionNodeClient> executionNodeFactory;
+    private ExecutorService executorService;
+    private ExecutionRepository executionRepository;
 
-    private List<ExecutionNode> executionNodes;
-    private Map<String, ExecutionNode> executingNodes;
+    private Queue<Experiment> executionQueue;
+    private Map<Integer, ExecutionNode> executionAssignment;
+    private Map<Integer, ExecutionRequest> executionRequests;
 
     @Inject
-    public ExecutionService(
-        SlaveRepository slaveRepository,
-        ExecutionRepository resultRepository,
-        Provider<ExecutionNodeClient> executionNodeFactory)
+    public ExecutionService(ExecutorService executorService, ExecutionRepository executionRepository)
     {
-        this.slaveRepository = slaveRepository;
-        this.resultRepository = resultRepository;
-        this.executionNodeFactory = executionNodeFactory;
-        this.executingNodes = new HashMap<>();
+        this.executorService = executorService;
+        this.executionRepository = executionRepository;
+
+        this.executionQueue = new ConcurrentLinkedQueue<>();
+        this.executionAssignment = new ConcurrentHashMap<>();
+        this.executionRequests = new ConcurrentHashMap<>();
     }
 
-    public void run(Experiment experiment) {
-        ExecutionRequest executionRequest = forExperiment(experiment);
-        ExecutionNode executionNode = getAvailableExecutionNode();
-
-        executingNodes.put(executionRequest.getId(), executionNode);
-        executionNode.execute(executionRequest);
+    public void beginExecution(Experiment experiment) {
+        executionQueue.add(experiment);
+        evaluateExecutionQueue();
     }
 
-    @Override
-    public void executionComplete(ExecutionResult executionResult) {
-        ExecutionNode executionNode = executingNodes.remove(executionResult.getId());
-        resultRepository.add(executionNode, executionResult);
-    }
-
-    private ExecutionNode getAvailableExecutionNode(){
-        List<ExecutionNode> executionNodes = getExecutionNodes();
-        return executionNodes.get(0);
-    }
-
-    private List<ExecutionNode> getExecutionNodes() {
-        if (executionNodes == null) {
-            executionNodes = new ArrayList<>();
-
-            for (SlaveDetails slaveDetails: slaveRepository.getSlaveDetails()){
-                ExecutionNode executionNode = executionNodeFactory.get();
-                executionNodes.add(executionNode);
-            }
+    public void cancelExecution(Experiment experiment) {
+        if (executionQueue.contains(experiment)) {
+            executionQueue.remove(experiment);
         }
-        return executionNodes;
+        if (executionAssignment.containsKey(experiment.getId())) {
+            ExecutionNode executionNode = executionAssignment.remove(experiment.getId());
+            ExecutionRequest executionRequest = executionRequests.remove(experiment.getId());
+            executionNode.cancel(executionRequest);
+        }
+        evaluateExecutionQueue();
+    }
+
+    public void executionComplete(ExecutionResult executionResult) {
+        executionRequests.remove(executionResult.getExperimentId());
+        ExecutionNode executionNode = executionAssignment.remove(executionResult.getExperimentId());
+
+        executionRepository.persistResult(executionNode, executionResult);
+        executorService.releaseExecutor(executionNode);
+
+        evaluateExecutionQueue();
+    }
+
+    public boolean isExecutionComplete(Experiment experiment) {
+        if (executionQueue.contains(experiment)) {
+            return false;
+        }
+        if (executionAssignment.containsKey(experiment.getId())) {
+            return false;
+        }
+        return true;
+    }
+
+    private void evaluateExecutionQueue() {
+        while (!executionQueue.isEmpty() && executorService.isExecutorAvailable()) {
+            Experiment experiment = executionQueue.remove();
+
+            ExecutionRequestBuilder requestBuilder = new ExecutionRequestBuilder();
+            requestBuilder.forExperiment(experiment);
+
+            ExecutionRequest executionRequest = requestBuilder.build();
+            ExecutionNode executionNode = executorService.reserveExecutor();
+
+            executionAssignment.put(experiment.getId(), executionNode);
+            executionRequests.put(experiment.getId(), executionRequest);
+
+            executionNode.execute(executionRequest);
+        }
     }
 }

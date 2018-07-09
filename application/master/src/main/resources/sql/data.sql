@@ -83,3 +83,9 @@ INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (2, 'outcome
 /* Link outcomes to versions */
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 1);
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 2);
+
+
+/*** System Settings ***/
+
+/* Slave configuration */
+INSERT INTO executors (id, address, username, password) VALUES (1, 'http://localhost:8080', 'user', 'password');

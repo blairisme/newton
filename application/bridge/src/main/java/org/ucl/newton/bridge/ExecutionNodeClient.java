@@ -32,14 +32,30 @@ public class ExecutionNodeClient implements ExecutionNode
 
     @Autowired
     public ExecutionNodeClient() {
-        //address = "http://51.140.167.6:8080";
         address = "http://localhost:8080";
+    }
+
+    public void setAddress(String address){
+        this.address = address;
     }
 
     public void execute(ExecutionRequest executionRequest) throws ExecutionException {
         try {
             RestServer server = getServer();
             RestRequest request = server.post("api/experiment/execute");
+            request.setBody(executionRequest, ExecutionRequest.class);
+            request.make();
+        }
+        catch (Exception cause) {
+            throw new ExecutionException(cause);
+        }
+    }
+
+    @Override
+    public void cancel(ExecutionRequest executionRequest) throws ExecutionException {
+        try {
+            RestServer server = getServer();
+            RestRequest request = server.post("api/experiment/cancel");
             request.setBody(executionRequest, ExecutionRequest.class);
             request.make();
         }

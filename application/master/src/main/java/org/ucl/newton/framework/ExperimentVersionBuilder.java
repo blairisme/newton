@@ -30,7 +30,7 @@ public class ExperimentVersionBuilder
         outcomes = new ArrayList<>();
     }
 
-    public ExperimentVersionBuilder forExperiemnt(Experiment experiment) {
+    public ExperimentVersionBuilder forExperiment(Experiment experiment) {
         this.number = experiment.getVersions().size() + 1;
         return this;
     }

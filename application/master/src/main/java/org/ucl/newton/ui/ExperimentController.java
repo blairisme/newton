@@ -41,9 +41,10 @@ public class ExperimentController
 
     @Inject
     public ExperimentController(
-            UserService userService,
-            ExperimentService experimentService,
-            ExecutionService executionService) {
+        UserService userService,
+        ExperimentService experimentService,
+        ExecutionService executionService)
+    {
         this.userService = userService;
         this.experimentService = experimentService;
         this.executionService = executionService;
@@ -51,7 +52,8 @@ public class ExperimentController
 
     @RequestMapping(value = "/project/{projectName}/experiment/{experimentId}", method = RequestMethod.GET)
     public String details(@PathVariable("projectName") String projectName,
-                                    @PathVariable("experimentId") int experimentId, ModelMap model) {
+                          @PathVariable("experimentId") int experimentId, ModelMap model)
+    {
         User user = userService.getAuthenticatedUser();
         model.addAttribute("user", user);
         Experiment selectedExperiment = experimentService.getExperimentById(experimentId);
@@ -62,8 +64,9 @@ public class ExperimentController
 
     @RequestMapping(value = "/project/{projectName}/experiment/{experimentId}/run", method = RequestMethod.GET)
     public String execute(@PathVariable("projectName") String projectName,
-                          @PathVariable("experimentId") int experimentId, ModelMap model) {
-        executionService.run(experimentService.getExperimentById(experimentId));
+                          @PathVariable("experimentId") int experimentId, ModelMap model)
+    {
+        executionService.beginExecution(experimentService.getExperimentById(experimentId));
         return "redirect:/project/" + projectName + "/experiment/" + Integer.toString(experimentId);
     }
 }

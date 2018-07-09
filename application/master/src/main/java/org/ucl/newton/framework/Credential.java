@@ -110,17 +110,16 @@ public class Credential implements Serializable, UserDetails
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) { return false; }
-        if (obj == this) { return true; }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        Credential other = (Credential)obj;
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (obj.getClass() != getClass()) return false;
+
+        Credential that = (Credential)obj;
         return new EqualsBuilder()
-            .append(this.id, other.id)
-            .append(this.userId, other.userId)
-            .append(this.username, other.username)
-            .append(this.password, other.password)
+            .append(this.id, that.id)
+            .append(this.userId, that.userId)
+            .append(this.username, that.username)
+            .append(this.password, that.password)
             .isEquals();
     }
 

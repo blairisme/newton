@@ -3,10 +3,7 @@ package rest;
 import engine.RequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.ucl.newton.bridge.ExecutionCoordinator;
-import org.ucl.newton.bridge.ExecutionNodeServer;
-import org.ucl.newton.bridge.ExecutionRequest;
-import org.ucl.newton.bridge.ExecutionResult;
+import org.ucl.newton.bridge.*;
 import pojo.AnalysisRequest;
 import pojo.AnalysisResponse;
 
@@ -42,5 +39,10 @@ public class Controller implements ExecutionNodeServer
                 URI.create("http://localhost:8080/files/projects/" + request.getExperiment() + "/log.txt"),
                 URI.create("http://localhost:8080/files/projects/" + request.getExperiment() + "/output.zip"),
                 response.getErrorMessage()));
+    }
+
+    @Async
+    @Override
+    public void cancel(ExecutionRequest executionRequest) throws ExecutionException {
     }
 }

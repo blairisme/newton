@@ -152,3 +152,15 @@ CREATE TABLE IF NOT EXISTS version_outcomes (
     CONSTRAINT fk_vo_ver FOREIGN KEY (ver_id) REFERENCES versions(ver_id),
     CONSTRAINT fk_vo_out FOREIGN KEY (out_id) REFERENCES outcomes(outcome_id),
 );
+
+
+/*** System Settings ***/
+
+/* Create table to contain slave details */
+CREATE TABLE IF NOT EXISTS executors (
+    id INT NOT NULL AUTO_INCREMENT,
+    address VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id)
+);

@@ -40,6 +40,15 @@ public class ExecutionNodeController
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/api/experiment/cancel")
+    public ResponseEntity<?> cancel(@RequestBody ExecutionRequest executionRequest) {
+        if (delegate != null) {
+            delegate.cancel(executionRequest);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
 
 

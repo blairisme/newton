@@ -33,6 +33,10 @@ import java.nio.file.Path;
 @Service
 public class ExecutionRepository
 {
+    private static final String REPOSITORY_ROOT = "experiment/";
+    private static final String LOG_FILE_NAME = "log.txt";
+    private static final String OUTPUT_FILE_NAME = "output.zip";
+
     private ApplicationStorage applicationStorage;
     private ExperimentService experimentService;
 
@@ -42,15 +46,15 @@ public class ExecutionRepository
         this.experimentService = experimentService;
     }
 
-    public void add(ExecutionNode executionNode, ExecutionResult executionResult) {
+    public void persistResult(ExecutionNode executionNode, ExecutionResult executionResult) {
         Path logPath = persistLog(executionNode, executionResult);
         Path outputPath = persistOutput(executionNode, executionResult);
         persistExperiment(executionResult, logPath, outputPath);
     }
 
     private Path persistLog(ExecutionNode executionNode, ExecutionResult executionResult) {
-        String group = "experiment/" + executionResult.getExperimentId();
-        String identifier = "log.txt";
+        String group = REPOSITORY_ROOT + executionResult.getExperimentId();
+        String identifier = LOG_FILE_NAME;
 
         try(InputStream inputStream = executionNode.getExecutionLog(executionResult);
             OutputStream outputStream = applicationStorage.getOutputStream(group, identifier)) {
@@ -63,8 +67,8 @@ public class ExecutionRepository
     }
 
     private Path persistOutput(ExecutionNode executionNode, ExecutionResult executionResult) {
-        String group = "experiment/" + executionResult.getExperimentId();
-        String identifier = "output.zip";
+        String group = REPOSITORY_ROOT + executionResult.getExperimentId();
+        String identifier = OUTPUT_FILE_NAME;
 
         try(InputStream inputStream = executionNode.getExecutionOutput(executionResult);
             OutputStream outputStream = applicationStorage.getOutputStream(group, identifier)) {
@@ -80,7 +84,7 @@ public class ExecutionRepository
         Experiment experiment = experimentService.getExperimentById(executionResult.getExperimentId());
 
         ExperimentVersionBuilder versionBuilder = new ExperimentVersionBuilder();
-        versionBuilder.forExperiemnt(experiment);
+        versionBuilder.forExperiment(experiment);
         versionBuilder.setExperimentLog(logPath);
         versionBuilder.setExperimentOutput(outputPath);
 

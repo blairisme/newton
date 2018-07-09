@@ -79,9 +79,8 @@ public class ExperimentRepository {
         Session session = getSession();
         String sql = String.format("SELECT * FROM experiments AS e INNER JOIN projects AS p " +
                 "ON e.project_id = p.id WHERE p.identifier = '%s'", projectIdentifier);
-        NativeQuery query = session.createNativeQuery(sql).addEntity(Experiment.class);
-        List<Experiment> result = query.list();
-        return result;
+        NativeQuery<Experiment> query = session.createNativeQuery(sql).addEntity(Experiment.class);
+        return query.list();
     }
 
     @Transactional(readOnly=true)

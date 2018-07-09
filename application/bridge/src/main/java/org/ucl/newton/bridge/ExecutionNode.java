@@ -19,7 +19,11 @@ import java.io.InputStream;
  */
 public interface ExecutionNode
 {
+    void setAddress(String address);
+
     void execute(ExecutionRequest executionRequest) throws ExecutionException;
+
+    void cancel(ExecutionRequest executionRequest) throws ExecutionException;
 
     InputStream getExecutionLog(ExecutionResult executionResult) throws ExecutionException;
 
