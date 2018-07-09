@@ -54,11 +54,11 @@ public class ExperimentController
     public String details(@PathVariable("projectName") String projectName,
                           @PathVariable("experimentId") int experimentId, ModelMap model)
     {
-        User user = userService.getAuthenticatedUser();
-        model.addAttribute("user", user);
         Experiment selectedExperiment = experimentService.getExperimentById(experimentId);
         model.addAttribute("experiment", selectedExperiment);
         model.addAttribute("project", selectedExperiment.getProject());
+        model.addAttribute("executing", !executionService.isExecutionComplete(selectedExperiment));
+        model.addAttribute("user", userService.getAuthenticatedUser());
         return "project/experiment/overview";
     }
 

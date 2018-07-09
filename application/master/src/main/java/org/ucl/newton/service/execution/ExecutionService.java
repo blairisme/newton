@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -75,6 +76,18 @@ public class ExecutionService implements ExecutionCoordinatorServer
         executorService.releaseExecutor(executionNode);
 
         evaluateExecutionQueue();
+    }
+
+    public boolean isExecutionComplete(String experimentId) {
+        for (Experiment experiment : executionQueue){
+            if (Objects.equals(experiment.getId(), experimentId)) {
+                return false;
+            }
+        }
+        if (executionAssignment.containsKey(experimentId)) {
+            return false;
+        }
+        return true;
     }
 
     public boolean isExecutionComplete(Experiment experiment) {
