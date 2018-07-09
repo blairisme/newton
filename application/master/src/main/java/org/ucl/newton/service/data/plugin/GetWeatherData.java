@@ -4,6 +4,7 @@ import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import org.ucl.newton.service.data.model.WeatherData;
+import org.ucl.newton.service.data.model.WeatherProperty;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
 import java.io.IOException;
@@ -53,7 +54,7 @@ public class GetWeatherData implements Runnable{
         WeatherProperty weatherProperty = new WeatherProperty(city,country,date,key);
         weatherList.add(weatherProperty);
 
-        WeatherProperty weatherProperty2 = new WeatherProperty("tianjin","china","2018-07-03","0252e94bd710446c908123539182906");
+        WeatherProperty weatherProperty2 = new WeatherProperty("tianjin","china","2018-07-04","0252e94bd710446c908123539182906");
         weatherList.add(weatherProperty2);
 
         return  weatherList;
