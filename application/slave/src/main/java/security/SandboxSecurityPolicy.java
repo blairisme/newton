@@ -1,8 +1,9 @@
 package security;
 
+import helpers.Constants;
+
 import java.io.FilePermission;
 import java.security.*;
-import helpers.Constants;
 
 public class SandboxSecurityPolicy extends Policy {
 
