@@ -67,12 +67,22 @@ public class ExperimentVersion {
         return id;
     }
 
+    public ExperimentVersion setId(int id) {
+        this.id = id;
+        return this;
+    }
+
     public int getNumber() {
         return number;
     }
 
     public Collection<ExperimentOutcome> getOutcomes() {
         return outcomes;
+    }
+
+    public ExperimentVersion setOutcomes(Collection<ExperimentOutcome> outcomes) {
+        this.outcomes = outcomes;
+        return this;
     }
 
     @Override

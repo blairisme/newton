@@ -62,6 +62,11 @@ public class ExperimentOutcome {
         return id;
     }
 
+    public ExperimentOutcome setId(int id) {
+        this.id = id;
+        return this;
+    }
+
     public String getPath() {
         return path;
     }

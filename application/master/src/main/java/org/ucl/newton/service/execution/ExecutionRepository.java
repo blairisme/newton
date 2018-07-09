@@ -83,11 +83,13 @@ public class ExecutionRepository
         versionBuilder.forExperiemnt(experiment);
         versionBuilder.setExperimentLog(logPath);
         versionBuilder.setExperimentOutput(outputPath);
+
         ExperimentVersion version = versionBuilder.build();
+        ExperimentVersion newVersion = experimentService.addVersion(version);
 
         ExperimentBuilder experimentBuilder = new ExperimentBuilder();
         experimentBuilder.copyExperiment(experiment);
-        experimentBuilder.addVersion(version);
+        experimentBuilder.addVersion(newVersion);
         Experiment newExperiment = experimentBuilder.build();
 
         experimentService.update(newExperiment);

@@ -117,6 +117,11 @@ public class Experiment
         return versions;
     }
 
+    public Experiment setVersions(Collection<ExperimentVersion> versions){
+        this.versions = versions;
+        return this;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;
