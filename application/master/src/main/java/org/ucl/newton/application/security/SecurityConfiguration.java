@@ -36,7 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/resources/**").permitAll()
+                .antMatchers("/", "/resources/**", "/api/experiment/complete").permitAll()
                 .antMatchers("/settings").hasAnyRole("ADMINISTRATOR")
                 .anyRequest().authenticated()
                 .and()
@@ -50,6 +50,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 .logoutSuccessUrl("/")
                 .permitAll()
                 .and()
+            .csrf()
+                .disable()
             .exceptionHandling()
                 .accessDeniedPage("/access_denied");
     }

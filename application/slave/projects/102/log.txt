@@ -1,3 +1,0 @@
-Standard output of the command:
-('sum= ', '15')
-Standard error of the command (if any):

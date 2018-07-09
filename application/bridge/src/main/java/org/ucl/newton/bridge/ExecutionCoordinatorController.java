@@ -12,8 +12,8 @@ package org.ucl.newton.bridge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -32,7 +32,7 @@ public class ExecutionCoordinatorController
         this.delegate = delegate;
     }
 
-    @PostMapping("/complete")
+    @RequestMapping("/api/experiment/complete")
     public ResponseEntity<?> executionComplete(@RequestBody ExecutionResult executionResult) {
         if (delegate != null) {
             delegate.executionComplete(executionResult);

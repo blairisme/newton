@@ -4,12 +4,8 @@ package org.ucl.newton.service.data.plugin;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
-import com.mashape.unirest.request.HttpRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 /**
  * Instances of this class provide weather data to the Newton system.

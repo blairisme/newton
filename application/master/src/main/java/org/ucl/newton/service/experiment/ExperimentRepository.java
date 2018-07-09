@@ -6,8 +6,6 @@ import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.Experiment;
-import org.ucl.newton.framework.ExperimentProcess;
-import org.ucl.newton.framework.ExperimentVersion;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -32,7 +30,7 @@ public class ExperimentRepository {
     public Collection<Experiment> getExperimentsForProject(String projectIdentifier) {
         Session session = getSession();
         String sql = String.format("SELECT * FROM experiments AS e INNER JOIN projects AS p " +
-                "ON e.parentProject_id = p.id WHERE p.identifier = '%s'", projectIdentifier);
+                "ON e.project_id = p.id WHERE p.identifier = '%s'", projectIdentifier);
         NativeQuery query = session.createNativeQuery(sql).addEntity(Experiment.class);
         List<Experiment> result = query.list();
         return result;
@@ -42,6 +40,12 @@ public class ExperimentRepository {
     public Experiment getExperimentById(int id){
         Session session = getSession();
         return session.get(Experiment.class, id);
+    }
+
+    @Transactional
+    public void update(Experiment experiment) {
+        Session session = getSession();
+        session.update(experiment);
     }
 
     private Session getSession() {

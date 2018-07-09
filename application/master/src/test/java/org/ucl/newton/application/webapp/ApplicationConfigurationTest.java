@@ -12,7 +12,7 @@ package org.ucl.newton.application.webapp;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.ucl.newton.application.webapp.ApplicationConfiguration;
+import org.ucl.newton.application.system.ApplicationStorage;
 
 public class ApplicationConfigurationTest
 {

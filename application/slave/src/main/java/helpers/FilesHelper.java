@@ -1,6 +1,5 @@
 package helpers;
 
-import com.sun.jndi.toolkit.url.Uri;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;

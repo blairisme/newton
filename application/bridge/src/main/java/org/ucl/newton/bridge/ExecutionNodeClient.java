@@ -10,11 +10,14 @@
 package org.ucl.newton.bridge;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.ucl.newton.common.network.RestRequest;
 import org.ucl.newton.common.network.RestServer;
 import org.ucl.newton.common.serialization.JsonSerializer;
+
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 
 /**
  * Instances of this class make requests to a remote system capable of
@@ -36,9 +39,33 @@ public class ExecutionNodeClient implements ExecutionNode
     public void execute(ExecutionRequest executionRequest) throws ExecutionException {
         try {
             RestServer server = getServer();
-            RestRequest request = server.post("execute");
+            RestRequest request = server.post("api/experiment/execute");
             request.setBody(executionRequest, ExecutionRequest.class);
             request.make();
+        }
+        catch (Exception cause) {
+            throw new ExecutionException(cause);
+        }
+    }
+
+    @Override
+    public InputStream getExecutionLog(ExecutionResult executionResult) throws ExecutionException {
+        try {
+            URI logUri = executionResult.getLogPath();
+            URL logUrl = logUri.toURL();
+            return logUrl.openStream();
+        }
+        catch (Exception cause) {
+            throw new ExecutionException(cause);
+        }
+    }
+
+    @Override
+    public InputStream getExecutionOutput(ExecutionResult executionResult) throws ExecutionException {
+        try {
+            URI outputUri = executionResult.getOutputPath();
+            URL outputUrl = outputUri.toURL();
+            return outputUrl.openStream();
         }
         catch (Exception cause) {
             throw new ExecutionException(cause);

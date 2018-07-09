@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.application.webapp;
+package org.ucl.newton.application.system;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
@@ -49,6 +49,10 @@ public class ApplicationStorage
         file.mkdirs();
         file.delete();
         return new FileOutputStream(file);
+    }
+
+    public Path getOutputPath(String group, String identifier) {
+        return Paths.get(group, identifier);
     }
 
     private Path getPath(String group, String identifier) {

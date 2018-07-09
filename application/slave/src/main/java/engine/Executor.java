@@ -3,10 +3,9 @@ package engine;
 import datasets.Dataset;
 import exceptions.DatasetDownloadException;
 import exceptions.MatchOutputFilesException;
-import helpers.Constants;
 import helpers.GitHelper;
-import helpers.LogHelper;
 import helpers.ZipHelper;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import pojo.AnalysisResults;
 import security.SandboxSecurityPolicy;
@@ -31,7 +30,7 @@ public class Executor{
 	protected String mMainRepoDir;
 	protected File mZipOutputFile;
 	protected File mLogFile;
-	protected File mProjectFile;
+	protected File mProjectDir;
 
 	protected IEngine mEngine;
 
@@ -52,22 +51,27 @@ public class Executor{
 	 */
 
 	public AnalysisResults run() throws Exception {
-		mProjectFile = new File(REPO_PATH, mId);
-		if(!mProjectFile.exists()) {
-			mProjectFile.mkdir();
+		mProjectDir = new File(REPO_PATH, mId);
+		if(mProjectDir.exists()) {
+            FileUtils.deleteQuietly(mProjectDir);
 		}
-		mMainRepoDir = GitHelper.downloadRepo(mProjectFile, mRepoUrl);
+        mProjectDir.mkdirs();
+
+		mMainRepoDir = GitHelper.downloadRepo(mProjectDir, mRepoUrl);
 		setPluginPolicy(mMainRepoDir);
 		mMainFile = new File(mMainRepoDir, mMainFilename);
 
 		downloadDatasets();
 		mLogFile = mEngine.build(mMainRepoDir, mMainFile.getAbsolutePath());
 		File[] outputFiles = getOutputFiles();
-		mZipOutputFile = new File(mMainRepoDir, "output_"+mId+".zip");
+		mZipOutputFile = new File(mMainRepoDir, "output.zip");
 		if(mZipOutputFile.exists()){
 			mZipOutputFile.delete();
 		}
 		ZipHelper.zipFiles(outputFiles, mZipOutputFile);
+
+        FileUtils.moveFileToDirectory(mLogFile, mProjectDir, true);
+        FileUtils.moveFileToDirectory(mZipOutputFile, mProjectDir, true);
 
 		AnalysisResults analysisResults = new AnalysisResults(mId);
 		analysisResults.setLogFile(mLogFile);
@@ -95,7 +99,7 @@ public class Executor{
 	}
 
 //	protected void executeCommand(String cmnd){
-//		mLogFile = LogHelper.executeCmnd(cmnd, true, mProjectFile.getAbsolutePath());
+//		mLogFile = LogHelper.executeCmnd(cmnd, true, mProjectDir.getAbsolutePath());
 //	}
 
 	private void downloadDatasets() throws DatasetDownloadException {

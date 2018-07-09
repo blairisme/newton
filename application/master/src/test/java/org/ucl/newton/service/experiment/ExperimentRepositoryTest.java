@@ -10,7 +10,7 @@ import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.*;
 
 import javax.inject.Inject;
-import javax.xml.crypto.Data;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -25,7 +25,7 @@ public class ExperimentRepositoryTest {
     @Test
     public void testGetExperimentById() {
         Experiment experiment = repository.getExperimentById(1);
-        Project parentProject = experiment.getParentProject();
+        Project parentProject = experiment.getProject();
         Assert.assertEquals("Experiment 1", experiment.getName());
         Assert.assertEquals(1, experiment.getId());
         Assert.assertEquals("project-fizzyo", parentProject.getIdentifier());
@@ -37,7 +37,7 @@ public class ExperimentRepositoryTest {
         Collection<Experiment> experiments = repository.getExperimentsForProject(fizzyoName);
         Assert.assertEquals(3, experiments.size());
         for(Experiment experiment: experiments){
-            Assert.assertEquals(fizzyoName, experiment.getParentProject().getIdentifier());
+            Assert.assertEquals(fizzyoName, experiment.getProject().getIdentifier());
         }
     }
 
@@ -69,39 +69,33 @@ public class ExperimentRepositoryTest {
 
         ExperimentVersion v1 = versions.iterator().next();
         Assert.assertEquals(1, v1.getId());
-        Assert.assertEquals("Version 1", v1.getName());
         Assert.assertEquals(1, v1.getNumber());
     }
 
     @Test
-    public void testExperimentVersionProcess() {
+    public void testProcessorConfiguration() {
         Experiment experiment = repository.getExperimentById(1);
-        ExperimentProcess process = experiment.getVersions().iterator().next().getProcess();
-        Assert.assertEquals(1, process.getId());
-        Assert.assertEquals("https://github.com/blairisme/newton", process.getRepoUrl());
-        Assert.assertEquals("test.py", process.getNameOfInitialScript());
-        Assert.assertEquals("python", process.getProcessEngine());
+        DataProcessorConfiguration configuration = experiment.getProcessorConfiguration();
+        DataProcessor processor = configuration.getProcessor();
+
+        Assert.assertEquals(1, configuration.getId());
+        Assert.assertEquals("config.json", configuration.getPath());
+        Assert.assertEquals(1, processor.getId());
+        Assert.assertEquals("https://github.com/blairisme/newton", processor.getRepoUrl());
+        Assert.assertEquals("test.py", processor.getNameOfInitialScript());
+        Assert.assertEquals("python", processor.getProcessEngine());
     }
 
     @Test
-    public void testExperimentVersionDataSources() {
+    public void testDataSources() {
+        Collection<DataSource> expected = new ArrayList<>();
+        expected.add(new DataSource(1, "Weather temp", 1, "some/loc1"));
+        expected.add(new DataSource(2, "Weather rain", 1, "some/loc2"));
+
         Experiment experiment = repository.getExperimentById(1);
-        Collection<ExperimentVersion> versions = experiment.getVersions();
-        Assert.assertEquals(1, versions.size());
+        Collection<DataSource> actual = experiment.getDataSources();
 
-        ExperimentVersion version1 = versions.iterator().next();
-        Collection<DataSource> dataSources = version1.getDataSources();
-        Assert.assertEquals(2, dataSources.size());
-        Iterator<DataSource> it = dataSources.iterator();
-        DataSource ds = it.next();
-        DataSource expected = new DataSource(1, "Weather temp", 1, "some/loc1");
-        Assert.assertEquals(expected, ds);
-
-        ds = it.next();
-        Assert.assertEquals(2, ds.getId());
-        Assert.assertEquals("Weather rain", ds.getName());
-        Assert.assertEquals(1, ds.getVersion());
-        Assert.assertEquals("some/loc2", ds.getDataLocation());
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
@@ -111,17 +105,17 @@ public class ExperimentRepositoryTest {
         Assert.assertEquals(1, versions.size());
 
         ExperimentVersion version1 = versions.iterator().next();
-        Collection<Outcome> outcomes = version1.getOutcomes();
+        Collection<ExperimentOutcome> outcomes = version1.getOutcomes();
         Assert.assertEquals(2, outcomes.size());
-        Iterator<Outcome> it = outcomes.iterator();
-        Outcome outcome = it.next();
-        Outcome expectedOutcome = new Outcome(1, "outcomes/v1.csv", OutcomeType.EXPERIMENTRESULT);
+        Iterator<ExperimentOutcome> it = outcomes.iterator();
+        ExperimentOutcome outcome = it.next();
+        ExperimentOutcome expectedOutcome = new ExperimentOutcome(1, "outcomes/v1.csv", ExperimentOutcomeType.EXPERIMENTRESULT);
         Assert.assertEquals(expectedOutcome, outcome);
 
         outcome = it.next();
         Assert.assertEquals(2, outcome.getId());
-        Assert.assertEquals("outcomes/log.txt", outcome.getOutcomeLocation());
-        Assert.assertEquals(OutcomeType.EXPERIMENTLOG, outcome.getType());
+        Assert.assertEquals("outcomes/log.txt", outcome.getPath());
+        Assert.assertEquals(ExperimentOutcomeType.EXPERIMENTLOG, outcome.getType());
     }
 
 }

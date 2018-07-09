@@ -1,4 +1,4 @@
-package org.ucl.newton.service.data.plugin;
+package org.ucl.newton.service.data.model;
 
 /**
  * Temporary comment to fix build by passing checkstyle violation

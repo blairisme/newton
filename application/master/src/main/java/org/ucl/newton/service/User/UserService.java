@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.ucl.newton.framework.Credential;
 import org.ucl.newton.framework.User;
+import org.ucl.newton.framework.UserRole;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -38,8 +39,13 @@ public class UserService
     public User getAuthenticatedUser() {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
-        Credential credentials = (Credential)authentication.getPrincipal();
-        return repository.getUser(credentials.getUserId());
+        Object principle = authentication.getPrincipal();
+
+        if (principle instanceof Credential) {
+            Credential credentials = (Credential) authentication.getPrincipal();
+            return repository.getUser(credentials.getUserId());
+        }
+        return new User("Anonymous", "anonymous@ucl.ac.uk", UserRole.USER);
     }
 
     public Collection<User> findUsers(String matching) {

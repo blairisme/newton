@@ -9,6 +9,8 @@
 
 package org.ucl.newton.bridge;
 
+import java.io.InputStream;
+
 /**
  * Instances of this class represent a remote system capable of executing an
  * experiment.
@@ -18,8 +20,8 @@ package org.ucl.newton.bridge;
 public interface ExecutionNode
 {
     void execute(ExecutionRequest executionRequest) throws ExecutionException;
-//
-//    InputStream getExecutionResults(String projectId);
-//
-//    InputStream getExecutionLog(String projectId);
+
+    InputStream getExecutionLog(ExecutionResult executionResult) throws ExecutionException;
+
+    InputStream getExecutionOutput(ExecutionResult executionResult) throws ExecutionException;
 }

@@ -46,10 +46,10 @@ bootRun {
     main = 'rest.Application'
 }
 
-task slaveStart(dependsOn: bootRun){
+task slaveStart(dependsOn: ['assemble', 'bootRun']){
 }
 
-task slaveStartDebug(dependsOn: bootRun){
+task slaveStartDebug(dependsOn: ['assemble', 'bootRun']){
     gradle.taskGraph.whenReady { graph ->
         if (graph.hasTask(slaveStartDebug)) {
             bootRun {

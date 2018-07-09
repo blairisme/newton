@@ -22,6 +22,7 @@ import java.io.Serializable;
  * Instances of this class represent a user.
  *
  * @author Blair Butterworth
+ * @author John Wilkie
  */
 @Entity
 @Indexed
@@ -73,7 +74,9 @@ public class User implements Serializable
         return email;
     }
 
-    public UserRole getRole() { return role; }
+    public UserRole getRole() {
+        return role;
+    }
 
     public User setId(int id) {
         this.id = id;

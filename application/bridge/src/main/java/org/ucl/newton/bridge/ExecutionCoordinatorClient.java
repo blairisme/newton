@@ -10,10 +10,7 @@
 package org.ucl.newton.bridge;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.ucl.newton.bridge.ExecutionCoordinator;
-import org.ucl.newton.bridge.ExecutionResult;
 import org.ucl.newton.common.network.RestRequest;
 import org.ucl.newton.common.network.RestServer;
 import org.ucl.newton.common.serialization.JsonSerializer;
@@ -38,7 +35,7 @@ public class ExecutionCoordinatorClient implements ExecutionCoordinator
     public void executionComplete(ExecutionResult executionResult) {
         try {
             RestServer server = getServer();
-            RestRequest request = server.post("complete");
+            RestRequest request = server.post("api/experiment/complete");
             request.setBody(executionResult, ExecutionResult.class);
             request.make();
         }

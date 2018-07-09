@@ -9,6 +9,9 @@
 
 package org.ucl.newton.framework;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -35,35 +38,50 @@ public class Experiment
     private String name;
 
     @ManyToOne
-    private Project parentProject;
-
-    @ManyToOne
+    @JoinColumn(name = "creator_id")
     private User creator;
 
-    // Visualizer visualization
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+    @ManyToOne
+    @JoinColumn(name="processor_configuration_id")
+    private DataProcessorConfiguration processorConfiguration;
+
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "experiment_datasources",
+        joinColumns = @JoinColumn(name = "experiement_id", referencedColumnName = "exp_id"),
+        inverseJoinColumns = @JoinColumn( name = "datasource_id", referencedColumnName = "ds_id"))
+    private Collection<DataSource> dataSources;
 
     @OneToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "experiment_versions",
-            joinColumns = @JoinColumn(name = "experiment_id", referencedColumnName = "exp_id", foreignKey = @ForeignKey(name = "fk_experiment_versions_exp")),
-            inverseJoinColumns = @JoinColumn(name = "version_id", referencedColumnName = "ver_id", foreignKey = @ForeignKey(name = "fk_experiment_versions_ver"))
-    )
-    private Collection<ExperimentVersion> expVersions;
+        joinColumns = @JoinColumn(name = "experiment_id", referencedColumnName = "exp_id"),
+        inverseJoinColumns = @JoinColumn(name = "version_id", referencedColumnName = "ver_id"))
+    private Collection<ExperimentVersion> versions;
 
-    public Experiment() {}
+    public Experiment() {
+    }
 
     public Experiment(
         int id,
         String name,
-        Project parentProject,
         User creator,
+        Project project,
+        DataProcessorConfiguration processorConfiguration,
+        Collection<DataSource> dataSources,
         Collection<ExperimentVersion> versions)
     {
         this.id = id;
         this.name = name;
-        this.parentProject = parentProject;
         this.creator = creator;
-        this.expVersions = versions;
+        this.project = project;
+        this.processorConfiguration = processorConfiguration;
+        this.dataSources = dataSources;
+        this.versions = versions;
     }
 
     public int getId() {
@@ -79,9 +97,67 @@ public class Experiment
         return name;
     }
 
-    public Project getParentProject() { return parentProject; }
+    public User getCreator() {
+        return creator;
+    }
 
-    public User getCreator() { return creator; }
+    public Project getProject() {
+        return project;
+    }
 
-    public Collection<ExperimentVersion> getVersions() { return expVersions; }
+    public DataProcessorConfiguration getProcessorConfiguration() {
+        return processorConfiguration;
+    }
+
+    public Collection<DataSource> getDataSources() {
+        return dataSources;
+    }
+
+    public Collection<ExperimentVersion> getVersions() {
+        return versions;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (obj.getClass() != getClass()) return false;
+
+        Experiment that = (Experiment)obj;
+        return new EqualsBuilder()
+            .append(this.id, that.id)
+            .append(this.name, that.name)
+            .append(this.creator, that.creator)
+            .append(this.project, that.project)
+            .append(this.processorConfiguration, that.processorConfiguration)
+            .append(this.dataSources, that.dataSources)
+            .append(this.versions, that.versions)
+            .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+            .append(id)
+            .append(name)
+            .append(creator)
+            .append(project)
+            .append(processorConfiguration)
+            .append(dataSources)
+            .append(versions)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("id", id)
+            .append("name", name)
+            .append("creator", creator)
+            .append("project", project)
+            .append("processorConfiguration", processorConfiguration)
+            .append("dataSources", dataSources)
+            .append("versions", versions)
+            .toString();
+    }
 }

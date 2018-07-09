@@ -12,6 +12,7 @@ package org.ucl.newton.application.webapp;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.ucl.newton.application.system.ApplicationPreferences;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;

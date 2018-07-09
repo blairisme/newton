@@ -56,14 +56,14 @@ public class ExperimentController
         model.addAttribute("user", user);
         Experiment selectedExperiment = experimentService.getExperimentById(experimentId);
         model.addAttribute("experiment", selectedExperiment);
-        model.addAttribute("project", selectedExperiment.getParentProject());
+        model.addAttribute("project", selectedExperiment.getProject());
         return "project/experiment/overview";
     }
 
     @RequestMapping(value = "/project/{projectName}/experiment/{experimentId}/run", method = RequestMethod.GET)
     public String execute(@PathVariable("projectName") String projectName,
                           @PathVariable("experimentId") int experimentId, ModelMap model) {
-        executionService.run(null);
+        executionService.run(experimentService.getExperimentById(experimentId));
         return "redirect:/project/" + projectName + "/experiment/" + Integer.toString(experimentId);
     }
 }

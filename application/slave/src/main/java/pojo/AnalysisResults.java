@@ -1,10 +1,8 @@
 package pojo;
 
 import helpers.FilesHelper;
-import helpers.LogHelper;
 
 import java.io.File;
-import java.net.MalformedURLException;
 
 public class AnalysisResults {
 

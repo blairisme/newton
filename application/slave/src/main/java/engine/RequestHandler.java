@@ -1,14 +1,11 @@
 package engine;
 
 import exceptions.AnalysisException;
-import helpers.LogHelper;
-import helpers.Constants;
 import pojo.AnalysisRequest;
 import pojo.AnalysisResponse;
 import pojo.AnalysisResults;
 import security.PluginClassLoader;
 
-import java.io.File;
 import java.net.URL;
 
 
