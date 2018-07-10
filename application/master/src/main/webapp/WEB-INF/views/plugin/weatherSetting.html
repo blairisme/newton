@@ -41,56 +41,78 @@
         <div class="form-group col-lg-5">
             <table class="table" name="entryTable">
                 <thead>
-                <tr>
-                    <th>City</th>
-                    <th>Country</th>
-                    <th>Date</th>
-                </tr>
+                    <tr>
+                        <th>City</th>
+                        <th>Country</th>
+                        <th>Date</th>
+                    </tr>
                 </thead>
                 <tbody id="entries">
-                <!--<tr>-->
-                <!--<th>London</th>-->
-                <!--<th></th>-->
-                <!--<th>2018-07-05 <button class="btn btn-outline-primary" onclick="removeEntry(this)"> remove</button></th>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                <!--<th>Tianjin</th>-->
-                <!--<th>China</th>-->
-                <!--<th>2018-07-05 <button class="btn btn-outline-primary" onclick="removeEntry(this)"> remove</button></th>-->
-                <!--</tr>-->
+
                 </tbody>
             </table>
         </div>
         <div class="form-group col-lg-3">
             <label for="city">City<span class="text-danger">*</span></label>
-            <input id="city" class="form-control" type="text" placeholder="" required="required"/>
+            <input id="city" class="form-control" type="text"/>
         </div>
         <div class="form-group col-lg-3">
-            <label for="country">Country</label>
-            <input id="country" class="form-control" type="text" placeholder=""/>
+            <label for="country">Country(Optional)</label>
+            <input id="country" class="form-control" type="text"/>
         </div>
         <div class="form-group col-lg-3">
-            <label for="date">Date</label>
-            <input id="date" class="form-control" type="date" placeholder=""/>
+            <label for="date">Date<span class="text-danger">*</span></label>
+            <input id="date" class="form-control" type="date"/>
             <input type="button" class="btn" value="add" onclick="addNewEntry()"/>
         </div>
-        <select id="cities" class="form-control" form="weatherSettings" name="cities" multiple="multiple">
-        </select>
-        <select id="countries" class="form-control" form="weatherSettings" name="countries" multiple="multiple" >
-        </select>
-        <select id="dates" class="form-control" form="weatherSettings" name="dates" multiple="multiple" >
-        </select>
+        <div id="items" class="form-control" hidden="hidden">
+        </div>
+        <div class="form-group col-lg-3">
+            <label for="key">Key<span class="text-danger">*</span></label>
+            <input id="key" name="key" class="form-control" type="text" required="required"/>
+        </div>
         <input type="submit" class="btn btn-primary btn-lg" value="submit" />
     </form>
 </div>
 </body>
-<script>
+<script th:inline="javascript">
+    $(document).ready(function(){
+        var properties = [[${properties}]];
+        var key = null;
+        for(var a in properties){
+            var property = properties[a];
+            var city = property.city;
+            var country = property.country;
+            var date = property.date;
+            key = property.key;
+            var id = buildId(city,country,date);
+            addEntry(id,city,country,date);
+        }
+        $("#key").val(key);
+
+    });
+    function buildId(city,country,date) {
+        return city + "_" +country + "_" + date;
+    }
     function addNewEntry() {
         var city = $("#city").val();
         var country = $("#country").val();
         var date = $("#date").val();
-        var id = city + "," +country + "," + date;
-        clearContent()
+        if(city == null || city == ""){
+            alert("Please input city");
+            return;
+        }
+        if(date == null || date == ""){
+            alert("Please select a date");
+            return;
+        }
+
+        var id = buildId(city,country,date);
+        clearContent();
+        addEntry(id,city,country,date);
+
+    }
+    function addEntry(id,city,country,date) {
         $("#entries").append(
             `<tr id="tableItem${id}">
                     <th>${city}</th>
@@ -99,15 +121,10 @@
                 </tr>`
         );
 
-        $("#cities").append(
-            `<option id="cityItem${id}" value="${city}" selected="selected"></option>`
+        $("#items").append(
+            `<input id="item${id}" name="items" value="${id}"/>`
         )
-        $("#countries").append(
-            `<option id="countryItem${id}" value="${country}" selected="selected"></option>`
-        );
-        $("#dates").append(
-            `<option id="dateItem${id}" value="${date}" selected="selected"></option>`
-        );
+
     }
     function clearContent() {
         $("#city").val("");
@@ -115,11 +132,8 @@
         $("#date").val("");
     }
     function removeEntry(id) {
-
         $(`#tableItem${id}`).remove();
-        $(`#cityItem${id}`).remove();
-        $(`#countryItem${id}`).remove();
-        $(`#dateItem${id}`).remove();
+        $(`#item${id}`).remove();
     }
 </script>
 </html>

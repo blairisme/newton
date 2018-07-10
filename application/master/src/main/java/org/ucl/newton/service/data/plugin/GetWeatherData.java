@@ -3,13 +3,18 @@ package org.ucl.newton.service.data.plugin;
 import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+import org.ucl.newton.application.system.ApplicationPreferences;
+import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.service.data.model.WeatherData;
 import org.ucl.newton.service.data.model.WeatherProperty;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,19 +48,22 @@ public class GetWeatherData implements Runnable{
     }
 
     // list of properties need to be configured instead of hardcode
+    //        String city = "london";                             // required
+    //        String country = "united kingdom";                  // can be null
+    //        String date = "2018-07-04";                         // required and format yyyy-mm-dd
+    //        String key = "0252e94bd710446c908123539182906";     // required
     private List<WeatherProperty> getWeatherList() {
-
         List<WeatherProperty> weatherList = new ArrayList<>();
-        String city = "london";                             // required
-        String country = "united kingdom";                  // can be null
-        String date = "2018-07-04";                         // required and format yyyy-mm-dd
-        String key = "0252e94bd710446c908123539182906";     // required
+        ApplicationStorage storage = new ApplicationStorage(new ApplicationPreferences());
+        Path path = Paths.get(storage.getRootPath());
+        path = path.resolve("weather").resolve("setting");
+        String jsonStr = FileUtils.readFile(path);
+        if (jsonStr == null)
+            return weatherList;
 
-        WeatherProperty weatherProperty = new WeatherProperty(city,country,date,key);
-        weatherList.add(weatherProperty);
-
-        WeatherProperty weatherProperty2 = new WeatherProperty("tianjin","china","2018-07-04","0252e94bd710446c908123539182906");
-        weatherList.add(weatherProperty2);
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<WeatherProperty>>(){}.getType();
+        weatherList = gson.fromJson(jsonStr, type);
 
         return  weatherList;
     }
