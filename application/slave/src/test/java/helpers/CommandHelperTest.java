@@ -2,10 +2,6 @@ package helpers;
 
 import org.junit.Test;
 
-import java.io.File;
-
-import static helpers.LogHelper.LOG_FILENAME;
-
 public class CommandHelperTest {
 
 

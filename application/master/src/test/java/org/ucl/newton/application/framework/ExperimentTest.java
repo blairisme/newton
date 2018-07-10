@@ -1,10 +1,5 @@
 package org.ucl.newton.application.framework;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.ucl.newton.framework.Experiment;
-import org.ucl.newton.framework.Project;
-
 public class ExperimentTest {
 
     /*

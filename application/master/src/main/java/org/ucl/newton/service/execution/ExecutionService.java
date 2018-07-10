@@ -9,111 +9,24 @@
 
 package org.ucl.newton.service.execution;
 
-import org.ucl.newton.bridge.ExecutionCoordinatorServer;
-import org.ucl.newton.bridge.ExecutionNode;
-import org.ucl.newton.bridge.ExecutionRequest;
 import org.ucl.newton.bridge.ExecutionResult;
 import org.ucl.newton.framework.Experiment;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 /**
- * Instances of this class run experiments.
+ * Implementors of this interface provide methods that start and stop
+ * experiment execution.
  *
  * @author Blair Butterworth
  */
-@Named
-@Singleton
-public class ExecutionService implements ExecutionCoordinatorServer
+public interface ExecutionService
 {
-    private ExecutorService executorService;
-    private ExecutionRepository executionRepository;
+    void beginExecution(Experiment experiment);
 
-    private Queue<Experiment> executionQueue;
-    private Map<Integer, ExecutionNode> executionAssignment;
-    private Map<Integer, ExecutionRequest> executionRequests;
+    void cancelExecution(Experiment experiment);
 
-    @Inject
-    public ExecutionService(ExecutorService executorService, ExecutionRepository executionRepository)
-    {
-        this.executorService = executorService;
-        this.executionRepository = executionRepository;
+    void executionComplete(ExecutionResult executionResult);
 
-        this.executionQueue = new ConcurrentLinkedQueue<>();
-        this.executionAssignment = new ConcurrentHashMap<>();
-        this.executionRequests = new ConcurrentHashMap<>();
-    }
+    boolean isExecutionComplete(String experimentId);
 
-    public void beginExecution(Experiment experiment) {
-        executionQueue.add(experiment);
-        evaluateExecutionQueue();
-    }
-
-    public void cancelExecution(Experiment experiment) {
-        if (executionQueue.contains(experiment)) {
-            executionQueue.remove(experiment);
-        }
-        if (executionAssignment.containsKey(experiment.getId())) {
-            ExecutionNode executionNode = executionAssignment.remove(experiment.getId());
-            ExecutionRequest executionRequest = executionRequests.remove(experiment.getId());
-            executionNode.cancel(executionRequest);
-        }
-        evaluateExecutionQueue();
-    }
-
-    public void executionComplete(ExecutionResult executionResult) {
-        executionRequests.remove(executionResult.getExperimentId());
-        ExecutionNode executionNode = executionAssignment.remove(executionResult.getExperimentId());
-
-        executionRepository.persistResult(executionNode, executionResult);
-        executorService.releaseExecutor(executionNode);
-
-        evaluateExecutionQueue();
-    }
-
-    public boolean isExecutionComplete(String experimentId) {
-        for (Experiment experiment : executionQueue){
-            if (Objects.equals(experiment.getId(), experimentId)) {
-                return false;
-            }
-        }
-        if (executionAssignment.containsKey(experimentId)) {
-            return false;
-        }
-        return true;
-    }
-
-    public boolean isExecutionComplete(Experiment experiment) {
-        if (executionQueue.contains(experiment)) {
-            return false;
-        }
-        if (executionAssignment.containsKey(experiment.getId())) {
-            return false;
-        }
-        return true;
-    }
-
-    private void evaluateExecutionQueue() {
-        while (!executionQueue.isEmpty() && executorService.isExecutorAvailable()) {
-            Experiment experiment = executionQueue.remove();
-
-            ExecutionRequestBuilder requestBuilder = new ExecutionRequestBuilder();
-            requestBuilder.forExperiment(experiment);
-
-            ExecutionRequest executionRequest = requestBuilder.build();
-            ExecutionNode executionNode = executorService.reserveExecutor();
-
-            executionAssignment.put(experiment.getId(), executionNode);
-            executionRequests.put(experiment.getId(), executionRequest);
-
-            executionNode.execute(executionRequest);
-        }
-    }
+    boolean isExecutionComplete(Experiment experiment);
 }

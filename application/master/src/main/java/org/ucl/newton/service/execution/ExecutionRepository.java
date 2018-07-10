@@ -15,15 +15,19 @@ import org.springframework.stereotype.Service;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.bridge.ExecutionNode;
 import org.ucl.newton.bridge.ExecutionResult;
+import org.ucl.newton.common.archive.ZipUtils;
+import org.ucl.newton.common.file.FilePathUtils;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.ExperimentBuilder;
 import org.ucl.newton.framework.ExperimentVersion;
 import org.ucl.newton.framework.ExperimentVersionBuilder;
 import org.ucl.newton.service.experiment.ExperimentService;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.util.Collection;
 
 /**
  * Instances of this class store the results of experiment execution.
@@ -35,6 +39,7 @@ public class ExecutionRepository
 {
     private static final String REPOSITORY_ROOT = "experiment/";
     private static final String LOG_FILE_NAME = "log.txt";
+    private static final String OUTPUT_DIR_NAME = "output";
     private static final String OUTPUT_FILE_NAME = "output.zip";
 
     private ApplicationStorage applicationStorage;
@@ -48,12 +53,12 @@ public class ExecutionRepository
 
     public void persistResult(ExecutionNode executionNode, ExecutionResult executionResult) {
         Path logPath = persistLog(executionNode, executionResult);
-        Path outputPath = persistOutput(executionNode, executionResult);
-        persistExperiment(executionResult, logPath, outputPath);
+        Collection<Path> outputPaths = persistOutput(executionNode, executionResult);
+        persistExperiment(executionResult, logPath, outputPaths);
     }
 
     private Path persistLog(ExecutionNode executionNode, ExecutionResult executionResult) {
-        String group = REPOSITORY_ROOT + executionResult.getExperimentId();
+        String group = REPOSITORY_ROOT + executionResult.getExperimentId() + "/" + executionResult.getExperimentVersion();
         String identifier = LOG_FILE_NAME;
 
         try(InputStream inputStream = executionNode.getExecutionLog(executionResult);
@@ -66,8 +71,14 @@ public class ExecutionRepository
         }
     }
 
-    private Path persistOutput(ExecutionNode executionNode, ExecutionResult executionResult) {
-        String group = REPOSITORY_ROOT + executionResult.getExperimentId();
+    private Collection<Path> persistOutput(ExecutionNode executionNode, ExecutionResult executionResult) {
+        Path outputArchive = downloadOutput(executionNode, executionResult);
+        Path outputDirectory = uncompressOutput(outputArchive);
+        return FilePathUtils.getChildren(outputDirectory);
+    }
+
+    private Path downloadOutput(ExecutionNode executionNode, ExecutionResult executionResult) {
+        String group = REPOSITORY_ROOT + executionResult.getExperimentId() + "/" + executionResult.getExperimentVersion();
         String identifier = OUTPUT_FILE_NAME;
 
         try(InputStream inputStream = executionNode.getExecutionOutput(executionResult);
@@ -80,13 +91,25 @@ public class ExecutionRepository
         }
     }
 
-    private void persistExperiment(ExecutionResult executionResult, Path logPath, Path outputPath) {
+    private Path uncompressOutput(Path path) {
+        try {
+            File zipFile = path.toFile();
+            File destination = new File(zipFile.getParentFile(), OUTPUT_DIR_NAME);
+            ZipUtils.unzip(zipFile, destination);
+            return destination.toPath();
+        }
+        catch (Exception error){
+            throw new RuntimeException(error); //Replace - bad form
+        }
+    }
+
+    private void persistExperiment(ExecutionResult executionResult, Path logPath, Collection<Path> outputPaths) {
         Experiment experiment = experimentService.getExperimentById(executionResult.getExperimentId());
 
         ExperimentVersionBuilder versionBuilder = new ExperimentVersionBuilder();
         versionBuilder.forExperiment(experiment);
         versionBuilder.setExperimentLog(logPath);
-        versionBuilder.setExperimentOutput(outputPath);
+        versionBuilder.setExperimentOutputs(outputPaths);
 
         ExperimentVersion version = versionBuilder.build();
         ExperimentVersion newVersion = experimentService.addVersion(version);

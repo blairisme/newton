@@ -12,7 +12,6 @@ import org.ucl.newton.framework.ExperimentVersion;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Instances of this class provide access to persisted experiment data.

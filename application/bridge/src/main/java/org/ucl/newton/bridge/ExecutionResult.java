@@ -25,6 +25,7 @@ public class ExecutionResult
 {
     private String id;
     private int experimentId;
+    private int experimentVersion;
     private URI logPath;
     private URI outputPath;
     private String errorMessage;
@@ -32,9 +33,10 @@ public class ExecutionResult
     public ExecutionResult() {
     }
 
-    public ExecutionResult(String id, int experimentId, URI logPath, URI outputPath, String errorMessage) {
+    public ExecutionResult(String id, int experimentId, int experimentVersion, URI logPath, URI outputPath, String errorMessage) {
         this.id = id;
         this.experimentId = experimentId;
+        this.experimentVersion = experimentVersion;
         this.logPath = logPath;
         this.outputPath = outputPath;
         this.errorMessage = errorMessage;
@@ -46,6 +48,10 @@ public class ExecutionResult
 
     public int getExperimentId() {
         return experimentId;
+    }
+
+    public int getExperimentVersion() {
+        return experimentVersion;
     }
 
     public URI getLogPath() {
@@ -70,6 +76,7 @@ public class ExecutionResult
         return new org.apache.commons.lang3.builder.EqualsBuilder()
             .append(id, that.id)
             .append(experimentId, that.experimentId)
+            .append(experimentVersion, that.experimentVersion)
             .append(logPath, that.logPath)
             .append(outputPath, that.outputPath)
             .append(errorMessage, that.errorMessage)
@@ -81,6 +88,7 @@ public class ExecutionResult
         return new HashCodeBuilder(17, 37)
             .append(id)
             .append(experimentId)
+            .append(experimentVersion)
             .append(logPath)
             .append(outputPath)
             .append(errorMessage)
@@ -92,6 +100,7 @@ public class ExecutionResult
         return new ToStringBuilder(this)
             .append("id", id)
             .append("experimentId", experimentId)
+            .append("experimentVersion", experimentVersion)
             .append("logPath", logPath)
             .append("outputPath", outputPath)
             .append("errorMessage", errorMessage)

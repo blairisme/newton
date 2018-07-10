@@ -36,6 +36,7 @@ public class Controller implements ExecutionNodeServer
         executionCoordinator.executionComplete(new ExecutionResult(
                 request.getId(),
                 request.getExperimentId(),
+                request.getExperimentVersion(),
                 URI.create("http://localhost:8080/files/projects/" + request.getExperiment() + "/log.txt"),
                 URI.create("http://localhost:8080/files/projects/" + request.getExperiment() + "/output.zip"),
                 response.getErrorMessage()));

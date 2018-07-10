@@ -10,6 +10,9 @@
 package org.ucl.newton.common.file;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Instances of this class provide utility functions for working with file
@@ -24,5 +27,13 @@ public class FilePathUtils
             return path + File.separator;
         }
         return path;
+    }
+
+    public static Collection<Path> getChildren(Path path) {
+        Collection<Path> result = new ArrayList<>();
+        for (File file: path.toFile().listFiles()) {
+            result.add(file.toPath());
+        }
+        return result;
     }
 }
