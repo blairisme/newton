@@ -13,7 +13,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -27,8 +26,8 @@ public class GetWeatherDataTest
     @Ignore // failing
     public void runTest() throws IOException {
         StorageProvider storageProvider = mock(StorageProvider.class);
-//        when(storageProvider.getOutputStream(anyString())).thenReturn(mock(OutputStream.class));
-        when(storageProvider.getOutputStream(anyString())).thenReturn(new FileOutputStream("D:\\Code\\Newton\\newton\\weather"));
+        when(storageProvider.getOutputStream(anyString())).thenReturn(mock(OutputStream.class));
+//        when(storageProvider.getOutputStream(anyString())).thenReturn(new FileOutputStream("D:\\Code\\Newton\\newton\\weather"));
         GetWeatherData getWeatherData = new GetWeatherData(storageProvider);
         getWeatherData.run();
     }
