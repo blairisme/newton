@@ -45,6 +45,13 @@ public class ExperimentVersionBuilder
         return this;
     }
 
+    public ExperimentVersionBuilder setExperimentOutputs(Collection<Path> paths) {
+        for (Path path: paths) {
+            setExperimentOutput(path);
+        }
+        return this;
+    }
+
     public ExperimentVersion build() {
         Validate.notNull(number);
         Validate.notEmpty(outcomes);

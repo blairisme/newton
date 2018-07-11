@@ -13,7 +13,6 @@ import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.service.data.model.WeatherProperty;
 import org.ucl.newton.service.data.plugin.FileUtils;
 
-
 import javax.inject.Inject;
 import java.io.*;
 import java.lang.reflect.Type;

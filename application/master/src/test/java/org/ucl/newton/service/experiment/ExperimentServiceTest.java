@@ -8,9 +8,7 @@
  */
 package org.ucl.newton.service.experiment;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.ucl.newton.service.experiment.ExperimentService;
 
 public class ExperimentServiceTest
 {

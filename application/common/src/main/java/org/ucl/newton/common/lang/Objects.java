@@ -11,7 +11,6 @@ package org.ucl.newton.common.lang;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Instances of this class provide utility functions for use working with

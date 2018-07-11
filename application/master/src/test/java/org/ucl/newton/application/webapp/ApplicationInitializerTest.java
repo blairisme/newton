@@ -12,7 +12,6 @@ package org.ucl.newton.application.webapp;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.ucl.newton.application.webapp.ApplicationInitializer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;

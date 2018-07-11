@@ -11,9 +11,6 @@ package org.ucl.newton.common.serialization;
 
 import com.google.gson.Gson;
 
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
 

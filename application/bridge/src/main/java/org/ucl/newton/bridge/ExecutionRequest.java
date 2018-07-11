@@ -19,6 +19,7 @@ public class ExecutionRequest
 {
     private String id;
     private int experimentId;
+    private int experimentVersion;
     private String mainFilename;
     private String repoUrl;
     private int type;
@@ -27,7 +28,15 @@ public class ExecutionRequest
     public ExecutionRequest() {
     }
 
-    public ExecutionRequest(String id, int experimentId, String mainFilename, String repoUrl, int type, String outputPattern) {
+    public ExecutionRequest(
+        String id,
+        int experimentId,
+        int experimentVersion,
+        String mainFilename,
+        String repoUrl,
+        int type,
+        String outputPattern)
+    {
         this.id = id;
         this.experimentId = experimentId;
         this.mainFilename = mainFilename;
@@ -46,6 +55,10 @@ public class ExecutionRequest
 
     public int getExperimentId() {
         return experimentId;
+    }
+
+    public int getExperimentVersion() {
+        return experimentVersion;
     }
 
     public String getMainFilename() {

@@ -23,6 +23,7 @@ public class ExecutionRequestBuilder
 {
     private String id;
     private int experimentId;
+    private int experimentVersion;
     private String mainFilename;
     private String repoUrl;
     private int type;
@@ -38,10 +39,11 @@ public class ExecutionRequestBuilder
 
     public ExecutionRequestBuilder forExperiment(Experiment experiment) {
         experimentId = experiment.getId();
+        experimentVersion = experiment.getVersions().size() + 1;
         return this;
     }
 
     public ExecutionRequest build() {
-        return new ExecutionRequest(id, experimentId, mainFilename, repoUrl, type, outputPattern);
+        return new ExecutionRequest(id, experimentId, experimentVersion, mainFilename, repoUrl, type, outputPattern);
     }
 }
