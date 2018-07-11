@@ -12,6 +12,7 @@ import org.ucl.newton.framework.ExperimentVersion;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Instances of this class provide access to persisted experiment data.
@@ -30,7 +31,7 @@ public class ExperimentRepository {
 
     @Transactional
     public Experiment addExperiment(Experiment experiment) {
-        Collection<ExperimentVersion> versions = addVersions(experiment.getVersions());
+        List<ExperimentVersion> versions = addVersions(experiment.getVersions());
         experiment.setVersions(versions);
 
         Session session = getSession();
@@ -49,8 +50,8 @@ public class ExperimentRepository {
     }
 
     @Transactional
-    public Collection<ExperimentVersion> addVersions(Collection<ExperimentVersion> versions) {
-        Collection<ExperimentVersion> result = new ArrayList<>();
+    public List<ExperimentVersion> addVersions(List<ExperimentVersion> versions) {
+        List<ExperimentVersion> result = new ArrayList<>();
         for (ExperimentVersion version: versions) {
             result.add(addVersion(version));
         }

@@ -17,6 +17,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Instances of this class represent a research experiment, a data science
@@ -61,7 +62,7 @@ public class Experiment
     @JoinTable(name = "experiment_versions",
         joinColumns = @JoinColumn(name = "experiment_id", referencedColumnName = "exp_id"),
         inverseJoinColumns = @JoinColumn(name = "version_id", referencedColumnName = "ver_id"))
-    private Collection<ExperimentVersion> versions;
+    private List<ExperimentVersion> versions;
 
     public Experiment() {
     }
@@ -73,7 +74,7 @@ public class Experiment
         Project project,
         DataProcessorConfiguration processorConfiguration,
         Collection<DataSource> dataSources,
-        Collection<ExperimentVersion> versions)
+        List<ExperimentVersion> versions)
     {
         this.id = id;
         this.name = name;
@@ -113,11 +114,11 @@ public class Experiment
         return dataSources;
     }
 
-    public Collection<ExperimentVersion> getVersions() {
+    public List<ExperimentVersion> getVersions() {
         return versions;
     }
 
-    public Experiment setVersions(Collection<ExperimentVersion> versions){
+    public Experiment setVersions(List<ExperimentVersion> versions){
         this.versions = versions;
         return this;
     }

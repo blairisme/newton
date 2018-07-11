@@ -10,6 +10,7 @@
 package org.ucl.newton.framework;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Instances of this class build {@link Experiment Experiments}.
@@ -24,7 +25,7 @@ public class ExperimentBuilder
     private Project project;
     private DataProcessorConfiguration processorConfiguration;
     private Collection<DataSource> dataSources;
-    private Collection<ExperimentVersion> versions;
+    private List<ExperimentVersion> versions;
 
     public ExperimentBuilder() {
     }

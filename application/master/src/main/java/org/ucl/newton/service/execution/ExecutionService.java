@@ -26,7 +26,7 @@ public interface ExecutionService
 
     void executionComplete(ExecutionResult executionResult);
 
-    boolean isExecutionComplete(String experimentId);
+    boolean isExecutionComplete(int experimentId);
 
     boolean isExecutionComplete(Experiment experiment);
 }

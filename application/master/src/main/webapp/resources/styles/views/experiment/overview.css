@@ -1,0 +1,29 @@
+.message_container {
+    width: 100%;
+    max-width: 20rem;
+    margin-left: auto;
+    margin-top: 7rem;
+    margin-right: auto;
+    text-align: center;
+}
+
+.message_container p {
+    margin-top: 1rem;
+}
+
+.message_container a {
+    margin-top: 1rem;
+}
+
+.control_container {
+    float:right;
+    margin: 1rem;
+}
+
+.statistics_container * {
+    margin-bottom: 1rem;
+}
+
+.statistics_container p {
+    margin-left: 1rem;
+}

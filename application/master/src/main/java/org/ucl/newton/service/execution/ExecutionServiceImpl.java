@@ -82,7 +82,7 @@ public class ExecutionServiceImpl implements ExecutionService, ExecutionCoordina
         evaluateExecutionQueue();
     }
 
-    public boolean isExecutionComplete(String experimentId) {
+    public boolean isExecutionComplete(int experimentId) {
         for (Experiment experiment : executionQueue){
             if (Objects.equals(experiment.getId(), experimentId)) {
                 return false;

@@ -33,7 +33,7 @@ public class ExecutionRestController
     }
 
     @RequestMapping(value = "/api/experiment/iscomplete", method = RequestMethod.GET)
-    public Boolean isExecutionComplete(@RequestParam String experimentId) {
+    public Boolean isExecutionComplete(@RequestParam int experimentId) {
         return executionService.isExecutionComplete(experimentId);
     }
 }
