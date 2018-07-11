@@ -106,10 +106,10 @@ public class ExperimentRepositoryTest {
 
         ExperimentVersion version1 = versions.iterator().next();
         Collection<ExperimentOutcome> outcomes = version1.getOutcomes();
-        Assert.assertEquals(2, outcomes.size());
+        Assert.assertEquals(3, outcomes.size());
         Iterator<ExperimentOutcome> it = outcomes.iterator();
         ExperimentOutcome outcome = it.next();
-        ExperimentOutcome expectedOutcome = new ExperimentOutcome(1, "outcomes/v1.csv", ExperimentOutcomeType.EXPERIMENTRESULT);
+        ExperimentOutcome expectedOutcome = new ExperimentOutcome(1, "/resources/tempJson/testJSON.json/", ExperimentOutcomeType.EXPERIMENTRESULT);
         Assert.assertEquals(expectedOutcome, outcome);
 
         outcome = it.next();

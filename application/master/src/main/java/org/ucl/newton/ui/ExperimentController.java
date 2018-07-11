@@ -19,7 +19,6 @@ import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.service.execution.ExecutionService;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.user.UserService;
-
 import javax.inject.Inject;
 
 /**
@@ -58,6 +57,8 @@ public class ExperimentController
         model.addAttribute("project", selectedExperiment.getProject());
         model.addAttribute("executing", !executionService.isExecutionComplete(selectedExperiment));
         model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("latestVersion", selectedExperiment.getVersionWithNum(
+                selectedExperiment.getVersions().size()));
         return "project/experiment/overview";
     }
 
@@ -68,4 +69,5 @@ public class ExperimentController
         executionService.beginExecution(experimentService.getExperimentById(experimentId));
         return "redirect:/project/" + projectName + "/experiment/" + Integer.toString(experimentId);
     }
+
 }

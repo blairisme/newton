@@ -14,9 +14,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.ucl.newton.service.experiment.UnknownExperimentVersionException;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Instances of this class represent a research experiment, a data science
@@ -121,6 +123,18 @@ public class Experiment
         this.versions = versions;
         return this;
     }
+
+    public ExperimentVersion getVersionWithNum(int id){
+        Iterator<ExperimentVersion> itt = versions.iterator();
+        while(itt.hasNext()) {
+            ExperimentVersion version = itt.next();
+            if(version.getId() == id){
+                return version;
+            }
+        }
+        throw new UnknownExperimentVersionException(name, id);
+    }
+
 
     @Override
     public boolean equals(Object obj) {

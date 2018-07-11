@@ -75,6 +75,10 @@ public class ExperimentOutcome {
         return type;
     }
 
+    public boolean isTypeResult() {
+        return type == ExperimentOutcomeType.EXPERIMENTRESULT;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) { return false; }
