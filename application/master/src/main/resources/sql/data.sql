@@ -77,13 +77,14 @@ INSERT INTO versions (ver_id, ver_number) VALUES (1, 1);
 INSERT INTO experiment_versions (experiment_id, version_id) VALUES (1, 1);
 
 /* Outcomes */
-INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (1, 'outcomes/v1.csv', 'EXPERIMENTRESULT');
+INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (1, '/resources/tempJson/testJSON.json/', 'EXPERIMENTRESULT');
 INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (2, 'outcomes/log.txt', 'EXPERIMENTLOG');
+INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (3, '/resources/tempJson/testJSON2.json/', 'EXPERIMENTRESULT');
 
 /* Link outcomes to versions */
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 1);
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 2);
-
+INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 3);
 
 /*** System Settings ***/
 

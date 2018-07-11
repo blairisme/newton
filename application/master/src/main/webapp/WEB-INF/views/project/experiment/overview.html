@@ -14,6 +14,9 @@
     <script src="/resources/scripts/libraries/jquery.js"></script>
     <script src="/resources/scripts/libraries/popper.js"></script>
     <script src="/resources/scripts/libraries/bootstrap.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/dataTables.bootstrap4.min.js"></script>
     <script src="/resources/scripts/views/project/experiment.js"></script>
 </head>
 <body>
@@ -94,7 +97,24 @@
                             <img src="/resources/images/output.png" width="1200"/>
                         </div>
                         <div id="dataTab" class="tab-pane fade">
-                            <span>data</span>
+                            <!-- Add check for execution -->
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="outcomeDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Select an output to view
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <a th:each="outcome, iteration :${latestVersion.outcomes}"
+                                           th:if="${outcome.isTypeResult()}"
+                                           class="dropdown-item" href="#"
+                                           th:text="${outcome.path}"></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <table id="testOutcome" class="table table-bordered experiment-output"></table>
+                            </div>
+                            <p id="jsonError"></p>
                         </div>
                         <div id="consoleTab" class="tab-pane fade">
                             <span>Console</span>

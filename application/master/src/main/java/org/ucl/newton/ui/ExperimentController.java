@@ -22,7 +22,6 @@ import org.ucl.newton.framework.Project;
 import org.ucl.newton.service.execution.ExecutionService;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.user.UserService;
-
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Objects;
@@ -54,17 +53,23 @@ public class ExperimentController
         this.executionService = executionService;
     }
 
-//    @RequestMapping(value = "/project/{projectName}/experiment/{experimentId}", method = RequestMethod.GET)
-//    public String details(@PathVariable("projectName") String projectName,
-//                          @PathVariable("experimentId") int experimentId, ModelMap model)
-//    {
-//        Experiment experiment = experimentService.getExperimentById(experimentId);
-//        model.addAttribute("experiment", experiment);
-//        model.addAttribute("project", experiment.getProject());
-//        model.addAttribute("executing", !executionService.isExecutionComplete(experiment));
-//        model.addAttribute("user", userService.getAuthenticatedUser());
-//        return "project/experiment/overview";
-//    }
+    @RequestMapping(value = "/project/{projectName}/experiment/{experimentId}", method = RequestMethod.GET)
+    public String details(@PathVariable("projectName") String projectName,
+                          @PathVariable("experimentId") int experimentId, ModelMap model)
+    {
+        Experiment experiment = experimentService.getExperimentById(experimentId);
+        Project project1 = experiment.getProject();
+        ExperimentVersion version = getVersion(experiment, "latest");
+
+        model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("experiment", experiment);
+        model.addAttribute("project", project1);
+        model.addAttribute("version", version);
+        model.addAttribute("latestVersion", version);
+        model.addAttribute("executing", !executionService.isExecutionComplete(experiment));
+
+        return "project/experiment/overview";
+    }
 
     @GetMapping(value = "/project/{project}/{experiment}/{version}")
     public String details(
@@ -81,7 +86,9 @@ public class ExperimentController
         model.addAttribute("experiment", experiment);
         model.addAttribute("project", project1);
         model.addAttribute("version", version);
+        model.addAttribute("latestVersion", version);
         model.addAttribute("executing", !executionService.isExecutionComplete(experiment));
+
         return "project/experiment/overview";
     }
 
@@ -101,4 +108,5 @@ public class ExperimentController
         executionService.beginExecution(experimentService.getExperimentById(experimentId));
         return "redirect:/project/" + projectName + "/experiment/" + Integer.toString(experimentId);
     }
+
 }
