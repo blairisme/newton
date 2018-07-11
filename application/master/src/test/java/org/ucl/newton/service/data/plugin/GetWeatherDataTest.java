@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 public class GetWeatherDataTest
 {
     @Test
-    @Ignore // failing
+//    @Ignore // failing
     public void runTest() throws IOException {
         StorageProvider storageProvider = mock(StorageProvider.class);
         when(storageProvider.getOutputStream(anyString())).thenReturn(mock(OutputStream.class));
