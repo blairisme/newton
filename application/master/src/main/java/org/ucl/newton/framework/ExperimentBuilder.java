@@ -20,6 +20,7 @@ import java.util.List;
 public class ExperimentBuilder
 {
     private int id;
+    private String identifier;
     private String name;
     private User creator;
     private Project project;
@@ -32,6 +33,7 @@ public class ExperimentBuilder
 
     public ExperimentBuilder copyExperiment(Experiment experiment) {
         id = experiment.getId();
+        identifier = experiment.getIdentifier();
         name = experiment.getName();
         creator = experiment.getCreator();
         project = experiment.getProject();
@@ -49,6 +51,7 @@ public class ExperimentBuilder
     public Experiment build() {
         return new Experiment(
             id,
+            identifier,
             name,
             creator,
             project,

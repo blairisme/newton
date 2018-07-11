@@ -1,3 +1,12 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.service.experiment;
 
 /**
@@ -5,9 +14,9 @@ package org.ucl.newton.service.experiment;
  *
  * @author John Wilkie
  */
-public class UnknownExperimentVersionException extends RuntimeException {
+public class MissingVersionException extends RuntimeException {
 
-    public UnknownExperimentVersionException(String experimentName, int versionNum) {
+    public MissingVersionException(String experimentName, int versionNum) {
         super(String.format("Experiment %s does not have a version with " +
                 "number: %d", experimentName, versionNum));
     }

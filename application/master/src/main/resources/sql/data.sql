@@ -58,9 +58,9 @@ INSERT INTO processor_configuration(id, processor_id, configuration_path) VALUES
 INSERT INTO processor_configuration(id, processor_id, configuration_path) VALUES (3, 1, 'config.json');
 
 /* Experiments */
-INSERT INTO experiments (exp_id, exp_name, project_id, creator_id, processor_configuration_id) VALUES (1, 'Experiment 1', 1, 3, 1);
-INSERT INTO experiments (exp_id, exp_name, project_id, creator_id, processor_configuration_id) VALUES (2, 'Experiment 2', 1, 4, 2);
-INSERT INTO experiments (exp_id, exp_name, project_id, creator_id, processor_configuration_id) VALUES (3, 'Experiment 3', 1, 3, 3);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (1, 'experiment-1', 'Experiment 1', 1, 3, 1);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (2, 'experiment-2', 'Experiment 2', 1, 4, 2);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (3, 'experiment-3', 'Experiment 3', 1, 3, 3);
 
 /* Experiment data source configuration */
 INSERT INTO experiment_datasources (experiement_id, datasource_id) VALUES (1, 1);

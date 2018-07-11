@@ -101,6 +101,7 @@ CREATE TABLE IF NOT EXISTS processor_configuration (
 /* Create experiment table to store data relating to experiments */
 CREATE TABLE IF NOT EXISTS experiments (
     exp_id INT NOT NULL AUTO_INCREMENT,
+    exp_identifier VARCHAR(45) NOT NULL,
     exp_name VARCHAR(45) NOT NULL,
     project_id INT NOT NULL,
     creator_id INT NOT NULL,

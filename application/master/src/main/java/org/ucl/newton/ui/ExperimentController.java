@@ -12,10 +12,7 @@ package org.ucl.newton.ui;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.ExperimentVersion;
 import org.ucl.newton.framework.Project;
@@ -53,60 +50,42 @@ public class ExperimentController
         this.executionService = executionService;
     }
 
-    @RequestMapping(value = "/project/{projectName}/experiment/{experimentId}", method = RequestMethod.GET)
-    public String details(@PathVariable("projectName") String projectName,
-                          @PathVariable("experimentId") int experimentId, ModelMap model)
-    {
-        Experiment experiment = experimentService.getExperimentById(experimentId);
-        Project project1 = experiment.getProject();
-        ExperimentVersion version = getVersion(experiment, "latest");
-
-        model.addAttribute("user", userService.getAuthenticatedUser());
-        model.addAttribute("experiment", experiment);
-        model.addAttribute("project", project1);
-        model.addAttribute("version", version);
-        model.addAttribute("latestVersion", version);
-        model.addAttribute("executing", !executionService.isExecutionComplete(experiment));
-
-        return "project/experiment/overview";
-    }
-
-    @GetMapping(value = "/project/{project}/{experiment}/{version}")
+    @GetMapping(value = "/project/{project}/{experiment}")
     public String details(
-        @PathVariable("project") String project,
-        @PathVariable("experiment") int experimentId,
-        @PathVariable("version") String versionId,
+        @PathVariable("project") String projectIdentifier,
+        @PathVariable("experiment") String experimentIdentifier,
+        @RequestParam(name = "version", required = false, defaultValue = "latest") String version,
         ModelMap model)
     {
-        Experiment experiment = experimentService.getExperimentById(experimentId);
-        Project project1 = experiment.getProject();
-        ExperimentVersion version = getVersion(experiment, versionId);
+        Experiment experiment = experimentService.getExperimentByIdentifier(experimentIdentifier);
 
         model.addAttribute("user", userService.getAuthenticatedUser());
         model.addAttribute("experiment", experiment);
-        model.addAttribute("project", project1);
-        model.addAttribute("version", version);
-        model.addAttribute("latestVersion", version);
+        model.addAttribute("project", experiment.getProject());
+        model.addAttribute("version", getVersion(experiment, version));
         model.addAttribute("executing", !executionService.isExecutionComplete(experiment));
 
         return "project/experiment/overview";
     }
 
     private ExperimentVersion getVersion(Experiment experiment, String version) {
-        List<ExperimentVersion> versions = experiment.getVersions();
-        if (versions.isEmpty()) {
+        if (! experiment.hasVersion()) {
             return null;
         }
-        int versionIndex = version.equals("latest") ? versions.size() - 1 : Integer.parseInt(version);
-        return versions.get(versionIndex);
+        if (version.equalsIgnoreCase("latest")) {
+            return experiment.getLatestVersion();
+        }
+        return experiment.getVersion(Integer.parseInt(version));
     }
 
-    @RequestMapping(value = "/project/{projectName}/experiment/{experimentId}/run", method = RequestMethod.GET)
-    public String execute(@PathVariable("projectName") String projectName,
-                          @PathVariable("experimentId") int experimentId, ModelMap model)
+    @GetMapping(value = "/project/{project}/{experiment}/run")
+    public String execute(
+        @PathVariable("project") String projectIdentifier,
+        @PathVariable("experiment") String experimentIdentifier,
+        ModelMap model)
     {
-        executionService.beginExecution(experimentService.getExperimentById(experimentId));
-        return "redirect:/project/" + projectName + "/experiment/" + Integer.toString(experimentId);
+        executionService.beginExecution(experimentService.getExperimentByIdentifier(experimentIdentifier));
+        return "redirect:/project/" + projectIdentifier + "/" + experimentIdentifier;
     }
 
 }

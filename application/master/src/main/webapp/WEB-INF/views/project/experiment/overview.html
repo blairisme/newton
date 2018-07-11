@@ -17,7 +17,7 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/dataTables.bootstrap4.min.js"></script>
-    <script src="/resources/scripts/views/project/experiment.js"></script>
+    <script src="/resources/scripts/views/experiment/overview.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -49,14 +49,14 @@
             <div id="overviewTab" class="tab-pane active fade show">
                 <!-- No versions message -->
                 <div th:if="${version == null && executing == false}" class="message_container">
-                    <img src="/resources/images/common/information.png" alt="Information" width="200" height="200"/>
+                    <img src="/resources/images/common/information.png" alt="Information" width="200"/>
                     <p>It looks like you've never run the experiment. Would you like to the run the experiment?</p>
-                    <a th:if="${executing == false}" class="btn btn-lrg btn-primary" th:href="@{'/project/' + ${project.identifier} + '/experiment/' + ${experiment.id} + '/run'}" role="button" id="runExperimentBtn">Run Experiment</a>
+                    <a th:if="${executing == false}" class="btn btn-lrg btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/run'}" role="button" id="runExperimentBtn">Run Experiment</a>
                 </div>
 
                 <!-- Experiment running message -->
                 <div th:if="${executing == true}" class="message_container">
-                    <img src="/resources/images/common/spinner.gif" alt="Conducting experiment..." width="200" height="200">
+                    <img src="/resources/images/common/science_ing.gif" alt="Conducting experiment..." width="300">
                     <p>Running experiment...</p>
                     <p>Time Elasped: 1:32</p>
                 </div>
@@ -66,13 +66,13 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-auto statistics_container">
-                                <h1 class="page-title">Heart Rate Experiment</h1>
+                                <h1 class="page-title" th:text="${experiment.name}"></h1>
                                 <p>Time: 20:04 10/07/18</p>
                                 <p>Duration: 1:32m</p>
                             </div>
                             <div class="col-4 ml-auto">
                                 <div class="control_container">
-                                    <a class="btn btn-primary" href="#" role="button">Rerun</a>
+                                    <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/run'}" role="button">Rerun</a>
                                     <a class="btn btn-primary" href="#" role="button">Publish Results</a>
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <li>
-                                        <a th:each="outcome, iteration :${latestVersion.outcomes}"
+                                        <a th:each="outcome, iteration :${version.outcomes}"
                                            th:if="${outcome.isTypeResult()}"
                                            class="dropdown-item" href="#"
                                            th:text="${outcome.path}"></a>

@@ -50,6 +50,10 @@ public class ExperimentService
         return repository.getExperimentById(experimentId);
     }
 
+    public Experiment getExperimentByIdentifier(String identifier) {
+        return repository.getExperimentByIdentifier(identifier);
+    }
+
     public void update(Experiment experiment) {
         repository.update(experiment);
     }

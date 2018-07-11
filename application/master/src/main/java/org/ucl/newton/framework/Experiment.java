@@ -14,11 +14,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.ucl.newton.service.experiment.UnknownExperimentVersionException;
+import org.ucl.newton.service.experiment.MissingVersionException;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -36,6 +35,9 @@ public class Experiment
     @Column(name = "exp_id")
     @GeneratedValue(generator = "increment")
     private int id;
+
+    @Column(name = "exp_identifier")
+    private String identifier;
 
     @Column(name = "exp_name")
     private String name;
@@ -71,6 +73,7 @@ public class Experiment
 
     public Experiment(
         int id,
+        String identifier,
         String name,
         User creator,
         Project project,
@@ -79,6 +82,7 @@ public class Experiment
         List<ExperimentVersion> versions)
     {
         this.id = id;
+        this.identifier = identifier;
         this.name = name;
         this.creator = creator;
         this.project = project;
@@ -94,6 +98,10 @@ public class Experiment
     public Experiment setId(int id) {
         this.id = id;
         return this;
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 
     public String getName() {
@@ -120,22 +128,31 @@ public class Experiment
         return versions;
     }
 
+    public boolean hasVersion() {
+        return ! versions.isEmpty();
+    }
+
+    public ExperimentVersion getVersion(int version) {
+        if (version < 0) {
+            throw new IllegalArgumentException();
+        }
+        if (version >= versions.size()) {
+            throw new MissingVersionException(name, version);
+        }
+        return versions.get(version);
+    }
+
+    public ExperimentVersion getLatestVersion() {
+        if (versions.isEmpty()) {
+            throw new MissingVersionException(name, 1);
+        }
+        return versions.get(versions.size() - 1);
+    }
+
     public Experiment setVersions(List<ExperimentVersion> versions){
         this.versions = versions;
         return this;
     }
-
-    public ExperimentVersion getVersionWithNum(int id){
-        Iterator<ExperimentVersion> itt = versions.iterator();
-        while(itt.hasNext()) {
-            ExperimentVersion version = itt.next();
-            if(version.getId() == id){
-                return version;
-            }
-        }
-        throw new UnknownExperimentVersionException(name, id);
-    }
-
 
     @Override
     public boolean equals(Object obj) {
@@ -146,6 +163,7 @@ public class Experiment
         Experiment that = (Experiment)obj;
         return new EqualsBuilder()
             .append(this.id, that.id)
+            .append(this.identifier, that.identifier)
             .append(this.name, that.name)
             .append(this.creator, that.creator)
             .append(this.project, that.project)
@@ -159,6 +177,7 @@ public class Experiment
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
             .append(id)
+            .append(identifier)
             .append(name)
             .append(creator)
             .append(project)
@@ -172,6 +191,7 @@ public class Experiment
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", id)
+            .append("identifier", identifier)
             .append("name", name)
             .append("creator", creator)
             .append("project", project)
