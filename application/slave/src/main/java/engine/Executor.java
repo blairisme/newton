@@ -4,9 +4,9 @@ import datasets.Dataset;
 import exceptions.DatasetDownloadException;
 import exceptions.MatchOutputFilesException;
 import helpers.GitHelper;
-import helpers.ZipHelper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.ucl.newton.common.archive.ZipUtils;
 import pojo.AnalysisResults;
 import security.SandboxSecurityPolicy;
 
@@ -64,14 +64,27 @@ public class Executor{
 		downloadDatasets();
 		mLogFile = mEngine.build(mMainRepoDir, mMainFile.getAbsolutePath());
 		File[] outputFiles = getOutputFiles();
-		mZipOutputFile = new File(mMainRepoDir, "output.zip");
+		mZipOutputFile = new File(mProjectDir, "data.zip");
 		if(mZipOutputFile.exists()){
 			mZipOutputFile.delete();
 		}
-		ZipHelper.zipFiles(outputFiles, mZipOutputFile);
+		ZipUtils.zip(outputFiles, mZipOutputFile);
 
-        FileUtils.moveFileToDirectory(mLogFile, mProjectDir, true);
-        FileUtils.moveFileToDirectory(mZipOutputFile, mProjectDir, true);
+
+		File[] visualFiles = getVisualFiles();
+        File visualFilesArchive = new File(mProjectDir, "visuals.zip");
+        if(visualFilesArchive.exists()){
+            visualFilesArchive.delete();
+        }
+        ZipUtils.zip(visualFiles, visualFilesArchive);
+
+        if (mLogFile != null) {
+            File logFile = new File(mProjectDir, "log.txt");
+            if (logFile.exists()) {
+                logFile.delete();
+            }
+            FileUtils.moveFile(mLogFile, logFile);
+        }
 
 		AnalysisResults analysisResults = new AnalysisResults(mId);
 		analysisResults.setLogFile(mLogFile);
@@ -93,10 +106,26 @@ public class Executor{
 				System.out.println(files[i]);
 			}
 			return files;
-		}catch (Exception ignore){
+		}
+		catch (Exception ignore){
 			throw new MatchOutputFilesException("Error while trying to find output files");
 		}
 	}
+
+	private File[] getVisualFiles() throws MatchOutputFilesException {
+        try {
+            File dir = new File(mMainRepoDir);
+            FileFilter fileFilter = new WildcardFileFilter("*.png");
+            File[] files = dir.listFiles(fileFilter);
+            for (int i = 0; i < files.length; i++) {
+                System.out.println(files[i]);
+            }
+            return files;
+        }
+        catch (Exception ignore){
+            throw new MatchOutputFilesException("Error while trying to find visual files");
+        }
+    }
 
 //	protected void executeCommand(String cmnd){
 //		mLogFile = LogHelper.executeCmnd(cmnd, true, mProjectDir.getAbsolutePath());

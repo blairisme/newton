@@ -34,7 +34,7 @@ public class ExecutionRequestBuilder
         this.type = 0;
         this.mainFilename = "test.py";
         this.repoUrl = "https://github.com/ziad-alhalabi/python-test/archive/master.zip";
-        this.outputPattern = "*.py";
+        this.outputPattern = "*.csv";
     }
 
     public ExecutionRequestBuilder forExperiment(Experiment experiment) {

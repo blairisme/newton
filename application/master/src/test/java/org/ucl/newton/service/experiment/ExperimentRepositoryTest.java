@@ -109,13 +109,13 @@ public class ExperimentRepositoryTest {
         Assert.assertEquals(3, outcomes.size());
         Iterator<ExperimentOutcome> it = outcomes.iterator();
         ExperimentOutcome outcome = it.next();
-        ExperimentOutcome expectedOutcome = new ExperimentOutcome(1, "/resources/tempJson/testJSON.json/", ExperimentOutcomeType.EXPERIMENTRESULT);
+        ExperimentOutcome expectedOutcome = new ExperimentOutcome(1, "/resources/tempJson/testJSON.json/", ExperimentOutcomeType.Data);
         Assert.assertEquals(expectedOutcome, outcome);
 
         outcome = it.next();
         Assert.assertEquals(2, outcome.getId());
         Assert.assertEquals("outcomes/log.txt", outcome.getPath());
-        Assert.assertEquals(ExperimentOutcomeType.EXPERIMENTLOG, outcome.getType());
+        Assert.assertEquals(ExperimentOutcomeType.Log, outcome.getType());
     }
 
 }

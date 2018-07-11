@@ -9,10 +9,13 @@
 
 package org.ucl.newton.bridge;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.net.URI;
+import java.time.Duration;
+import java.util.Date;
 
 /**
  * Instances of this class contain information about the outcome of an
@@ -24,46 +27,74 @@ import java.net.URI;
 public class ExecutionResult
 {
     private String id;
-    private int experimentId;
-    private int experimentVersion;
+    private int ownerId;
+    private int ownerVersion;
     private URI logPath;
-    private URI outputPath;
-    private String errorMessage;
+    private URI dataPath;
+    private URI visualsPath;
+    //private Date date;
+    //private Duration duration;
+    private String error;
 
     public ExecutionResult() {
     }
 
-    public ExecutionResult(String id, int experimentId, int experimentVersion, URI logPath, URI outputPath, String errorMessage) {
+    public ExecutionResult(
+        String id,
+        int ownerId,
+        int ownerVersion,
+        URI logPath,
+        URI dataPath,
+        URI visualPath,
+        Date date,
+        Duration duration,
+        String error)
+    {
         this.id = id;
-        this.experimentId = experimentId;
-        this.experimentVersion = experimentVersion;
+        this.ownerId = ownerId;
+        this.ownerVersion = ownerVersion;
         this.logPath = logPath;
-        this.outputPath = outputPath;
-        this.errorMessage = errorMessage;
+        this.dataPath = dataPath;
+        this.visualsPath = visualPath;
+       // this.date = date;
+        //this.duration = duration;
+        this.error = error;
     }
 
     public String getId() {
         return id;
     }
 
-    public int getExperimentId() {
-        return experimentId;
+    public int getOwnerId() {
+        return ownerId;
     }
 
-    public int getExperimentVersion() {
-        return experimentVersion;
+    public int getOwnerVersion() {
+        return ownerVersion;
     }
 
     public URI getLogPath() {
         return logPath;
     }
 
-    public URI getOutputPath() {
-        return outputPath;
+    public URI getDataPath() {
+        return dataPath;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public URI getVisualsPath() {
+        return visualsPath;
+    }
+
+//    public Date getDate() {
+//        return date;
+//    }
+//
+//    public Duration getDuration() {
+//        return duration;
+//    }
+
+    public String getError() {
+        return error;
     }
 
     @Override
@@ -73,13 +104,16 @@ public class ExecutionResult
         if (obj.getClass() != getClass()) return false;
 
         ExecutionResult that = (ExecutionResult)obj;
-        return new org.apache.commons.lang3.builder.EqualsBuilder()
+        return new EqualsBuilder()
+            .append(ownerId, that.ownerId)
+            .append(ownerVersion, that.ownerVersion)
             .append(id, that.id)
-            .append(experimentId, that.experimentId)
-            .append(experimentVersion, that.experimentVersion)
             .append(logPath, that.logPath)
-            .append(outputPath, that.outputPath)
-            .append(errorMessage, that.errorMessage)
+            .append(dataPath, that.dataPath)
+            .append(visualsPath, that.visualsPath)
+//            .append(date, that.date)
+//            .append(duration, that.duration)
+            .append(error, that.error)
             .isEquals();
     }
 
@@ -87,11 +121,14 @@ public class ExecutionResult
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
             .append(id)
-            .append(experimentId)
-            .append(experimentVersion)
+            .append(ownerId)
+            .append(ownerVersion)
             .append(logPath)
-            .append(outputPath)
-            .append(errorMessage)
+            .append(dataPath)
+            .append(visualsPath)
+//            .append(date)
+//            .append(duration)
+            .append(error)
             .toHashCode();
     }
 
@@ -99,11 +136,14 @@ public class ExecutionResult
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", id)
-            .append("experimentId", experimentId)
-            .append("experimentVersion", experimentVersion)
+            .append("ownerId", ownerId)
+            .append("ownerVersion", ownerVersion)
             .append("logPath", logPath)
-            .append("outputPath", outputPath)
-            .append("errorMessage", errorMessage)
+            .append("dataPath", dataPath)
+            .append("visualsPath", visualsPath)
+//            .append("date", date)
+//            .append("duration", duration)
+            .append("error", error)
             .toString();
     }
 }

@@ -2,6 +2,7 @@ package helpers;
 
 import exceptions.RepoDownloadException;
 import org.apache.commons.io.FileUtils;
+import org.ucl.newton.common.archive.ZipUtils;
 
 import java.io.File;
 import java.net.URL;
@@ -18,7 +19,7 @@ public class GitHelper {
 			}
 			URL repoUrl = new URL(url);
 			FileUtils.copyURLToFile(repoUrl, repoZip);
-			ZipHelper.unzip(repoZip.getAbsolutePath(), fileDir.getAbsolutePath());
+			ZipUtils.unzip(repoZip, fileDir);
 
 			File[] files = fileDir.listFiles();
 			for (File file : files) {

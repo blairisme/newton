@@ -73,8 +73,8 @@ public class ExecutionServiceImpl implements ExecutionService, ExecutionCoordina
 
     @Async
     public void executionComplete(ExecutionResult executionResult) {
-        executionRequests.remove(executionResult.getExperimentId());
-        ExecutionNode executionNode = executionAssignment.remove(executionResult.getExperimentId());
+        executionRequests.remove(executionResult.getOwnerId());
+        ExecutionNode executionNode = executionAssignment.remove(executionResult.getOwnerId());
 
         executionRepository.persistResult(executionNode, executionResult);
         executorService.releaseExecutor(executionNode);

@@ -94,10 +94,11 @@
 
                     <div class="tab-content">
                         <div id="visualizationTab" class="tab-pane active fade show">
-                            <img src="/resources/images/output.png" width="1200"/>
+                            <img th:each="outcome, iteration :${version.outcomes}" th:if="${outcome.isVisualType()}" th:src="@{'/resources/' + ${outcome.path}}"/>
                         </div>
                         <div id="dataTab" class="tab-pane fade">
                             <!-- Add check for execution -->
+
                             <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle" type="button" id="outcomeDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Select an output to view
@@ -105,9 +106,9 @@
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <li>
                                         <a th:each="outcome, iteration :${version.outcomes}"
-                                           th:if="${outcome.isTypeResult()}"
+                                           th:if="${outcome.isDataType()}"
                                            class="dropdown-item" href="#"
-                                           th:text="${outcome.path}"></a>
+                                           th:text="@{'/resources/' + ${outcome.path}}"></a>
                                     </li>
                                 </ul>
                             </div>
@@ -117,7 +118,7 @@
                             <p id="jsonError"></p>
                         </div>
                         <div id="consoleTab" class="tab-pane fade">
-                            <span>Console</span>
+                            <object th:each="outcome, iteration :${version.outcomes}" th:if="${outcome.isLogType()}" th:data="@{'/resources/' + ${outcome.path}}" width="100%">Log Text</object>
                         </div>
                     </div>
                 </div>

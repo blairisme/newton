@@ -13,6 +13,13 @@ public class LogHelper {
 
     public static File startProcess(String cmnd, String mainFilePath, boolean writeToFile, String directory){
 
+        File log = new File(directory, "log.txt");
+        try {
+            log.delete();
+            log.createNewFile();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         try {
             ProcessBuilder pb =
                     new ProcessBuilder( cmnd, mainFilePath);
@@ -21,7 +28,6 @@ public class LogHelper {
             File f = pb.directory();
             System.out.println(f.exists());
 
-            File log = new File(directory,"log.txt");
             if(writeToFile) {
                 pb.redirectErrorStream(true);
                 pb.redirectOutput(ProcessBuilder.Redirect.appendTo(log));
@@ -31,7 +37,7 @@ public class LogHelper {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return null;
+        return log;
 	}
 
 /*	public static String getOutputLog(String projectId){

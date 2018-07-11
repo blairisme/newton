@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.function.Function;
 
 /**
  * Instances of this class provide access to file system resources
@@ -37,25 +38,38 @@ public class ApplicationStorage
         return FilePathUtils.appendTrailingSeparator(rootPath.toString());
     }
 
-    public void write(String group, String identifier, InputStream inputStream) throws IOException {
-        try (OutputStream outputStream = getOutputStream(group, identifier)) {
-            IOUtils.copy(inputStream, outputStream);
-        }
+    public InputStream getInputStream(Path relativePath) throws IOException {
+        Path path = rootPath.resolve(relativePath);
+        File file = path.toFile();
+        return new FileInputStream(file);
     }
 
     public OutputStream getOutputStream(String group, String identifier) throws IOException {
-        Path path = getPath(group, identifier);
+        return getOutputStream(Paths.get(group, identifier));
+    }
+
+    public OutputStream getOutputStream(Path relativePath) throws IOException {
+        Path path = rootPath.resolve(relativePath);
         File file = path.toFile();
         file.mkdirs();
         file.delete();
         return new FileOutputStream(file);
     }
 
-    public Path getOutputPath(String group, String identifier) {
-        return Paths.get(group, identifier);
+    public Function<Path, OutputStream> getOutputStreamFactory(Path relativePath) {
+        return (path) -> {
+            try {
+                return getOutputStream(relativePath.resolve(path));
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e); //bad form...
+            }
+        };
     }
 
-    private Path getPath(String group, String identifier) {
-        return rootPath.resolve(group).resolve(identifier);
+    public void write(String group, String identifier, InputStream inputStream) throws IOException {
+        try (OutputStream outputStream = getOutputStream(group, identifier)) {
+            IOUtils.copy(inputStream, outputStream);
+        }
     }
 }

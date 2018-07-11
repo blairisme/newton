@@ -1,6 +1,8 @@
 package rest;
 
+import com.google.common.base.Stopwatch;
 import engine.RequestHandler;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.ucl.newton.bridge.*;
@@ -8,7 +10,14 @@ import pojo.AnalysisRequest;
 import pojo.AnalysisResponse;
 
 import javax.inject.Named;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
+import java.time.Duration;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Named
 public class Controller implements ExecutionNodeServer
@@ -25,6 +34,8 @@ public class Controller implements ExecutionNodeServer
     @Async
     @Override
     public void execute(ExecutionRequest request) {
+
+        Stopwatch stopWatch = Stopwatch.createStarted();
         AnalysisResponse response = requestHandler.process(new AnalysisRequest(
                 request.getExperiment(),
                 request.getMainFilename(),
@@ -32,13 +43,17 @@ public class Controller implements ExecutionNodeServer
                 request.getType(),
                 request.getOutputPattern(),
                 ""));
+        stopWatch.stop();
 
         executionCoordinator.executionComplete(new ExecutionResult(
                 request.getId(),
                 request.getExperimentId(),
                 request.getExperimentVersion(),
                 URI.create("http://localhost:8080/files/projects/" + request.getExperiment() + "/log.txt"),
-                URI.create("http://localhost:8080/files/projects/" + request.getExperiment() + "/output.zip"),
+                URI.create("http://localhost:8080/files/projects/" + request.getExperiment() + "/data.zip"),
+                URI.create("http://localhost:8080/files/projects/" + request.getExperiment() + "/visuals.zip"),
+                new Date(),
+                Duration.ofMillis(stopWatch.elapsed(TimeUnit.MILLISECONDS)),
                 response.getErrorMessage()));
     }
 

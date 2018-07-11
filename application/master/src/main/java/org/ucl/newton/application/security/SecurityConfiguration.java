@@ -54,6 +54,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 .disable()
             .exceptionHandling()
                 .accessDeniedPage("/access_denied");
+
+        http.headers()
+            .frameOptions().sameOrigin()
+            .httpStrictTransportSecurity().disable();
     }
 
     @Bean

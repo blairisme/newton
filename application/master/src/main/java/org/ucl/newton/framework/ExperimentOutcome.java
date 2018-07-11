@@ -75,8 +75,16 @@ public class ExperimentOutcome {
         return type;
     }
 
-    public boolean isTypeResult() {
-        return type == ExperimentOutcomeType.EXPERIMENTRESULT;
+    public boolean isLogType() {
+        return type == ExperimentOutcomeType.Log;
+    }
+
+    public boolean isDataType() {
+        return type == ExperimentOutcomeType.Data;
+    }
+
+    public boolean isVisualType() {
+        return type == ExperimentOutcomeType.Visuals;
     }
 
     @Override

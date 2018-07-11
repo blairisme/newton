@@ -79,9 +79,21 @@ public class ExecutionNodeClient implements ExecutionNode
     @Override
     public InputStream getExecutionOutput(ExecutionResult executionResult) throws ExecutionException {
         try {
-            URI outputUri = executionResult.getOutputPath();
+            URI outputUri = executionResult.getDataPath();
             URL outputUrl = outputUri.toURL();
             return outputUrl.openStream();
+        }
+        catch (Exception cause) {
+            throw new ExecutionException(cause);
+        }
+    }
+
+    @Override
+    public InputStream getExecutionVisuals(ExecutionResult executionResult) throws ExecutionException {
+        try {
+            URI visualsUri = executionResult.getVisualsPath();
+            URL visualsUrl = visualsUri.toURL();
+            return visualsUrl.openStream();
         }
         catch (Exception cause) {
             throw new ExecutionException(cause);

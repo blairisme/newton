@@ -28,4 +28,6 @@ public interface ExecutionNode
     InputStream getExecutionLog(ExecutionResult executionResult) throws ExecutionException;
 
     InputStream getExecutionOutput(ExecutionResult executionResult) throws ExecutionException;
+
+    InputStream getExecutionVisuals(ExecutionResult executionResult) throws ExecutionException;
 }
