@@ -114,9 +114,9 @@ INSERT INTO versions (ver_id, ver_number) VALUES (1, 1);
 INSERT INTO experiment_versions (experiment_id, version_id) VALUES (1, 1);
 
 /* Outcomes */
-INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (1, '/resources/tempJson/testJSON.json/', 'Data');
-INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (2, 'outcomes/log.txt', 'Log');
-INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (3, '/resources/tempJson/testJSON2.json/', 'Data');
+INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (1, 'tempJson/testJSON.json/', 'Data');
+INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (2, 'demo/log.txt', 'Log');
+INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (3, 'tempJson/testJSON2.json/', 'Data');
 
 /* Link outcomes to versions */
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 1);

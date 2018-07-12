@@ -118,7 +118,7 @@
                             <p id="jsonError"></p>
                         </div>
                         <div id="consoleTab" class="tab-pane fade">
-                            <object th:each="outcome, iteration :${version.outcomes}" th:if="${outcome.isLogType()}" th:data="@{'/resources/' + ${outcome.path}}" width="100%">Log Text</object>
+                            <object th:each="outcome, iteration :${version.outcomes}" th:if="${outcome.isLogType()}" th:data="@{'/resources/' + ${outcome.path}}" width="100%" height="1000px">Log Text</object>
                         </div>
                     </div>
                 </div>
