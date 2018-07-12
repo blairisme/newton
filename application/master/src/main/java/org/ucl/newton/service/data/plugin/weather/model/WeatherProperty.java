@@ -1,7 +1,7 @@
-package org.ucl.newton.service.data.model;
+package org.ucl.newton.service.data.plugin.weather.model;
 
 /**
- * Temporary comment to fix build by passing checkstyle violation
+ * Instances of this class provide weather data to the Newton system.
  *
  * @author Xiaolong Chen
  */

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.ucl.newton.application.system.ApplicationPreferences;
 import org.ucl.newton.application.system.ApplicationStorage;
-import org.ucl.newton.service.data.model.WeatherProperty;
+import org.ucl.newton.service.data.plugin.weather.model.WeatherProperty;
 import org.ucl.newton.service.data.plugin.FileUtils;
 
 import javax.inject.Inject;
@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
- * list and manage projects.
+ * list and manage plugin.
  *
  * @author Xiaolong Chen
  */

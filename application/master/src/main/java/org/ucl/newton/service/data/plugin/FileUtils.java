@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.nio.file.Path;
 
 /**
- * Instances of this class provide weather data to the Newton system.
+ * Instances of this class provide utils for file reading.
  *
  * @author Xiaolong Chen
  */

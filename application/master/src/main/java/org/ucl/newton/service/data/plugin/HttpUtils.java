@@ -8,7 +8,7 @@ import com.mashape.unirest.request.HttpRequestWithBody;
 
 import java.util.Map;
 /**
- * Instances of this class provide weather data to the Newton system.
+ * Instances of this class provide utils for http operations.
  *
  * @author Xiaolong Chen
  */

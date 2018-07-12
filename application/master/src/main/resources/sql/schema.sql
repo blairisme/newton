@@ -166,3 +166,13 @@ CREATE TABLE IF NOT EXISTS executors (
     password VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 );
+
+
+/* Create table to contain data source provider details */
+CREATE TABLE IF NOT EXISTS source_providers (
+  id INT NOT NULL AUTO_INCREMENT,
+  jarPath VARCHAR(100) NOT NULL,
+  providerName VARCHAR(100) NOT NULL,
+  version VARCHAR(100) NOT NULL,
+  PRIMARY KEY (id)
+);

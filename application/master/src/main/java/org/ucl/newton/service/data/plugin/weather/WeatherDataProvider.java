@@ -7,8 +7,9 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.service.data.plugin;
+package org.ucl.newton.service.data.plugin.weather;
 
+import org.ucl.newton.service.data.plugin.weather.GetWeatherData;
 import org.ucl.newton.service.data.sdk.DataProvider;
 import org.ucl.newton.service.data.sdk.DataProviderObserver;
 import org.ucl.newton.service.data.sdk.StorageProvider;
@@ -33,6 +34,7 @@ public class WeatherDataProvider implements DataProvider
     public void start(StorageProvider storageProvider) {
         this.scheduler = Executors.newSingleThreadScheduledExecutor();
         this.scheduler.scheduleAtFixedRate(new GetWeatherData(storageProvider),0,1,TimeUnit.HOURS); //run every hour
+        observer.dataUpdated();
     }
 
     @Override

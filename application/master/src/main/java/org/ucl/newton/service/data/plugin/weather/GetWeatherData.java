@@ -1,4 +1,4 @@
-package org.ucl.newton.service.data.plugin;
+package org.ucl.newton.service.data.plugin.weather;
 
 import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
@@ -6,8 +6,10 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import org.ucl.newton.application.system.ApplicationPreferences;
 import org.ucl.newton.application.system.ApplicationStorage;
-import org.ucl.newton.service.data.model.WeatherData;
-import org.ucl.newton.service.data.model.WeatherProperty;
+import org.ucl.newton.service.data.plugin.weather.model.WeatherData;
+import org.ucl.newton.service.data.plugin.weather.model.WeatherProperty;
+import org.ucl.newton.service.data.plugin.FileUtils;
+import org.ucl.newton.service.data.plugin.HttpUtils;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
 import java.io.*;

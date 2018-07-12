@@ -9,12 +9,16 @@
 
 package org.ucl.newton.service.data;
 
-import org.ucl.newton.service.data.plugin.WeatherDataProvider;
+import org.ucl.newton.framework.SourceProvider;
+
 import org.ucl.newton.service.data.sdk.DataProvider;
 import org.ucl.newton.service.data.sdk.DataProviderObserver;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Collection;
 
 /**
@@ -23,23 +27,39 @@ import java.util.Collection;
  *
  * @author Blair Butterworth
  */
+
 public class DataService
 {
     private Collection<DataProvider> dataProviders;
+    private SourceProviderService sourceProviderService;
 
     @Inject
-    public DataService(Provider<DataStorage> storageProvider) {
+    public DataService(Provider<DataStorage> storageProvider,SourceProviderService sourceProviderService) {
+        this.sourceProviderService = sourceProviderService;
 
-        DataStorage dataStorage = storageProvider.get();
-        dataStorage.setProviderId("weather");
+            for(SourceProvider sourceProvider : sourceProviderService.getSourceProviders()){
+                DataStorage dataStorage = storageProvider.get();
+                dataStorage.setProviderId(sourceProvider.getProviderName());
 
-        DataProvider weatherDataProvider = new WeatherDataProvider();
-        weatherDataProvider.addObserver(new ProviderObserver());
-        weatherDataProvider.start(dataStorage);
+                DataProvider dataProvider = getDataProvider(sourceProvider);
 
-        this.dataProviders.add(weatherDataProvider);
+                dataProvider.addObserver(new ProviderObserver());
+                dataProvider.start(dataStorage);
+                this.dataProviders.add(dataProvider);
+            }
+
     }
-
+    private DataProvider getDataProvider(SourceProvider sourceProvider) {
+        try {
+            File jar = new File(sourceProvider.getJarPath());
+            URLClassLoader classLoader = new URLClassLoader(new URL[]{jar.toURI().toURL()});
+            Class c = classLoader.loadClass(sourceProvider.getProviderName());
+            return (DataProvider)c.newInstance();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
     private class ProviderObserver implements DataProviderObserver
     {
         @Override
