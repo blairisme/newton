@@ -31,7 +31,7 @@
 
                         <!-- Profile Icon -->
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="/resources/images/profile.jpg" class="rounded-circle avatar" alt="Profile picture">
+                            <img th:src="@{'/resources/images/profile/' + ${user.image}}" class="rounded-circle avatar" alt="Profile picture">
                         </a>
 
                         <!-- Menu Options -->

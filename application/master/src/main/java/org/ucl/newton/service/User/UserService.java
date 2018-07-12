@@ -45,7 +45,7 @@ public class UserService
             Credential credentials = (Credential) authentication.getPrincipal();
             return repository.getUser(credentials.getUserId());
         }
-        return new User("Anonymous", "anonymous@ucl.ac.uk", UserRole.USER);
+        return new User("Anonymous", "anonymous@ucl.ac.uk", UserRole.USER, "default.jpg");
     }
 
     public Collection<User> findUsers(String matching) {

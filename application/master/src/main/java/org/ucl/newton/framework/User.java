@@ -47,19 +47,24 @@ public class User implements Serializable
     @Enumerated( EnumType.STRING )
     private UserRole role;
 
+    @Field
+    @Column(name = "image")
+    private String image;
+
     public User() {
-        this(0, "", "", null);
+        this(0, "", "", null, "");
     }
 
-    public User(String name, String email, UserRole role) {
-        this(0, name, email, role);
+    public User(String name, String email, UserRole role, String image) {
+        this(0, name, email, role, image);
     }
 
-    public User(int id, String name, String email, UserRole role) {
+    public User(int id, String name, String email, UserRole role, String image) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.role = role;
+        this.image = image;
     }
 
     public int getId() {
@@ -77,6 +82,8 @@ public class User implements Serializable
     public UserRole getRole() {
         return role;
     }
+
+    public String getImage() { return image; }
 
     public User setId(int id) {
         this.id = id;

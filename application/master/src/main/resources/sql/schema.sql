@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
     role VARCHAR NOT NULL,
+    image VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 );
 

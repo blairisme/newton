@@ -41,7 +41,7 @@
                 <tr th:each="experiment, iteration : ${experiments}" class="experiment-row experiment-row-underline">
                     <td class="experiment-column experiment-icon-container">
                         <a href="#" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier}}">
-                            <img src="/resources/images/profile.jpg" class="rounded" alt="Experiment icon" width="48" height="48">
+                            <img th:src="@{'/resources/images/profile/' + ${experiment.creator.image}}" class="rounded" alt="Experiment icon" width="48" height="48">
                         </a>
                     </td>
                     <td class="experiment-column experiment-column-expand experiment-name-container">
