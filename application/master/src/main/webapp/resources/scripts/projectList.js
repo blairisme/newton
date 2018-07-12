@@ -4,6 +4,7 @@ $(document).ready( function() {
 
     dTable = $("#projectList").DataTable({
         "bLengthChange": false,
+        "iDisplayLength": 25,
         "bFilter": true,
         "searching": true,
         dom: "t"
@@ -11,6 +12,7 @@ $(document).ready( function() {
 
     dTableStarred = $("#projectListStarred").DataTable({
         "bLengthChange": false,
+        "iDisplayLength": 25,
         "bFilter": true,
         "searching": true,
         dom: "t"

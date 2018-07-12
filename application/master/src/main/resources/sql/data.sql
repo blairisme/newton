@@ -26,21 +26,49 @@ INSERT INTO credentials (id, user_id, username, password) VALUES (5, 5, 'ziad', 
 INSERT INTO credentials (id, user_id, username, password) VALUES (6, 6, 'john', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m');
 
 /* Projects */
-INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (1, 2, 'project-fizzyo', 'project Fizzyo', 'project Fizzyo Description', 'default.png', '2018-06-20 12:34:56');
-INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (2, 2, 'cancer-research', 'Cancer Research Trial 4', 'Cancer Research Trial 4 Description', 'default.png', '2018-05-19 11:12:13');
-INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (3, 2, 'aids-research', 'AIDS Research', 'AIDS Research Description', 'default.png', '2018-04-07 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (1, 2, 'project-fizzyo', 'Project Fizzyo', 'project Fizzyo Description', 'fizzyo.png', '2018-06-20 12:34:56');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (2, 2, 'uclh-mf', 'UCLH Mycosis Fungoides classification', 'Cancer Research Trial 4 Description', 'uclh.png', '2018-05-19 11:12:13');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (3, 2, 'gosh-jiro', 'GOSH Project Jiro', 'Project description ', 'default.png', '2018-04-07 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (4, 2, 'gosh-icd', 'GOSH ICD prediction', 'Project description', 'default.png', '2018-03-07 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (5, 2, 'uclh-neuroblastome', 'UCLH Neuroblastoma in under children', 'Project description', 'uclh.png', '2018-03-06 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (6, 2, 'rm-ewing-sarcoma', 'RM Ewing Sarcoma', 'Project description', 'rm.png', '2018-03-05 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (7, 2, 'ucl-indigo', 'UCL Indigo', 'Project description', 'ucl.png', '2018-02-07 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (8, 2, 'uclh-cross-cont', 'UCLH Reducing cross contamination', 'Project description', 'uclh.png', '2018-02-06 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (9, 2, 'gosh-dmd', 'GOSH Duchenne muscular dystrophy treatment', 'Project description', 'default.png', '2018-02-05 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (10, 2, 'rm-cns-lymphoma', 'RM Primary CNS Lymphoma', 'Project description', 'rm.png', '2018-01-07 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (11, 2, 'ucl-vega', 'UCL Vega', 'Project description', 'ucl.png', '2017-12-07 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (12, 2, 'ucl-camelot', 'UCL Project Camelot', 'Project description', 'ucl.png', '2017-08-07 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (13, 2, 'gosh-apollo', 'GOSH Project Apollo', 'Project description', 'default.png', '2017-07-07 10:09:08');
 
 /* Project membership */
 INSERT INTO project_membership (project_id, user_id) VALUES (1, 1);
-INSERT INTO project_membership (project_id, user_id) VALUES (2, 1);
 INSERT INTO project_membership (project_id, user_id) VALUES (1, 2);
+INSERT INTO project_membership (project_id, user_id) VALUES (1, 3);
+INSERT INTO project_membership (project_id, user_id) VALUES (1, 4);
+INSERT INTO project_membership (project_id, user_id) VALUES (1, 5);
+INSERT INTO project_membership (project_id, user_id) VALUES (2, 1);
 INSERT INTO project_membership (project_id, user_id) VALUES (2, 2);
 INSERT INTO project_membership (project_id, user_id) VALUES (3, 2);
+INSERT INTO project_membership (project_id, user_id) VALUES (4, 2);
+INSERT INTO project_membership (project_id, user_id) VALUES (5, 2);
+INSERT INTO project_membership (project_id, user_id) VALUES (6, 2);
+INSERT INTO project_membership (project_id, user_id) VALUES (7, 2);
+INSERT INTO project_membership (project_id, user_id) VALUES (8, 2);
+INSERT INTO project_membership (project_id, user_id) VALUES (9, 2);
+INSERT INTO project_membership (project_id, user_id) VALUES (10, 2);
+INSERT INTO project_membership (project_id, user_id) VALUES (11, 2);
+INSERT INTO project_membership (project_id, user_id) VALUES (12, 2);
+INSERT INTO project_membership (project_id, user_id) VALUES (13, 2);
 
 /* Project stars */
 INSERT INTO project_starred (project_id, user_id) VALUES (1, 1);
 INSERT INTO project_starred (project_id, user_id) VALUES (1, 2);
 INSERT INTO project_starred (project_id, user_id) VALUES (2, 1);
+INSERT INTO project_starred (project_id, user_id) VALUES (3, 2);
+INSERT INTO project_starred (project_id, user_id) VALUES (4, 2);
+INSERT INTO project_starred (project_id, user_id) VALUES (2, 2);
+INSERT INTO project_starred (project_id, user_id) VALUES (8, 2);
+INSERT INTO project_starred (project_id, user_id) VALUES (13, 2);
 
 /* Data sources */
 INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (1, 'Weather temp', 1, 'some/loc1');
@@ -58,9 +86,18 @@ INSERT INTO processor_configuration(id, processor_id, configuration_path) VALUES
 INSERT INTO processor_configuration(id, processor_id, configuration_path) VALUES (3, 1, 'config.json');
 
 /* Experiments */
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (1, 'experiment-1', 'Experiment 1', 1, 3, 1);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (2, 'experiment-2', 'Experiment 2', 1, 4, 2);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (3, 'experiment-3', 'Experiment 3', 1, 3, 3);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (1, 'experiment-1', 'HR classification', 1, 3, 1);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (2, 'experiment-2', 'Exercise level classification', 1, 4, 2);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (3, 'experiment-3', 'Weather temperature classification', 1, 3, 3);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (4, 'experiment-4', 'Weather data aggrigator', 1, 3, 2);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (5, 'experiment-5', 'HR normalisation', 1, 3, 1);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (6, 'experiment-6', 'Adherence rate classification', 1, 3, 1);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (7, 'experiment-7', 'Achievement rate classification', 1, 3, 2);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (8, 'experiment-8', 'Weather percipitation classification', 1, 3, 3);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (9, 'experiment-9', 'Weather humidity classification', 1, 3, 1);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (10, 'experiment-10', 'ACT adherence by type', 1, 3, 2);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (11, 'experiment-11', 'Impact of gamification on adherence', 1, 3, 3);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (12, 'experiment-12', 'Gamification impact by game', 1, 3, 1);
 
 /* Experiment data source configuration */
 INSERT INTO experiment_datasources (experiement_id, datasource_id) VALUES (1, 1);

@@ -26,7 +26,7 @@ public class ExperimentRepositoryTest {
     public void testGetExperimentById() {
         Experiment experiment = repository.getExperimentById(1);
         Project parentProject = experiment.getProject();
-        Assert.assertEquals("Experiment 1", experiment.getName());
+        Assert.assertEquals("HR classification", experiment.getName());
         Assert.assertEquals(1, experiment.getId());
         Assert.assertEquals("project-fizzyo", parentProject.getIdentifier());
     }
@@ -35,7 +35,7 @@ public class ExperimentRepositoryTest {
     public void testGetExperimentsForProject() {
         String fizzyoName = "project-fizzyo";
         Collection<Experiment> experiments = repository.getExperimentsForProject(fizzyoName);
-        Assert.assertEquals(3, experiments.size());
+        Assert.assertEquals(12, experiments.size());
         for(Experiment experiment: experiments){
             Assert.assertEquals(fizzyoName, experiment.getProject().getIdentifier());
         }

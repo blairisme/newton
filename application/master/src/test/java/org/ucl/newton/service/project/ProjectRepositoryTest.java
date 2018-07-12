@@ -85,7 +85,7 @@ public class ProjectRepositoryTest
     public void membersTest() {
         Project project = repository.getProjectByIdentifier("project-fizzyo");
         Collection<User> members = project.getMembers();
-        Assert.assertEquals(2, members.size());
+        Assert.assertEquals(5, members.size());
     }
 
     @Test
@@ -140,7 +140,7 @@ public class ProjectRepositoryTest
         Project fizzyo = repository.getProjectById(1);
         List<Project> projects = repository.getProjectsStarredByUser(user2);
 
-        Assert.assertEquals(1, projects.size());
+        Assert.assertEquals(6, projects.size());
         Assert.assertTrue(projects.contains(fizzyo));
 
         projects = repository.getProjectsStarredByUser(user1);
@@ -172,7 +172,7 @@ public class ProjectRepositoryTest
 
         aidsRes = repository.getProjectById(3);
         Collection<User> starredMembers = aidsRes.getMembersThatStar();
-        Assert.assertEquals(1, starredMembers.size());
+        Assert.assertEquals(2, starredMembers.size());
         Assert.assertTrue(starredMembers.contains(user5));
 
         starredMembers.remove(user5);
@@ -181,7 +181,7 @@ public class ProjectRepositoryTest
         aidsRes = repository.getProjectById(3);
         starredMembers = aidsRes.getMembersThatStar();
 
-        Assert.assertEquals(0, starredMembers.size());
+        Assert.assertEquals(1, starredMembers.size());
         Assert.assertFalse(starredMembers.contains(user5));
     }
 
