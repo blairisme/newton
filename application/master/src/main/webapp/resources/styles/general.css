@@ -55,6 +55,11 @@
     border-right-color: transparent;
 }
 
+.brand_container span {
+    vertical-align: middle;
+    margin-left: 0.5rem;
+}
+
 .page-title {
     font-size: 1.2em;
     margin-top: 1em;
