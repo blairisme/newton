@@ -56,4 +56,16 @@ public class ProjectService
         }
         return project;
     }
+
+    public void persistUnstar(String projectName, User user) {
+        Project project = repository.getProjectByIdentifier(projectName);
+        project.getMembersThatStar().remove(user);
+        repository.updateProject(project);
+    }
+
+    public void persistStar(String projectName, User user) {
+        Project project = repository.getProjectByIdentifier(projectName);
+        project.getMembersThatStar().add(user);
+        repository.updateProject(project);
+    }
 }
