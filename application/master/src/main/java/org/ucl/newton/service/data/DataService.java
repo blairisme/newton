@@ -49,11 +49,16 @@ public class DataService
             }
 
     }
-    private DataProvider getDataProvider(SourceProvider sourceProvider) {
+    public DataProvider getDataProvider(SourceProvider sourceProvider) {
         try {
-            File jar = new File(sourceProvider.getJarPath());
-            URLClassLoader classLoader = new URLClassLoader(new URL[]{jar.toURI().toURL()});
-            Class c = classLoader.loadClass(sourceProvider.getProviderName());
+            String jarPath = sourceProvider.getJarPath();
+            File file = new File(jarPath);
+            if(!file.exists())
+                return null;
+
+            URLClassLoader classLoader = new URLClassLoader(new URL[]{file.toURI().toURL()});
+            String providerName = sourceProvider.getProviderName();
+            Class<?> c = classLoader.loadClass(providerName);
             return (DataProvider)c.newInstance();
         }catch (Exception e){
             e.printStackTrace();
