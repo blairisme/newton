@@ -11,6 +11,7 @@ package org.ucl.newton.ui;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -75,6 +76,20 @@ public class ProjectController
         model.addAttribute("project", projectService.getProjectByLink(name));
         model.addAttribute("experiments", experimentService.getExperimentsByParentProjectName(name));
         return "project/details";
+    }
+
+    @RequestMapping(value ="/project/{name}", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void changeProjectStar(@PathVariable("name")String name,
+            @RequestParam String type,
+            ModelMap model)
+    {
+        User user = userService.getAuthenticatedUser();
+        if( type.equals("Unstar")) {
+            projectService.persistUnstar(name, user);
+        } else if(type.equals("Star")) {
+            projectService.persistStar(name, user);
+        }
     }
 
     @RequestMapping(value = "/project/{name}/settings", method = RequestMethod.GET)

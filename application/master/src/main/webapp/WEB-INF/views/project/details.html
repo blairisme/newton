@@ -10,9 +10,10 @@
         <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/experiment.css"/>
 
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+        <script src="/resources/scripts/libraries/jquery.js"></script>
+        <script src="/resources/scripts/libraries/popper.js"></script>
+        <script src="/resources/scripts/libraries/bootstrap.js"></script>
+        <script type="text/javascript" src="/resources/scripts/views/project/details.js"></script>
     </head>
     <body>
         <!-- Navigation -->
@@ -32,9 +33,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{'/project/' + ${project.identifier} + '/settings'}">Project Settings</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{'/project/' + ${project.identifier} + '/members'}"> Members</a>
+                <li th class="nav-item ml-auto">
+                    <button th:text="${project.getMembersThatStar().contains(user)}? 'Unstar' : 'Star'" type="button" class="btn btn-primary" id="starBtn"></button>
                 </li>
+            </ul>
             </ul>
 
             <table class="experiment-list">
