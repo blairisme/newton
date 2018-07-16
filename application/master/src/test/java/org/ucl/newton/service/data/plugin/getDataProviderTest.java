@@ -19,7 +19,7 @@ public class getDataProviderTest {
         SourceProviderService sourceProviderService = mock(SourceProviderService.class);
         Provider<DataStorage> dataStorageProvider = mock(Provider.class);
         SourceProvider sourceProvider = mock(SourceProvider.class);
-        when(sourceProvider.getJarPath()).thenReturn("D:\\Code\\Newton\\newton\\application\\master\\lib\\WeatherDataProvider.jar");
+        when(sourceProvider.getJarPath()).thenReturn("lib\\WeatherDataProvider.jar");
         when(sourceProvider.getProviderName()).thenReturn("org.ucl.WeatherDataProvider.weather.WeatherDataProvider");
         DataService dataService = new DataService(dataStorageProvider,sourceProviderService);
         DataProvider dataProvider = dataService.getDataProvider(sourceProvider);
