@@ -10,7 +10,8 @@
 package org.ucl.newton.service.data.plugin;
 
 import org.junit.Test;
-import org.ucl.newton.service.data.plugin.weather.GetWeatherData;
+
+import org.ucl.WeatherDataProvider.weather.GetWeatherData;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
 import java.io.IOException;

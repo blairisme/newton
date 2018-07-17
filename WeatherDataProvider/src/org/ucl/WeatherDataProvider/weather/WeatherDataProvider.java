@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.service.data.plugin.weather;
+package org.ucl.WeatherDataProvider.weather;
 
 import org.ucl.newton.service.data.sdk.DataProvider;
 import org.ucl.newton.service.data.sdk.DataProviderObserver;
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * Instances of this class provide weather data to the Newton system.
+ * Instances of this class provide org.ucl.WeatherDataProvider.weather data to the Newton system.
  *
  * @author Xiaolong Chen
  * @author Blair Butterworth

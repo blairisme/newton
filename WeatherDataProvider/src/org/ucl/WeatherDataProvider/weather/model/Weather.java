@@ -1,10 +1,10 @@
-package org.ucl.newton.service.data.plugin.weather.model;
+package org.ucl.WeatherDataProvider.weather.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Instances of this class provide weather data to the Newton system.
+ * Instances of this class provide org.ucl.WeatherDataProvider.weather data to the Newton system.
  *
  * @author Xiaolong Chen
  */
