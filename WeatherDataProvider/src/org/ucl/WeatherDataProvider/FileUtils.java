@@ -1,4 +1,4 @@
-package org.ucl.newton.service.data.plugin;
+package org.ucl.WeatherDataProvider;
 
 import java.io.File;
 import java.io.FileInputStream;

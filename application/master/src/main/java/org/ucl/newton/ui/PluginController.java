@@ -8,10 +8,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.ucl.WeatherDataProvider.FileUtils;
+import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
 import org.ucl.newton.application.system.ApplicationPreferences;
 import org.ucl.newton.application.system.ApplicationStorage;
-import org.ucl.newton.service.data.plugin.weather.model.WeatherProperty;
-import org.ucl.newton.service.data.plugin.FileUtils;
+
 
 import javax.inject.Inject;
 import java.io.*;

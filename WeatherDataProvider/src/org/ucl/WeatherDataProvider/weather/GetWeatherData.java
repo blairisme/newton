@@ -1,15 +1,13 @@
-package org.ucl.newton.service.data.plugin.weather;
+package org.ucl.WeatherDataProvider.weather;
 
 import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import org.ucl.newton.application.system.ApplicationPreferences;
-import org.ucl.newton.application.system.ApplicationStorage;
-import org.ucl.newton.service.data.plugin.weather.model.WeatherData;
-import org.ucl.newton.service.data.plugin.weather.model.WeatherProperty;
-import org.ucl.newton.service.data.plugin.FileUtils;
-import org.ucl.newton.service.data.plugin.HttpUtils;
+import org.ucl.WeatherDataProvider.weather.model.WeatherData;
+import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
+import org.ucl.WeatherDataProvider.FileUtils;
+import org.ucl.WeatherDataProvider.HttpUtils;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
 import java.io.*;
@@ -23,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Instances of this class provide weather data to the Newton system.
+ * Instances of this class provide org.ucl.WeatherDataProvider.weather data to the Newton system.
  *
  * @author Xiaolong Chen
  */
@@ -56,8 +54,8 @@ public class GetWeatherData implements Runnable{
     //        String key = "0252e94bd710446c908123539182906";     // required
     private List<WeatherProperty> getWeatherList() {
         List<WeatherProperty> weatherList = new ArrayList<>();
-        ApplicationStorage storage = new ApplicationStorage(new ApplicationPreferences());
-        Path path = Paths.get(storage.getRootPath());
+
+        Path path = Paths.get(System.getProperty("user.home")).resolve(".newton");
         path = path.resolve("weather").resolve("setting");
         String jsonStr = FileUtils.readFile(path);
         if (jsonStr == null)
@@ -109,7 +107,7 @@ public class GetWeatherData implements Runnable{
     }
     private void writeToOutput(List<List<String>> list){
         try {
-            OutputStream output = storageProvider.getOutputStream("weather");
+            OutputStream output = storageProvider.getOutputStream("org/ucl/WeatherDataProvider/weather");
             if (output != null) {
                 CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("utf-8"));
                 for (List<String> record : list) {

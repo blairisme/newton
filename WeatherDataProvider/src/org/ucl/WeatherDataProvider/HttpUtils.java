@@ -1,5 +1,4 @@
-package org.ucl.newton.service.data.plugin;
-
+package org.ucl.WeatherDataProvider;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
