@@ -29,14 +29,14 @@ $(document).ready(function() {
             empty: `<span class="empty-message">No matching users</span>`,
             suggestion: Handlebars.compile(
                 `<div>
-                    <img src="/resources/images/profile.jpg" class="rounded-circle avatar" alt="Profile picture"/>
+                    <img src="/resources/images/profile/{{image}}" class="rounded-circle avatar" alt="Profile picture"/>
                     <span><strong>{{name}}</strong> ({{email}})</span>
                 </div>`)
         }
     });
 
     $("#projectMemberInput").bind("typeahead:select", function(ev, member) {
-        addMember(member.id, member.name, member.email);
+        addMember(member.id, member.name, member.email, member.image);
     });
 
     $("#projectIconInput:file").change(function() {
@@ -65,7 +65,7 @@ $(document).ready(function() {
 
 
 
-function addMember(id, name, email) {
+function addMember(id, name, email, image) {
     $("#projectMemberInput").typeahead("close");
     $("#projectMemberInput").typeahead("val", "");
 
@@ -73,7 +73,7 @@ function addMember(id, name, email) {
 
     $("#projectMembersList").append(
         `<li id="listItem${id}" class="list-group-item project-list-item">
-            <img src="/resources/images/profile.jpg" class="rounded-circle avatar" alt="Profile picture"/>
+            <img src="/resources/images/profile/${image}" class="rounded-circle avatar" alt="Profile picture"/>
             <span>${name} (${email})</span>
             <button type="button" class="btn btn-outline-primary remove_button" onclick="removeMember(${id})">Remove</button>
         </li>`

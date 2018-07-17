@@ -83,7 +83,9 @@ public class User implements Serializable
         return role;
     }
 
-    public String getImage() { return image; }
+    public String getImage() {
+        return image;
+    }
 
     public User setId(int id) {
         this.id = id;

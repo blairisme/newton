@@ -1,3 +1,12 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.framework;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -12,7 +21,6 @@ import java.io.Serializable;
  *
  * @author Xiaolong Chen
  */
-
 @Entity
 @Table(name = "source_providers")
 public class SourceProvider implements Serializable {
@@ -30,31 +38,45 @@ public class SourceProvider implements Serializable {
     @Column(name = "version")
     private String version;
 
-    public SourceProvider(int id, String jarPath, String providerName,String version) {
+    public SourceProvider(int id, String jarPath, String providerName, String version) {
         this.id = id;
         this.jarPath = jarPath;
         this.providerName = providerName;
         this.version = version;
     }
 
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
 
     public SourceProvider setId(int id) {
         this.id = id;
         return this;
     }
 
-    public String getJarPath() { return jarPath; }
+    public String getJarPath() {
+        return jarPath;
+    }
 
-    public void setJarPath(String jarPath) { this.jarPath = jarPath; }
+    public void setJarPath(String jarPath) {
+        this.jarPath = jarPath;
+    }
 
-    public String getProviderName() { return providerName; }
+    public String getProviderName() {
+        return providerName;
+    }
 
-    public void setProviderName(String providerName) { this.providerName = providerName; }
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
 
-    public String getVersion() { return version; }
+    public String getVersion() {
+        return version;
+    }
 
-    public void setVersion(String version) { this.version = version; }
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -65,30 +87,30 @@ public class SourceProvider implements Serializable {
         }
         SourceProvider sourceProvider = (SourceProvider) obj;
         return new EqualsBuilder()
-                .append(id, sourceProvider.id)
-                .append(jarPath, sourceProvider.jarPath)
-                .append(providerName, sourceProvider.providerName)
-                .append(version, sourceProvider.version)
-                .isEquals();
+            .append(id, sourceProvider.id)
+            .append(jarPath, sourceProvider.jarPath)
+            .append(providerName, sourceProvider.providerName)
+            .append(version, sourceProvider.version)
+            .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(id)
-                .append(jarPath)
-                .append(providerName)
-                .append(version)
-                .toHashCode();
+            .append(id)
+            .append(jarPath)
+            .append(providerName)
+            .append(version)
+            .toHashCode();
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("id", id)
-                .append("jarPath", jarPath)
-                .append("providerName", providerName)
-                .append("version", version)
-                .toString();
+            .append("id", id)
+            .append("jarPath", jarPath)
+            .append("providerName", providerName)
+            .append("version", version)
+            .toString();
     }
 }
