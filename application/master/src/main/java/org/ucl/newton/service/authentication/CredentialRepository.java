@@ -1,7 +1,17 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.service.authentication;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.Credential;
@@ -50,7 +60,8 @@ public class CredentialRepository
         criteria.select(credentials);
         criteria.where(builder.equal(credentials.get("username"), username));
 
-        return session.createQuery(criteria).getSingleResult();
+        Query<Credential> query = session.createQuery(criteria);
+        return HibernateUtils.getSingleResultOrNull(query);
     }
 
     @Transactional

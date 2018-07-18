@@ -43,6 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
             .formLogin()
                 .loginPage("/login")
                 .failureUrl("/login?error=true")
+                .defaultSuccessUrl("/projects")
                 .permitAll()
                 .and()
             .logout()
@@ -54,7 +55,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 .disable()
             .exceptionHandling()
                 .accessDeniedPage("/access_denied");
-
         http.headers()
             .frameOptions().sameOrigin()
             .httpStrictTransportSecurity().disable();

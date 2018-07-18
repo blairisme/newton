@@ -7,6 +7,7 @@
  *      https://opensource.org/licenses/MIT
  *
  * Author: Blair Butterworth
+ * Author: Xiaolong Chen
  */
 
 include 'application:bridge'
@@ -14,3 +15,4 @@ include 'application:common'
 include 'application:master'
 include 'application:slave'
 include 'application:plugins:WeatherDataProvider'
+include 'validation:integration'

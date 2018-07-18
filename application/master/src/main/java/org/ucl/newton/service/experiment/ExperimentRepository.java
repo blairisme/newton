@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.ExperimentOutcome;
 import org.ucl.newton.framework.ExperimentVersion;
-import org.ucl.newton.framework.Project;
 
 import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;

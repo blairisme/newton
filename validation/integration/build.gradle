@@ -1,0 +1,43 @@
+/*
+ * MIT License (c)
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ *
+ * Author: Blair Butterworth
+ */
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+dependencies {
+    testCompile project(':application:common')
+    testCompile group: 'junit', name:'junit', version:'4.11'
+    testCompile group: 'io.cucumber', name: 'cucumber-java', version: '2.3.1'
+    testCompile group: 'io.cucumber', name: 'cucumber-junit', version: '2.3.1'
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.13.0'
+    testCompile group: 'org.seleniumhq.selenium', name: 'htmlunit-driver', version: '2.31.0'
+}
+
+test {
+    exclude '**/integration/**'
+}
+
+task integrationTest(type: Test) {
+    include '**/integration/**'
+}
+
+check.dependsOn integrationTest
+
+def getTasksByName(def name){
+    return rootProject.allprojects.collect { subproject ->
+        subproject.tasks.findAll { it.name == name }
+    }.flatten()
+}
+
+gradle.projectsEvaluated {
+    integrationTest.dependsOn getTasksByName('appStartDaemon')
+    integrationTest.finalizedBy getTasksByName('appStopDaemon')
+}

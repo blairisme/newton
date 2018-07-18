@@ -13,9 +13,9 @@ import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
 import org.ucl.newton.application.system.ApplicationPreferences;
 import org.ucl.newton.application.system.ApplicationStorage;
 
-
 import javax.inject.Inject;
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;

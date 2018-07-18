@@ -10,7 +10,6 @@
 package org.ucl.newton.service.data;
 
 import org.ucl.newton.framework.SourceProvider;
-
 import org.ucl.newton.service.data.sdk.DataProvider;
 import org.ucl.newton.service.data.sdk.DataProviderObserver;
 

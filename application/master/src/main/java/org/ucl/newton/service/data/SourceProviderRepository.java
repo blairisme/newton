@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.SourceProvider;
 
 import javax.inject.Inject;
-
 import java.util.List;
 
 /**

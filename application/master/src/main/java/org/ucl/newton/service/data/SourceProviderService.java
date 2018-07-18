@@ -3,7 +3,6 @@ package org.ucl.newton.service.data;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.framework.SourceProvider;
 
-
 import javax.inject.Inject;
 import java.util.Collection;
 

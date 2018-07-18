@@ -1,9 +1,16 @@
-import com.sun.jndi.toolkit.url.Uri;
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.net.MalformedURLException;
-
+import java.net.URI;
 
 public class Main {
 	
@@ -12,9 +19,9 @@ public class Main {
 	    File f = new File("projects/log.txt");
         try {
             String s = FilenameUtils.separatorsToUnix(f.getAbsolutePath());
-            Uri uri = new Uri(f.getAbsolutePath());
+            URI uri = URI.create(f.getAbsolutePath());
             System.out.println(s);
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
