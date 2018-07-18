@@ -4,19 +4,19 @@ import org.junit.Test;
 import org.ucl.newton.test.EqualsTester;
 import org.ucl.newton.test.ToStringTester;
 
-public class CredentialTest
+public class DataSourceTest 
 {
     @Test
     public void testEquality() {
-        EqualsTester<Credential> equalsTester = new EqualsTester<>();
-        equalsTester.forType(Credential.class);
+        EqualsTester<DataSource> equalsTester = new EqualsTester<>();
+        equalsTester.forType(DataSource.class);
         equalsTester.test();
     }
 
     @Test
     public void testToString() {
-        ToStringTester<Credential> toStringTester = new ToStringTester<>();
-        toStringTester.forType(Credential.class);
+        ToStringTester<DataSource> toStringTester = new ToStringTester<>();
+        toStringTester.forType(DataSource.class);
         toStringTester.test();
     }
 }

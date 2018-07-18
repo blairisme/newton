@@ -29,6 +29,16 @@ public class EqualsTester <T>
     public EqualsTester() {
     }
 
+    public void forType(Class<T> type) {
+        T sameObject = ObjectBuilder.newInstance(type);
+        T diffObject = ObjectBuilder.newInstance(type);
+
+        this.objectA = sameObject;
+        this.objectB = sameObject;
+        this.objectC = sameObject;
+        this.objectD = diffObject;
+    }
+
     public void setEqualObjects(T objectA, T objectB, T objectC) {
         this.objectA = objectA;
         this.objectB = objectB;

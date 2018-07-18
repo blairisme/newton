@@ -19,6 +19,10 @@ public class ToStringTester <T>
     public ToStringTester(){
     }
 
+    public void forType(Class<T> type) {
+        this.object = ObjectBuilder.newInstance(type);
+    }
+
     public void setObject(T object){
         this.object = object;
     }
