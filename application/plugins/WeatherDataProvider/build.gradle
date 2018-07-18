@@ -9,14 +9,16 @@
  * Author: Xiaolong Chen
  */
 
-buildscript {
-    repositories {
-        jcenter()
-    }
- }
 
 apply plugin: 'java'
 apply plugin: 'idea'
+
+buildscript {
+	repositories {
+		jcenter()
+	}
+
+}
 
 group = 'org.ucl.newton'
 version = '0.0.1'
