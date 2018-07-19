@@ -12,10 +12,14 @@
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 
     dependencies {
         classpath 'org.akhikhl.gretty:gretty:2.0.0'
+        classpath "gradle.plugin.net.foragerr.jmeter:jmeter-gradle-plugin:1.0.10-3.3"
     }
  }
 
@@ -25,6 +29,14 @@ apply plugin: 'war'
 apply plugin: 'jacoco'
 apply plugin: 'checkstyle'
 apply plugin: 'org.akhikhl.gretty'
+apply plugin: "net.foragerr.jmeter"
+
+
+
+jmeter {
+    jmTestFiles = [file("src/test/jmeter/Test1.jmx")] //if jmx file is not in the default location
+}
+
 
 group = 'org.ucl.newton'
 version = '0.0.1'
@@ -104,6 +116,7 @@ task appStartDaemon(dependsOn: 'appBeforeIntegrationTest'){
 
 task appStopDaemon(dependsOn: 'appAfterIntegrationTest'){
 }
+
 
 
 /*
