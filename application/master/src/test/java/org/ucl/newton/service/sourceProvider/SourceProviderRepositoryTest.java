@@ -45,7 +45,7 @@ public class SourceProviderRepositoryTest {
         SourceProvider sourceProvider = new SourceProvider(0,"/jarA.jar","jarAProvider","1.0");
 
         repository.addSourceProvider(sourceProvider);
-        SourceProvider before = repository.getSourceProviderById(2);
+        SourceProvider before = repository.getSourceProviderById(sourceProvider.getId());
         Assert.assertNotNull(before);
 
         repository.removeSourceProvider(before);
