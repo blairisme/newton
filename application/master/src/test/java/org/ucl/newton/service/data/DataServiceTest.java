@@ -1,6 +1,7 @@
 package org.ucl.newton.service.data;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
@@ -22,6 +23,7 @@ public class DataServiceTest {
     DataService dataService;
 
     @Test
+    @Ignore
     public void runTest() throws Exception{
         dataService.run();
         Collection<DataProvider> dataProviders = dataService.getDataProviders();
