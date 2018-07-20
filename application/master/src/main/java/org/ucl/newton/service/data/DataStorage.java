@@ -9,10 +9,12 @@
 
 package org.ucl.newton.service.data;
 
+
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,6 +24,7 @@ import java.io.OutputStream;
  *
  * @author Blair Butterworth
  */
+@Named
 public class DataStorage implements StorageProvider
 {
     private String providerId;
