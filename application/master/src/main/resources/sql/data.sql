@@ -123,7 +123,12 @@ INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 1);
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 2);
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 3);
 
+/* Source Provider */
+INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (1, 'lib/WeatherDataProvider.jar', 'org.ucl.WeatherDataProvider.weather.WeatherDataProvider', '1.0');
+
 /*** System Settings ***/
 
 /* Slave configuration */
 INSERT INTO executors (id, address, username, password) VALUES (1, 'http://localhost:8080', 'user', 'password');
+
+

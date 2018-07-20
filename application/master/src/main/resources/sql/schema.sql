@@ -155,6 +155,14 @@ CREATE TABLE IF NOT EXISTS version_outcomes (
     CONSTRAINT fk_vo_out FOREIGN KEY (out_id) REFERENCES outcomes(outcome_id),
 );
 
+/* Create table to contain data source provider details */
+CREATE TABLE IF NOT EXISTS source_providers (
+  id INT NOT NULL AUTO_INCREMENT,
+  jarPath VARCHAR(100) NOT NULL,
+  providerName VARCHAR(100) NOT NULL,
+  version VARCHAR(100) NOT NULL,
+  PRIMARY KEY (id)
+);
 
 /*** System Settings ***/
 
@@ -168,11 +176,3 @@ CREATE TABLE IF NOT EXISTS executors (
 );
 
 
-/* Create table to contain data source provider details */
-CREATE TABLE IF NOT EXISTS source_providers (
-  id INT NOT NULL AUTO_INCREMENT,
-  jarPath VARCHAR(100) NOT NULL,
-  providerName VARCHAR(100) NOT NULL,
-  version VARCHAR(100) NOT NULL,
-  PRIMARY KEY (id)
-);

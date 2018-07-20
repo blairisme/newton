@@ -38,6 +38,9 @@ public class SourceProvider implements Serializable {
     @Column(name = "version")
     private String version;
 
+    public SourceProvider(){
+    }
+
     public SourceProvider(int id, String jarPath, String providerName, String version) {
         this.id = id;
         this.jarPath = jarPath;

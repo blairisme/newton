@@ -9,15 +9,18 @@
 
 package org.ucl.newton.service.data;
 
+import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.framework.SourceProvider;
 import org.ucl.newton.service.data.sdk.DataProvider;
 import org.ucl.newton.service.data.sdk.DataProviderObserver;
+import org.ucl.newton.service.sourceProvider.SourceProviderService;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
+import javax.inject.Named;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -26,29 +29,37 @@ import java.util.Collection;
  *
  * @author Blair Butterworth
  */
-
+@Named
 public class DataService
 {
     private Collection<DataProvider> dataProviders;
     private SourceProviderService sourceProviderService;
+    private ApplicationStorage applicationStorage;
 
     @Inject
-    public DataService(Provider<DataStorage> storageProvider,SourceProviderService sourceProviderService) {
+    public DataService(SourceProviderService sourceProviderService, ApplicationStorage applicationStorage) {
+
+        this.dataProviders = new ArrayList<>();
         this.sourceProviderService = sourceProviderService;
-
-            for(SourceProvider sourceProvider : sourceProviderService.getSourceProviders()){
-                DataStorage dataStorage = storageProvider.get();
-                dataStorage.setProviderId(sourceProvider.getProviderName());
-
-                DataProvider dataProvider = getDataProvider(sourceProvider);
-
-                dataProvider.addObserver(new ProviderObserver());
-                dataProvider.start(dataStorage);
-                this.dataProviders.add(dataProvider);
-            }
-
+        this.applicationStorage = applicationStorage;
     }
-    public DataProvider getDataProvider(SourceProvider sourceProvider) {
+
+//    @PostConstruct
+    public void run(){
+
+        for(SourceProvider sourceProvider : sourceProviderService.getSourceProviders()){
+            DataStorage dataStorage = new DataStorage(applicationStorage);
+            dataStorage.setProviderId(sourceProvider.getProviderName());
+
+            DataProvider dataProvider = getDataProvider(sourceProvider);
+
+            dataProvider.addObserver(new ProviderObserver());
+            dataProvider.start(dataStorage);
+            this.dataProviders.add(dataProvider);
+        }
+    }
+
+    private DataProvider getDataProvider(SourceProvider sourceProvider) {
         try {
             String jarPath = sourceProvider.getJarPath();
             File file = new File(jarPath);
@@ -63,6 +74,10 @@ public class DataService
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Collection<DataProvider> getDataProviders(){
+        return dataProviders;
     }
     private class ProviderObserver implements DataProviderObserver
     {
