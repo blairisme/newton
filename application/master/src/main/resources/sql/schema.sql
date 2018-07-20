@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS experiment_datasources (
     datasource_id INT NOT NULL,
     PRIMARY KEY (experiement_id, datasource_id),
     CONSTRAINT fk_experiement FOREIGN KEY (experiement_id) REFERENCES experiments(exp_id),
-    CONSTRAINT fk_datasource FOREIGN KEY (datasource_id) REFERENCES datasources(ds_id),
+    CONSTRAINT fk_datasource FOREIGN KEY (datasource_id) REFERENCES datasources(ds_id)
 );
 
 /* Create table to store experiment versions */

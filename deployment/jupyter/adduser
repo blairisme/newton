@@ -1,0 +1,210 @@
+#!/bin/bash
+usage="Purpose: Create a new user on OSX. Unfortunately there is no builtin script to do so on OSX, like 'adduser' for Linux/Unix
+Usage:
+	adduser [<username>]
+	adduser
+		[-u <userName>]
+		[-r <realName>]
+		[-i <userID>]
+		[-g <groupID>]
+		[-a]
+		[-e <existingGroup>]
+		[-p <password>]
+
+-u <userName>: Add user <userName>
+-r <realName>: Specify the user's real name
+-i <userID>: Provide a user ID. To list existing users and IDs: dscl . -list /users UniqueID
+-g <groupID>: Provide a group ID. To list existing groups: dscl . -list /groups PrimaryGroupID
+-a: Add your user to the admin group.
+-e <existingGroup>: Add your user to an existing group. To list existing groups: dscl . -list /groups PrimaryGroupID
+-p <password>: the password of the new user
+
+To delete the user: sudo dscl . -delete /Users/<user>
+	And delete it from its groups. Ex: sudo dscl . -delete /Groups/admin GroupMembership <user>
+	You'll also have to delete the user's home directory
+
+Author: George Asante, https://github.com/GeorgeKA"
+
+user='null'
+realName='null'
+userID='null'
+groupID='null'
+existingGroup='null'
+isAdminUser='false'
+passwd='null'
+
+while getopts ":u:r:i:g:ae:p:h" opt
+do
+	case $opt in
+		u)
+			user="$OPTARG"
+			;;
+		r)
+			realName="$OPTARG"
+			;;
+		i)
+			userID="$OPTARG"
+			;;
+		g)
+			groupID="$OPTARG"
+			;;
+		a)
+			isAdminUser='true'
+			;;
+		e)
+			existingGroup="$OPTARG"
+			;;
+		p)
+			passwd="$OPTARG"
+			;;
+		h)
+			printf "$usage"
+			exit 1
+			;;
+		\?)
+			printf "Invalid argument $OPTARG"
+			exit 1
+			;;
+		:)
+			printf "Missing an argument"
+			exit 1
+			;;
+	esac
+done
+
+if [[ $UID -ne 0 ]]
+then
+	printf "Please run $0 as root.\n"
+	exit 1
+fi
+
+if [ "$user" != 'null' ] # If the user argument was used
+then
+	: #Do nothing
+elif [ "$1" != '' ] # If an argument was parsed
+then
+	user=$1
+else
+	#printf "Try again\nUsage: adduser <userName>\n--------------\n"
+	printf "$usage"
+	exit 1
+fi
+
+printf "\nWelcome to adduser!!! A simple script to add new users on OSX systems\n--------------\n"
+
+if [ "$realName" == 'null' ]
+then
+	realName=user
+	# echo "Enter the user's full name"
+	# read realName
+	# echo ""
+	# if [ "$realName" == "" ]
+	# then
+	# 	echo "Invalid input"
+	# 	exit 1
+	# fi
+fi
+
+if [ "$userID" == 'null' ]
+then
+	maxid=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -ug | tail -1)
+	userID=$((maxid+1))
+	# echo "Enter the user ID"
+	# echo "(To display all users and IDs try this in another terminal: dscl . -list /users UniqueID)"
+	# read userID
+	# echo ""
+	# if [ "$userID" == "" ]
+	# then
+	# 	echo "Invalid input"
+	# 	exit 1
+	# fi
+fi
+
+if [ "$groupID" == 'null' ]
+then
+	groupID="80"
+	# echo "Enter the group ID"
+	# echo "(To display all groups and IDs try this in another terminal: dscl . -list /groups PrimaryGroupID)"
+	# # group ID conventions: http://serverfault.com/questions/390640/how-are-group-ids-assigned
+	# # admin: 80
+	# # everyone: 12
+	# # staff: 20
+	# read groupID
+	# echo ""
+	# if [ "$groupID" == "" ]
+	# then
+	# 	echo "Invalid input"
+	# 	exit 1
+	# fi
+fi
+
+if [ "$passwd" == 'null' ]
+then
+	echo "Enter the new password"
+	read -s passwd
+	echo ""
+
+	echo "Confirm the new password"
+	read -s passwd2
+	echo ""
+
+	if [ $passwd != $passwd2 ]
+	then
+		printf "Passwords don't match. Exiting...\n--------------\n"
+		exit 1
+	fi
+fi
+
+# Perform the actual user creation
+sudo dscl . -create /Users/$user
+sudo dscl . -create /Users/$user UserShell /bin/bash
+sudo dscl . -create /Users/$user RealName "$realName"
+sudo dscl . -create /Users/$user UniqueID "$userID"
+sudo dscl . -create /Users/$user PrimaryGroupID $groupID
+sudo dscl . -create /Users/$user NFSHomeDirectory /Users/$user
+sudo dscl . -passwd /Users/$user $passwd
+if [ "$existingGroup" != 'null' ]
+then
+	dscl . -list /groups PrimaryGroupID | grep "$existingGroup"
+	if [  "$?" == 0 ]
+	then
+		sudo dscl . -append /Groups/"$existingGroup" GroupMembership $user
+	else
+		echo "Group $existingGroup does not exist"
+	fi
+fi
+if [ "$isAdminUser" == 'true' ]
+then
+	sudo dscl . -append /Groups/admin GroupMembership $user
+fi
+
+if [ "$?" != 0 ]
+then
+	echo "User creation error. See above"
+	exit 1
+fi
+
+sudo mkdir /Users/$user
+sudo chown $user /Users/$user
+
+# Remove the "#" from the "OptionalDirectories" lines to disable automatic sub-directory creation
+#<<OptionalDirectories
+Directories[0]='Music'
+Directories[1]='Documents'
+Directories[2]='Downloads'
+Directories[3]='Pictures'
+Directories[4]='Videos'
+#Directories[5]='Desktop'
+
+for i in "${Directories[@]}"
+do
+	sudo mkdir /Users/$user/$i
+done
+
+touch /Users/$user/.bash_profile
+
+sudo chown -R $user /Users/$user
+sudo chgrp -R $groupID /Users/$user
+#OptionalDirectories
+
+printf "User '$user' created at /Users/$user\n"
