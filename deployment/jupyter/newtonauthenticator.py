@@ -5,8 +5,9 @@ from jupyterhub.utils import url_path_join
 from tornado import gen, web
 from traitlets import Unicode
 from jose import jwt
+from tornado.concurrent import run_on_executor
 
-class JSONWebTokenLoginHandler(BaseHandler):
+class LoginHandler(BaseHandler):
 
     def get(self):
         header_name = self.authenticator.header_name
@@ -20,6 +21,7 @@ class JSONWebTokenLoginHandler(BaseHandler):
         username_claim_field = self.authenticator.username_claim_field
         audience = self.authenticator.expected_audience
         tokenParam = self.get_argument(param_name, default=False)
+        experimentParam = self.authenticator.experiment_param_name
 
         if auth_header_content and tokenParam:
            raise web.HTTPError(400)
@@ -46,11 +48,13 @@ class JSONWebTokenLoginHandler(BaseHandler):
         username = self.retrieve_username(claims, username_claim_field)
         user = self.user_from_username(username)
         self.set_login_cookie(user)
+        self.authenticator.add_system_user(user)
+        self.authenticator.experiment_id = self.get_argument(experimentParam, default=False)
 
         _url = url_path_join(self.hub.server.base_url, forward_url)
         next_url = self.get_argument('next', default=False)
         if next_url:
-             _url = next_url
+            _url = next_url
 
         self.redirect(_url)
 
@@ -66,12 +70,10 @@ class JSONWebTokenLoginHandler(BaseHandler):
 
     @staticmethod
     def verify_jwt_using_secret(json_web_token, secret):
-
+        #Assume we're not verifying the audience field.
         options = {'verify_aud': False}
         return jwt.decode(json_web_token, secret, options=options)
 
-        # If no audience is supplied then assume we're not verifying the audience field.
-        #return jwt.decode(json_web_token, secret, algorithms=list(jwt.ALGORITHMS.SUPPORTED))
 
     @staticmethod
     def retrieve_username(claims, username_claim_field):
@@ -86,17 +88,16 @@ class JSONWebTokenLoginHandler(BaseHandler):
             return username
 
 
-class JSONWebTokenAuthenticator(Authenticator):
+class NewtonAuthenticator(LocalAuthenticator):
     """
-    Accept the authenticated JSON Web Token from header.
+    Jupyter authenticator that uses JSON Web Tokens for authentication.
     """
     signing_certificate = Unicode(
         config=True,
         help="""
         The public certificate of the private key used to sign the incoming JSON Web Tokens.
         Should be a path to an X509 PEM format certificate filesystem.
-        """
-    )
+        """)
 
     username_claim_field = Unicode(
         default_value='upn',
@@ -104,14 +105,12 @@ class JSONWebTokenAuthenticator(Authenticator):
         help="""
         The field in the claims that contains the user name. It can be either a straight username,
         of an email/userPrincipalName.
-        """
-    )
+        """)
 
     expected_audience = Unicode(
         default_value='',
         config=True,
-        help="""HTTP header to inspect for the authenticated JSON Web Token."""
-    )
+        help="""HTTP header to inspect for the authenticated JSON Web Token.""")
 
     header_name = Unicode(
         default_value='Authorization',
@@ -130,21 +129,22 @@ class JSONWebTokenAuthenticator(Authenticator):
     forward_url = Unicode(
         default_value='home',
         config=True,
-        help="""The URL to use after succesful authentication."""
-    )
+        help="""The URL to use after succesful authentication.""")
+
+    experiment_id = Unicode(
+        config=True,
+        help="""The id of the experiment being viewed""")
+
+    experiment_param_name = Unicode(
+        default_value='experiment_id',
+        config=True,
+        help="""The name of the query parameter used to specify the experiment id""")
 
     def get_handlers(self, app):
         return [
-            (r'/login', JSONWebTokenLoginHandler),
+            (r'/login', LoginHandler),
         ]
 
     @gen.coroutine
     def authenticate(self, *args):
         raise NotImplementedError()
-
-
-class JSONWebTokenLocalAuthenticator(JSONWebTokenAuthenticator, LocalAuthenticator):
-    """
-    A version of JSONWebTokenAuthenticator that mixes in local system user creation
-    """
-    pass

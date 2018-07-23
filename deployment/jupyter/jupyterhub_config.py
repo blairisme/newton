@@ -5,46 +5,53 @@ import platform
 from os import path
 
 current_path = path.realpath(path.abspath(path.split(inspect.getfile(inspect.currentframe()))[0]))
-auth_path = path.join(current_path, "jwtauthenticator")
-if auth_path not in sys.path:
-    sys.path.insert(0, auth_path)
+if current_path not in sys.path:
+    sys.path.insert(0, current_path)
 
-from jwtauthenticator import JSONWebTokenLocalAuthenticator
+from newtonspawner import NewtonSpawner
+from newtonauthenticator import NewtonAuthenticator
 
 
 #------------------------------------------------------------------------------
 # Spawner configuration
 #------------------------------------------------------------------------------
 
+c.JupyterHub.spawner_class = NewtonSpawner
 c.Spawner.default_url = '/lab'
-
-if platform.system() == 'Linux':
-    c.LocalAuthenticator.add_user_cmd = ['adduser']
-
-if platform.system() == 'Darwin':
-    script_path = path.join(current_path, "adduser")
-    c.LocalAuthenticator.add_user_cmd = [script_path, '-p', 'password', '-u']
+c.Spawner.ip = '0.0.0.0'
+c.Spawner.args = ['--allow-root']
+c.Spawner.notebook_dir = '/var/newton/experiment/1/{experiment_id}'
+c.Spawner.disable_user_config = True
 
 
 #------------------------------------------------------------------------------
 # Authenticator configuration
 #------------------------------------------------------------------------------
 
-c.JupyterHub.authenticator_class = JSONWebTokenLocalAuthenticator
+c.JupyterHub.authenticator_class = NewtonAuthenticator
 
 # The certificate used to sign the incoming JSONWebToken, must be in PEM Format
-c.JSONWebTokenAuthenticator.signing_certificate = '/Users/blair/Code/newton/deployment/jupyter/newton.key'
+c.NewtonAuthenticator.signing_certificate = path.join(current_path, "newton.key")
 
 # The claim field contianing the username
-c.JSONWebTokenAuthenticator.username_claim_field = 'sub'
+c.NewtonAuthenticator.username_claim_field = 'sub'
 
 # This config option should match the aud field of the JSONWebToken, empty string to disable the validation of this field.
-c.JSONWebTokenAuthenticator.audience = 'www.newton.com'
+c.NewtonAuthenticator.expected_audience = 'www.newton.com'
 
 # The URL to use after succesful authentication
-c.JSONWebTokenAuthenticator.forward_url = 'spawn'
+c.NewtonAuthenticator.forward_url = 'spawn'
 
-# Enables local user creation upon authentication, requires JSONWebTokenLocalAuthenticator
-c.JSONWebLocalTokenAuthenticator.create_system_users = True
+
+#------------------------------------------------------------------------------
+# Local Authenticator configuration
+#------------------------------------------------------------------------------
 
 c.LocalAuthenticator.create_system_users = True
+
+if platform.system() == 'Linux':
+    c.LocalAuthenticator.add_user_cmd = ['adduser', '--create-home']
+
+if platform.system() == 'Darwin':
+    script_path = path.join(current_path, "adduser")
+    c.LocalAuthenticator.add_user_cmd = [script_path, '-p', 'password', '-a', '-u']
