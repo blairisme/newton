@@ -3,6 +3,7 @@ package org.ucl.newton.ui;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.awt.*;
@@ -14,7 +15,7 @@ import java.net.URI;
 public class JupyterLauncherTest
 {
     @Test
-    //@Ignore
+    @Ignore
     public void authenticateTest() throws Exception {
 
         FileInputStream inputStream = new FileInputStream(new File("/Users/blair/Code/newton/deployment/jupyter/newton.key"));
