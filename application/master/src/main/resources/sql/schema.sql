@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS users (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
-    role VARCHAR NOT NULL,
     image VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 );
@@ -28,6 +27,7 @@ CREATE TABLE IF NOT EXISTS credentials (
     user_id INT NOT NULL,
     username VARCHAR(100) NOT NULL,
     password VARCHAR(80) NOT NULL,
+    role VARCHAR NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_credentials_user FOREIGN KEY (user_id) REFERENCES users(id)
 );

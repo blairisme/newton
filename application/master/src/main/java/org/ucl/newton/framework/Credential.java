@@ -12,14 +12,17 @@ package org.ucl.newton.framework;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.search.annotations.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Instances of this class represent an authentication credential.
@@ -44,19 +47,25 @@ public class Credential implements Serializable, UserDetails
     @Column(name = "password")
     private String password;
 
+    @Field
+    @Column(name = "role")
+    @Enumerated( EnumType.STRING )
+    private UserRole role;
+
     public Credential() {
-        this(0, 0, "", "");
+        this(0, "", "", null);
     }
 
-    public Credential(int userId, String username, String password) {
-        this(0, userId, username, password);
+    public Credential(int userId, String username, String password, UserRole role) {
+        this(0, userId, username, password, role);
     }
 
-    public Credential(int id, int userId, String username, String password) {
+    public Credential(int id, int userId, String username, String password, UserRole role) {
         this.id = id;
         this.userId = userId;
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     public int getId() {
@@ -85,7 +94,8 @@ public class Credential implements Serializable, UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + role));
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"));
+        System.out.println("ROLE_" + role);
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     @Override

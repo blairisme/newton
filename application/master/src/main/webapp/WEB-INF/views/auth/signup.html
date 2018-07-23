@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Sign up</title>
+
+    <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/signup.css"/>
+
+    <script src="/resources/scripts/libraries/jquery.js"></script>
+    <script src="/resources/scripts/libraries/popper.js"></script>
+    <script src="/resources/scripts/libraries/bootstrap.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
+    <script type="text/javascript" src="/resources/scripts/libraries/zxcvbn-bootstrap-strength-meter.js"></script>
+    <script type="text/javascript" src="/resources/scripts/views/signup.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <!-- Logo -->
+        <a class="navbar-brand" href="/">
+            <img src="/resources/images/logo-white.png" width="30" height="30" alt="">
+            Newton
+        </a>
+
+        <!-- Navigation Entries -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+
+            <!-- Site Navigation -->
+            <ul class="navbar-nav mr-auto">
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Based on code from https://www.codebyamir.com/blog/user-account-registration-with-spring-boot -->
+    <div class="signup-container">
+
+        <form autocomplete="off" action="#" th:action="@{/signup}"
+              th:object="${user}" method="post" class="form-signup" role="form"
+              data-toggle="validator" id="passwordForm">
+
+            <img src="/resources/images/logo-blue.png" alt="Newton logo" width="60" height="60">
+            <h4>New User Registration</h4>
+
+            <div th:if="${confirmationMessage}" class="alert alert-success"
+                 role="alert" th:text=${confirmationMessage}></div>
+
+            <div th:if="${errorMessage}"
+                 class="alert alert-danger" role="alert"
+                 th:text="${errorMessage}"></div>
+
+            <!-- Name input -->
+            <div class="form-group input-group has-feedback">
+                <input type="text" th:field="*{fullName}"
+                       placeholder="Full Name" class="form-control" required />
+                <div th:if="${#fields.hasErrors('fullName')}"
+                     th:errors="*{fullName}"
+                     class="validation-message alert alert-danger" role="alert"></div>
+            </div>
+
+            <!-- Email input -->
+            <div class="form-group input-group has-feedback">
+                <input type="email" th:field="*{email}"
+                       placeholder="Email Address" class="form-control"
+                       data-error="This email address is invalid" required />
+                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                     class="validation-message alert alert-danger" role="alert"></div>
+            </div>
+
+            <!-- Password input -->
+            <div class="form-group">
+                <input type="password" th:field="*{password}"
+                       placeholder="Password" class="form-control"
+                       id="passwordInput" required />
+                <div class="progress">
+                    <div id="StrengthProgressBar" class="progress-bar"></div>
+                </div>
+                <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                     class="validation-message alert alert-danger" role="alert"></div>
+            </div>
+
+            <!-- Confirm password input -->
+            <div class="form-group">
+                <input type="password" th:field="*{confirmPassword}"
+                       placeholder="Confirm Password" class="form-control"
+                        required />
+                <div id="passwordMsg">
+                    <p class="text-danger">Passwords don't match!</p>
+                </div>
+                <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"
+                     class="validation-message alert alert-danger" role="alert"></div>
+            </div>
+
+            <button type="submit"
+                    class="btn btn-lg btn-primary btn-block" id="submitBtn">Register</button>
+        </form>
+    </div>
+
+</body>
+</html>
+

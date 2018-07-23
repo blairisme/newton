@@ -22,6 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.User;
 
 import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Collection;
 
 /**
@@ -76,6 +79,19 @@ public class UserRepository
     public void removeUser(User user) {
         Session session = getSession();
         session.delete(user);
+    }
+
+    @Transactional(readOnly=true)
+    public User findUserByEmail(String email) {
+        Session session = getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> criteria = builder.createQuery(User.class);
+        Root<User> users = criteria.from(User.class);
+
+        criteria.select(users);
+        criteria.where(builder.equal(users.get("email"), email));
+
+        return session.createQuery(criteria).getSingleResult();
     }
 
     private Session getSession() {
