@@ -20,6 +20,7 @@ import org.ucl.newton.framework.User;
 import org.ucl.newton.framework.UserRole;
 
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -76,5 +77,20 @@ public class UserRepositoryTest
         repository.removeUser(before);
         User after = repository.getUser(user.getId());
         Assert.assertNull(after);
+    }
+
+    @Test
+    public void getUserByEmailInDb() {
+        User adminUser = repository.findUserByEmail("admin@ucl.ac.uk");
+        Assert.assertNotNull(adminUser);
+    }
+
+    @Test
+    public void getUserByEmailNotInDb() {
+        try {
+            User userNotInDb = repository.findUserByEmail("someEmail@ucl.ac.uk");
+        } catch(NoResultException e) {
+            Assert.assertTrue(true);
+        }
     }
 }

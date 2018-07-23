@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.ucl.newton.framework.Credential;
 import org.ucl.newton.framework.User;
+import org.ucl.newton.framework.UserDto;
 import org.ucl.newton.framework.UserRole;
 
 import javax.inject.Inject;
@@ -62,5 +63,15 @@ public class UserService
             result.add(getUser(identifier));
         }
         return result;
+    }
+
+    public User findUserByEmail(String emailAddress){
+        return repository.findUserByEmail(emailAddress);
+    }
+
+    public void saveUser(UserDto userDto){
+        User user = new User(userDto.getFullName(),
+                userDto.getEmail(), UserRole.USER, "default.jpg");
+        repository.addUser(user);
     }
 }

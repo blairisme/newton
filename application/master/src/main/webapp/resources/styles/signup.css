@@ -1,0 +1,23 @@
+.signup-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.form-signup {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+}
+
+html, body {
+    height: 100%;
+}
+
+#passwordMsg {
+    text-align: left;
+    display: none;
+}
