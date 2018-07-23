@@ -39,7 +39,7 @@
                             <span th:text="${user.name}" class="p-4 text-muted">User name</span>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/profile">Profile</a>
-                            <a class="dropdown-item" href="/settings" sec:authorize="hasRole('ROLE_ADMINISTRATOR')">Settings</a>
+                            <a class="dropdown-item" href="/settings" sec:authorize="hasRole('ROLE_ADMIN')">Settings</a>
                             <div class="dropdown-divider"></div>
                             <form name="logoutForm" th:action="@{/logout}" method="post">
                                 <input class="dropdown-item btn" type="submit" value="Sign Out"/>

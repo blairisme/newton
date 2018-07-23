@@ -46,7 +46,7 @@ public class UserService
             Credential credentials = (Credential) authentication.getPrincipal();
             return repository.getUser(credentials.getUserId());
         }
-        return new User("Anonymous", "anonymous@ucl.ac.uk", UserRole.USER, "default.jpg");
+        return new User("Anonymous", "anonymous@ucl.ac.uk", "default.jpg");
     }
 
     public Collection<User> findUsers(String matching) {
@@ -71,7 +71,7 @@ public class UserService
 
     public void saveUser(UserDto userDto){
         User user = new User(userDto.getFullName(),
-                userDto.getEmail(), UserRole.USER, "default.jpg");
+                userDto.getEmail(), "default.jpg");
         repository.addUser(user);
     }
 }

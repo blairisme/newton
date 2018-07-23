@@ -55,7 +55,8 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMINISTRATOR')">
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                <!--<li class="nav-item" sec:authorize="${user.role} == 'ADMIN'">-->
                     <a class="btn btn-primary" href="/project/new" role="button" id="newProjectBtn">New Project</a>
                 </li>
             </ul>
