@@ -15,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.ucl.newton.framework.Credential;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.framework.UserDto;
-import org.ucl.newton.framework.UserRole;
 
 import javax.inject.Inject;
 import javax.inject.Named;

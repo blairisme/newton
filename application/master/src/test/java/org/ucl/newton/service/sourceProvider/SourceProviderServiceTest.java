@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.service.project.ProjectRepository;
-import org.ucl.newton.service.project.ProjectService;
 
 public class SourceProviderServiceTest {
     @Test

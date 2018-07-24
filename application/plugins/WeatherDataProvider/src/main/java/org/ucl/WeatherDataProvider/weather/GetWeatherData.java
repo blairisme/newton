@@ -4,13 +4,14 @@ import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import org.ucl.WeatherDataProvider.weather.model.WeatherData;
-import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
 import org.ucl.WeatherDataProvider.FileUtils;
 import org.ucl.WeatherDataProvider.HttpUtils;
+import org.ucl.WeatherDataProvider.weather.model.WeatherData;
+import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.file.Path;

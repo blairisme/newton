@@ -19,7 +19,6 @@ import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.framework.UserRole;
 
 import javax.inject.Inject;
 import java.text.ParseException;

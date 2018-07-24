@@ -2,7 +2,6 @@ package rest;
 
 import com.google.common.base.Stopwatch;
 import engine.RequestHandler;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.ucl.newton.bridge.*;
@@ -10,10 +9,6 @@ import pojo.AnalysisRequest;
 import pojo.AnalysisResponse;
 
 import javax.inject.Named;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Date;

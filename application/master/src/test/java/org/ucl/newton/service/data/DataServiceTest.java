@@ -11,7 +11,6 @@ import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.service.data.sdk.DataProvider;
 
 import javax.inject.Inject;
-
 import java.util.Collection;
 
 

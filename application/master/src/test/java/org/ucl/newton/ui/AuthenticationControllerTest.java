@@ -13,7 +13,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
 import org.ucl.newton.service.authentication.AuthenticationService;
-import org.ucl.newton.service.project.ProjectRepository;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;

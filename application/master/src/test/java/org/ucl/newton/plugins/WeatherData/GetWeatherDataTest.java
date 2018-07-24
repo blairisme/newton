@@ -10,7 +10,6 @@
 package org.ucl.newton.plugins.WeatherData;
 
 import org.junit.Test;
-
 import org.ucl.WeatherDataProvider.weather.GetWeatherData;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
