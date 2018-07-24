@@ -22,6 +22,8 @@ import org.ucl.newton.service.authentication.AuthenticationService;
 
 import javax.inject.Inject;
 
+import static org.springframework.http.HttpMethod.POST;
+
 /**
  * Instances of this class configure which endpoints require authentication and
  * which do not.
@@ -36,8 +38,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/resources/**", "/api/experiment/complete").permitAll()
-                .antMatchers("/settings").hasAnyRole("ADMINISTRATOR")
+                .antMatchers("/", "/signup", "/resources/**", "/api/experiment/complete").permitAll()
+                .antMatchers("/settings").hasAnyRole("ADMIN")
+                .antMatchers(POST, "/api").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
@@ -55,9 +58,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 .disable()
             .exceptionHandling()
                 .accessDeniedPage("/access_denied");
+        setHeaders(http);
+    }
+
+    private void setHeaders(HttpSecurity http) throws Exception {
         http.headers()
-            .frameOptions().sameOrigin()
-            .httpStrictTransportSecurity().disable();
+                .frameOptions().sameOrigin()
+                .httpStrictTransportSecurity().disable();
     }
 
     @Bean

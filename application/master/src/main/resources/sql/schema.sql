@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS users (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
-    role VARCHAR NOT NULL,
     image VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 );
@@ -28,6 +27,7 @@ CREATE TABLE IF NOT EXISTS credentials (
     user_id INT NOT NULL,
     username VARCHAR(100) NOT NULL,
     password VARCHAR(80) NOT NULL,
+    role VARCHAR NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_credentials_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS experiment_datasources (
     datasource_id INT NOT NULL,
     PRIMARY KEY (experiement_id, datasource_id),
     CONSTRAINT fk_experiement FOREIGN KEY (experiement_id) REFERENCES experiments(exp_id),
-    CONSTRAINT fk_datasource FOREIGN KEY (datasource_id) REFERENCES datasources(ds_id),
+    CONSTRAINT fk_datasource FOREIGN KEY (datasource_id) REFERENCES datasources(ds_id)
 );
 
 /* Create table to store experiment versions */
@@ -155,6 +155,14 @@ CREATE TABLE IF NOT EXISTS version_outcomes (
     CONSTRAINT fk_vo_out FOREIGN KEY (out_id) REFERENCES outcomes(outcome_id),
 );
 
+/* Create table to contain data source provider details */
+CREATE TABLE IF NOT EXISTS source_providers (
+  id INT NOT NULL AUTO_INCREMENT,
+  jarPath VARCHAR(100) NOT NULL,
+  providerName VARCHAR(100) NOT NULL,
+  version VARCHAR(100) NOT NULL,
+  PRIMARY KEY (id)
+);
 
 /*** System Settings ***/
 
@@ -168,11 +176,3 @@ CREATE TABLE IF NOT EXISTS executors (
 );
 
 
-/* Create table to contain data source provider details */
-CREATE TABLE IF NOT EXISTS source_providers (
-  id INT NOT NULL AUTO_INCREMENT,
-  jarPath VARCHAR(100) NOT NULL,
-  providerName VARCHAR(100) NOT NULL,
-  version VARCHAR(100) NOT NULL,
-  PRIMARY KEY (id)
-);

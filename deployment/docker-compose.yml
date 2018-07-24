@@ -1,0 +1,16 @@
+version: "2.2"
+
+services:
+  # Configuration for the Jupyter service.
+  app:
+    # Build application using Dockerfile contained in application subfolder
+    build: ./jupyter
+    # Image name
+    image: jupyter-combined
+    # Map application container port 8080 to docker port 8080
+    ports:
+      - "8000:8000"
+      - "8888:8888"
+    # Mount experiments directory in docker image
+    volumes:
+      - ~/.newton/experiment:/var/newton/experiment

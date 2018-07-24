@@ -14,7 +14,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.ucl.newton.framework.Credential;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.framework.UserRole;
+import org.ucl.newton.framework.UserDto;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -45,7 +45,7 @@ public class UserService
             Credential credentials = (Credential) authentication.getPrincipal();
             return repository.getUser(credentials.getUserId());
         }
-        return new User("Anonymous", "anonymous@ucl.ac.uk", UserRole.USER, "default.jpg");
+        return new User("Anonymous", "anonymous@ucl.ac.uk", "default.jpg");
     }
 
     public Collection<User> findUsers(String matching) {
@@ -62,5 +62,15 @@ public class UserService
             result.add(getUser(identifier));
         }
         return result;
+    }
+
+    public User findUserByEmail(String emailAddress){
+        return repository.findUserByEmail(emailAddress);
+    }
+
+    public void saveUser(UserDto userDto){
+        User user = new User(userDto.getFullName(),
+                userDto.getEmail(), "default.jpg");
+        repository.addUser(user);
     }
 }

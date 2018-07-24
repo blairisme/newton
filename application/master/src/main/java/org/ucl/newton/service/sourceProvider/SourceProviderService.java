@@ -1,9 +1,9 @@
-package org.ucl.newton.service.data;
+package org.ucl.newton.service.sourceProvider;
 
-import org.springframework.stereotype.Service;
 import org.ucl.newton.framework.SourceProvider;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.Collection;
 
 /**
@@ -11,7 +11,7 @@ import java.util.Collection;
  *
  * @author Xiaolong Chen
  */
-@Service
+@Named
 public class SourceProviderService {
     private SourceProviderRepository repository;
 

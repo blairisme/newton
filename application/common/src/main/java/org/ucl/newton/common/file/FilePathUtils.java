@@ -10,9 +10,6 @@
 package org.ucl.newton.common.file;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Instances of this class provide utility functions for working with file

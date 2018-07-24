@@ -3,7 +3,6 @@ package helpers;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import sun.rmi.runtime.Log;
 
 import java.io.File;
 import java.io.IOException;

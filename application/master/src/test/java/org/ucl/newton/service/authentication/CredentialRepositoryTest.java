@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.Credential;
+import org.ucl.newton.framework.UserRole;
 
 import javax.inject.Inject;
 
@@ -30,21 +31,21 @@ public class CredentialRepositoryTest
 
     @Test
     public void getCredentialByIdTest() {
-        Credential expected = new Credential(1, 1, "user", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m");
+        Credential expected = new Credential(1, 1, "user@ucl.ac.uk", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m", UserRole.USER);
         Credential actual = repository.getCredentialById(1);
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void getCredentialByUsernameTest() {
-        Credential expected = new Credential(1, 1, "user", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m");
-        Credential actual = repository.getCredentialByName("user");
+        Credential expected = new Credential(1, 1, "user@ucl.ac.uk", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m", UserRole.USER);
+        Credential actual = repository.getCredentialByName("user@ucl.ac.uk");
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void addCredentialTest() {
-        Credential expected = new Credential(2, 2, "user1", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m");
+        Credential expected = new Credential(2, 2, "user1", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m", UserRole.ADMIN);
         repository.addCredential(expected);
 
         Credential actual = repository.getCredentialById(expected.getId());
@@ -53,7 +54,7 @@ public class CredentialRepositoryTest
 
     @Test
     public void removeCredentialTest() {
-        Credential credential = new Credential(3, 3, "user2", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m");
+        Credential credential = new Credential(3, 3, "user2", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m", UserRole.ADMIN);
         repository.addCredential(credential);
 
         Credential before = repository.getCredentialById(credential.getId());

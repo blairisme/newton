@@ -1,4 +1,4 @@
-package org.ucl.newton.service.data;
+package org.ucl.newton.service.sourceProvider;
 
 /**
  * Instances of this class are thrown when performing an operation on a source provider

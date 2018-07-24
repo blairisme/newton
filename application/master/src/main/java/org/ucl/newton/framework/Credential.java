@@ -12,6 +12,7 @@ package org.ucl.newton.framework;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.search.annotations.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,19 +45,25 @@ public class Credential implements Serializable, UserDetails
     @Column(name = "password")
     private String password;
 
+    @Field
+    @Column(name = "role")
+    @Enumerated( EnumType.STRING )
+    private UserRole role;
+
     public Credential() {
-        this(0, 0, "", "");
+        this(0, "", "", null);
     }
 
-    public Credential(int userId, String username, String password) {
-        this(0, userId, username, password);
+    public Credential(int userId, String username, String password, UserRole role) {
+        this(0, userId, username, password, role);
     }
 
-    public Credential(int id, int userId, String username, String password) {
+    public Credential(int id, int userId, String username, String password, UserRole role) {
         this.id = id;
         this.userId = userId;
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     public int getId() {
@@ -65,6 +72,14 @@ public class Credential implements Serializable, UserDetails
 
     public int getUserId() {
         return userId;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     @Override
@@ -84,8 +99,7 @@ public class Credential implements Serializable, UserDetails
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        //return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + role));
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"));
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     @Override
@@ -142,4 +156,5 @@ public class Credential implements Serializable, UserDetails
             .append("password", "******")
             .toString();
     }
+
 }

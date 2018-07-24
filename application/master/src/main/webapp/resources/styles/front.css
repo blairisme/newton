@@ -22,3 +22,7 @@
     width: 400px;
     content: url("/resources/images/front.png");
 }
+
+#signUpBtn {
+    margin-left: 1em;
+}

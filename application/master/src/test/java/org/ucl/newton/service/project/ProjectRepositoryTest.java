@@ -19,7 +19,6 @@ import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.framework.UserRole;
 
 import javax.inject.Inject;
 import java.text.ParseException;
@@ -50,7 +49,7 @@ public class ProjectRepositoryTest
 
     @Test
     public void getProjectsTest() {
-        User user1 = new User(1, "user", "user@ucl.ac.uk", UserRole.USER, "default.jpg");
+        User user1 = new User(1, "user", "user@ucl.ac.uk", "default.jpg");
         Project fizzyo = repository.getProjectById(fizzyoId);
         Project cancerRes = repository.getProjectById(projCancerResId);
         List<Project> projects = repository.getProjects(user1);
@@ -93,7 +92,7 @@ public class ProjectRepositoryTest
         int projCancerResId = 2;
         Project projCancerRes = repository.getProjectById(projCancerResId);
         Collection<User> memberList= projCancerRes.getMembers();
-        User newUser = new User(6, "John Wilkie", "john.wilkie.17@ucl.ac.uk", UserRole.ADMIN, "default.jpg");
+        User newUser = new User(6, "John Wilkie", "john.wilkie.17@ucl.ac.uk", "default.jpg");
 
         Assert.assertEquals(2, memberList.size());
         Assert.assertFalse(memberList.contains(newUser));
@@ -110,7 +109,7 @@ public class ProjectRepositoryTest
 
         Project projCancerRes = repository.getProjectById(projCancerResId);
         Collection<User> memberList;
-        User user5 = new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk", UserRole.ADMIN, "default.jpg");
+        User user5 = new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk", "default.jpg");
 
         addUserToProjectMembers(user5, projCancerRes);
         projCancerRes = repository.getProjectById(projCancerResId);
@@ -135,8 +134,8 @@ public class ProjectRepositoryTest
 
     @Test
     public void testGetStaredProjects() {
-        User user2 = new User(2, "admin", "admin@ucl.ac.uk", UserRole.ADMIN, "default.jpg");
-        User user1 = new User(1, "user", "user@ucl.ac.uk", UserRole.USER, "default.jpg");
+        User user2 = new User(2, "admin", "admin@ucl.ac.uk", "default.jpg");
+        User user1 = new User(1, "user", "user@ucl.ac.uk", "default.jpg");
         Project fizzyo = repository.getProjectById(1);
         List<Project> projects = repository.getProjectsStarredByUser(user2);
 
@@ -149,7 +148,7 @@ public class ProjectRepositoryTest
 
     @Test
     public void testStarAProject() {
-        User user4 = new User(4, "Xiaolong Chen", "xiaolong.chen@ucl.ac.uk", UserRole.ADMIN, "default.jpg");
+        User user4 = new User(4, "Xiaolong Chen", "xiaolong.chen@ucl.ac.uk", "default.jpg");
         Project fizzyo = repository.getProjectById(fizzyoId);
         Collection<User> starredMembers = fizzyo.getMembersThatStar();
         Assert.assertEquals(2, starredMembers.size());
@@ -166,7 +165,7 @@ public class ProjectRepositoryTest
 
     @Test
     public void testUnstarAProject() {
-        User user5 = new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk", UserRole.ADMIN, "default.jpg");
+        User user5 = new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk", "default.jpg");
         Project aidsRes = repository.getProjectById(3);
         starAProject(user5, aidsRes);
 
@@ -204,12 +203,12 @@ public class ProjectRepositoryTest
     }
 
     private User createUser() {
-        return new User(2, "admin", "admin@ucl.ac.uk", UserRole.ADMIN, "default.jpg");
+        return new User(2, "admin", "admin@ucl.ac.uk", "default.jpg");
     }
 
     private Collection<User> createMembersList(){
-        User user3 = new User(3, "Blair Butterworth", "blair.butterworth.17@ucl.ac.uk", UserRole.ADMIN, "default.jpg");
-        User user4 = new User(4, "Xiaolong Chen", "xiaolong.chen@ucl.ac.uk", UserRole.ADMIN, "default.jpg");
+        User user3 = new User(3, "Blair Butterworth", "blair.butterworth.17@ucl.ac.uk", "default.jpg");
+        User user4 = new User(4, "Xiaolong Chen", "xiaolong.chen@ucl.ac.uk", "default.jpg");
         ArrayList<User> members = new ArrayList<>();
         members.add(user3);
         members.add(user4);

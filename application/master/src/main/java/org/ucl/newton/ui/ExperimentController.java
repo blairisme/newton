@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.ExperimentVersion;
+import org.ucl.newton.framework.User;
 import org.ucl.newton.service.execution.ExecutionService;
 import org.ucl.newton.service.experiment.ExperimentService;
+import org.ucl.newton.service.jupyter.JupyterServer;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
+import java.net.URI;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
@@ -38,16 +41,19 @@ public class ExperimentController
     private UserService userService;
     private ExperimentService experimentService;
     private ExecutionService executionService;
+    private JupyterServer jupyterServer;
 
     @Inject
     public ExperimentController(
         UserService userService,
         ExperimentService experimentService,
-        ExecutionService executionService)
+        ExecutionService executionService,
+        JupyterServer jupyterServer)
     {
         this.userService = userService;
         this.experimentService = experimentService;
         this.executionService = executionService;
+        this.jupyterServer = jupyterServer;
     }
 
     @GetMapping(value = "/project/{project}/{experiment}")
@@ -65,7 +71,7 @@ public class ExperimentController
         model.addAttribute("version", getVersion(experiment, version));
         model.addAttribute("executing", !executionService.isExecutionComplete(experiment));
 
-        return "project/experiment/overview";
+        return "experiment/overview";
     }
 
     private ExperimentVersion getVersion(Experiment experiment, String version) {
@@ -79,7 +85,7 @@ public class ExperimentController
     }
 
     @GetMapping(value = "/project/{project}/{experiment}/run")
-    public String execute(
+    public String run(
         @PathVariable("project") String projectIdentifier,
         @PathVariable("experiment") String experimentIdentifier,
         ModelMap model)
@@ -88,4 +94,15 @@ public class ExperimentController
         return "redirect:/project/" + projectIdentifier + "/" + experimentIdentifier;
     }
 
+    @GetMapping(value = "/project/{project}/{experiment}/edit")
+    public String edit(
+            @PathVariable("project") String project,
+            @PathVariable("experiment") String experiment,
+            ModelMap model)
+    {
+        User user = userService.getAuthenticatedUser();
+        URI editorUrl = jupyterServer.getEditorUrl(user, experiment);
+        String redirectPath = editorUrl.toString();
+        return "redirect:" + redirectPath;
+    }
 }

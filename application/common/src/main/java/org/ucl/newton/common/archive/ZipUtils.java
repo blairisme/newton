@@ -11,7 +11,6 @@ package org.ucl.newton.common.archive;
 
 import org.apache.commons.io.IOUtils;
 
-import javax.inject.Provider;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;

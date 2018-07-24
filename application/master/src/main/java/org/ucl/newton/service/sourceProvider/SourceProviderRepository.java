@@ -1,13 +1,15 @@
-package org.ucl.newton.service.data;
+package org.ucl.newton.service.sourceProvider;
+
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.SourceProvider;
 
 import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 /**
@@ -41,10 +43,10 @@ public class SourceProviderRepository {
     @Transactional(readOnly=true)
     public List<SourceProvider> getSourceProviders() {
         Session session = getSession();
-        String sql = String.format("SELECT * FROM source_providers");
-        NativeQuery query = session.createNativeQuery(sql).addEntity(SourceProvider.class);
-        List<SourceProvider> result = query.list();
-        return result;
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<SourceProvider> criteria = builder.createQuery(SourceProvider.class);
+        criteria.from(SourceProvider.class);
+        return session.createQuery(criteria).getResultList();
     }
 
     @Transactional

@@ -1,0 +1,22 @@
+/*
+ * MIT License (c)
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ *
+ * Author: Blair Butterworth
+ */
+
+task jupyterStart(type: Exec) {
+  commandLine 'docker-compose', 'up'
+}
+
+task jupyterStartDaemon(type: Exec) {
+  commandLine 'docker-compose', 'up', '-d'
+}
+
+task jupyterStopDaemon(type: Exec) {
+  commandLine 'docker-compose', 'stop'
+}
