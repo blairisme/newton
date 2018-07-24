@@ -74,6 +74,12 @@ public class ExperimentController
         return "experiment/overview";
     }
 
+    @GetMapping(value = "/project/{project}/new")
+    public String newExperiment(@PathVariable("project") String projectIdentifier, ModelMap model){
+        model.addAttribute("user", userService.getAuthenticatedUser());
+        return "experiment/new";
+    }
+
     private ExperimentVersion getVersion(Experiment experiment, String version) {
         if (! experiment.hasVersion()) {
             return null;

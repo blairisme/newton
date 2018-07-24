@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>Newton - Experiment</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/views/experiment/new.css"/>
+
+    <script src="/resources/scripts/libraries/jquery.js"></script>
+    <script src="/resources/scripts/libraries/popper.js"></script>
+    <script src="/resources/scripts/libraries/bootstrap.js"></script>
+    <script src="/resources/scripts/views/experiment/new.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <div th:replace="fragments/header :: header"></div>
+
+    <!-- Page Content -->
+    <div class="container-fluid restricted-width-container">
+        <div class="section-divider">
+            <h1 class="page-title">New Experiment</h1>
+            <p>Some description of an experiment.</p>
+        </div>
+
+        <form id="experimentDetails" th:action="@{/experiment/new}" method="POST" enctype="multipart/form-data" class="requires-validation">
+            <!-- General Settings -->
+            <section class="form-section section-divider">
+                <h4>General Experiment Settings</h4>
+                <p>Set your experiment name, description and run trigger.</p>
+
+                <!-- name, description and run trigger -->
+                <div class="form-group">
+                    <label for="experimentNameInput">Experiment name <span class="text-danger">*</span></label>
+                    <input id="experimentNameInput" name="name" type="text" class="form-control" placeholder="" required="required">
+                </div>
+
+                <div class="form-group">
+                    <label for="experimentDescInput">Experiment description <span class="text-danger">*</span></label>
+                    <input id="experimentDescInput" name="name" type="text" class="form-control" placeholder="" required="required">
+                </div>
+
+                <div class="form-group">
+                    <label for="experimentTriggerRadio">Experiment trigger</label>
+                    <div class="radio" id="experimentTriggerRadio">
+                        <label><input type="radio" name="optradio" checked>Manual</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="optradio">On data change</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Project Type Settings -->
+            <section class="form-section section-divider">
+                <h4>Project Type</h4>
+                <p>Select the type of your project. Jupyter notebook projects can be edited and ran in an interactive environment and an html version of the notebook will
+                    be displayed as one of the outputs of the experiments.</p>
+
+                <div class="form-group">
+                    <label for="experimentProjectTypeRadio">Project Type</label>
+                    <div class="radio" id="experimentProjectTypeRadio">
+                        <label><input type="radio" name="expTypeRadio" checked>Python</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="expTypeRadio" disabled>Ruby</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="expTypeRadio" id="jupyterRadio">Jupyter notebook</label>
+                    </div>
+                    <div id="notebookTypes">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
+                            <label class="form-check-label" for="inlineRadio1">Python notebook</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" disabled>
+                            <label class="form-check-label" for="inlineRadio2">Ruby notebook</label>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Storage Settings -->
+            <section class="form-section section-divider">
+                <h4>Storage Settings</h4>
+                <p>Select the manner in which your experiment will be stored. Using "Newton" storage will create a new directory on the Newton file system to store your
+                experiment data.</p>
+
+                <div class="form-group">
+                    <label for="experimentStorageRadio">Storage type</label>
+                    <div class="radio" id="experimentStorageRadio">
+                        <label><input type="radio" name="storageRadio" checked>Newton</label>
+                    </div>
+                    <!-- in future add github -->
+                </div>
+
+            </section>
+
+            <!-- Data Source Settings -->
+            <section class="form-section section-divider">
+                <h4>Data Source Settings</h4>
+                <p>Select which of the available data sources to use in this experiment.</p>
+
+            </section>
+
+            <!-- Output Settings -->
+            <section class="form-section section-divider">
+                <h4>Output Settings</h4>
+                <p>Use a pattern to select which files will be stored and made available for publishing when you program is ran.</p>
+
+                <div class="form-group">
+                    <label for="experimentOutputInput">Experiment output <span class="text-danger">*</span> (give a pattern to select files to save)</label>
+                    <input id="experimentOutputInput" name="name" type="text" class="form-control" placeholder="outputs/*.csv" required="required">
+                </div>
+
+            </section>
+
+            <button class="btn btn-primary float-right">Create Experiment</button>
+        </form>
+
+    </div>
+
+</body>
+</html>

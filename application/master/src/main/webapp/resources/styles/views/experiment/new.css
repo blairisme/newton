@@ -1,0 +1,18 @@
+.restricted-width-container {
+    max-width: 62.5rem;
+}
+
+.section-divider {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+.form-section {
+    padding: 1.25rem;
+    margin-top: 1.25rem;
+}
+
+#notebookTypes {
+    margin-left: 1em;
+    display: none;
+}
