@@ -48,7 +48,9 @@ class LoginHandler(BaseHandler):
         username = self.retrieve_username(claims, username_claim_field)
         user = self.user_from_username(username)
         self.set_login_cookie(user)
-        self.authenticator.add_system_user(user)
+
+        if not self.authenticator.system_user_exists(user):
+            self.authenticator.add_system_user(user)
         self.authenticator.experiment_id = self.get_argument(experimentParam, default=False)
 
         _url = url_path_join(self.hub.server.base_url, forward_url)

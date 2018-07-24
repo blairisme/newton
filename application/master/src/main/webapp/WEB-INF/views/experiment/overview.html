@@ -72,6 +72,7 @@
                             </div>
                             <div class="col-4 ml-auto">
                                 <div class="control_container">
+                                    <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/edit'}" role="button">Edit</a>
                                     <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/run'}" role="button">Rerun</a>
                                     <a class="btn btn-primary" href="#" role="button">Publish Results</a>
                                 </div>
