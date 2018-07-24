@@ -31,15 +31,15 @@ public class CredentialRepositoryTest
 
     @Test
     public void getCredentialByIdTest() {
-        Credential expected = new Credential(1, 1, "user", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m", UserRole.USER);
+        Credential expected = new Credential(1, 1, "user@ucl.ac.uk", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m", UserRole.USER);
         Credential actual = repository.getCredentialById(1);
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void getCredentialByUsernameTest() {
-        Credential expected = new Credential(1, 1, "user", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m", UserRole.USER);
-        Credential actual = repository.getCredentialByName("user");
+        Credential expected = new Credential(1, 1, "user@ucl.ac.uk", "$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m", UserRole.USER);
+        Credential actual = repository.getCredentialByName("user@ucl.ac.uk");
         Assert.assertEquals(expected, actual);
     }
 

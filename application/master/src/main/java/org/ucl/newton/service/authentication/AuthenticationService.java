@@ -53,4 +53,27 @@ public class AuthenticationService implements UserDetailsService
                 passwordEncoder.encode(userDto.getPassword()), UserRole.USER);
         repository.addCredential(userCredentials);
     }
+
+    public UserRole changeRole(String userName, String role) throws UnknownRoleException, UsernameNotFoundException {
+        Credential credential = repository.getCredentialByName(userName);
+        UserRole newRole = null;
+        if(credential != null) {
+            if (role.equals("user")) {
+                credential.setRole(UserRole.USER);
+                newRole = UserRole.USER;
+            } else if (role.equals("admin")) {
+                credential.setRole(UserRole.ADMIN);
+                newRole = UserRole.ADMIN;
+            } else if (role.equals("organisationLead")) {
+                credential.setRole(UserRole.ORGANISATIONLEAD);
+                newRole = UserRole.ORGANISATIONLEAD;
+            } else {
+                throw new UnknownRoleException(role);
+            }
+            repository.updateCredential(credential);
+        } else {
+            throw new UsernameNotFoundException(userName);
+        }
+        return newRole;
+    }
 }

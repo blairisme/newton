@@ -70,7 +70,14 @@ public class CredentialRepository
         session.delete(credential);
     }
 
+    @Transactional
+    public void updateCredential(Credential credential) {
+        Session session = getSession();
+        session.update(credential);
+    }
+
     private Session getSession() {
         return this.sessionFactory.getCurrentSession();
     }
+
 }

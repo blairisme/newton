@@ -74,6 +74,14 @@ public class Credential implements Serializable, UserDetails
         return userId;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
     @Override
     public String getUsername() {
         return username;
@@ -91,8 +99,6 @@ public class Credential implements Serializable, UserDetails
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        //return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + role));
-        System.out.println("ROLE_" + role);
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
@@ -150,4 +156,5 @@ public class Credential implements Serializable, UserDetails
             .append("password", "******")
             .toString();
     }
+
 }

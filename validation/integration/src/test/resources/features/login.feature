@@ -12,7 +12,7 @@ Background:
 
 Scenario: Correct authentication details
    When the user is shown the login page
-   And the user enters "admin" as their username and "password" as their password
+   And the user enters "admin@ucl.ac.uk" as their username and "password" as their password
    And the user selects the signin option
    Then the user should be shown the project list
 
@@ -25,6 +25,6 @@ Scenario: Incorrect user
 
 Scenario: Incorrect password
   When the user is shown the login page
-  And the user enters "xiaolong" as their username and "completelywrong" as their password
+  And the user enters "xiaolong.chen@ucl.ac.uk" as their username and "completelywrong" as their password
   And the user selects the signin option
   Then the user should be shown an authentication error
