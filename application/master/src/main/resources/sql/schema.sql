@@ -141,7 +141,8 @@ CREATE TABLE IF NOT EXISTS experiment_versions (
 /* Create table for experiment outcomes */
 CREATE TABLE IF NOT EXISTS outcomes (
     outcome_id INT NOT NULL AUTO_INCREMENT,
-    outcome_loc VARCHAR(100) NOT NULL,
+    outcome_name VARCHAR(100) NOT NULL,
+    outcome_location VARCHAR(200) NOT NULL,
     outcome_type VARCHAR NOT NULL,
     PRIMARY KEY (outcome_id)
 );

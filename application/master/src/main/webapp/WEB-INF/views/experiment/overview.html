@@ -7,16 +7,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/css/dataTables.bootstrap4.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/data_tables.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/views/experiment/overview.css"/>
 
     <script src="/resources/scripts/libraries/jquery.js"></script>
     <script src="/resources/scripts/libraries/popper.js"></script>
     <script src="/resources/scripts/libraries/bootstrap.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/resources/scripts/libraries/data_tables_jquery.js"></script>
+    <script src="/resources/scripts/libraries/data_tables_bootstrap.js"></script>
     <script src="/resources/scripts/views/experiment/overview.js"></script>
 </head>
 <body>
@@ -95,31 +94,21 @@
 
                     <div class="tab-content">
                         <div id="visualizationTab" class="tab-pane active fade show">
-                            <img th:each="outcome, iteration :${version.outcomes}" th:if="${outcome.isVisualType()}" th:src="@{'/resources/' + ${outcome.path}}"/>
+                            <img th:each="outcome, iteration :${version.outcomes}" th:if="${outcome.isVisualType()}" th:src="@{'/resources/' + ${outcome.location}}"/>
                         </div>
-                        <div id="dataTab" class="tab-pane fade">
-                            <!-- Add check for execution -->
 
-                            <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="outcomeDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Select an output to view
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <a th:each="outcome, iteration :${version.outcomes}"
-                                           th:if="${outcome.isDataType()}"
-                                           class="dropdown-item" href="#"
-                                           th:text="@{'/resources/' + ${outcome.path}}"></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div>
-                                <table id="testOutcome" class="table table-bordered experiment-output"></table>
-                            </div>
-                            <p id="jsonError"></p>
+                        <div id="dataTab" class="tab-pane fade">
+                            <ul class="list-group">
+                                <li th:each="outcome, iteration :${version.outcomes}" th:if="${outcome.isDataType()}" class="list-group-item file_output">
+                                    <img src="/resources/images/experiment/file.png" alt="file icon" width="20"/>
+                                    <span th:text="${outcome.name}">File name</span>
+                                    <a class="btn btn-primary" th:href="@{'/resources/' + ${outcome.location}}">Download</a>
+                                </li>
+                            </ul>
                         </div>
+
                         <div id="consoleTab" class="tab-pane fade">
-                            <object th:each="outcome, iteration :${version.outcomes}" th:if="${outcome.isLogType()}" th:data="@{'/resources/' + ${outcome.path}}" width="100%" height="1000px">Log Text</object>
+                            <object th:each="outcome, iteration :${version.outcomes}" th:if="${outcome.isLogType()}" th:data="@{'/resources/' + ${outcome.location}}" width="100%" height="1000px">Log Text</object>
                         </div>
                     </div>
                 </div>
