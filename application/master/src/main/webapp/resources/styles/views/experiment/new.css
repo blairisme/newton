@@ -1,0 +1,42 @@
+.restricted-width-container {
+    max-width: 62.5rem;
+}
+
+.section-divider {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+.form-section {
+    padding: 1.25rem;
+    margin-top: 1.25rem;
+}
+
+#notebookTypes {
+    margin-left: 1em;
+    display: none;
+}
+
+.empty_message {
+    color: #b1b1b1;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+.project-list-item {
+    padding: 1.25rem;
+}
+
+.project-list-item p {
+    margin-bottom: 0px;
+}
+
+.list-group-item:last-child {
+    margin-bottom: 1em;
+}
+
+.remove_button {
+    margin-top: 0.5em;
+}
+

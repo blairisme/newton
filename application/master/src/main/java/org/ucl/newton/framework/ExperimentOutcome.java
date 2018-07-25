@@ -24,15 +24,18 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "outcomes")
-public class ExperimentOutcome {
-
+public class ExperimentOutcome
+{
     @Id
     @Column(name = "outcome_id")
     @GeneratedValue(generator = "increment")
     private int id;
 
-    @Column(name = "outcome_loc")
-    private String path;
+    @Column(name = "outcome_name")
+    private String name;
+
+    @Column(name = "outcome_location")
+    private String location;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "outcome_type")
@@ -42,19 +45,22 @@ public class ExperimentOutcome {
     }
 
     public ExperimentOutcome(
-        String path,
+        String name,
+        String location,
         ExperimentOutcomeType type)
     {
-        this(0, path, type);
+        this(0, name, location, type);
     }
 
     public ExperimentOutcome(
         int id,
-        String path,
+        String name,
+        String location,
         ExperimentOutcomeType type)
     {
         this.id = id;
-        this.path = path;
+        this.name = name;
+        this.location = location;
         this.type = type;
     }
 
@@ -67,8 +73,12 @@ public class ExperimentOutcome {
         return this;
     }
 
-    public String getPath() {
-        return path;
+    public String getName() {
+        return name;
+    }
+
+    public String getLocation() {
+        return location;
     }
 
     public ExperimentOutcomeType getType() {
@@ -97,7 +107,8 @@ public class ExperimentOutcome {
         ExperimentOutcome other = (ExperimentOutcome)obj;
         return new EqualsBuilder()
             .append(this.id, other.id)
-            .append(this.path, other.path)
+            .append(this.name, other.name)
+            .append(this.location, other.location)
             .append(this.type, other.type)
             .isEquals();
     }
@@ -106,7 +117,8 @@ public class ExperimentOutcome {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
             .append(id)
-            .append(path)
+            .append(name)
+            .append(location)
             .append(type)
             .toHashCode();
     }
@@ -115,7 +127,8 @@ public class ExperimentOutcome {
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", id)
-            .append("path", path)
+            .append("name", name)
+            .append("location", location)
             .append("type", type)
             .toString();
     }

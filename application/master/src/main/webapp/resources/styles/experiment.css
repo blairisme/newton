@@ -50,3 +50,7 @@
     color: #000000;
     font-weight: 600;
 }
+
+#newExpBtn {
+    margin-left: 1em;
+}

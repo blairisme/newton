@@ -31,12 +31,14 @@ public class ProjectBuilder
     private Date updated;
     private User owner;
     private Collection<User> members;
+    private Collection<DataSource> dataSources;
 
     public ProjectBuilder() {
         this.description = "";
         this.image = "default.png";
         this.updated = new Date();
         this.members = new ArrayList<>();
+        this.dataSources = new ArrayList<>();
     }
 
     public void generateIdentifier(String text) {
@@ -81,6 +83,6 @@ public class ProjectBuilder
         Validate.notNull(identifier);
         Validate.notNull(name);
         Validate.notNull(owner);
-        return new Project(0, identifier, name, description, image, updated, owner, members);
+        return new Project(0, identifier, name, description, image, updated, owner, members, dataSources);
     }
 }

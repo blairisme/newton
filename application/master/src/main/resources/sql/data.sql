@@ -77,6 +77,12 @@ INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (3
 INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (4, 'Fizzyo ACT use', 1, 'some/loc4');
 INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (5, 'Fizzyo steps', 2, 'some/loc5');
 
+/* Project data sources */
+INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 1);
+INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 3);
+INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 4);
+INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 5);
+
 /* Data processors */
 INSERT INTO process (proc_id, proc_repo_url, proc_initial_script, proc_engine) VALUES (1, 'https://github.com/blairisme/newton', 'test.py', 'python');
 
@@ -114,9 +120,9 @@ INSERT INTO versions (ver_id, ver_number) VALUES (1, 1);
 INSERT INTO experiment_versions (experiment_id, version_id) VALUES (1, 1);
 
 /* Outcomes */
-INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (1, 'tempJson/testJSON.json/', 'Data');
-INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (2, 'demo/log.txt', 'Log');
-INSERT INTO outcomes (outcome_id, outcome_loc, outcome_type) VALUES (3, 'tempJson/testJSON2.json/', 'Data');
+INSERT INTO outcomes (outcome_id, outcome_name, outcome_location, outcome_type) VALUES (1, 'test1.json', 'tempJson/testJSON.json', 'Data');
+INSERT INTO outcomes (outcome_id, outcome_name, outcome_location, outcome_type) VALUES (2, 'log.txt', 'demo/log.txt', 'Log');
+INSERT INTO outcomes (outcome_id, outcome_name, outcome_location, outcome_type) VALUES (3, 'test2.json', 'tempJson/testJSON2.json', 'Data');
 
 /* Link outcomes to versions */
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 1);

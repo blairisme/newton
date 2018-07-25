@@ -36,32 +36,45 @@ public class ExperimentVersionBuilder
     }
 
     public ExperimentVersionBuilder setExperimentLog(Path path) {
-        outcomes.add(new ExperimentOutcome(path.toString(), ExperimentOutcomeType.Log));
+        addOutcome(path, ExperimentOutcomeType.Log);
+        return this;
+    }
+
+    public ExperimentVersionBuilder setExperimentLogs(Collection<Path> paths) {
+        addOutcomes(paths, ExperimentOutcomeType.Log);
         return this;
     }
 
     public ExperimentVersionBuilder setExperimentData(Path path) {
-        outcomes.add(new ExperimentOutcome(path.toString(), ExperimentOutcomeType.Data));
+        addOutcome(path, ExperimentOutcomeType.Data);
         return this;
     }
 
     public ExperimentVersionBuilder setExperimentData(Collection<Path> paths) {
-        for (Path path: paths) {
-            setExperimentData(path);
-        }
+        addOutcomes(paths, ExperimentOutcomeType.Data);
         return this;
     }
 
     public ExperimentVersionBuilder setExperimentVisuals(Path path) {
-        outcomes.add(new ExperimentOutcome(path.toString(), ExperimentOutcomeType.Visuals));
+        addOutcome(path, ExperimentOutcomeType.Visuals);
         return this;
     }
 
     public ExperimentVersionBuilder setExperimentVisuals(Collection<Path> paths) {
-        for (Path path: paths) {
-            setExperimentVisuals(path);
-        }
+        addOutcomes(paths, ExperimentOutcomeType.Visuals);
         return this;
+    }
+
+    private void addOutcome(Path path, ExperimentOutcomeType type) {
+        String name = path.getFileName().toString();
+        String location = path.toString();
+        outcomes.add(new ExperimentOutcome(name, location, type));
+    }
+
+    private void addOutcomes(Collection<Path> paths, ExperimentOutcomeType type) {
+        for (Path path: paths) {
+            addOutcome(path, type);
+        }
     }
 
     public ExperimentVersion build() {
