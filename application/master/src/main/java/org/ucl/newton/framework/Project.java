@@ -72,7 +72,7 @@ public class Project implements Serializable
 
     @OneToMany
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name = "project_dataSources",
+    @JoinTable(name = "project_datasources",
             joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_projds_project")),
             inverseJoinColumns = @JoinColumn(name = "ds_id", referencedColumnName = "ds_id", foreignKey = @ForeignKey(name = "fk_projds_ds"))
     )
