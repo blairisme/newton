@@ -66,6 +66,14 @@ CREATE TABLE IF NOT EXISTS project_starred (
     CONSTRAINT fk_starred_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+/* Create join table to connect selected data sources to a project */
+CREATE TABLE IF NOT EXISTS project_datasources (
+    project_id INT NOT NULL,
+    ds_id INT NOT NULL,
+    PRIMARY KEY (project_id, ds_id),
+    CONSTRAINT fk_projds_project FOREIGN KEY (project_id) REFERENCES projects(id),
+    CONSTRAINT fk_projds_ds FOREIGN KEY (ds_id) REFERENCES users(id)
+);
 
 /*** Plugins ***/
 

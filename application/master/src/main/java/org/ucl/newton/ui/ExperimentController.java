@@ -21,6 +21,7 @@ import org.ucl.newton.framework.User;
 import org.ucl.newton.service.execution.ExecutionService;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.jupyter.JupyterServer;
+import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
@@ -42,18 +43,21 @@ public class ExperimentController
     private ExperimentService experimentService;
     private ExecutionService executionService;
     private JupyterServer jupyterServer;
+    private ProjectService projectService;
 
     @Inject
     public ExperimentController(
         UserService userService,
         ExperimentService experimentService,
         ExecutionService executionService,
-        JupyterServer jupyterServer)
+        JupyterServer jupyterServer,
+        ProjectService projectService)
     {
         this.userService = userService;
         this.experimentService = experimentService;
         this.executionService = executionService;
         this.jupyterServer = jupyterServer;
+        this.projectService = projectService;
     }
 
     @GetMapping(value = "/project/{project}/{experiment}")
@@ -75,8 +79,9 @@ public class ExperimentController
     }
 
     @GetMapping(value = "/project/{project}/new")
-    public String newExperiment(@PathVariable("project") String projectIdentifier, ModelMap model){
+    public String newExperiment(@PathVariable("project") String projectName, ModelMap model){
         model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("project", projectService.getProjectByLink(projectName));
         return "experiment/new";
     }
 

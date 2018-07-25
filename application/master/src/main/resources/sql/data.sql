@@ -77,6 +77,12 @@ INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (3
 INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (4, 'Fizzyo ACT use', 1, 'some/loc4');
 INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (5, 'Fizzyo steps', 2, 'some/loc5');
 
+/* Project data sources */
+INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 1);
+INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 3);
+INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 4);
+INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 5);
+
 /* Data processors */
 INSERT INTO process (proc_id, proc_repo_url, proc_initial_script, proc_engine) VALUES (1, 'https://github.com/blairisme/newton', 'test.py', 'python');
 

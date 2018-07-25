@@ -70,6 +70,14 @@ public class Project implements Serializable
     )
     private Collection<User> membersThatStar;
 
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "project_dataSources",
+            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_projds_project")),
+            inverseJoinColumns = @JoinColumn(name = "ds_id", referencedColumnName = "ds_id", foreignKey = @ForeignKey(name = "fk_projds_ds"))
+    )
+    private Collection<DataSource> dataSources;
+
     public Project() {
     }
 
@@ -81,7 +89,8 @@ public class Project implements Serializable
         String image,
         Date updated,
         User owner,
-        Collection<User> members)
+        Collection<User> members,
+        Collection<DataSource> dataSources)
     {
         this.id = id;
         this.identifier = identifier;
@@ -91,6 +100,7 @@ public class Project implements Serializable
         this.updated = updated;
         this.owner = owner;
         this.members = members;
+        this.dataSources = dataSources;
     }
 
     public int getId() {
@@ -149,6 +159,14 @@ public class Project implements Serializable
 
     public void setMembersThatStar(Collection<User> membersThatStar) {
         this.membersThatStar = membersThatStar;
+    }
+
+    public Collection<DataSource> getDataSources() {
+        return dataSources;
+    }
+
+    public void setDataSources(Collection<DataSource> dataSources) {
+        this.dataSources = dataSources;
     }
 
     @Override
