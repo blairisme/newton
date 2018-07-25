@@ -1,0 +1,20 @@
+FROM jetty:9.4
+
+COPY ./libs/master-0.0.1.war /var/lib/jetty/webapps/ROOT.war
+
+ENV newton_profile production
+ENV newton_database_address database
+ENV newton_database_port 3306
+ENV newton_database_user root
+ENV newton_database_password Newton*123
+
+EXPOSE 8080
+
+USER root
+COPY ./config/wait-for-it.sh /tmp/jetty/wait-for-it.sh
+RUN chmod +x /tmp/jetty/wait-for-it.sh
+USER jetty
+
+WORKDIR $JETTY_BASE
+CMD /tmp/jetty/wait-for-it.sh database:3306 -t 60 -- java -jar $JETTY_HOME/start.jar
+#CMD ["java","-jar","/usr/local/jetty/start.jar"]

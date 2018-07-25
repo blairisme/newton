@@ -23,8 +23,24 @@ import javax.inject.Named;
 @Named
 public class ApplicationPreferences
 {
+    public String getDatabaseAddress() {
+        return getProperty("newton.database.address", getDatabaseAddressDefault());
+    }
+
+    private String getDatabaseAddressDefault() {
+        return "localhost";
+    }
+
+    public String getDatabasePort() {
+        return getProperty("newton.database.port", getDatabasePortDefault());
+    }
+
+    private String getDatabasePortDefault() {
+        return "3306";
+    }
+
     public String getDatabaseUser() {
-        return System.getProperty("newton.database.user", getDatabaseUserDefault());
+        return getProperty("newton.database.user", getDatabaseUserDefault());
     }
 
     private String getDatabaseUserDefault() {
@@ -32,15 +48,15 @@ public class ApplicationPreferences
     }
 
     public String getDatabasePassword() {
-        return System.getProperty("newton.database.password", getDatabasePasswordDefault());
+        return getProperty("newton.database.password", getDatabasePasswordDefault());
     }
 
     private String getDatabasePasswordDefault() {
-        return "password";
+        return "Newton*123";
     }
 
     public boolean getDatabasePopulate() {
-        String value = System.getProperty("newton.database.populate", getDatabasePopulateDefault());
+        String value = getProperty("newton.database.populate", getDatabasePopulateDefault());
         return Boolean.valueOf(value);
     }
 
@@ -49,7 +65,7 @@ public class ApplicationPreferences
     }
 
     public String getProfile() {
-        return System.getProperty("newton.profile", getProfileDefault());
+        return getProperty("newton.profile", getProfileDefault());
     }
 
     private String getProfileDefault() {
@@ -57,7 +73,7 @@ public class ApplicationPreferences
     }
 
     public String getProgramDirectory() {
-        return System.getProperty("newton.program.path", getProgramDirectoryDefault());
+        return getProperty("newton.program.path", getProgramDirectoryDefault());
     }
 
     private String getProgramDirectoryDefault() {
@@ -65,7 +81,7 @@ public class ApplicationPreferences
     }
 
     public String getUploadDirectory() {
-        return System.getProperty("newton.upload.path", getUploadDirectoryDefault());
+        return getProperty("newton.upload.path", getUploadDirectoryDefault());
     }
 
     private String getUploadDirectoryDefault() {
@@ -73,11 +89,26 @@ public class ApplicationPreferences
     }
 
     public int getUploadMaximumSize() {
-        String property = System.getProperty("newton.upload.max");
-        return property != null ? Integer.parseInt(property) : getUploadMaximumSizeDefault();
+        return Integer.parseInt(getProperty("newton.upload.max", getUploadMaximumSizeDefault()));
     }
 
-    private int getUploadMaximumSizeDefault() {
-        return 5 * 1024 * 1024;
+    private String getUploadMaximumSizeDefault() {
+        return "5242880"; // 5 * 1024 * 1024;
+    }
+
+    private String getProperty(String name, String defaultValue) {
+        String result = System.getProperty(name);
+        if (result != null) {
+            return result;
+        }
+        result = System.getenv(name);
+        if (result != null) {
+            return result;
+        }
+        result = System.getenv(name.replace(".", "_"));
+        if (result != null) {
+            return result;
+        }
+        return defaultValue;
     }
 }

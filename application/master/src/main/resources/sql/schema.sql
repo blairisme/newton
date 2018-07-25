@@ -27,9 +27,10 @@ CREATE TABLE IF NOT EXISTS credentials (
     user_id INT NOT NULL,
     username VARCHAR(100) NOT NULL,
     password VARCHAR(80) NOT NULL,
-    role VARCHAR NOT NULL,
+    role VARCHAR(20) NOT NULL,
     PRIMARY KEY (id),
-    CONSTRAINT fk_credentials_user FOREIGN KEY (user_id) REFERENCES users(id)
+    CONSTRAINT fk_credentials_user FOREIGN KEY (user_id)
+    REFERENCES users(id)
 );
 
 
@@ -143,7 +144,7 @@ CREATE TABLE IF NOT EXISTS outcomes (
     outcome_id INT NOT NULL AUTO_INCREMENT,
     outcome_name VARCHAR(100) NOT NULL,
     outcome_location VARCHAR(200) NOT NULL,
-    outcome_type VARCHAR NOT NULL,
+    outcome_type VARCHAR(20) NOT NULL,
     PRIMARY KEY (outcome_id)
 );
 
@@ -153,7 +154,7 @@ CREATE TABLE IF NOT EXISTS version_outcomes (
     out_id INT NOT NULL,
     PRIMARY KEY (ver_id, out_id),
     CONSTRAINT fk_vo_ver FOREIGN KEY (ver_id) REFERENCES versions(ver_id),
-    CONSTRAINT fk_vo_out FOREIGN KEY (out_id) REFERENCES outcomes(outcome_id),
+    CONSTRAINT fk_vo_out FOREIGN KEY (out_id) REFERENCES outcomes(outcome_id)
 );
 
 /* Create table to contain data source provider details */

@@ -18,10 +18,10 @@ RUN npm install -g configurable-http-proxy
 
 ## Setup Jupyter configuration
 RUN mkdir /etc/jupyterhub
-COPY ./jupyterhub_config.py /etc/jupyterhub/jupyterhub_config.py
-COPY ./newtonspawner.py /etc/jupyterhub/newtonspawner.py
-COPY ./newtonauthenticator.py /etc/jupyterhub/newtonauthenticator.py
-COPY ./newton.key /etc/jupyterhub/newton.key
+COPY ./config/jupyterhub_config.py /etc/jupyterhub/jupyterhub_config.py
+COPY ./config/newtonspawner.py /etc/jupyterhub/newtonspawner.py
+COPY ./config/newtonauthenticator.py /etc/jupyterhub/newtonauthenticator.py
+COPY ./config/newton.key /etc/jupyterhub/newton.key
 
 EXPOSE 8000
 EXPOSE 8888

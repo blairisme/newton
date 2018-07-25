@@ -53,9 +53,12 @@ public class PersistenceConfiguration
 
     @Bean
     public DataSource dataSource() {
+        String address = applicationPreferences.getDatabaseAddress();
+        String port = applicationPreferences.getDatabasePort();
+
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/newton?createDatabaseIfNotExist=true");
+        dataSource.setUrl("jdbc:mysql://" + address + ":" + port + "/newton");
         dataSource.setUsername(applicationPreferences.getDatabaseUser());
         dataSource.setPassword(applicationPreferences.getDatabasePassword());
         dataSource.setConnectionProperties(mysqlProperties());
@@ -66,6 +69,7 @@ public class PersistenceConfiguration
     public DataSourceInitializer dataSourceInitializer() {
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
         resourceDatabasePopulator.addScript(new ClassPathResource("/sql/schema.sql"));
+        resourceDatabasePopulator.addScript(new ClassPathResource("/sql/users.sql"));
 
         if (applicationPreferences.getDatabasePopulate()) {
             resourceDatabasePopulator.addScript(new ClassPathResource("/sql/data.sql"));
@@ -95,7 +99,7 @@ public class PersistenceConfiguration
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         properties.put("hibernate.search.default.directory_provider", "filesystem");
         properties.put("hibernate.search.default.indexBase", getIndexPath());
         return properties;
@@ -110,6 +114,10 @@ public class PersistenceConfiguration
         Properties properties = new Properties();
         properties.setProperty("useSSL", "false");
         properties.setProperty("allowPublicKeyRetrieval", "true");
+        properties.setProperty("createDatabaseIfNotExist", "true");
+        properties.setProperty("autoReconnect", "true");
+        properties.setProperty("initialTimeout", "10");
+        properties.setProperty("maxReconnects", "3");
         return properties;
     }
 }

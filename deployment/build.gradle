@@ -9,14 +9,19 @@
  * Author: Blair Butterworth
  */
 
-task jupyterStart(type: Exec) {
-  commandLine 'docker-compose', 'up'
+task updateMasterWar(type: Copy, dependsOn: ':application:master:war') {
+  from project(':application:master').collect{it.tasks.withType(War)}
+  into project.file('master/libs')
 }
 
-task jupyterStartDaemon(type: Exec) {
-  commandLine 'docker-compose', 'up', '-d'
+task systemStart(type: Exec, dependsOn: updateMasterWar) {
+  commandLine 'docker-compose', 'up', '--build'
 }
 
-task jupyterStopDaemon(type: Exec) {
+task systemStartDaemon(type: Exec, dependsOn: updateMasterWar) {
+  commandLine 'docker-compose', 'up', '-d', '--build'
+}
+
+task systemStopDaemon(type: Exec) {
   commandLine 'docker-compose', 'stop'
 }
