@@ -1,8 +1,8 @@
 $(document).ready(function() {
     var currentDsId;
 
-    $('input[type="radio"][name="expTypeRadio"]').click(function() {
-        if($(this).attr('id') == "jupyterRadio") {
+    $('input[type="radio"][name="selectedTypeValue"]').click(function() {
+        if($(this).attr("id") === "selectedTypeValue3") {
             $('#notebookTypes').show();
         } else {
             $('#notebookTypes').hide();
@@ -31,22 +31,49 @@ $(document).ready(function() {
             if ($("#ds" + currentDsId).length != 0) {
                 console.log("duplication"); //convert to validation error
             } else {
-                $("#dsList").append(
-                    "<li class=\"list-group-item project-list-item\" id=\"ds" + currentDsId + "\">" +
-                        "<p class=\"float-left\">Name: " + dsName + "<br />Location: " + dsLoc + "</p>" +
-                        "<button type=\"button\" class=\"btn btn-outline-primary remove_button float-right\" onclick=\"removeDs(" + currentDsId + ")\">Remove</button>" +
-                    "</li>"
-                );
+                addDs(currentDsId, dsName, dsLoc);
             }
         }
     });
+
+    $("#selectedTriggerValue1").prop("checked", true);
+
+    $("#selectedStorageValue1").prop("checked", true);
+
+    $("#selectedTypeValue1").prop("checked", true);
+
+    $("#selectedTypeValue2").prop("disabled", true);
+
+    $("#selectedNotebookTypeValue1").prop("checked", true);
+
+    $("#selectedNotebookTypeValue2").prop("disabled", true);
 });
 
 
+function addDs(id, name, loc) {
+    $("#dsList").append(
+        "<li class=\"list-group-item project-list-item\" id=\"ds" + id + "\">" +
+        "<p class=\"float-left\">Name: " + name + "<br />Location: " + loc + "</p>" +
+        "<button type=\"button\" class=\"btn btn-outline-primary remove_button float-right\" onclick=\"removeDs(" + id + ")\">Remove</button>" +
+        "</li>"
+    );
+
+    $("#experimentDsDataIds").append(
+        "<option id=\"dsId" + id + "\" value=\"" + id +"\" selected=\"selected\"></option>"
+    );
+
+    $("#experimentDsDataLoc").append(
+        "<option id=\"dsLoc" + id + "\" value=\"" + loc +"\" selected=\"selected\"></option>"
+    );
+}
+
 function removeDs(id) {
-    console.log("id: " + id);
     var idString = "#ds" + id;
+    var id = "#dsId" + id;
+    var loc = "#dsLoc" + id;
     $(idString).remove();
+    $(id).remove();
+    $(loc).remove();
 
     if($("#dsList li").length < 1) {
         $("#dsListEmpty").show();
