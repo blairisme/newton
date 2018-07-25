@@ -1,10 +1,24 @@
+# Newton (c)
+#
+# This work is licensed under the MIT License. To view a copy of this
+# license, visit
+#
+#      https://opensource.org/licenses/MIT
+#
+# Author: Blair Butterworth
+#
+
 version: "3.6"
 
 services:
   # Configuration for the Newton web app database
   database:
-    build: ./database
     image: newton-database
+    build:
+      context: ./database
+      args:
+        - database_user=root
+        - database_password=Newton*123
     ports:
       - "3306:3306"
     networks:
@@ -12,8 +26,8 @@ services:
 
   # Configuration for the Jupyter service.
   jupyter:
-    build: ./jupyter
     image: newton-jupyter
+    build: ./jupyter
     ports:
       - "8000:8000"
       - "8888:8888"
@@ -24,8 +38,14 @@ services:
 
   # Configuration for the Newton web app
   master:
-    build: ./master
     image: newton-master
+    build:
+      context: ./master
+      args:
+        - database_address=database
+        - database_port=3306
+        - database_user=root
+        - database_password=Newton*123
     ports:
       - "8080:8080"
     depends_on:

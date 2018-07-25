@@ -1,7 +1,19 @@
+# Newton (c)
+#
+# This work is licensed under the MIT License. To view a copy of this
+# license, visit
+#
+#      https://opensource.org/licenses/MIT
+#
+# Author: Blair Butterworth
+#
+
 FROM mysql:8.0
 
-ENV MYSQL_ROOT_PASSWORD "Newton*123"
+ARG database_user
+ARG database_password
 
+ENV MYSQL_ROOT_PASSWORD $database_password
 COPY ./config/newton.cnf /etc/mysql/conf.d/newton.cnf
 
 EXPOSE 3306
