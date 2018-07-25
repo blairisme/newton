@@ -1,3 +1,13 @@
+# Newton (c)
+#
+# This work is licensed under the MIT License. To view a copy of this
+# license, visit
+#
+#      https://opensource.org/licenses/MIT
+#
+# Author: Blair Butterworth
+#
+
 FROM centos:7
 
 ## Install Pip
@@ -18,14 +28,13 @@ RUN npm install -g configurable-http-proxy
 
 ## Setup Jupyter configuration
 RUN mkdir /etc/jupyterhub
-COPY ./jupyterhub_config.py /etc/jupyterhub/jupyterhub_config.py
-COPY ./newtonspawner.py /etc/jupyterhub/newtonspawner.py
-COPY ./newtonauthenticator.py /etc/jupyterhub/newtonauthenticator.py
-COPY ./newton.key /etc/jupyterhub/newton.key
+COPY ./config/jupyterhub_config.py /etc/jupyterhub/jupyterhub_config.py
+COPY ./config/newtonspawner.py /etc/jupyterhub/newtonspawner.py
+COPY ./config/newtonauthenticator.py /etc/jupyterhub/newtonauthenticator.py
+COPY ./config/newton.key /etc/jupyterhub/newton.key
 
 EXPOSE 8000
 EXPOSE 8888
 
 WORKDIR /etc/jupyterhub
-#CMD jupyter lab --allow-root --ip 0.0.0.0 --port 8888
-CMD jupyterhub --ip 0.0.0.0
+CMD jupyterhub --ip 0.0.0.0 --port 8000

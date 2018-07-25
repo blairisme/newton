@@ -1,8 +1,0 @@
-all:
-  children:
-    master_servers:
-      hosts:
-        main_server:
-          ansible_host: 185.77.81.65
-          ansible_user: root
-          ansible_ssh_pass: vqALFAmS4Su

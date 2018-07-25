@@ -1,4 +1,3 @@
----
 # Newton (c)
 #
 # This work is licensed under the MIT License. To view a copy of this
@@ -6,8 +5,15 @@
 #
 #      https://opensource.org/licenses/MIT
 #
-# This script deploys the Newton web server to slave servers.
-#
 # Author: Blair Butterworth
 #
-- hosts: slave_servers
+
+FROM mysql:8.0
+
+ARG database_user
+ARG database_password
+
+ENV MYSQL_ROOT_PASSWORD $database_password
+COPY ./config/newton.cnf /etc/mysql/conf.d/newton.cnf
+
+EXPOSE 3306

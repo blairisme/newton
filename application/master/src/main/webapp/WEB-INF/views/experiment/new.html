@@ -26,30 +26,40 @@
             <p>Some description of an experiment.</p>
         </div>
 
-        <form id="experimentDetails" th:action="@{/experiment/new}" method="POST" enctype="multipart/form-data" class="requires-validation">
+        <form id="experimentDetails" th:action="@{/project/${project.name}/new}" th:object="${experiment}"
+              method="POST" enctype="multipart/form-data" class="requires-validation">
             <!-- General Settings -->
             <section class="form-section section-divider">
                 <h4>General Experiment Settings</h4>
                 <p>Set your experiment name, description and run trigger.</p>
 
-                <!-- name, description and run trigger -->
+                <!-- name -->
                 <div class="form-group">
                     <label for="experimentNameInput">Experiment name <span class="text-danger">*</span></label>
-                    <input id="experimentNameInput" name="name" type="text" class="form-control" placeholder="" required="required">
+                    <input id="experimentNameInput" th:field="*{name}" type="text" class="form-control" placeholder="" required="required">
                 </div>
 
+                <!-- description -->
                 <div class="form-group">
                     <label for="experimentDescInput">Experiment description <span class="text-danger">*</span></label>
-                    <input id="experimentDescInput" name="name" type="text" class="form-control" placeholder="" required="required">
+                    <input id="experimentDescInput" th:field="*{description}" type="text" class="form-control" placeholder="" required="required">
                 </div>
 
+                <!-- run trigger -->
                 <div class="form-group">
                     <label for="experimentTriggerRadio">Experiment trigger</label>
-                    <div class="radio" id="experimentTriggerRadio">
-                        <label><input type="radio" name="optradio" checked>Manual</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="radio" name="optradio">On data change</label>
+                    <div id="experimentTriggerRadio">
+                        <th:block th:each="triggerValue: ${triggerValues}">
+                            <div class="radio">
+                                <input type="radio"
+                                       th:field="*{selectedTriggerValue}"
+                                       th:value="${triggerValue}"
+                                        th:name="optradio"/>
+                                <label
+                                        th:for="${#ids.prev('selectedTriggerValue')}"
+                                        th:text="${triggerValue}"></label>
+                            </div>
+                        </th:block>
                     </div>
                 </div>
             </section>
@@ -62,27 +72,34 @@
 
                 <div class="form-group">
                     <label for="experimentProjectTypeRadio">Project Type</label>
-                    <div class="radio" id="experimentProjectTypeRadio">
-                        <label><input type="radio" name="expTypeRadio" checked>Python</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="radio" name="expTypeRadio" disabled>Ruby</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="radio" name="expTypeRadio" id="jupyterRadio">Jupyter notebook</label>
-                    </div>
-                    <div id="notebookTypes">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
-                            <label class="form-check-label" for="inlineRadio1">Python notebook</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" disabled>
-                            <label class="form-check-label" for="inlineRadio2">Ruby notebook</label>
+                    <div id="experimentProjectTypeRadio">
+                        <th:block th:each="typeValue: ${typeValues}">
+                            <div class="radio">
+                                <input type="radio"
+                                       th:field="*{selectedTypeValue}"
+                                       th:value="${typeValue}"
+                                       th:name="expTypeRadio"/>
+                                <label
+                                        th:for="${#ids.prev('selectedTypeValue')}"
+                                        th:text="${typeValue}"></label>
+                            </div>
+                        </th:block>
+                        <div id="notebookTypes">
+                            <th:block th:each="notebookTypeValue: ${notebookTypeValues}">
+                                <div class="form-check form-check-inline">
+                                    <input type="radio"
+                                           class="form-check-input"
+                                           th:field="*{selectedNotebookTypeValue}"
+                                           th:value="${notebookTypeValue}"
+                                           th:name="expNotebookTypeRadio"/>
+                                    <label
+                                            th:for="${#ids.prev('selectedNotebookTypeValue')}"
+                                            th:text="${notebookTypeValue}"></label>
+                                </div>
+                            </th:block>
                         </div>
                     </div>
                 </div>
-
             </section>
 
             <!-- Storage Settings -->
@@ -93,10 +110,19 @@
 
                 <div class="form-group">
                     <label for="experimentStorageRadio">Storage type</label>
-                    <div class="radio" id="experimentStorageRadio">
-                        <label><input type="radio" name="storageRadio" checked>Newton</label>
+                    <div id="experimentStorageRadio">
+                        <th:block th:each="storageValue: ${storageValues}">
+                            <div class="radio">
+                                <input type="radio"
+                                       th:field="*{selectedStorageValue}"
+                                       th:value="${storageValue}"
+                                       th:name="storageRadio"/>
+                                <label
+                                        th:for="${#ids.prev('selectedStorageValue')}"
+                                        th:text="${storageValue}"></label>
+                            </div>
+                        </th:block>
                     </div>
-                    <!-- in future add github -->
                 </div>
 
             </section>
@@ -109,6 +135,12 @@
                 <ul id="dsList" class="list-group list-group-flush">
                     <p id="dsListEmpty" class="empty_message project-list-item">This experiment doesn't have any data sources yet. Use the form below to add data sources.</p>
                 </ul>
+
+                <select id="experimentDsDataIds" form="experimentDetails" name="dataSourceIds" multiple="multiple" hidden="hidden">
+                </select>
+
+                <select id="experimentDsDataLoc" form="experimentDetails" name="dataSourceLocs" multiple="multiple" hidden="hidden">
+                </select>
 
                 <div class="form-group">
                     <label for="dataSourceSelection">New experiment data source</label>
@@ -128,7 +160,7 @@
                 <div class="form-group">
                     <label for="experimentDsLoc">Data location (allows you to specify a custom location for the data in your experiment)</label>
                     <div class="input-group">
-                        <input type="text" id="experimentDsLoc" class="form-control" placeholder="" aria-label="Recipient's username" aria-describedby="basic-addon2" required="required">
+                        <input type="text" id="experimentDsLoc" class="form-control" placeholder="" aria-label="Recipient's username" aria-describedby="basic-addon2">
                         <div class="input-group-append">
                             <button class="btn btn-outline-primary" type="button" id="addDsBtn">Add Data Source</button>
                         </div>
@@ -143,7 +175,7 @@
 
                 <div class="form-group">
                     <label for="experimentOutputInput">Experiment output <span class="text-danger">*</span> (give a pattern to select files to save)</label>
-                    <input id="experimentOutputInput" name="name" type="text" class="form-control" placeholder="outputs/*.csv" required="required">
+                    <input id="experimentOutputInput" th:field="*{outputPattern}" type="text" class="form-control" placeholder="outputs/*.csv" required="required">
                 </div>
 
             </section>

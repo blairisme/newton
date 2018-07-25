@@ -1,16 +1,58 @@
-version: "2.2"
+# Newton (c)
+#
+# This work is licensed under the MIT License. To view a copy of this
+# license, visit
+#
+#      https://opensource.org/licenses/MIT
+#
+# Author: Blair Butterworth
+#
+
+version: "3.6"
 
 services:
+  # Configuration for the Newton web app database
+  database:
+    image: newton-database
+    build:
+      context: ./database
+      args:
+        - database_user=root
+        - database_password=Newton*123
+    ports:
+      - "3306:3306"
+    networks:
+      - backend
+
   # Configuration for the Jupyter service.
-  app:
-    # Build application using Dockerfile contained in application subfolder
+  jupyter:
+    image: newton-jupyter
     build: ./jupyter
-    # Image name
-    image: jupyter-combined
-    # Map application container port 8080 to docker port 8080
     ports:
       - "8000:8000"
       - "8888:8888"
-    # Mount experiments directory in docker image
     volumes:
       - ~/.newton/experiment:/var/newton/experiment
+    networks:
+      - backend
+
+  # Configuration for the Newton web app
+  master:
+    image: newton-master
+    build:
+      context: ./master
+      args:
+        - database_address=database
+        - database_port=3306
+        - database_user=root
+        - database_password=Newton*123
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+      - jupyter
+    networks:
+      - backend
+
+networks:
+  backend:

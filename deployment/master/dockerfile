@@ -1,0 +1,34 @@
+# Newton (c)
+#
+# This work is licensed under the MIT License. To view a copy of this
+# license, visit
+#
+#      https://opensource.org/licenses/MIT
+#
+# Author: Blair Butterworth
+#
+
+FROM jetty:9.4
+
+ARG database_address
+ARG database_port
+ARG database_user
+ARG database_password
+
+ENV newton_profile production
+ENV newton_database_address $database_address
+ENV newton_database_port $database_port
+ENV newton_database_user $database_user
+ENV newton_database_password $database_password
+
+COPY ./libs/master-0.0.1.war /var/lib/jetty/webapps/ROOT.war
+
+EXPOSE 8080
+
+USER root
+COPY ./config/wait-for-it.sh /tmp/jetty/wait-for-it.sh
+RUN chmod +x /tmp/jetty/wait-for-it.sh
+USER jetty
+
+WORKDIR $JETTY_BASE
+CMD /tmp/jetty/wait-for-it.sh database:3306 -t 60 -- java -jar $JETTY_HOME/start.jar

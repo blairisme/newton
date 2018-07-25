@@ -140,7 +140,7 @@ public class ProjectController
     }
 
     private String persistProjectImage(MultipartFile image) throws IOException {
-        if (image != null) {
+        if (image != null && ! image.isEmpty()) {
             try (InputStream stream = image.getInputStream()) {
                 String identifier = generateImageName(image);
                 applicationStorage.write("images/project", identifier, stream);
