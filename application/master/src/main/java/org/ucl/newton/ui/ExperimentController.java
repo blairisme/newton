@@ -12,19 +12,22 @@ package org.ucl.newton.ui;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.ucl.newton.framework.Experiment;
+import org.ucl.newton.framework.ExperimentDto;
 import org.ucl.newton.framework.ExperimentVersion;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.service.execution.ExecutionService;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.jupyter.JupyterServer;
+import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import java.net.URI;
+import java.util.Arrays;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
@@ -42,18 +45,21 @@ public class ExperimentController
     private ExperimentService experimentService;
     private ExecutionService executionService;
     private JupyterServer jupyterServer;
+    private ProjectService projectService;
 
     @Inject
     public ExperimentController(
         UserService userService,
         ExperimentService experimentService,
         ExecutionService executionService,
-        JupyterServer jupyterServer)
+        JupyterServer jupyterServer,
+        ProjectService projectService)
     {
         this.userService = userService;
         this.experimentService = experimentService;
         this.executionService = executionService;
         this.jupyterServer = jupyterServer;
+        this.projectService = projectService;
     }
 
     @GetMapping(value = "/project/{project}/{experiment}")
@@ -75,8 +81,14 @@ public class ExperimentController
     }
 
     @GetMapping(value = "/project/{project}/new")
-    public String newExperiment(@PathVariable("project") String projectIdentifier, ModelMap model){
+    public String newExperiment(@PathVariable("project") String projectName, ModelMap model){
         model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("project", projectService.getProjectByLink(projectName));
+        model.addAttribute("experiment", new ExperimentDto());
+        model.addAttribute("triggerValues", new String[] {"Manual", "On data change"});
+        model.addAttribute("storageValues", new String[] {"Newton"});
+        model.addAttribute("typeValues", new String[] {"Python", "Ruby", "Jupyter notebook"});
+        model.addAttribute("notebookTypeValues", new String[] {"Python", "Ruby"});
         return "experiment/new";
     }
 
@@ -110,5 +122,14 @@ public class ExperimentController
         URI editorUrl = jupyterServer.getEditorUrl(user, experiment);
         String redirectPath = editorUrl.toString();
         return "redirect:" + redirectPath;
+    }
+
+    @PostMapping(value = "/project/{project}/new")
+    public String persistNewExperiment(@ModelAttribute("experiment") @Valid ExperimentDto experimentDto,
+            BindingResult result, ModelMap model) {
+        //System.out.println(Arrays.toString(experimentDto.getDataSourceIds()));
+        //System.out.println(Arrays.toString(experimentDto.getDataSourceLocs()));
+        model.addAttribute("user", userService.getAuthenticatedUser());
+        return "";
     }
 }
