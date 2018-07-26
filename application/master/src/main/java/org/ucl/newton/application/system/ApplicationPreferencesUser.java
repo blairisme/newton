@@ -29,8 +29,8 @@ public class ApplicationPreferencesUser implements ApplicationPreferences
     }
 
     @Override
-    public String getDatabaseAddress() {
-        return getProperty("newton.database.address", defaults.getDatabaseAddress());
+    public String getDatabaseHost() {
+        return getProperty("newton.database.host", defaults.getDatabaseHost());
     }
 
     @Override
@@ -49,8 +49,8 @@ public class ApplicationPreferencesUser implements ApplicationPreferences
     }
 
     @Override
-    public String getJupyterAddress() {
-        return getProperty("newton.jupyter.address", defaults.getJupyterAddress());
+    public String getJupyterHost() {
+        return getProperty("newton.jupyter.host", defaults.getJupyterHost());
     }
 
     @Override
@@ -66,6 +66,16 @@ public class ApplicationPreferencesUser implements ApplicationPreferences
     @Override
     public String getProgramDirectory() {
         return getProperty("newton.program.path", defaults.getProgramDirectory());
+    }
+
+    @Override
+    public String getSlaveHost() {
+        return getProperty("newton.slave.host", defaults.getSlaveHost());
+    }
+
+    @Override
+    public int getSlavePort() {
+        return Integer.parseInt(getProperty("newton.slave.port", defaults.getSlavePort()));
     }
 
     @Override

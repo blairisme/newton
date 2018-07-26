@@ -10,20 +10,26 @@
 
 FROM jetty:9.4
 
-ARG database_address
+ARG database_host
 ARG database_port
 ARG database_user
 ARG database_password
+ARG jupyter_host
+ARG jupyter_port
+ARG slave_host
+ARG slave_port
 
 ENV newton_profile production
-ENV newton_database_address $database_address
+ENV newton_database_host $database_host
 ENV newton_database_port $database_port
 ENV newton_database_user $database_user
 ENV newton_database_password $database_password
-#ENV newton_profile development
+ENV newton_jupyter_host $jupyter_host
+ENV newton_jupyter_port $jupyter_port
+ENV newton_slave_host $slave_host
+ENV newton_slave_port $slave_port
 
 COPY ./libs/master-0.0.1.war /var/lib/jetty/webapps/ROOT.war
-
 EXPOSE 8080
 
 USER root
