@@ -42,6 +42,9 @@ public class Experiment
     @Column(name = "exp_name")
     private String name;
 
+    @Column(name = "exp_description")
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User creator;
@@ -75,6 +78,7 @@ public class Experiment
         int id,
         String identifier,
         String name,
+        String description,
         User creator,
         Project project,
         DataProcessorConfiguration processorConfiguration,
@@ -84,6 +88,7 @@ public class Experiment
         this.id = id;
         this.identifier = identifier;
         this.name = name;
+        this.description = description;
         this.creator = creator;
         this.project = project;
         this.processorConfiguration = processorConfiguration;
@@ -106,6 +111,10 @@ public class Experiment
 
     public String getName() {
         return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public User getCreator() {
@@ -165,6 +174,7 @@ public class Experiment
             .append(this.id, that.id)
             .append(this.identifier, that.identifier)
             .append(this.name, that.name)
+            .append(this.description, that.description)
             .append(this.creator, that.creator)
             .append(this.project, that.project)
             .append(this.processorConfiguration, that.processorConfiguration)
@@ -179,6 +189,7 @@ public class Experiment
             .append(id)
             .append(identifier)
             .append(name)
+            .append(description)
             .append(creator)
             .append(project)
             .append(processorConfiguration)
@@ -193,6 +204,7 @@ public class Experiment
             .append("id", id)
             .append("identifier", identifier)
             .append("name", name)
+            .append( "description", description)
             .append("creator", creator)
             .append("project", project)
             .append("processorConfiguration", processorConfiguration)

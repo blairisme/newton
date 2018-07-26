@@ -11,15 +11,15 @@
  */
 
 /* Accounts */
-INSERT IGNORE INTO users (id, name, email, image) VALUES (1, 'user', 'user@ucl.ac.uk', 'pp_1.jpg');
-INSERT IGNORE INTO users (id, name, email, image) VALUES (2, 'admin', 'admin@ucl.ac.uk', 'pp_4.jpg');
+MERGE INTO users (id, name, email, image) VALUES (1, 'user', 'user@ucl.ac.uk', 'pp_1.jpg');
+MERGE INTO users (id, name, email, image) VALUES (2, 'admin', 'admin@ucl.ac.uk', 'pp_4.jpg');
 INSERT INTO users (id, name, email, image) VALUES (3, 'Blair Butterworth', 'blair.butterworth.17@ucl.ac.uk', 'profile.jpg');
 INSERT INTO users (id, name, email, image) VALUES (4, 'Xiaolong Chen', 'xiaolong.chen@ucl.ac.uk', 'pp_2.jpg');
 INSERT INTO users (id, name, email, image) VALUES (5, 'Ziad Al Halabi', 'ziad.halabi.17@ucl.ac.uk', 'pp_3.jpg');
 INSERT INTO users (id, name, email, image) VALUES (6, 'John Wilkie', 'john.wilkie.17@ucl.ac.uk', 'pp_1.jpg');
 
-INSERT IGNORE INTO credentials (id, user_id, username, password, role) VALUES (1, 1, 'user@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'USER');
-INSERT IGNORE INTO credentials (id, user_id, username, password, role) VALUES (2, 2, 'admin@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'ADMIN');
+MERGE INTO credentials (id, user_id, username, password, role) VALUES (1, 1, 'user@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'USER');
+MERGE INTO credentials (id, user_id, username, password, role) VALUES (2, 2, 'admin@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'ADMIN');
 INSERT INTO credentials (id, user_id, username, password, role) VALUES (3, 3, 'blair.butterworth.17@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'ADMIN');
 INSERT INTO credentials (id, user_id, username, password, role) VALUES (4, 4, 'xiaolong.chen@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'ADMIN');
 INSERT INTO credentials (id, user_id, username, password, role) VALUES (5, 5, 'ziad.halabi.17@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'ADMIN');
@@ -92,18 +92,18 @@ INSERT INTO processor_configuration(id, processor_id, configuration_path) VALUES
 INSERT INTO processor_configuration(id, processor_id, configuration_path) VALUES (3, 1, 'config.json');
 
 /* Experiments */
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (1, 'experiment-1', 'HR classification', 1, 3, 1);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (2, 'experiment-2', 'Exercise level classification', 1, 4, 2);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (3, 'experiment-3', 'Weather temperature classification', 1, 5, 3);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (4, 'experiment-4', 'Weather data aggrigator', 1, 3, 2);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (5, 'experiment-5', 'HR normalisation', 1, 2, 1);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (6, 'experiment-6', 'Adherence rate classification', 1, 1, 1);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (7, 'experiment-7', 'Achievement rate classification', 1, 2, 2);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (8, 'experiment-8', 'Weather percipitation classification', 1, 4, 3);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (9, 'experiment-9', 'Weather humidity classification', 1, 4, 1);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (10, 'experiment-10', 'ACT adherence by type', 1, 5, 2);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (11, 'experiment-11', 'Impact of gamification on adherence', 1, 2, 3);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, project_id, creator_id, processor_configuration_id) VALUES (12, 'experiment-12', 'Gamification impact by game', 1, 1, 1);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (1, 'experiment-1', 'HR classification', 'Experiment description', 1, 3, 1);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (2, 'experiment-2', 'Exercise level classification', 'Experiment description', 1, 4, 2);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (3, 'experiment-3', 'Weather temperature classification', 'Experiment description', 1, 5, 3);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (4, 'experiment-4', 'Weather data aggrigator', 'Experiment description', 1, 3, 2);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (5, 'experiment-5', 'HR normalisation', 'Experiment description', 1, 2, 1);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (6, 'experiment-6', 'Adherence rate classification', 'Experiment description', 1, 1, 1);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (7, 'experiment-7', 'Achievement rate classification', 'Experiment description', 1, 2, 2);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (8, 'experiment-8', 'Weather percipitation classification', 'Experiment description', 1, 4, 3);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (9, 'experiment-9', 'Weather humidity classification', 'Experiment description', 1, 4, 1);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (10, 'experiment-10', 'ACT adherence by type', 'Experiment description', 1, 5, 2);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (11, 'experiment-11', 'Impact of gamification on adherence', 'Experiment description', 1, 2, 3);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (12, 'experiment-12', 'Gamification impact by game', 'Experiment description', 1, 1, 1);
 
 /* Experiment data source configuration */
 INSERT INTO experiment_datasources (experiement_id, datasource_id) VALUES (1, 1);
