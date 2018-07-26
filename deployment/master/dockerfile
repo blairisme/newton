@@ -20,6 +20,7 @@ ENV newton_database_address $database_address
 ENV newton_database_port $database_port
 ENV newton_database_user $database_user
 ENV newton_database_password $database_password
+#ENV newton_profile development
 
 COPY ./libs/master-0.0.1.war /var/lib/jetty/webapps/ROOT.war
 

@@ -69,11 +69,8 @@ public class PersistenceConfiguration
     public DataSourceInitializer dataSourceInitializer() {
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
         resourceDatabasePopulator.addScript(new ClassPathResource("/sql/schema.sql"));
-        resourceDatabasePopulator.addScript(new ClassPathResource("/sql/users.sql"));
+        resourceDatabasePopulator.addScript(new ClassPathResource("/sql/production.sql"));
 
-        if (applicationPreferences.getDatabasePopulate()) {
-            resourceDatabasePopulator.addScript(new ClassPathResource("/sql/data.sql"));
-        }
         DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
         dataSourceInitializer.setDataSource(dataSource());
         dataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);
