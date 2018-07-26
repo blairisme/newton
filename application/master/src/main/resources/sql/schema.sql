@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS experiments (
     exp_id INT NOT NULL AUTO_INCREMENT,
     exp_identifier VARCHAR(45) NOT NULL,
     exp_name VARCHAR(45) NOT NULL,
-    exp_description VARCHAR,
+    exp_description VARCHAR(500),
     project_id INT NOT NULL,
     creator_id INT NOT NULL,
     processor_configuration_id INT NOT NULL,
