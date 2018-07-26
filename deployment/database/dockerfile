@@ -10,6 +10,10 @@
 
 FROM mysql:8.0
 
+LABEL version="1.0"
+LABEL description="A MySQL database instance for use by the Newton web app."
+LABEL maintainer="blair.butterworth.17@ucl.ac.uk"
+
 ARG database_user
 ARG database_password
 
