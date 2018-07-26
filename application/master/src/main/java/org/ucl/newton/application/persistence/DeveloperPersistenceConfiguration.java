@@ -74,6 +74,7 @@ public class DeveloperPersistenceConfiguration
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
         resourceDatabasePopulator.addScript(new ClassPathResource("/sql/schema.sql"));
         resourceDatabasePopulator.addScript(new ClassPathResource("/sql/data.sql"));
+        resourceDatabasePopulator.addScript(new ClassPathResource("/sql/users.sql"));
 
         DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
         dataSourceInitializer.setDataSource(dataSource());
@@ -84,8 +85,6 @@ public class DeveloperPersistenceConfiguration
     private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-//        properties.put("hibernate.show_sql", "true");
-//        properties.put("hibernate.format_sql", "true");
         properties.put("hibernate.search.default.directory_provider", "filesystem");
         properties.put("hibernate.search.default.indexBase", getIndexPath());
         return properties;
