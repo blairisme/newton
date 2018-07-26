@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>Newton</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/front.css"/>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Fizzyo Backend Authentication Example</h1>
+        <noscript>JavaScript must be enabled for this demo to work!</noscript>
+        <p>This page is an example of how one can use Windows Live API on the client-side to authorise user with the Fizzyo
+            backend. Outline of the login process:</p>
+        <ol>
+            <li>Once you click the <em>Login with Windows Live</em> button, a request is made to <code
+                    id="windows-live-code">https://login.live.com/oauth20_authorize.srf?client_id=CLIENT_ID&scope=SCOPES&response_type=code&redirect_uri=REDIRECT_URI</code>.
+            </li>
+            <li>As soon as you authorize (or reject) the application, Windows Live redirects the user back to this page.
+            </li>
+            <li>JavaScript on this page parses the authorization code and saves it into a local variable, or tells you if
+                you've
+                rejected the application.
+            </li>
+            <li>If you have the authorization code, you can click on <em>Authorise API access</em> button to try and login
+                into
+                the API.
+            </li>
+            <li>API will either tell you that your access token is invalid, your access taken is valid but you're not the
+                API does not recognise or that you've successfully logged in.
+            </li>
+        </ol>
+        <div class="row">
+            <div class="col-md-12">
+                <hr>
+                <h1>Step 1: Authorise Fizzyo app to use your Windows Live account</h1>
+                <a href="#" id="windows-live-button" class="btn btn-primary btn-lg">Login with Windows Live</a>
+                <br>
+                <br>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p class="lead">Your authorization code: <span id="authorization-code">---</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <hr>
+                <h1>Step 2: Retrieve an access token from Fizzyo API (not Live API)</h1>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>Option #1: Login</h2>
+                        <a href="#" id="api-login" class="btn btn-primary btn-lg">Login</a>
+                        <div class="panel panel-default" style="margin-top: 10px">
+                            <div class="panel-body">
+                                <p class="lead">API status: <strong id="api-login-status">---</strong></p>
+                                <p class="lead">Fizzyo API response:</p>
+                                <pre><code id="api-login-response"></code></pre>
+
+                                <div class="alert alert-warning">API status 403 means that you've successfully authorised
+                                    with
+                                    Windows Live and Fizzyo API has validated your auth code, but you're not registered as
+                                    Fizzyo
+                                    user.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p class="lead">Your Fizzyo API access token: <span id="access-token">---</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <hr>
+                <h1>Step 3: Retreive your user profile from Fizzyo API</h1>
+                <a href="#" id="fizzyo-api-button" class="btn btn-primary btn-lg">Retrieve data</a>
+                <br>
+                <br>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p class="lead">API status: <strong id="api-profile-status">---</strong></p>
+                        <p class="lead">Fizzyo API response:</p>
+                        <pre><code id="api-profile-response"></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(window).ready(function () {
+
+        /**
+         * Figure out the Windows Live request URI and add it to the button
+         */
+        var apiUrl = 'https://login.live.com/oauth20_authorize.srf';
+        var clientId = '65973b85-c34f-41a8-a4ad-00529d1fc23c';
+        var scopes = 'wl.basic wl.offline_access wl.signin wl.phone_numbers wl.emails';
+        var redirectUri = "https://staging.fizzyo-ucl.co.uk/login";
+        var authRequestUri = apiUrl + '?client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) + '&response_type=code&redirect_uri=' + encodeURIComponent(redirectUri);
+        $('#windows-live-code').text(authRequestUri);
+        $('#windows-live-button').attr('href', authRequestUri);
+
+        /**
+         * Get Windows Live access token, if it's set.
+         */
+
+        var authorizationCode = "M136aebf2-afdf-169e-02d0-cc538ed169eb";
+        if (authorizationCode) {
+            $('#authorization-code').text(authorizationCode);
+        }
+
+        var token;
+        var userId;
+        function updateAccessInfo(accessToken, id) {
+            token = accessToken;
+            userId = id;
+            $('#access-token').text(accessToken);
+            $('#user-id').text(userId);
+        }
+
+        $('#api-login').on('click',function(){
+
+            /**
+             * Send a post request to the API with the auth code
+             */
+            $.ajax({
+                type: 'POST',
+                url: 'https://api-staging.fizzyo-ucl.co.uk/api/v1/auth/token',
+                data: {
+                    redirectUri: redirectUri,
+                    authCode: authorizationCode,
+                },
+                dataType: 'json',
+            }).always(function (first, second, third) {
+                var jqXHR = first;
+                if (third && third.status) {
+                    jqXHR = third;
+                }
+                $('#api-login-status').text(jqXHR.status);
+                $('#api-login-response').text(JSON.stringify(jqXHR.responseJSON, null, 4));
+                if (jqXHR.status === 200) {
+                    updateAccessInfo(jqXHR.responseJSON.accessToken, jqXHR.responseJSON.user.id);
+                }
+            });
+        });
+
+
+
+        $('#fizzyo-api-button').on('click',function(){
+
+            /**
+             * Send a post request to the API with the auth code and invitation code
+             */
+            $.ajax({
+                type: 'GET',
+                url: 'https://api-staging.fizzyo-ucl.co.uk/api/v1/user/' + userId,
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                },
+                dataType: 'json',
+            }).always(function (first, second, third) {
+                var jqXHR = first;
+                if (third && third.status) {
+                    jqXHR = third;
+                }
+                $('#api-profile-status').text(jqXHR.status);
+                $('#api-profile-response').text(JSON.stringify(jqXHR.responseJSON, null, 4));
+            });
+        });
+
+    });
+
+</script>
+</html>

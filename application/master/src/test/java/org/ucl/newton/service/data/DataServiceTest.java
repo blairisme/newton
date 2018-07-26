@@ -20,12 +20,9 @@ import java.util.Collection;
 public class DataServiceTest {
     @Inject
     DataService dataService;
-
     @Test
-    @Ignore
     public void runTest() throws Exception{
-        dataService.run();
         Collection<DataProvider> dataProviders = dataService.getDataProviders();
-        Assert.assertEquals(dataProviders.size(),1);
+        Assert.assertEquals(1,dataProviders.size());
     }
 }

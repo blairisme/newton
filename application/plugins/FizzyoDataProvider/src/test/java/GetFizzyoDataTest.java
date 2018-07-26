@@ -1,16 +1,7 @@
-/*
- * Newton (c) 2018
- *
- * This work is licensed under the MIT License. To view a copy of this
- * license, visit
- *
- *      https://opensource.org/licenses/MIT
- */
-
-package org.ucl.newton.plugins.WeatherData;
-
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.ucl.WeatherDataProvider.weather.GetWeatherData;
+import org.ucl.FizzyoDataProvider.Fizzyo.GetFizzyoData;
 import org.ucl.newton.service.data.sdk.StorageProvider;
 
 import java.io.IOException;
@@ -20,14 +11,20 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class GetWeatherDataTest
-{
+/**
+ * Instances of this class provide utils for file reading.
+ *
+ * @author Xiaolong Chen
+ */
+
+public class GetFizzyoDataTest {
     @Test
-    public void runTest() throws IOException {
+    @Ignore
+    public void GetFizzyoDataTest()throws IOException {
         StorageProvider storageProvider = mock(StorageProvider.class);
         when(storageProvider.getOutputStream(anyString())).thenReturn(mock(OutputStream.class));
 //        when(storageProvider.getOutputStream(anyString())).thenReturn(new FileOutputStream("D:\\Code\\Newton\\newton\\weather"));
-        GetWeatherData getWeatherData = new GetWeatherData(storageProvider);
+        GetFizzyoData getWeatherData = new GetFizzyoData(storageProvider);
         getWeatherData.run();
     }
 }
