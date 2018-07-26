@@ -13,7 +13,10 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.ucl.newton.application.system.ApplicationPreferences;
+import org.ucl.newton.application.system.ApplicationPreferencesDefault;
+import org.ucl.newton.application.system.ApplicationPreferencesUser;
 
+import javax.inject.Inject;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
@@ -32,7 +35,7 @@ public class ApplicationInitializer implements WebApplicationInitializer
         context.register(ApplicationConfiguration.class);
         context.setServletContext(container);
 
-        ApplicationPreferences applicationPreferences = new ApplicationPreferences();
+        ApplicationPreferences applicationPreferences = new ApplicationPreferencesUser(new ApplicationPreferencesDefault());
         MultipartConfigElement multipartConfig = new MultipartConfigElement(
             applicationPreferences.getUploadDirectory(),
             applicationPreferences.getUploadMaximumSize(),

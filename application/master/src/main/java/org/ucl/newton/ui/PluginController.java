@@ -33,16 +33,23 @@ import java.util.List;
 @Controller
 @Scope("session")
 @SuppressWarnings("unused")
-public class PluginController {
+public class PluginController
+{
+    private ApplicationPreferences applicationPreferences;
+
     @Inject
-    public PluginController(){ }
+    public PluginController(ApplicationPreferences applicationPreferences) {
+        this.applicationPreferences = applicationPreferences;
+    }
+
     @RequestMapping(value = "/FizzyoData", method = RequestMethod.GET)
     public String getData(ModelMap model){
         return "plugin/FizzyoData";
     }
+
     @RequestMapping(value = "/weatherSetting", method = RequestMethod.GET)
     public String list(ModelMap model) {
-        ApplicationStorage storage = new ApplicationStorage(new ApplicationPreferences());
+        ApplicationStorage storage = new ApplicationStorage(applicationPreferences);
         Path path = Paths.get(storage.getRootPath());
         path = path.resolve("weather").resolve("setting");
         String jsonStr = FileUtils.readFile(path);
@@ -67,7 +74,7 @@ public class PluginController {
         Gson gson = new Gson();
         String jsonProperties = gson.toJson(properties);
 
-        ApplicationStorage storage = new ApplicationStorage(new ApplicationPreferences());
+        ApplicationStorage storage = new ApplicationStorage(applicationPreferences);
         try {
             OutputStream output = storage.getOutputStream("weather","setting");
             output.write(jsonProperties.getBytes("utf-8"));

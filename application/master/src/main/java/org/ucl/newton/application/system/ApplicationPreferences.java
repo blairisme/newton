@@ -9,106 +9,95 @@
 
 package org.ucl.newton.application.system;
 
-import org.ucl.newton.common.file.SystemPaths;
-import org.ucl.newton.common.file.SystemUtils;
-
-import javax.inject.Named;
-
 /**
- * Instances of this class contain application preferences, system properties
- * that can be specified when running the system.
+ * Instances of this class contain application preferences, properties that
+ * control the behaviour of the system.
  *
  * @author Blair Butterworth
  */
-@Named
-public class ApplicationPreferences
+public interface ApplicationPreferences
 {
-    public String getDatabaseAddress() {
-        return getProperty("newton.database.address", getDatabaseAddressDefault());
-    }
+    /**
+     * The IP or host name of the Newton database.
+     *
+     * @return an IP or host name.
+     */
+    String getDatabaseAddress();
 
-    private String getDatabaseAddressDefault() {
-        return "localhost";
-    }
+    /**
+     * The port number of the Newton database.
+     *
+     * @return a port number.
+     */
+    String getDatabasePort();
 
-    public String getDatabasePort() {
-        return getProperty("newton.database.port", getDatabasePortDefault());
-    }
+    /**
+     * The user name to use when connecting to the Newton database.
+     *
+     * @return a database account name.
+     */
+    String getDatabaseUser();
 
-    private String getDatabasePortDefault() {
-        return "3306";
-    }
+    /**
+     * The password (unencrypted) to use when connecting to the Newton
+     * database.
+     *
+     * @return an unencrypted password.
+     */
+    String getDatabasePassword();
 
-    public String getDatabaseUser() {
-        return getProperty("newton.database.user", getDatabaseUserDefault());
-    }
+    /**
+     * The IP or host name of a Jupyter hub instance which will be used to
+     * allow users to edit the source code of experiments.
+     *
+     * @return an IP or host name.
+     */
+    String getJupyterAddress();
 
-    private String getDatabaseUserDefault() {
-        return "root";
-    }
+    /**
+     * The port number of a Jupyter hub instance which will be used to allow
+     * users to edit the source code of experiments.
+     *
+     * @return a port number.
+     */
+    int getJupyterPort();
 
-    public String getDatabasePassword() {
-        return getProperty("newton.database.password", getDatabasePasswordDefault());
-    }
+    /**
+     * <p>
+     * The profile of the Newton system. Used to control the introduction of
+     * development only implementation, such as an in memory database instead
+     * of a database service.
+     * </p>
+     * <p>
+     *     Possible values include:
+     *     <ul>
+     *         <li>Development</li>
+     *         <li>Production</li>
+     *     </ul>
+     * </p>
+     *
+     * @return a profile name.
+     */
+    String getProfile();
 
-    private String getDatabasePasswordDefault() {
-        return "Newton*123";
-    }
+    /**
+     * The file system location where Newton will store user content.
+     *
+     * @return a file system path.
+     */
+    String getProgramDirectory();
 
-    public boolean getDatabasePopulate() {
-        String value = getProperty("newton.database.populate", getDatabasePopulateDefault());
-        return Boolean.valueOf(value);
-    }
+    /**
+     * The directory where user uploads will be stored before being persisted.
+     *
+     * @return a file system path.
+     */
+    String getUploadDirectory();
 
-    private String getDatabasePopulateDefault() {
-        return "false";
-    }
-
-    public String getProfile() {
-        return getProperty("newton.profile", getProfileDefault());
-    }
-
-    private String getProfileDefault() {
-        return "production";
-    }
-
-    public String getProgramDirectory() {
-        return getProperty("newton.program.path", getProgramDirectoryDefault());
-    }
-
-    private String getProgramDirectoryDefault() {
-        return SystemPaths.getUserDirectory().resolve(".newton").toString();
-    }
-
-    public String getUploadDirectory() {
-        return getProperty("newton.upload.path", getUploadDirectoryDefault());
-    }
-
-    private String getUploadDirectoryDefault() {
-        return SystemUtils.newTempDirectory(".newton/uploads").toString();
-    }
-
-    public int getUploadMaximumSize() {
-        return Integer.parseInt(getProperty("newton.upload.max", getUploadMaximumSizeDefault()));
-    }
-
-    private String getUploadMaximumSizeDefault() {
-        return "5242880"; // 5 * 1024 * 1024;
-    }
-
-    private String getProperty(String name, String defaultValue) {
-        String result = System.getProperty(name);
-        if (result != null) {
-            return result;
-        }
-        result = System.getenv(name);
-        if (result != null) {
-            return result;
-        }
-        result = System.getenv(name.replace(".", "_"));
-        if (result != null) {
-            return result;
-        }
-        return defaultValue;
-    }
+    /**
+     * The maximum allowed size of user uploads, such as avatars.
+     *
+     * @return a maximum file size, specified in bytes.
+     */
+    int getUploadMaximumSize();
 }
