@@ -36,7 +36,10 @@ import java.util.List;
 public class PluginController {
     @Inject
     public PluginController(){ }
-
+    @RequestMapping(value = "/FizzyoData", method = RequestMethod.GET)
+    public String getData(ModelMap model){
+        return "plugin/FizzyoData";
+    }
     @RequestMapping(value = "/weatherSetting", method = RequestMethod.GET)
     public String list(ModelMap model) {
         ApplicationStorage storage = new ApplicationStorage(new ApplicationPreferences());

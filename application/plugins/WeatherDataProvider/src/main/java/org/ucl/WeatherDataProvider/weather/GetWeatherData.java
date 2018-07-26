@@ -55,13 +55,11 @@ public class GetWeatherData implements Runnable{
     //        String key = "0252e94bd710446c908123539182906";     // required
     private List<WeatherProperty> getWeatherList() {
         List<WeatherProperty> weatherList = new ArrayList<>();
-
         Path path = Paths.get(System.getProperty("user.home")).resolve(".newton");
         path = path.resolve("weather").resolve("setting");
         String jsonStr = FileUtils.readFile(path);
         if (jsonStr == null)
             return weatherList;
-
         Gson gson = new Gson();
         Type type = new TypeToken<List<WeatherProperty>>(){}.getType();
         weatherList = gson.fromJson(jsonStr, type);
