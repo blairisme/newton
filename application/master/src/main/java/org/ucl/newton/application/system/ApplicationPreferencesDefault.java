@@ -28,7 +28,7 @@ public class ApplicationPreferencesDefault
     public ApplicationPreferencesDefault() {
     }
 
-    public String getDatabaseAddress() {
+    public String getDatabaseHost() {
         return "localhost";
     }
 
@@ -44,7 +44,7 @@ public class ApplicationPreferencesDefault
         return "Newton*123";
     }
 
-    public String getJupyterAddress() {
+    public String getJupyterHost() {
         return "localhost";
     }
     
@@ -59,7 +59,15 @@ public class ApplicationPreferencesDefault
     public String getProgramDirectory() {
         return SystemPaths.getUserDirectory().resolve(".newton").toString();
     }
-    
+
+    public String getSlaveHost() {
+        return "localhost";
+    }
+
+    public String getSlavePort() {
+        return "8080";
+    }
+
     public String getUploadDirectory() {
         return SystemUtils.newTempDirectory(".newton/uploads").toString();
     }

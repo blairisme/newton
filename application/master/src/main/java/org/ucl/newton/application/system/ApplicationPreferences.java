@@ -22,7 +22,7 @@ public interface ApplicationPreferences
      *
      * @return an IP or host name.
      */
-    String getDatabaseAddress();
+    String getDatabaseHost();
 
     /**
      * The port number of the Newton database.
@@ -52,7 +52,7 @@ public interface ApplicationPreferences
      *
      * @return an IP or host name.
      */
-    String getJupyterAddress();
+    String getJupyterHost();
 
     /**
      * The port number of a Jupyter hub instance which will be used to allow
@@ -86,6 +86,20 @@ public interface ApplicationPreferences
      * @return a file system path.
      */
     String getProgramDirectory();
+
+    /**
+     * The IP or host name of the Newton slave instance or load balancer.
+     *
+     * @return an IP or host name.
+     */
+    String getSlaveHost();
+
+    /**
+     * The port number of the Newton slave instance or load balancer.
+     *
+     * @return a port number.
+     */
+    int getSlavePort();
 
     /**
      * The directory where user uploads will be stored before being persisted.

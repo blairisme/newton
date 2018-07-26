@@ -16,7 +16,7 @@ public class JupyterServerTest
         Mockito.when(user.getId()).thenReturn(123);
 
         ApplicationPreferences preferences = Mockito.mock(ApplicationPreferences.class);
-        Mockito.when(preferences.getJupyterAddress()).thenReturn("localhost");
+        Mockito.when(preferences.getJupyterHost()).thenReturn("localhost");
         Mockito.when(preferences.getJupyterPort()).thenReturn(8000);
 
         JupyterServer jupyterServer = new JupyterServer(preferences);
