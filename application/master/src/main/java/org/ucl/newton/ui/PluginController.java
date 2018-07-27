@@ -2,6 +2,7 @@ package org.ucl.newton.ui;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.ucl.WeatherDataProvider.FileUtils;
 import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
-import org.ucl.newton.application.system.ApplicationPreferences;
 import org.ucl.newton.application.system.ApplicationStorage;
 
 import javax.inject.Inject;
@@ -34,15 +34,36 @@ import java.util.List;
 @Scope("session")
 @SuppressWarnings("unused")
 public class PluginController {
+    ApplicationStorage storage;
     @Inject
-    public PluginController(){ }
+    public PluginController(ApplicationStorage applicationStorage){
+        this.storage = applicationStorage;
+    }
+
     @RequestMapping(value = "/FizzyoData", method = RequestMethod.GET)
     public String getData(ModelMap model){
+        Path path = Paths.get(storage.getRootPath());
+        path = path.resolve("Fizzyo").resolve("authCode");
+        String authCode = FileUtils.readFile(path);
+
+        model.addAttribute("authCode",authCode);
         return "plugin/FizzyoData";
     }
+
+    @RequestMapping(value = "/SetAuthCode", method = RequestMethod.POST)
+    public String setAuthCode(@RequestParam String authCode, ModelMap model){
+        try{
+            OutputStream output = storage.getOutputStream("Fizzyo","authCode");
+            output.write(authCode.getBytes("utf-8"));
+            output.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "redirect:/FizzyoData";
+    }
+
     @RequestMapping(value = "/weatherSetting", method = RequestMethod.GET)
     public String list(ModelMap model) {
-        ApplicationStorage storage = new ApplicationStorage(new ApplicationPreferences());
         Path path = Paths.get(storage.getRootPath());
         path = path.resolve("weather").resolve("setting");
         String jsonStr = FileUtils.readFile(path);
@@ -67,7 +88,6 @@ public class PluginController {
         Gson gson = new Gson();
         String jsonProperties = gson.toJson(properties);
 
-        ApplicationStorage storage = new ApplicationStorage(new ApplicationPreferences());
         try {
             OutputStream output = storage.getOutputStream("weather","setting");
             output.write(jsonProperties.getBytes("utf-8"));
