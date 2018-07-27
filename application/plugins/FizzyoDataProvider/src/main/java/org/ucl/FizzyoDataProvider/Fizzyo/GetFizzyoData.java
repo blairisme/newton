@@ -35,12 +35,10 @@ public class GetFizzyoData implements Runnable {
 
     @Override
     public void run() {
-
-        fizzyoToken = new FizzyoToken();
-
-        String accessToken = "A1oRkpQJ0dNEGjwVLVmJKKzbLOvE2Mwz";
-        fizzyoToken.setAccessToken(accessToken);
-
+//        fizzyoToken = new FizzyoToken();
+//
+//        String accessToken = "A1oRkpQJ0dNEGjwVLVmJKKzbLOvE2Mwz";
+//        fizzyoToken.setAccessToken(accessToken);
         Records records = getPacientRecords();
         if(records == null)
             return;
@@ -82,7 +80,6 @@ public class GetFizzyoData implements Runnable {
         Map<String,String> params = new HashMap<>();
         header.put("Authorization", "Bearer "+ getFizzyoToken().getAccessToken());
         String data = HttpUtils.doGet(url,header,params);
-//        System.out.println(data);
         Gson gson = new Gson();
         Pressures pressures = gson.fromJson(data,Pressures.class);
         return pressures;
@@ -95,7 +92,6 @@ public class GetFizzyoData implements Runnable {
         Map<String,String> params = new HashMap<>();
         header.put("Authorization","Bearer "+ getFizzyoToken().getAccessToken());
         String data = HttpUtils.doGet(url,header,params);
-//        System.out.println(data);
         Gson gson = new Gson();
         Records records = gson.fromJson(data,Records.class);
         return records;
