@@ -27,7 +27,7 @@
             <p>Some description of an experiment.</p>
         </div>
 
-        <form id="experimentDetails" th:action="@{/project/${project.name}/new}" th:object="${experiment}"
+        <form id="experimentDetails" th:action="@{'/project/' + ${project.identifier} + '/new'}" th:object="${experiment}"
               method="POST" enctype="multipart/form-data" class="requires-validation">
             <!-- General Settings -->
             <section class="form-section section-divider">
