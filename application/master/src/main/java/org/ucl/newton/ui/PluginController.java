@@ -105,21 +105,12 @@ public class PluginController {
             String[] i = item.split("_");
             WeatherProperty property = new WeatherProperty();
             property.setCity(i[0]);
-            property.setCountry(i[1]);
+            property.setCountry(i[1].replace("-"," "));
             property.setDate(i[2]);
             property.setKey(key);
             properties.add(property);
         }
         return properties;
     }
-
-    private List<String> toList(Collection<String> collection){
-        List<String> list = new ArrayList<>();
-        for(String item : collection){
-            list.add(item);
-        }
-        return list;
-    }
-
 
 }

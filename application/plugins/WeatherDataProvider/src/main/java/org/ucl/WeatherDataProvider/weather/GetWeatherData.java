@@ -110,7 +110,7 @@ public class GetWeatherData implements Runnable{
             if (output != null) {
                 CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("utf-8"));
                 for (List<String> record : list) {
-                    csvWriter.writeRecord(record.toArray(new String[list.size()]));
+                    csvWriter.writeRecord(record.toArray(new String[record.size()]));
                 }
                 csvWriter.close();
             }

@@ -138,6 +138,7 @@ public class GetFizzyoData implements Runnable {
         List<String> header = new ArrayList<>();
         header.addAll(new PressureRecord().getKeys());
         header.addAll(new PressureRawRecord().getKeys());
+
         return header;
     }
 
@@ -155,7 +156,7 @@ public class GetFizzyoData implements Runnable {
             if (output != null) {
                 CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("utf-8"));
                 for (List<String> record : listOfRecords) {
-                    csvWriter.writeRecord(record.toArray(new String[listOfRecords.size()]));
+                    csvWriter.writeRecord(record.toArray(new String[record.size()]));
                 }
                 csvWriter.close();
             }
