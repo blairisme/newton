@@ -34,19 +34,15 @@ public class DataSource {
     @Column(name = "ds_name")
     private String name;
 
-    @Column(name = "ds_version")
-    private int version;
-
     @Column(name = "ds_data_location")
     private String dataLocation;
 
     public DataSource() {
     }
 
-    public DataSource(int id, String name, int version, String dataLocation) {
+    public DataSource(int id, String name, String dataLocation) {
         this.id = id;
         this.name = name;
-        this.version = version;
         this.dataLocation = dataLocation;
     }
 
@@ -56,10 +52,6 @@ public class DataSource {
 
     public String getName() {
         return name;
-    }
-
-    public int getVersion() {
-        return version;
     }
 
     public String getDataLocation() {
@@ -76,7 +68,6 @@ public class DataSource {
         return new EqualsBuilder()
             .append(this.id, other.id)
             .append(this.name, other.name)
-            .append(this.version, other.version)
             .append(this.dataLocation, other.dataLocation)
             .isEquals();
     }
@@ -86,7 +77,6 @@ public class DataSource {
         return new HashCodeBuilder(17, 37)
             .append(id)
             .append(name)
-            .append(version)
             .append(dataLocation)
             .toHashCode();
     }
@@ -96,7 +86,6 @@ public class DataSource {
         return new ToStringBuilder(this)
             .append("id", id)
             .append("name", name)
-            .append("version", version)
             .append("dataLocation", dataLocation)
             .toString();
     }

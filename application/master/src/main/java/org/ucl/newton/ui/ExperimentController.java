@@ -14,10 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.ucl.newton.framework.Experiment;
-import org.ucl.newton.framework.ExperimentDto;
-import org.ucl.newton.framework.ExperimentVersion;
-import org.ucl.newton.framework.User;
+import org.ucl.newton.framework.*;
 import org.ucl.newton.service.execution.ExecutionService;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.jupyter.JupyterServer;
@@ -27,7 +24,7 @@ import org.ucl.newton.service.user.UserService;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
@@ -125,11 +122,28 @@ public class ExperimentController
     }
 
     @PostMapping(value = "/project/{project}/new")
-    public String persistNewExperiment(@ModelAttribute("experiment") @Valid ExperimentDto experimentDto,
-            BindingResult result, ModelMap model) {
-        //System.out.println(Arrays.toString(experimentDto.getDataSourceIds()));
-        //System.out.println(Arrays.toString(experimentDto.getDataSourceLocs()));
-        model.addAttribute("user", userService.getAuthenticatedUser());
-        return "";
+    public String persistNewExperiment(
+            @PathVariable("project") String projectName,
+            @ModelAttribute("experiment") @Valid ExperimentDto experimentDto,
+            BindingResult result,
+            ModelMap model)
+    {
+        ExperimentBuilder builder = new ExperimentBuilder();
+        builder.setName(experimentDto.getName());
+        builder.generateIdentifier(experimentDto.getName());
+        builder.setDescription(experimentDto.getDescription());
+        builder.setCreator(userService.getAuthenticatedUser());
+        builder.setProject(projectService.getProjectByLink(projectName));
+        builder.setStorageConfiguration(new StorageConfiguration(0, experimentDto.getSelectedStorageValue()));
+        builder.setProcessorConfiguration(new DataProcessorConfiguration(0, "", new DataProcessor(0, "", "", "")));
+        builder.addDataSources(experimentDto.getDataSourceIds(), experimentDto.getDataSourceLocs());
+        builder.setExperimentVersions(new ArrayList<>());
+        builder.setOutputPattern(experimentDto.getOutputPattern());
+        builder.addTrigger(experimentDto.getSelectedTriggerValue());
+        experimentService.addExperiment(builder.build());
+
+        return "redirect:/project/" + projectName;
     }
+
+
 }
