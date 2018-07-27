@@ -42,10 +42,14 @@ services:
     build:
       context: ./master
       args:
-        - database_address=database
+        - database_host=database
         - database_port=3306
         - database_user=root
         - database_password=Newton*123
+        - jupyter_host=jupyter
+        - jupyter_port=8000
+        - slave_host=slave
+        - slave_port=8070
     ports:
       - "8080:8080"
     depends_on:

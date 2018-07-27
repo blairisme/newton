@@ -53,12 +53,12 @@ public class PersistenceConfiguration
 
     @Bean
     public DataSource dataSource() {
-        String address = applicationPreferences.getDatabaseAddress();
+        String host = applicationPreferences.getDatabaseHost();
         String port = applicationPreferences.getDatabasePort();
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://" + address + ":" + port + "/newton");
+        dataSource.setUrl("jdbc:mysql://" + host + ":" + port + "/newton");
         dataSource.setUsername(applicationPreferences.getDatabaseUser());
         dataSource.setPassword(applicationPreferences.getDatabasePassword());
         dataSource.setConnectionProperties(mysqlProperties());

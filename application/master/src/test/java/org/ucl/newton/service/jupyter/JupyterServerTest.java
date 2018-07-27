@@ -3,6 +3,7 @@ package org.ucl.newton.service.jupyter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.ucl.newton.application.system.ApplicationPreferences;
 import org.ucl.newton.framework.User;
 
 import java.net.URI;
@@ -14,7 +15,11 @@ public class JupyterServerTest
         User user = Mockito.mock(User.class);
         Mockito.when(user.getId()).thenReturn(123);
 
-        JupyterServer jupyterServer = new JupyterServer();
+        ApplicationPreferences preferences = Mockito.mock(ApplicationPreferences.class);
+        Mockito.when(preferences.getJupyterHost()).thenReturn("localhost");
+        Mockito.when(preferences.getJupyterPort()).thenReturn(8000);
+
+        JupyterServer jupyterServer = new JupyterServer(preferences);
         URI editorUrl = jupyterServer.getEditorUrl(user, "456");
 
         Assert.assertEquals("http", editorUrl.getScheme());
