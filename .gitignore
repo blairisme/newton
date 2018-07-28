@@ -18,3 +18,4 @@ bin/
 \.vscode/
 
 application/master/src/main/webapp/resources/plugins/processor/
+application/plugins/python/src/test/resources/python\.jar
