@@ -30,7 +30,8 @@ dependencies {
     compile project(':application:common')
     compile project(':application:bridge')
     
-	compile files('lib/WeatherDataProvider.jar')
+	compile files('lib/WeatherDataProvider.jar','lib/FizzyoDataProvider.jar')
+//    compile.files('lib/FizzyoDataProvider.jar')
     
 	compile group: 'javax.servlet', name: 'jstl', version: '1.2'
     compile group: 'javax.inject', name: 'javax.inject', version: '1'

@@ -82,7 +82,7 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        //run();
+//        run();
     }
 
     private class ProviderObserver implements DataProviderObserver

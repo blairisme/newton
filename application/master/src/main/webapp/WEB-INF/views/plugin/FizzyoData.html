@@ -46,53 +46,11 @@
                 <br>
                 <br>
                 <div class="panel panel-default">
-                    <div class="panel-body">
-                        <p class="lead">Your authorization code: <span id="authorization-code">---</span></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <hr>
-                <h1>Step 2: Retrieve an access token from Fizzyo API (not Live API)</h1>
-                <div class="row">
-                    <div class="col-md-6">
-                        <h2>Option #1: Login</h2>
-                        <a href="#" id="api-login" class="btn btn-primary btn-lg">Login</a>
-                        <div class="panel panel-default" style="margin-top: 10px">
-                            <div class="panel-body">
-                                <p class="lead">API status: <strong id="api-login-status">---</strong></p>
-                                <p class="lead">Fizzyo API response:</p>
-                                <pre><code id="api-login-response"></code></pre>
-
-                                <div class="alert alert-warning">API status 403 means that you've successfully authorised
-                                    with
-                                    Windows Live and Fizzyo API has validated your auth code, but you're not registered as
-                                    Fizzyo
-                                    user.
-                                </div>
-                            </div>
+                    <form id="FizzyoData" th:action="@{/SetAuthCode}" method="POST">
+                        <div class="panel-body">
+                            <p class="lead">Your authorization code: <input th:value="${authCode}" type="text" name="authCode" id="authCode"/> <input type="submit" value="submit"/></p>
                         </div>
-                    </div>
-
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <p class="lead">Your Fizzyo API access token: <span id="access-token">---</span></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <hr>
-                <h1>Step 3: Retreive your user profile from Fizzyo API</h1>
-                <a href="#" id="fizzyo-api-button" class="btn btn-primary btn-lg">Retrieve data</a>
-                <br>
-                <br>
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <p class="lead">API status: <strong id="api-profile-status">---</strong></p>
-                        <p class="lead">Fizzyo API response:</p>
-                        <pre><code id="api-profile-response"></code></pre>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -116,69 +74,10 @@
          * Get Windows Live access token, if it's set.
          */
 
-        var authorizationCode = "M136aebf2-afdf-169e-02d0-cc538ed169eb";
-        if (authorizationCode) {
-            $('#authorization-code').text(authorizationCode);
-        }
-
-        var token;
-        var userId;
-        function updateAccessInfo(accessToken, id) {
-            token = accessToken;
-            userId = id;
-            $('#access-token').text(accessToken);
-            $('#user-id').text(userId);
-        }
-
-        $('#api-login').on('click',function(){
-
-            /**
-             * Send a post request to the API with the auth code
-             */
-            $.ajax({
-                type: 'POST',
-                url: 'https://api-staging.fizzyo-ucl.co.uk/api/v1/auth/token',
-                data: {
-                    redirectUri: redirectUri,
-                    authCode: authorizationCode,
-                },
-                dataType: 'json',
-            }).always(function (first, second, third) {
-                var jqXHR = first;
-                if (third && third.status) {
-                    jqXHR = third;
-                }
-                $('#api-login-status').text(jqXHR.status);
-                $('#api-login-response').text(JSON.stringify(jqXHR.responseJSON, null, 4));
-                if (jqXHR.status === 200) {
-                    updateAccessInfo(jqXHR.responseJSON.accessToken, jqXHR.responseJSON.user.id);
-                }
-            });
-        });
 
 
 
-        $('#fizzyo-api-button').on('click',function(){
 
-            /**
-             * Send a post request to the API with the auth code and invitation code
-             */
-            $.ajax({
-                type: 'GET',
-                url: 'https://api-staging.fizzyo-ucl.co.uk/api/v1/user/' + userId,
-                headers: {
-                    'Authorization': 'Bearer ' + token,
-                },
-                dataType: 'json',
-            }).always(function (first, second, third) {
-                var jqXHR = first;
-                if (third && third.status) {
-                    jqXHR = third;
-                }
-                $('#api-profile-status').text(jqXHR.status);
-                $('#api-profile-response').text(JSON.stringify(jqXHR.responseJSON, null, 4));
-            });
-        });
 
     });
 

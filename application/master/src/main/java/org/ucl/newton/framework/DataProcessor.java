@@ -39,7 +39,7 @@ public class DataProcessor
     private String nameOfInitialScript;
 
     @Column(name = "proc_engine")
-    private String processEngine; // Should probably change from string at some point
+    private String processEngine;
 
     public DataProcessor() {
     }

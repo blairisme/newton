@@ -71,17 +71,20 @@ INSERT INTO project_starred (project_id, user_id) VALUES (8, 2);
 INSERT INTO project_starred (project_id, user_id) VALUES (13, 2);
 
 /* Data sources */
-INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (1, 'Weather temp', 1, 'some/loc1');
-INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (2, 'Weather rain', 1, 'some/loc2');
-INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (3, 'Fizzyo HR', 1, 'some/loc3');
-INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (4, 'Fizzyo ACT use', 1, 'some/loc4');
-INSERT INTO datasources (ds_id, ds_name, ds_version, ds_data_location) VALUES (5, 'Fizzyo steps', 2, 'some/loc5');
+INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (1, 'Weather temp', 'some/loc1');
+INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (2, 'Weather rain', 'some/loc2');
+INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (3, 'Fizzyo HR', 'some/loc3');
+INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (4, 'Fizzyo ACT use', 'some/loc4');
+INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (5, 'Fizzyo steps', 'some/loc5');
 
 /* Project data sources */
 INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 1);
 INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 3);
 INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 4);
 INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 5);
+
+/* Insert into storage configuration */
+INSERT INTO storage_configuration (sc_id, sc_type) VALUES (1, 'Newton');
 
 /* Data processors */
 INSERT INTO process (proc_id, proc_repo_url, proc_initial_script, proc_engine) VALUES (1, 'https://github.com/blairisme/newton', 'test.py', 'python');
@@ -92,26 +95,33 @@ INSERT INTO processor_configuration(id, processor_id, configuration_path) VALUES
 INSERT INTO processor_configuration(id, processor_id, configuration_path) VALUES (3, 1, 'config.json');
 
 /* Experiments */
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (1, 'experiment-1', 'HR classification', 'Experiment description', 1, 3, 1);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (2, 'experiment-2', 'Exercise level classification', 'Experiment description', 1, 4, 2);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (3, 'experiment-3', 'Weather temperature classification', 'Experiment description', 1, 5, 3);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (4, 'experiment-4', 'Weather data aggrigator', 'Experiment description', 1, 3, 2);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (5, 'experiment-5', 'HR normalisation', 'Experiment description', 1, 2, 1);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (6, 'experiment-6', 'Adherence rate classification', 'Experiment description', 1, 1, 1);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (7, 'experiment-7', 'Achievement rate classification', 'Experiment description', 1, 2, 2);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (8, 'experiment-8', 'Weather percipitation classification', 'Experiment description', 1, 4, 3);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (9, 'experiment-9', 'Weather humidity classification', 'Experiment description', 1, 4, 1);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (10, 'experiment-10', 'ACT adherence by type', 'Experiment description', 1, 5, 2);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (11, 'experiment-11', 'Impact of gamification on adherence', 'Experiment description', 1, 2, 3);
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, processor_configuration_id) VALUES (12, 'experiment-12', 'Gamification impact by game', 'Experiment description', 1, 1, 1);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (1, 'experiment-1', 'HR classification', 'Experiment description', 1, 3, 1, 1, '/*.csv', 'Manual');
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (2, 'experiment-2', 'Exercise level classification', 'Experiment description', 1, 4, 1, 2, '/*.csv', 'Onchange');
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (3, 'experiment-3', 'Weather temperature classification', 'Experiment description', 1, 5, 1, 3, '/*.csv', 'Manual');
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (4, 'experiment-4', 'Weather data aggrigator', 'Experiment description', 1, 3, 1, 2, '/*.csv', 'Manual');
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (5, 'experiment-5', 'HR normalisation', 'Experiment description', 1, 2, 1, 1, '/*.csv', 'Manual');
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (6, 'experiment-6', 'Adherence rate classification', 'Experiment description', 1, 1, 1, 1, '/*.csv', 'Manual');
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (7, 'experiment-7', 'Achievement rate classification', 'Experiment description', 1, 2, 1, 2, '/*.csv', 'Manual');
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (8, 'experiment-8', 'Weather percipitation classification', 'Experiment description', 1, 4, 1, 3, '/*.csv', 'Manual');
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (9, 'experiment-9', 'Weather humidity classification', 'Experiment description', 1, 4, 1, 1, '/*.csv', 'Manual');
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (10, 'experiment-10', 'ACT adherence by type', 'Experiment description', 1, 5, 1, 2, '/*.csv', 'Manual');
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (11, 'experiment-11', 'Impact of gamification on adherence', 'Experiment description', 1, 2, 1, 3, '/*.csv', 'Manual');
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (12, 'experiment-12', 'Gamification impact by game', 'Experiment description', 1, 1, 1, 1, '/*.csv', 'Manual');
 
-/* Experiment data source configuration */
-INSERT INTO experiment_datasources (experiement_id, datasource_id) VALUES (1, 1);
-INSERT INTO experiment_datasources (experiement_id, datasource_id) VALUES (1, 2);
-INSERT INTO experiment_datasources (experiement_id, datasource_id) VALUES (2, 3);
-INSERT INTO experiment_datasources (experiement_id, datasource_id) VALUES (2, 4);
-INSERT INTO experiment_datasources (experiement_id, datasource_id) VALUES (3, 5);
-INSERT INTO experiment_datasources (experiement_id, datasource_id) VALUES (3, 2);
+/* Insert into experiment data sources */
+INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (1, 1, 'someloc/input.csv');
+INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (2, 2, 'someloc/input.csv');
+INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (3, 3, 'someloc/input.csv');
+INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (4, 3, 'someloc/input.csv');
+INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (5, 4, 'someloc/input.csv');
+
+/* Insert into join table between experiments and experiment data sources */
+INSERT INTO experiment_eds_link (exp_id, eds_id) VALUES (1, 1);
+INSERT INTO experiment_eds_link (exp_id, eds_id) VALUES (1, 2);
+INSERT INTO experiment_eds_link (exp_id, eds_id) VALUES (2, 3);
+INSERT INTO experiment_eds_link (exp_id, eds_id) VALUES (2, 4);
+INSERT INTO experiment_eds_link (exp_id, eds_id) VALUES (3, 5);
+INSERT INTO experiment_eds_link (exp_id, eds_id) VALUES (3, 2);
 
 /* Insert experiment version data */
 INSERT INTO versions (ver_id, ver_number) VALUES (1, 1);
@@ -131,6 +141,7 @@ INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 3);
 
 /* Source Provider */
 INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (1, 'lib/WeatherDataProvider.jar', 'org.ucl.WeatherDataProvider.weather.WeatherDataProvider', '1.0');
+INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (2, 'lib/FizzyoDataProvider.jar', 'org.ucl.FizzyoDataProvider.Fizzyo.FizzyoDataProvider', '1.0');
 
 /*** System Settings ***/
 

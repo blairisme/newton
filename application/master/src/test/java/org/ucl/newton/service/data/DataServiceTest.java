@@ -27,6 +27,6 @@ public class DataServiceTest
     @Ignore //causes tests to hang
     public void runTest() throws Exception{
         Collection<DataProvider> dataProviders = dataService.getDataProviders();
-        Assert.assertEquals(1,dataProviders.size());
+        Assert.assertEquals(2,dataProviders.size());
     }
 }

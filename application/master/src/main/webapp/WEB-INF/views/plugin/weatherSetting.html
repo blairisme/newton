@@ -109,6 +109,7 @@
 
     }
     function addEntry(id,city,country,date) {
+
         $("#entries").append(
             `<tr id="tableItem${id}">
                     <th>${city}</th>
@@ -122,7 +123,9 @@
 
     }
     function buildId(city,country,date) {
-        return city + "_" +country + "_" + date;
+        var id = city + "_" + country.replace(' ','-') + "_" + date;
+        country.replace('-',' ');
+        return id;
     }
     function clearContent() {
         $("#city").val("");
@@ -130,6 +133,7 @@
         $("#date").val("");
     }
     function removeEntry(id) {
+
         $(`#tableItem${id}`).remove();
         $(`#item${id}`).remove();
     }
