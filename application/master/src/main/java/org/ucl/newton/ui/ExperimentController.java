@@ -84,8 +84,7 @@ public class ExperimentController
         model.addAttribute("experiment", new ExperimentDto());
         model.addAttribute("triggerValues", new String[] {"Manual", "On data change"});
         model.addAttribute("storageValues", new String[] {"Newton"});
-        model.addAttribute("typeValues", new String[] {"Python", "Ruby", "Jupyter notebook"});
-        model.addAttribute("notebookTypeValues", new String[] {"Python", "Ruby"});
+        model.addAttribute("typeValues", new String[] {"Python", "Ruby", "Jupyter notebook (Python)", "Jupyter notebook (ruby)"});
         return "experiment/new";
     }
 
@@ -135,7 +134,7 @@ public class ExperimentController
         builder.setCreator(userService.getAuthenticatedUser());
         builder.setProject(projectService.getProjectByLink(projectName));
         builder.setStorageConfiguration(new StorageConfiguration(0, experimentDto.getSelectedStorageValue()));
-        builder.setProcessorConfiguration(new DataProcessorConfiguration(0, "", new DataProcessor(0, "", "", "")));
+        builder.setProcessorConfiguration(new DataProcessorConfiguration(0, "", new DataProcessor(0, "", "", experimentDto.getSelectedTypeValue())));
         builder.addDataSources(experimentDto.getDataSourceIds(), experimentDto.getDataSourceLocs());
         builder.setExperimentVersions(new ArrayList<>());
         builder.setOutputPattern(experimentDto.getOutputPattern());

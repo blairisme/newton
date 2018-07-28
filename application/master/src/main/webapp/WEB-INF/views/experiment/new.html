@@ -85,20 +85,6 @@
                                         th:text="${typeValue}"></label>
                             </div>
                         </th:block>
-                        <div id="notebookTypes">
-                            <th:block th:each="notebookTypeValue: ${notebookTypeValues}">
-                                <div class="form-check form-check-inline">
-                                    <input type="radio"
-                                           class="form-check-input"
-                                           th:field="*{selectedNotebookTypeValue}"
-                                           th:value="${notebookTypeValue}"
-                                           th:name="expNotebookTypeRadio"/>
-                                    <label
-                                            th:for="${#ids.prev('selectedNotebookTypeValue')}"
-                                            th:text="${notebookTypeValue}"></label>
-                                </div>
-                            </th:block>
-                        </div>
                     </div>
                 </div>
             </section>

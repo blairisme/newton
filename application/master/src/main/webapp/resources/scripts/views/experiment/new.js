@@ -1,14 +1,6 @@
 $(document).ready(function() {
     var currentDsId;
 
-    $('input[type="radio"][name="selectedTypeValue"]').click(function() {
-        if($(this).attr("id") === "selectedTypeValue3") {
-            $('#notebookTypes').show();
-        } else {
-            $('#notebookTypes').hide();
-        }
-    });
-
     $(".dropdown-menu a").click(function(e) {
         e.preventDefault();
         var selText = $(this).text();
@@ -44,9 +36,8 @@ $(document).ready(function() {
 
     $("#selectedTypeValue2").prop("disabled", true);
 
-    $("#selectedNotebookTypeValue1").prop("checked", true);
+    $("#selectedTypeValue4").prop("disabled", true);
 
-    $("#selectedNotebookTypeValue2").prop("disabled", true);
 });
 
 
