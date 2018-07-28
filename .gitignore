@@ -16,3 +16,5 @@ out/
 bin/
 
 \.vscode/
+
+application/master/src/main/webapp/resources/plugins/processor/
