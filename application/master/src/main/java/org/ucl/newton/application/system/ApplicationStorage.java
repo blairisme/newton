@@ -93,4 +93,8 @@ public class ApplicationStorage
     public Path getDataDirectory() {
         return rootPath.resolve("data");
     }
+
+    public Path getIndexDirectory() {
+        return rootPath.resolve("index");
+    }
 }

@@ -14,7 +14,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.ucl.newton.common.file.SystemUtils;
+import org.ucl.newton.common.file.SystemPaths;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class ZipUtilsTest
 
     @Before
     public void setup() {
-        tempDirectory = SystemUtils.newTempDirectory(getClass().getName());
+        tempDirectory = SystemPaths.getTempDirectory(getClass().getName());
     }
 
     @After

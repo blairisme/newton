@@ -10,7 +10,7 @@
 package org.ucl.newton.common.process;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.ucl.newton.common.process.platform.LinuxCommandExecutor;
+import org.ucl.newton.common.process.platform.UnixCommandExecutor;
 import org.ucl.newton.common.process.platform.WindowsCommandExecutor;
 
 import javax.inject.Inject;
@@ -35,7 +35,7 @@ public class CommandExecutorFactory implements Provider<CommandExecutor>
             return new WindowsCommandExecutor();
         }
         if (SystemUtils.IS_OS_MAC_OSX || SystemUtils.IS_OS_LINUX) {
-            return new LinuxCommandExecutor();
+            return new UnixCommandExecutor();
         }
         throw new UnsupportedOperationException();
     }

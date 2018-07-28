@@ -78,11 +78,5 @@ public abstract class AbstractCommandExecutor implements CommandExecutor
         this.workingDirectory = workingDirectory;
     }
 
-    protected List<String> getShellCommands(List<String> commands) {
-        List<String> result = new ArrayList<>(commands);
-        result.add(0, getShellExecutable());
-        return result;
-    }
-
-    protected abstract String getShellExecutable();
+    protected abstract List<String> getShellCommands(List<String> commands);
 }

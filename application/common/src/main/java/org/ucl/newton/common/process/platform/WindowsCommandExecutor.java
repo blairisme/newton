@@ -11,6 +11,9 @@ package org.ucl.newton.common.process.platform;
 
 import org.ucl.newton.common.process.CommandExecutor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A {@link CommandExecutor} implementation for use on Windows.
  *
@@ -19,7 +22,11 @@ import org.ucl.newton.common.process.CommandExecutor;
 public class WindowsCommandExecutor extends AbstractCommandExecutor
 {
     @Override
-    protected String getShellExecutable() {
-        return "cmd";
+    protected List<String> getShellCommands(List<String> commands) {
+        List<String> result = new ArrayList<>();
+        result.add("cmd");
+        result.add("/c");
+        result.addAll(commands);
+        return result;
     }
 }

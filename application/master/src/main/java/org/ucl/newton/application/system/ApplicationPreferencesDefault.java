@@ -10,7 +10,6 @@
 package org.ucl.newton.application.system;
 
 import org.ucl.newton.common.file.SystemPaths;
-import org.ucl.newton.common.file.SystemUtils;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -69,7 +68,7 @@ public class ApplicationPreferencesDefault
     }
 
     public String getUploadDirectory() {
-        return SystemUtils.newTempDirectory(".newton/uploads").toString();
+        return SystemPaths.getTempDirectory(".newton/uploads").toString();
     }
     
     public String getUploadMaximumSize() {
