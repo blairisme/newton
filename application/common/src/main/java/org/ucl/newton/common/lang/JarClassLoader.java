@@ -9,6 +9,7 @@
 
 package org.ucl.newton.common.lang;
 
+import org.apache.commons.lang3.Validate;
 import org.reflections.Reflections;
 
 import java.io.Closeable;
@@ -31,13 +32,23 @@ public class JarClassLoader implements Closeable
     private URLClassLoader delegate;
 
     public JarClassLoader(Path jar) {
-        URL[] urls = {toUrl(jar)};
+        this(toUrl(jar));
+    }
+
+    public JarClassLoader(URL jar) {
+        Validate.notNull(jar);
+        URL[] urls = {jar};
         ClassLoader parent = getClass().getClassLoader();
         delegate = new URLClassLoader(urls, parent);
     }
 
     public <T> Set<Class<? extends T>> findSubTypes(Class<T> type) {
         Reflections reflections = new Reflections(delegate);
+        return reflections.getSubTypesOf(type);
+    }
+
+    public <T> Set<Class<? extends T>> findSubTypes(Class<T> type, String packageRestriction) {
+        Reflections reflections = new Reflections(packageRestriction, delegate);
         return reflections.getSubTypesOf(type);
     }
 

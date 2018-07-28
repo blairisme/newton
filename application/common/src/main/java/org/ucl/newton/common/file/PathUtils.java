@@ -9,6 +9,8 @@
 
 package org.ucl.newton.common.file;
 
+import org.apache.commons.lang3.Validate;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -85,6 +87,7 @@ public class PathUtils
     }
 
     public static URL toUrl(Path path) {
+        Validate.notNull(path);
         try {
             return path.toUri().toURL();
         }

@@ -29,18 +29,9 @@ public class JarInstanceLoader
         this.classLoader = classLoader;
     }
 
-    public <T> T getImplementor(Class<T> type, Predicate<T> predicate) throws ReflectiveOperationException {
-        for (T subType: findImplementors(type)) {
-            if (predicate.test(subType)){
-                return subType;
-            }
-        }
-        throw new ClassNotFoundException(type.getName());
-    }
-
-    private <T> Set<T> findImplementors(Class<T> type) throws ReflectiveOperationException {
+    public <T> Set<T> getImplementors(Class<T> type, String packageRestriction) throws ReflectiveOperationException {
         Set<T> result = new HashSet<>();
-        for (Class<? extends T> subType: classLoader.findSubTypes(type)) {
+        for (Class<? extends T> subType: classLoader.findSubTypes(type, packageRestriction)) {
             result.add(ConstructorUtils.invokeConstructor(subType));
         }
         return result;

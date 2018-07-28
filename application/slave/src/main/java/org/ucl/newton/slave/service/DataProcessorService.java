@@ -26,7 +26,11 @@ import javax.inject.Named;
 import java.io.*;
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Instances of this class manage a local cache of{@link DataProcessor
@@ -77,11 +81,24 @@ public class DataProcessorService
         try {
             JarClassLoader classLoader = new JarClassLoader(processorPlugin);
             JarInstanceLoader instanceLoader = new JarInstanceLoader(classLoader);
-            return instanceLoader.getImplementor(DataProcessor.class, byProcessorId(processorId));
+            Set<DataProcessor> processors = instanceLoader.getImplementors(DataProcessor.class, "org.ucl.newton");
+            return findProcessor(processors, processorId);
         }
         catch (Exception cause) {
             throw new InvalidPluginException(cause);
         }
+    }
+
+    private DataProcessor findProcessor(Set<DataProcessor> processors, String processorId) {
+        Set<DataProcessor> results = processors.stream().filter(byProcessorId(processorId)).collect(toSet());
+
+        if (results.isEmpty()) {
+            throw new InvalidPluginException("Processor missing: " + processorId);
+        }
+        if (results.size() > 1) {
+            throw new InvalidPluginException("Multiple processor implementations: " + processorId);
+        }
+        return results.iterator().next();
     }
 
     private Predicate<DataProcessor> byProcessorId(String processorId) {

@@ -29,7 +29,7 @@ public class PythonProcessor implements DataProcessor
 
     @Override
     public String getIdentifier() {
-        return "org.ucl.newton.python";
+        return "python";//"org.ucl.newton.python";
     }
 
     @Override
@@ -52,6 +52,4 @@ public class PythonProcessor implements DataProcessor
         commandExecutor.workingDirectory(scriptPath.getParent());
         commandExecutor.execute(asList(PYTHON_COMMAND, PathUtils.getName(scriptPath)));
     }
-
-
 }

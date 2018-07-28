@@ -36,6 +36,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
@@ -122,11 +123,13 @@ public class RequestHandler
     }
 
     private URL getOutput(ExecutionRequest request, RequestWorkspace workspace) throws IOException {
-        Path root = workspace.getRoot();
-        Path output = workspace.getOutput();
-        Collection<Path> contents = PathUtils.findChildren(root, request.getOutput());
-        ZipUtils.zip(contents, output);
-        return UrlUtils.createUrl(getBaseAddress(), root.relativize(output));
+        Collection<Path> contents = PathUtils.findChildren(workspace.getRoot(), request.getOutput());
+        contents.add(workspace.getLog());
+
+        Path archive = workspace.getOutput();
+        ZipUtils.zip(contents, archive);
+
+        return UrlUtils.createUrl(getBaseAddress(), workspace.getRoot().relativize(archive));
     }
 
     private URL getBaseAddress() throws MalformedURLException {

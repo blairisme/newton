@@ -9,21 +9,20 @@
 
 package org.ucl.newton.common.lang;
 
-import org.json.JSONWriter;
+import org.json.JSONTokener;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.net.URL;
 import java.util.Set;
 
-public class JarInstanceLoaderTest
+public class JarClassLoaderTest
 {
     @Test
-    public void getInstanceTest() throws Exception {
+    public void findSubTypesTest() {
         URL jarUrl = getClass().getResource("/json.jar");
         JarClassLoader jarClassLoader = new JarClassLoader(jarUrl);
-        JarInstanceLoader jarInstanceLoader = new JarInstanceLoader(jarClassLoader);
-        Set<JSONWriter> processors = jarInstanceLoader.getImplementors(JSONWriter.class, "org.json");
-        Assert.assertEquals(1, processors.size());
+        Set<Class<? extends JSONTokener>> result = jarClassLoader.findSubTypes(JSONTokener.class, "org.json");
+        Assert.assertEquals(2, result.size());
     }
 }
