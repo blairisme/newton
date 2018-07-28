@@ -10,10 +10,12 @@
 package org.ucl.newton.common.archive;
 
 import org.apache.commons.io.IOUtils;
+import org.ucl.newton.common.file.FileUtils;
+import org.ucl.newton.common.file.PathUtils;
 
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Function;
@@ -28,6 +30,10 @@ import java.util.zip.ZipOutputStream;
  */
 public class ZipUtils
 {
+    public static void unzip(Path zipPath, Path destinationPath) throws IOException {
+        unzip(zipPath.toFile(), destinationPath.toFile());
+    }
+
     public static void unzip(File zipFile, File directory) throws IOException {
         if (!directory.exists()) {
             directory.mkdirs();
@@ -74,7 +80,34 @@ public class ZipUtils
         return unzippedPaths;
     }
 
-    public static void zip(File[] files, File zipFile) throws IOException {
+    public static void zip(Path directory, Path zipFile) throws IOException {
+        PathUtils.createNew(zipFile);
+
+        try (ZipOutputStream zipStream = new ZipOutputStream(new FileOutputStream(zipFile.toFile()))) {
+            Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    zipStream.putNextEntry(new ZipEntry(directory.relativize(file).toString()));
+                    Files.copy(file, zipStream);
+                    zipStream.closeEntry();
+                    return FileVisitResult.CONTINUE;
+                }
+
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                    zipStream.putNextEntry(new ZipEntry(directory.relativize(dir).toString() + "/"));
+                    zipStream.closeEntry();
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        }
+    }
+
+    public static void zip(Collection<Path> files, Path zipFile) throws IOException {
+        zip(PathUtils.toFile(files), zipFile.toFile());
+    }
+
+    public static void zip(Collection<File> files, File zipFile) throws IOException {
+       FileUtils.createNew(zipFile);
+
         try (ZipOutputStream zipStream = new ZipOutputStream(new FileOutputStream(zipFile))) {
             for (File file: files) {
                 ZipEntry zipEntry = new ZipEntry(file.getName());

@@ -35,6 +35,21 @@ public class ExperimentVersionBuilder
         return this;
     }
 
+    public ExperimentVersionBuilder setExperimentOutputs(Collection<Path> paths) {
+        for (Path path: paths) {
+            if (path.endsWith("log.txt")) {
+                setExperimentLog(path);
+            }
+            else if (path.endsWith(".html") || path.endsWith(".png") || path.endsWith(".jpg") || path.endsWith(".jpeg")) {
+                setExperimentVisuals(path);
+            }
+            else {
+                setExperimentData(path);
+            }
+        }
+        return this;
+    }
+
     public ExperimentVersionBuilder setExperimentLog(Path path) {
         addOutcome(path, ExperimentOutcomeType.Log);
         return this;

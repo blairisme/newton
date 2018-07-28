@@ -19,15 +19,13 @@ import java.io.InputStream;
  */
 public interface ExecutionNode
 {
-    void setAddress(String address);
+    void setHost(String host);
+
+    void setPort(int port);
 
     void execute(ExecutionRequest executionRequest) throws ExecutionException;
 
     void cancel(ExecutionRequest executionRequest) throws ExecutionException;
 
-    InputStream getExecutionLog(ExecutionResult executionResult) throws ExecutionException;
-
-    InputStream getExecutionOutput(ExecutionResult executionResult) throws ExecutionException;
-
-    InputStream getExecutionVisuals(ExecutionResult executionResult) throws ExecutionException;
+    InputStream getOutput(ExecutionResult executionResult) throws ExecutionException;
 }

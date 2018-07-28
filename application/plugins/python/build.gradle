@@ -1,0 +1,18 @@
+/*
+ * MIT License (c)
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ *
+ * Author: Blair Butterworth
+ */
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+dependencies {
+  compile project(':application:common')
+  compile project(':application:sdk')
+}

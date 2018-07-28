@@ -16,6 +16,7 @@ import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.bridge.ExecutionNode;
 import org.ucl.newton.bridge.ExecutionResult;
 import org.ucl.newton.common.archive.ZipUtils;
+import org.ucl.newton.common.exception.ConnectionException;
 import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.ExperimentBuilder;
@@ -23,6 +24,7 @@ import org.ucl.newton.framework.ExperimentVersion;
 import org.ucl.newton.framework.ExperimentVersionBuilder;
 import org.ucl.newton.service.experiment.ExperimentService;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
@@ -38,11 +40,7 @@ import java.util.Collection;
 public class ExecutionRepository
 {
     private static final String REPOSITORY_ROOT = "experiment";
-    private static final String LOG_FILE_NAME = "log.txt";
-    private static final String DATA_DIR_NAME = "data";
-    private static final String DATA_FILE_NAME = "data.zip";
-    private static final String VISUAL_DIR_NAME = "visual";
-    private static final String VISUAL_FILE_NAME = "visual.zip";
+    private static final String OUTPUT_FILE_NAME = "output.zip";
 
     private ApplicationStorage applicationStorage;
     private ExperimentService experimentService;
@@ -53,97 +51,45 @@ public class ExecutionRepository
         this.experimentService = experimentService;
     }
 
-    public void persistResult(ExecutionNode executionNode, ExecutionResult executionResult) {
+    public void persistResult(ExecutionNode executionNode, ExecutionResult executionResult) throws IOException {
         Path destination = getDestination(executionResult);
-
-        Path logPath = downloadLog(executionNode, executionResult, destination);
-        Path dataPath = downloadData(executionNode, executionResult, destination);
-        Path visualPath = downloadVisual(executionNode, executionResult, destination);
-
-        Collection<Path> dataPaths = uncompressData(dataPath, destination);
-        Collection<Path> visualPaths = uncompressVisuals(visualPath, destination);
-
-        persistExperiment(executionResult, logPath, dataPaths, visualPaths);
+        Path output = downloadOutput(executionNode, executionResult, destination);
+        Collection<Path> outputs = uncompressOutput(output, destination);
+        persistExperiment(executionResult, outputs);
     }
 
     private Path getDestination(ExecutionResult executionResult) {
         Path result = Paths.get(REPOSITORY_ROOT);
-        result = result.resolve(Integer.toString(executionResult.getOwnerId()));
-        result = result.resolve(Integer.toString(executionResult.getOwnerVersion()));
+        result = result.resolve(executionResult.getExperiment());
+        result = result.resolve(executionResult.getVersion());
         return result;
     }
 
-    private Path downloadLog(ExecutionNode executionNode, ExecutionResult executionResult, Path destination) {
-        Path logPath = destination.resolve(LOG_FILE_NAME);
-
-        try(InputStream inputStream = executionNode.getExecutionLog(executionResult);
+    private Path downloadOutput(ExecutionNode executionNode, ExecutionResult executionResult, Path destination) throws ConnectionException {
+        Path logPath = destination.resolve(OUTPUT_FILE_NAME);
+        try(InputStream inputStream = executionNode.getOutput(executionResult);
             OutputStream outputStream = applicationStorage.getOutputStream(logPath)) {
             IOUtils.copy(inputStream, outputStream);
         }
-        catch (Exception error){
-            throw new RuntimeException(error); //Replace - bad form
+        catch (Exception cause){
+            throw new ConnectionException(cause);
         }
         return logPath;
     }
 
-    private Path downloadData(ExecutionNode executionNode, ExecutionResult executionResult, Path destination)  {
-        Path outputPath = destination.resolve(DATA_FILE_NAME);
-
-        try(InputStream inputStream = executionNode.getExecutionOutput(executionResult);
-            OutputStream outputStream = applicationStorage.getOutputStream(outputPath)) {
-            IOUtils.copy(inputStream, outputStream);
-        }
-        catch (Exception error){
-            throw new RuntimeException(error); //Replace - bad form
-        }
-        return outputPath;
-    }
-
-    private Path downloadVisual(ExecutionNode executionNode, ExecutionResult executionResult, Path destination)  {
-        Path visualPath = destination.resolve(VISUAL_FILE_NAME);
-
-        try(InputStream inputStream = executionNode.getExecutionVisuals(executionResult);
-            OutputStream outputStream = applicationStorage.getOutputStream(visualPath)) {
-            IOUtils.copy(inputStream, outputStream);
-        }
-        catch (Exception error){
-            throw new RuntimeException(error); //Replace - bad form
-        }
-        return visualPath;
-    }
-
-    private Collection<Path> uncompressData(Path archive, Path destination) {
-        Path outputPath = destination.resolve(DATA_DIR_NAME);
-
+    private Collection<Path> uncompressOutput(Path archive, Path destination) throws IOException  {
         try(InputStream inputStream = applicationStorage.getInputStream(archive)) {
-            Collection<Path> contents = ZipUtils.unzip(inputStream, applicationStorage.getOutputStreamFactory(outputPath));
-            return PathUtils.resolve(outputPath, contents);
-        }
-        catch (Exception error){
-            throw new RuntimeException(error); //Replace - bad form
+            Collection<Path> contents = ZipUtils.unzip(inputStream, applicationStorage.getOutputStreamFactory(destination));
+            return PathUtils.resolve(destination, contents);
         }
     }
 
-    private Collection<Path> uncompressVisuals(Path archive, Path destination) {
-        Path visualPath = destination.resolve(VISUAL_DIR_NAME);
-
-        try(InputStream inputStream = applicationStorage.getInputStream(archive)) {
-            Collection<Path> contents = ZipUtils.unzip(inputStream, applicationStorage.getOutputStreamFactory(visualPath));
-            return PathUtils.resolve(visualPath, contents);
-        }
-        catch (Exception error){
-            throw new RuntimeException(error); //Replace - bad form
-        }
-    }
-
-    private void persistExperiment(ExecutionResult executionResult, Path log, Collection<Path> data, Collection<Path> visuals) {
-        Experiment experiment = experimentService.getExperimentById(executionResult.getOwnerId());
+    private void persistExperiment(ExecutionResult executionResult, Collection<Path> outputs) {
+        Experiment experiment = experimentService.getExperimentByIdentifier(executionResult.getExperiment());
 
         ExperimentVersionBuilder versionBuilder = new ExperimentVersionBuilder();
         versionBuilder.forExperiment(experiment);
-        versionBuilder.setExperimentLog(log);
-        versionBuilder.setExperimentData(data);
-        versionBuilder.setExperimentVisuals(visuals);
+        versionBuilder.setExperimentOutputs(outputs);
 
         ExperimentVersion version = versionBuilder.build();
         ExperimentVersion newVersion = experimentService.addVersion(version);

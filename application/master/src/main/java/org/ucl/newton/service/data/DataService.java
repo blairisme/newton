@@ -46,7 +46,6 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
         this.applicationStorage = applicationStorage;
     }
 
-
     public void run(){
         for(SourceProvider sourceProvider : sourceProviderService.getSourceProviders()){
             DataStorage dataStorage = new DataStorage(applicationStorage);

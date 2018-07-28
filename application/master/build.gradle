@@ -26,9 +26,6 @@ apply plugin: 'jacoco'
 apply plugin: 'checkstyle'
 apply plugin: 'org.akhikhl.gretty'
 
-group = 'org.ucl.newton'
-version = '0.0.1'
-
 dependencies {
     compile project(':application:common')
     compile project(':application:bridge')
@@ -71,18 +68,24 @@ dependencies {
     testCompile group: 'org.springframework', name: 'spring-test', version: '5.0.7.RELEASE'
 }
 
-gretty {
-    //integrationTestTask = 'integrationTest'
+task updatePythonPlugin(type: Copy, dependsOn: ':application:plugins:python:jar') {
+    from project(':application:plugins:python').collect{it.tasks.withType(Jar)}
+    into project.file('src/main/webapp/resources/plugins/processor')
+}
+project.tasks.war.dependsOn updatePythonPlugin
 
+task updateJupyterPlugin(type: Copy, dependsOn: ':application:plugins:jupyter:jar') {
+    from project(':application:plugins:jupyter').collect{it.tasks.withType(Jar)}
+    into project.file('src/main/webapp/resources/plugins/processor')
+}
+project.tasks.war.dependsOn updateJupyterPlugin
+
+
+gretty {
     servletContainer = 'jetty9.4'
     contextPath = '/'
     httpPort = 8090
-    jvmArgs = [
-      '-Dnewton.profile=' + getProperty('run.profile'),
-      '-Dnewton.database.user=' + getProperty('database.user'),
-      '-Dnewton.database.password=' + getProperty('database.password'),
-      '-Dnewton.database.populate=' + getProperty('database.populate')
-    ]
+    jvmArgs = ['-Dnewton.profile=' + getProperty('run.profile')]
     jacocoEnabled = false
 }
 

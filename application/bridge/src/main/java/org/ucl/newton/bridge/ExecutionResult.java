@@ -14,7 +14,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.net.URI;
+import java.net.URL;
 import java.time.Duration;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -27,74 +29,53 @@ import java.util.Date;
 public class ExecutionResult
 {
     private String id;
-    private int ownerId;
-    private int ownerVersion;
-    private URI logPath;
-    private URI dataPath;
-    private URI visualsPath;
-    //private Date date;
-    //private Duration duration;
-    private String error;
+    private String experiment;
+    private String version;
+    private Date date;
+    private Duration duration;
+    private URL outputs;
 
     public ExecutionResult() {
     }
 
     public ExecutionResult(
         String id,
-        int ownerId,
-        int ownerVersion,
-        URI logPath,
-        URI dataPath,
-        URI visualPath,
+        String experiment,
+        String version,
         Date date,
         Duration duration,
-        String error)
+        URL outputs)
     {
         this.id = id;
-        this.ownerId = ownerId;
-        this.ownerVersion = ownerVersion;
-        this.logPath = logPath;
-        this.dataPath = dataPath;
-        this.visualsPath = visualPath;
-       // this.date = date;
-        //this.duration = duration;
-        this.error = error;
+        this.experiment = experiment;
+        this.version = version;
+        this.date = date;
+        this.duration = duration;
+        this.outputs = outputs;
     }
 
     public String getId() {
         return id;
     }
 
-    public int getOwnerId() {
-        return ownerId;
+    public String getExperiment() {
+        return experiment;
     }
 
-    public int getOwnerVersion() {
-        return ownerVersion;
+    public String getVersion() {
+        return version;
     }
 
-    public URI getLogPath() {
-        return logPath;
+    public Date getDate() {
+        return date;
     }
 
-    public URI getDataPath() {
-        return dataPath;
+    public Duration getDuration() {
+        return duration;
     }
 
-    public URI getVisualsPath() {
-        return visualsPath;
-    }
-
-//    public Date getDate() {
-//        return date;
-//    }
-//
-//    public Duration getDuration() {
-//        return duration;
-//    }
-
-    public String getError() {
-        return error;
+    public URL getOutputs() {
+        return outputs;
     }
 
     @Override
@@ -105,15 +86,12 @@ public class ExecutionResult
 
         ExecutionResult that = (ExecutionResult)obj;
         return new EqualsBuilder()
-            .append(ownerId, that.ownerId)
-            .append(ownerVersion, that.ownerVersion)
             .append(id, that.id)
-            .append(logPath, that.logPath)
-            .append(dataPath, that.dataPath)
-            .append(visualsPath, that.visualsPath)
-//            .append(date, that.date)
-//            .append(duration, that.duration)
-            .append(error, that.error)
+            .append(experiment, that.experiment)
+            .append(version, that.version)
+            .append(date, that.date)
+            .append(duration, that.duration)
+            .append(outputs, that.outputs)
             .isEquals();
     }
 
@@ -121,14 +99,11 @@ public class ExecutionResult
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
             .append(id)
-            .append(ownerId)
-            .append(ownerVersion)
-            .append(logPath)
-            .append(dataPath)
-            .append(visualsPath)
-//            .append(date)
-//            .append(duration)
-            .append(error)
+            .append(experiment)
+            .append(version)
+            .append(date)
+            .append(duration)
+            .append(outputs)
             .toHashCode();
     }
 
@@ -136,14 +111,11 @@ public class ExecutionResult
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", id)
-            .append("ownerId", ownerId)
-            .append("ownerVersion", ownerVersion)
-            .append("logPath", logPath)
-            .append("dataPath", dataPath)
-            .append("visualsPath", visualsPath)
-//            .append("date", date)
-//            .append("duration", duration)
-            .append("error", error)
+            .append("experiment", experiment)
+            .append("version", version)
+            .append("date", date)
+            .append("duration", duration)
+            .append("outputs", outputs)
             .toString();
     }
 }
