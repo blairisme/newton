@@ -16,3 +16,7 @@ INSERT IGNORE INTO users (id, name, email, image) VALUES (2, 'admin', 'admin@ucl
 
 INSERT IGNORE INTO credentials (id, user_id, username, password, role) VALUES (1, 1, 'user@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'USER');
 INSERT IGNORE INTO credentials (id, user_id, username, password, role) VALUES (2, 2, 'admin@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'ADMIN');
+
+/* Slave configuration */
+INSERT IGNORE INTO plugin (id, identifier, location) VALUES (1, 'org.ucl.newton.python', 'classpath:/plugins/processor/python.jar')
+INSERT IGNORE INTO plugin (id, identifier, location) VALUES (2, 'org.ucl.newton.jupyter', 'classpath:/plugins/processor/jupyter.jar')

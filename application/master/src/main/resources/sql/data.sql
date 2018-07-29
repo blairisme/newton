@@ -148,4 +148,6 @@ INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (2, 'li
 /* Slave configuration */
 INSERT INTO executors (id, address, username, password) VALUES (1, 'http://localhost:8080', 'user', 'password');
 
+INSERT INTO plugin (id, identifier, location) VALUES (1, 'newton-python', 'classpath:/plugins/processor/python.jar');
+INSERT INTO plugin (id, identifier, location) VALUES (2, 'newton-jupyter', 'classpath:/plugins/processor/jupyter.jar');
 

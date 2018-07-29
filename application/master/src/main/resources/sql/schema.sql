@@ -202,4 +202,11 @@ CREATE TABLE IF NOT EXISTS executors (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS plugin (
+  id INT NOT NULL AUTO_INCREMENT,
+  identifier VARCHAR(100) NOT NULL,
+  location VARCHAR(200) NOT NULL,
+  PRIMARY KEY (id)
+);
+
 

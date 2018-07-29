@@ -47,7 +47,7 @@ public class DeveloperPersistenceConfiguration
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[]{"org.ucl.newton.framework"});
+        sessionFactory.setPackagesToScan("org.ucl.newton.framework", "org.ucl.newton.service");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }

@@ -71,13 +71,13 @@ dependencies {
 
 task updatePythonPlugin(type: Copy, dependsOn: ':application:plugins:python:jar') {
     from project(':application:plugins:python').collect{it.tasks.withType(Jar)}
-    into project.file('src/main/webapp/resources/plugins/processor')
+    into project.file('src/main/resources/plugins/processor')
 }
 project.tasks.war.dependsOn updatePythonPlugin
 
 task updateJupyterPlugin(type: Copy, dependsOn: ':application:plugins:jupyter:jar') {
     from project(':application:plugins:jupyter').collect{it.tasks.withType(Jar)}
-    into project.file('src/main/webapp/resources/plugins/processor')
+    into project.file('src/main/resources/plugins/processor')
 }
 project.tasks.war.dependsOn updateJupyterPlugin
 
