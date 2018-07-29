@@ -88,12 +88,12 @@ public class ExperimentRepositoryTest {
 
     @Test
     public void testDataSources() {
-        Collection<DataSource> expected = new ArrayList<>();
-        expected.add(new DataSource(1, "Weather temp", 1, "some/loc1"));
-        expected.add(new DataSource(2, "Weather rain", 1, "some/loc2"));
+        Collection<ExperimentDataSource> expected = new ArrayList<>();
+        expected.add(new ExperimentDataSource(1, 1,"someloc/input.csv"));
+        expected.add(new ExperimentDataSource(2, 2, "someloc/input.csv"));
 
         Experiment experiment = repository.getExperimentById(1);
-        Collection<DataSource> actual = experiment.getDataSources();
+        Collection<ExperimentDataSource> actual = experiment.getExperimentDataSources();
 
         Assert.assertEquals(expected, actual);
     }
@@ -118,5 +118,7 @@ public class ExperimentRepositoryTest {
         Assert.assertEquals("demo/log.txt", outcome.getLocation());
         Assert.assertEquals(ExperimentOutcomeType.Log, outcome.getType());
     }
+
+
 
 }

@@ -15,4 +15,5 @@ build/
 out/
 bin/
 
+### Visual Studio Code ###
 \.vscode/

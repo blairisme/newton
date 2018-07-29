@@ -49,14 +49,19 @@ public class RestRequest
         return this;
     }
 
-    public <T> RestRequest setBody(T value, Class<T> type)
+    public RestRequest setBody(String value)
     {
         if (request instanceof HttpRequestWithBody) {
             HttpRequestWithBody requestWithBody = (HttpRequestWithBody)request;
-            requestWithBody.body(serializer.serialize(value, type));
+            requestWithBody.body(value);
             return this;
         }
         throw new IllegalArgumentException();
+    }
+
+    public <T> RestRequest setBody(T value, Class<T> type)
+    {
+        return setBody(serializer.serialize(value, type));
     }
 
     public void setStatusStrategy(RestStatusStrategy statusStrategy) {

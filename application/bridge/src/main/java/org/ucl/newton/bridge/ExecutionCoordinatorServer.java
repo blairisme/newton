@@ -15,7 +15,9 @@ package org.ucl.newton.bridge;
  *
  * @author Blair Butterworth
  */
-public interface ExecutionCoordinatorServer extends ExecutionCoordinator
+public interface ExecutionCoordinatorServer
 {
+    void executionComplete(ExecutionResult executionResult);
 
+    void executionFailed(String error);
 }

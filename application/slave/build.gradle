@@ -33,6 +33,7 @@ bootJar {
 
 dependencies {
     compile project(':application:bridge')
+    compile project(':application:sdk')
 
     compile group: 'commons-io', name: 'commons-io', version: '2.4'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
@@ -43,13 +44,13 @@ dependencies {
 }
 
 bootRun {
-    main = 'rest.Application'
+    main = 'org.ucl.newton.slave.application.Application'
 }
 
-task slaveStart(dependsOn: ['assemble', 'bootRun']){
+task slaveStart(dependsOn: ['assemble', 'bootRun']) {
 }
 
-task slaveStartDebug(dependsOn: ['assemble', 'bootRun']){
+task slaveStartDebug(dependsOn: ['assemble', 'bootRun']) {
     gradle.taskGraph.whenReady { graph ->
         if (graph.hasTask(slaveStartDebug)) {
             bootRun {

@@ -22,7 +22,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.ucl.newton.application.system.ApplicationPreferences;
-import org.ucl.newton.common.file.SystemUtils;
+import org.ucl.newton.application.system.ApplicationStorage;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -45,10 +45,15 @@ import java.util.Properties;
 public class PersistenceConfiguration
 {
     private ApplicationPreferences applicationPreferences;
+    private ApplicationStorage applicationStorage;
 
     @Inject
-    public PersistenceConfiguration(ApplicationPreferences applicationPreferences) {
+    public PersistenceConfiguration(
+        ApplicationPreferences applicationPreferences,
+        ApplicationStorage applicationStorage)
+    {
         this.applicationPreferences = applicationPreferences;
+        this.applicationStorage = applicationStorage;
     }
 
     @Bean
@@ -81,7 +86,7 @@ public class PersistenceConfiguration
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("org.ucl.newton.framework");
+        sessionFactory.setPackagesToScan("org.ucl.newton.framework", "org.ucl.newton.service");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
@@ -103,7 +108,7 @@ public class PersistenceConfiguration
     }
 
     private String getIndexPath() {
-        Path indexPath = SystemUtils.newTempDirectory("index");
+        Path indexPath = applicationStorage.getIndexDirectory();
         return indexPath.toString();
     }
 

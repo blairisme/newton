@@ -73,7 +73,7 @@ public class ExecutorService
 
             for (Executor executor: executorRepository.getExecutors()){
                 ExecutionNode executionNode = executionNodeFactory.get();
-                executionNode.setAddress(executor.getAddress());
+                //executionNode.setAddress(executor.getAddress());
                 executorUtilization.put(executionNode, 0);
             }
         }

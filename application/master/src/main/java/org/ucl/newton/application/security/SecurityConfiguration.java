@@ -40,7 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
         http.authorizeRequests()
                 .antMatchers("/", "/signup", "/resources/**", "/api/experiment/complete").permitAll()
                 .antMatchers("/settings").hasAnyRole("ADMIN")
-                .antMatchers(POST, "/api").hasAuthority("ROLE_ADMIN")
+                //.antMatchers(POST, "/api").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/api/**").permitAll() //need to pass creds from slave
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
@@ -63,8 +64,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 
     private void setHeaders(HttpSecurity http) throws Exception {
         http.headers()
-                .frameOptions().sameOrigin()
-                .httpStrictTransportSecurity().disable();
+            .frameOptions().sameOrigin()
+            .httpStrictTransportSecurity().disable();
     }
 
     @Bean

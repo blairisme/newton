@@ -32,7 +32,7 @@ public class DataProcessorConfiguration
     @Column(name = "configuration_path")
     private String path;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "processor_id")
     private DataProcessor processor;
 

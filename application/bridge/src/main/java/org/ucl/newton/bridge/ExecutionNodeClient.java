@@ -9,14 +9,17 @@
 
 package org.ucl.newton.bridge;
 
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.ucl.newton.common.network.RestRequest;
 import org.ucl.newton.common.network.RestServer;
+import org.ucl.newton.common.network.UriSchemes;
 import org.ucl.newton.common.serialization.JsonSerializer;
 
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -28,15 +31,23 @@ import java.net.URL;
 @Component
 public class ExecutionNodeClient implements ExecutionNode
 {
-    private String address;
+    private String host;
+    private int port;
 
     @Autowired
     public ExecutionNodeClient() {
-        address = "http://localhost:8080";
+        host = "localhost";
+        port = 8080;
     }
 
-    public void setAddress(String address){
-        this.address = address;
+    @Override
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    @Override
+    public void setPort(int port) {
+        this.port = port;
     }
 
     public void execute(ExecutionRequest executionRequest) throws ExecutionException {
@@ -65,22 +76,9 @@ public class ExecutionNodeClient implements ExecutionNode
     }
 
     @Override
-    public InputStream getExecutionLog(ExecutionResult executionResult) throws ExecutionException {
+    public InputStream getOutput(ExecutionResult executionResult) throws ExecutionException {
         try {
-            URI logUri = executionResult.getLogPath();
-            URL logUrl = logUri.toURL();
-            return logUrl.openStream();
-        }
-        catch (Exception cause) {
-            throw new ExecutionException(cause);
-        }
-    }
-
-    @Override
-    public InputStream getExecutionOutput(ExecutionResult executionResult) throws ExecutionException {
-        try {
-            URI outputUri = executionResult.getDataPath();
-            URL outputUrl = outputUri.toURL();
+            URL outputUrl = executionResult.getOutputs();
             return outputUrl.openStream();
         }
         catch (Exception cause) {
@@ -88,21 +86,27 @@ public class ExecutionNodeClient implements ExecutionNode
         }
     }
 
-    @Override
-    public InputStream getExecutionVisuals(ExecutionResult executionResult) throws ExecutionException {
+    private URI getServerAddress() {
+        return getServerAddress("");
+    }
+
+    private URI getServerAddress(String path) {
         try {
-            URI visualsUri = executionResult.getVisualsPath();
-            URL visualsUrl = visualsUri.toURL();
-            return visualsUrl.openStream();
+            URIBuilder uriBuilder = new URIBuilder();
+            uriBuilder.setScheme(UriSchemes.HTTP);
+            uriBuilder.setHost(host);
+            uriBuilder.setPort(port);
+            uriBuilder.setPath(path);
+            return uriBuilder.build();
         }
-        catch (Exception cause) {
-            throw new ExecutionException(cause);
+        catch (URISyntaxException error) {
+            throw new ExecutionException(error);
         }
     }
 
     private RestServer getServer() {
         RestServer restServer = new RestServer();
-        restServer.setAddress(address);
+        restServer.setAddress(getServerAddress());
         restServer.setSerializer(new JsonSerializer());
         restServer.addHeader("Content-Type", "application/json");
         restServer.addHeader("Accept", "application/json");

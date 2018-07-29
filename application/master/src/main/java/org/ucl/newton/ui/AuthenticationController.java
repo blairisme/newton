@@ -35,7 +35,6 @@ import javax.validation.Valid;
 @SuppressWarnings("unused")
 public class AuthenticationController
 {
-
     private UserService userService;
     private AuthenticationService authService;
 

@@ -18,6 +18,7 @@ import org.ucl.newton.common.serialization.JsonSerializer;
 import org.ucl.newton.common.serialization.Serializer;
 
 import javax.inject.Inject;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +50,10 @@ public class RestServer
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void setAddress(URI address) {
+        this.address = address.toString();
     }
 
     public String getAddress() {

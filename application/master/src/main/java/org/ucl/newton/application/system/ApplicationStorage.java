@@ -11,7 +11,7 @@ package org.ucl.newton.application.system;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
-import org.ucl.newton.common.file.FilePathUtils;
+import org.ucl.newton.common.file.PathUtils;
 
 import javax.inject.Inject;
 import java.io.*;
@@ -35,7 +35,7 @@ public class ApplicationStorage
     }
 
     public String getRootPath() {
-        return FilePathUtils.appendTrailingSeparator(rootPath.toString());
+        return PathUtils.appendTrailingSeparator(rootPath.toString());
     }
 
     public InputStream getInputStream(Path relativePath) throws IOException {
@@ -71,5 +71,30 @@ public class ApplicationStorage
         try (OutputStream outputStream = getOutputStream(group, identifier)) {
             IOUtils.copy(inputStream, outputStream);
         }
+    }
+
+
+    public Path getTempDirectory() {
+        return rootPath.resolve("temp");
+    }
+
+    public Path getExperimentDirectory() {
+        return rootPath.resolve("experiment");
+    }
+
+    public Path getPluginsDirectory() {
+        return rootPath.resolve("plugins");
+    }
+
+    public Path getProcessorDirectory() {
+        return getPluginsDirectory().resolve("processor");
+    }
+
+    public Path getDataDirectory() {
+        return rootPath.resolve("data");
+    }
+
+    public Path getIndexDirectory() {
+        return rootPath.resolve("index");
     }
 }

@@ -53,23 +53,34 @@ public class Experiment
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @ManyToOne
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "storage_config_id")
+    private StorageConfiguration storageConfig;
+
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="processor_configuration_id")
     private DataProcessorConfiguration processorConfiguration;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name = "experiment_datasources",
-        joinColumns = @JoinColumn(name = "experiement_id", referencedColumnName = "exp_id"),
-        inverseJoinColumns = @JoinColumn( name = "datasource_id", referencedColumnName = "ds_id"))
-    private Collection<DataSource> dataSources;
+    @JoinTable(name = "experiment_eds_link",
+        joinColumns = @JoinColumn(name = "exp_id", referencedColumnName = "exp_id"),
+        inverseJoinColumns = @JoinColumn( name = "eds_id", referencedColumnName = "eds_id"))
+    private Collection<ExperimentDataSource> dataSources;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "experiment_versions",
         joinColumns = @JoinColumn(name = "experiment_id", referencedColumnName = "exp_id"),
         inverseJoinColumns = @JoinColumn(name = "version_id", referencedColumnName = "ver_id"))
     private List<ExperimentVersion> versions;
+
+    @Column(name = "exp_out_pattern")
+    private String outputPattern;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "exp_trigger")
+    private ExperimentTriggerType trigger;
 
     public Experiment() {
     }
@@ -81,9 +92,12 @@ public class Experiment
         String description,
         User creator,
         Project project,
+        StorageConfiguration storageConfig,
         DataProcessorConfiguration processorConfiguration,
-        Collection<DataSource> dataSources,
-        List<ExperimentVersion> versions)
+        Collection<ExperimentDataSource> dataSources,
+        List<ExperimentVersion> versions,
+        String outputPattern,
+        ExperimentTriggerType trigger)
     {
         this.id = id;
         this.identifier = identifier;
@@ -91,9 +105,12 @@ public class Experiment
         this.description = description;
         this.creator = creator;
         this.project = project;
+        this.storageConfig = storageConfig;
         this.processorConfiguration = processorConfiguration;
         this.dataSources = dataSources;
         this.versions = versions;
+        this.outputPattern = outputPattern;
+        this.trigger = trigger;
     }
 
     public int getId() {
@@ -125,11 +142,15 @@ public class Experiment
         return project;
     }
 
+    public StorageConfiguration getStorageConfiguration() {
+        return storageConfig;
+    }
+
     public DataProcessorConfiguration getProcessorConfiguration() {
         return processorConfiguration;
     }
 
-    public Collection<DataSource> getDataSources() {
+    public Collection<ExperimentDataSource> getExperimentDataSources() {
         return dataSources;
     }
 
@@ -163,6 +184,14 @@ public class Experiment
         return this;
     }
 
+    public String getOutputPattern() {
+        return outputPattern;
+    }
+
+    public ExperimentTriggerType getTrigger() {
+        return trigger;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;
@@ -177,9 +206,12 @@ public class Experiment
             .append(this.description, that.description)
             .append(this.creator, that.creator)
             .append(this.project, that.project)
+            .append(this.storageConfig, that.storageConfig)
             .append(this.processorConfiguration, that.processorConfiguration)
             .append(this.dataSources, that.dataSources)
             .append(this.versions, that.versions)
+            .append(this.outputPattern, that.outputPattern)
+            .append(this.trigger, that.trigger)
             .isEquals();
     }
 
@@ -192,9 +224,12 @@ public class Experiment
             .append(description)
             .append(creator)
             .append(project)
+            .append(storageConfig)
             .append(processorConfiguration)
             .append(dataSources)
             .append(versions)
+            .append(outputPattern)
+            .append(trigger)
             .toHashCode();
     }
 
@@ -207,9 +242,12 @@ public class Experiment
             .append( "description", description)
             .append("creator", creator)
             .append("project", project)
+            .append("storageConfig", storageConfig)
             .append("processorConfiguration", processorConfiguration)
             .append("dataSources", dataSources)
             .append("versions", versions)
+            .append("outputPattern", outputPattern)
+            .append("trigger", trigger)
             .toString();
     }
 }

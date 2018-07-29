@@ -9,6 +9,12 @@
 
 package org.ucl.newton.bridge;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.util.Collection;
+
 /**
  * Instances of this class represent work that can be executed on an
  * {@link ExecutionNode}.
@@ -18,62 +24,103 @@ package org.ucl.newton.bridge;
 public class ExecutionRequest
 {
     private String id;
-    private int experimentId;
-    private int experimentVersion;
-    private String mainFilename;
-    private String repoUrl;
-    private int type;
-    private String outputPattern;
+    private String experiment;
+    private String version;
+    private String processor;
+    private String script;
+    private String output;
+    private Collection<String> datasources;
 
     public ExecutionRequest() {
     }
 
     public ExecutionRequest(
         String id,
-        int experimentId,
-        int experimentVersion,
-        String mainFilename,
-        String repoUrl,
-        int type,
-        String outputPattern)
+        String experiment,
+        String version,
+        String processor,
+        String script,
+        String output,
+        Collection<String> datasources)
     {
         this.id = id;
-        this.experimentId = experimentId;
-        this.mainFilename = mainFilename;
-        this.repoUrl = repoUrl;
-        this.type = type;
-        this.outputPattern = outputPattern;
+        this.experiment = experiment;
+        this.version = version;
+        this.processor = processor;
+        this.script = script;
+        this.output = output;
+        this.datasources = datasources;
     }
 
     public String getId() {
         return id;
     }
 
+    public String getVersion() {
+        return version;
+    }
+
     public String getExperiment() {
-        return Integer.toString(experimentId);
+        return experiment;
     }
 
-    public int getExperimentId() {
-        return experimentId;
+    public String getProcessor() {
+        return processor;
     }
 
-    public int getExperimentVersion() {
-        return experimentVersion;
+    public String getScript() {
+        return script;
     }
 
-    public String getMainFilename() {
-        return mainFilename;
+    public String getOutput() {
+        return output;
     }
 
-    public String getRepoUrl() {
-        return repoUrl;
+    public Collection<String> getDatasources() {
+        return datasources;
     }
 
-    public int getType() {
-        return type;
+    @Override
+    public boolean equals(Object object) {
+        if (object == null) return false;
+        if (object == this) return true;
+        if (object.getClass() != getClass()) return false;
+
+        ExecutionRequest other = (ExecutionRequest)object;
+        return new EqualsBuilder()
+            .append(this.id, other.id)
+            .append(this.experiment, other.experiment)
+            .append(this.version, other.version)
+            .append(this.processor, other.processor)
+            .append(this.script, other.script)
+            .append(this.output, other.output)
+            .append(this.datasources, other.datasources)
+            .isEquals();
     }
 
-    public String getOutputPattern() {
-        return outputPattern;
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+            .append(id)
+            .append(experiment)
+            .append(version)
+            .append(processor)
+            .append(script)
+            .append(output)
+            .append(datasources)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("id", id)
+            .append("experiment", experiment)
+            .append("version", version)
+            .append("processor", processor)
+            .append("script", script)
+            .append("output", output)
+            .append("datasources", datasources)
+            .toString();
     }
 }

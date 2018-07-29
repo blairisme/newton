@@ -19,6 +19,7 @@ import org.ucl.newton.framework.Experiment;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
@@ -38,8 +39,8 @@ public class ExecutionServiceImpl implements ExecutionService, ExecutionCoordina
     private ExecutionRepository executionRepository;
 
     private Queue<Experiment> executionQueue;
-    private Map<Integer, ExecutionNode> executionAssignment;
-    private Map<Integer, ExecutionRequest> executionRequests;
+    private Map<String, ExecutionNode> executionAssignment;
+    private Map<String, ExecutionRequest> executionRequests;
 
     @Inject
     public ExecutionServiceImpl(ExecutorService executorService, ExecutionRepository executionRepository)
@@ -64,8 +65,8 @@ public class ExecutionServiceImpl implements ExecutionService, ExecutionCoordina
             executionQueue.remove(experiment);
         }
         if (executionAssignment.containsKey(experiment.getId())) {
-            ExecutionNode executionNode = executionAssignment.remove(experiment.getId());
-            ExecutionRequest executionRequest = executionRequests.remove(experiment.getId());
+            ExecutionNode executionNode = executionAssignment.remove(experiment.getIdentifier());
+            ExecutionRequest executionRequest = executionRequests.remove(experiment.getIdentifier());
             executionNode.cancel(executionRequest);
         }
         evaluateExecutionQueue();
@@ -73,16 +74,29 @@ public class ExecutionServiceImpl implements ExecutionService, ExecutionCoordina
 
     @Async
     public void executionComplete(ExecutionResult executionResult) {
-        executionRequests.remove(executionResult.getOwnerId());
-        ExecutionNode executionNode = executionAssignment.remove(executionResult.getOwnerId());
+        try {
+            executionRequests.remove(executionResult.getExperiment());
+            ExecutionNode executionNode = executionAssignment.remove(executionResult.getExperiment());
 
-        executionRepository.persistResult(executionNode, executionResult);
-        executorService.releaseExecutor(executionNode);
+            executionRepository.persistResult(executionNode, executionResult);
+            executorService.releaseExecutor(executionNode);
 
-        evaluateExecutionQueue();
+            evaluateExecutionQueue();
+        }
+        catch (IOException exception) {
+            exception.printStackTrace(); //log
+        }
     }
 
-    public boolean isExecutionComplete(int experimentId) {
+    @Async
+    @Override
+    public void executionFailed(String error) {
+        this.executionQueue.clear(); //temp
+        this.executionAssignment.clear(); //temp
+        this.executionRequests .clear(); //temp
+    }
+
+    public boolean isExecutionComplete(String experimentId) {
         for (Experiment experiment : executionQueue){
             if (Objects.equals(experiment.getId(), experimentId)) {
                 return false;
@@ -98,7 +112,7 @@ public class ExecutionServiceImpl implements ExecutionService, ExecutionCoordina
         if (executionQueue.contains(experiment)) {
             return false;
         }
-        if (executionAssignment.containsKey(experiment.getId())) {
+        if (executionAssignment.containsKey(experiment.getIdentifier())) {
             return false;
         }
         return true;
@@ -114,8 +128,8 @@ public class ExecutionServiceImpl implements ExecutionService, ExecutionCoordina
             ExecutionRequest executionRequest = requestBuilder.build();
             ExecutionNode executionNode = executorService.reserveExecutor();
 
-            executionAssignment.put(experiment.getId(), executionNode);
-            executionRequests.put(experiment.getId(), executionRequest);
+            executionAssignment.put(experiment.getIdentifier(), executionNode);
+            executionRequests.put(experiment.getIdentifier(), executionRequest);
 
             executionNode.execute(executionRequest);
         }

@@ -1,15 +1,62 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.common.file;
 
+import org.apache.commons.lang3.Validate;
+
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Utility functions to assist work with {@link Path Paths}.
+ *
+ * @author Blair Butterworth
+ */
 public class PathUtils
 {
+    public static String appendTrailingSeparator(String path) {
+        if (! path.endsWith(File.separator)) {
+            return path + File.separator;
+        }
+        return path;
+    }
+
+    public static void createNew(Path path) throws IOException {
+        FileUtils.createNew(path.toFile());
+    }
+
+    public static String getName(Path path) {
+        return path.getFileName().toString();
+    }
+
     public static Collection<Path> getChildren(Path path) {
         Collection<Path> result = new ArrayList<>();
-        for (File file: path.toFile().listFiles()) {
+        File[] files = path.toFile().listFiles();
+
+        if (files != null) {
+            for (File file :files) {
+                result.add(file.toPath());
+            }
+        }
+        return result;
+    }
+
+    public static Collection<Path> findChildren(Path directory, String pattern) {
+        Collection<File> files = FileUtils.findChildren(directory.toFile(), pattern);
+        Collection<Path> result = new ArrayList<>(files.size());
+        for (File file: files) {
             result.add(file.toPath());
         }
         return result;
@@ -21,5 +68,31 @@ public class PathUtils
             result.add(root.resolve(child));
         }
         return result;
+    }
+
+    public static Collection<Path> relativize(Collection<Path> paths, Path root) {
+        Collection<Path> result = new ArrayList<>();
+        for (Path path: paths) {
+            result.add(root.relativize(path));
+        }
+        return result;
+    }
+
+    public static Collection<File> toFile(Collection<Path> paths) {
+        Collection<File> result = new ArrayList<>();
+        for (Path path: paths) {
+            result.add(path.toFile());
+        }
+        return result;
+    }
+
+    public static URL toUrl(Path path) {
+        Validate.notNull(path);
+        try {
+            return path.toUri().toURL();
+        }
+        catch (MalformedURLException error) {
+            throw new IllegalArgumentException(error);
+        }
     }
 }

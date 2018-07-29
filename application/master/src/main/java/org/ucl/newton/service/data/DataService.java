@@ -46,7 +46,6 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
         this.applicationStorage = applicationStorage;
     }
 
-
     public void run(){
         for(SourceProvider sourceProvider : sourceProviderService.getSourceProviders()){
             DataStorage dataStorage = new DataStorage(applicationStorage);
@@ -83,7 +82,7 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        //run();
+//        run();
     }
 
     private class ProviderObserver implements DataProviderObserver

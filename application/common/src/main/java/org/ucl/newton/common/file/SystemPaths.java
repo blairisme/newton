@@ -24,6 +24,13 @@ public class SystemPaths
         return Paths.get(tmpdir);
     }
 
+    public static Path getTempDirectory(String name) {
+        Path tempPath = SystemPaths.getTempDirectory();
+        Path newPath = tempPath.resolve(name);
+        newPath.toFile().mkdirs();
+        return newPath;
+    }
+
     public static Path getUserDirectory() {
         String userDirectory = System.getProperty("user.home");
         return Paths.get(userDirectory);

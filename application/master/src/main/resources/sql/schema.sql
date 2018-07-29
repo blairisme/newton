@@ -82,7 +82,6 @@ CREATE TABLE IF NOT EXISTS project_datasources (
 CREATE TABLE IF NOT EXISTS datasources (
     ds_id INT NOT NULL AUTO_INCREMENT,
     ds_name VARCHAR(45) NOT NULL,
-    ds_version INT NOT NULL,
     ds_data_location VARCHAR(100) NOT NULL,
     PRIMARY KEY (ds_id)
 );
@@ -107,6 +106,11 @@ CREATE TABLE IF NOT EXISTS processor_configuration (
 
 
 /*** Experiments ***/
+/* Create table to store an experiments storage configuration */
+CREATE TABLE IF NOT EXISTS storage_configuration (
+  sc_id INT NOT NULL AUTO_INCREMENT,
+  sc_type VARCHAR(20) NOT NULL,
+);
 
 /* Create experiment table to store data relating to experiments */
 CREATE TABLE IF NOT EXISTS experiments (
@@ -116,20 +120,32 @@ CREATE TABLE IF NOT EXISTS experiments (
     exp_description VARCHAR(500),
     project_id INT NOT NULL,
     creator_id INT NOT NULL,
+    storage_config_id INT NOT NULL,
     processor_configuration_id INT NOT NULL,
+    exp_out_pattern VARCHAR(100) NOT NULL,
+    exp_trigger VARCHAR(20) NOT NULL,
     PRIMARY KEY (exp_id),
     CONSTRAINT fk_experiment_project FOREIGN KEY (project_id) REFERENCES projects(id),
     CONSTRAINT fk_experiment_creator FOREIGN KEY (creator_id) REFERENCES users(id),
+    CONSTRAINT fk_experiment_storage FOREIGN KEY (storage_config_id) REFERENCES storage_configuration(sc_id),
     CONSTRAINT fk_experiment_processor FOREIGN KEY (processor_configuration_id) REFERENCES processor_configuration(id)
 );
 
-/* Create table to link experiments to the data sources used */
-CREATE TABLE IF NOT EXISTS experiment_datasources (
-    experiement_id INT NOT NULL,
-    datasource_id INT NOT NULL,
-    PRIMARY KEY (experiement_id, datasource_id),
-    CONSTRAINT fk_experiement FOREIGN KEY (experiement_id) REFERENCES experiments(exp_id),
-    CONSTRAINT fk_datasource FOREIGN KEY (datasource_id) REFERENCES datasources(ds_id)
+/* Creates table for experiment data sources */
+CREATE TABLE IF NOT EXISTS eds (
+    eds_id INT NOT NULL AUTO_INCREMENT,
+    ds_id INT NOT NULL,
+    eds_custom_location VARCHAR(100) NOT NULL,
+    PRIMARY KEY (eds_id),
+);
+
+/* Create table to link experiments to the experiment data sources used */
+CREATE TABLE IF NOT EXISTS experiment_eds_link (
+    exp_id INT NOT NULL,
+    eds_id INT NOT NULL,
+    PRIMARY KEY (exp_id, eds_id),
+    CONSTRAINT fk_experiement FOREIGN KEY (exp_id) REFERENCES experiments(exp_id),
+    CONSTRAINT fk_datasource FOREIGN KEY (eds_id) REFERENCES eds(eds_id)
 );
 
 /* Create table to store experiment versions */
@@ -184,6 +200,13 @@ CREATE TABLE IF NOT EXISTS executors (
     username VARCHAR(100) NOT NULL,
     password VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS plugin (
+  id INT NOT NULL AUTO_INCREMENT,
+  identifier VARCHAR(100) NOT NULL,
+  location VARCHAR(200) NOT NULL,
+  PRIMARY KEY (id)
 );
 
 

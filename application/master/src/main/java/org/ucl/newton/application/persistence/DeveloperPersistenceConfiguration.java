@@ -16,14 +16,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.ucl.newton.common.file.SystemUtils;
+import org.ucl.newton.common.file.SystemPaths;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -49,7 +47,7 @@ public class DeveloperPersistenceConfiguration
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[]{"org.ucl.newton.framework"});
+        sessionFactory.setPackagesToScan("org.ucl.newton.framework", "org.ucl.newton.service");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
@@ -93,7 +91,7 @@ public class DeveloperPersistenceConfiguration
     }
 
     private String getIndexPath() {
-        Path indexPath = SystemUtils.newTempDirectory("developer/index");
+        Path indexPath = SystemPaths.getTempDirectory("developer/index");
         indexPath.toFile().delete();
         return indexPath.toString();
     }

@@ -23,7 +23,7 @@ public class SourceProviderRepositoryTest {
     public void addSourceProvider(){
         SourceProvider sourceProvider = new SourceProvider(0,"lib/WeatherDataProvider.jar","org.ucl.WeatherDataProvider.weather.WeatherDataProvider","1.0");
         SourceProvider a = repository.addSourceProvider(sourceProvider);
-        Assert.assertEquals(2,a.getId());
+        Assert.assertEquals(3,a.getId());
     }
     @Test
     public void getSourceProvider(){

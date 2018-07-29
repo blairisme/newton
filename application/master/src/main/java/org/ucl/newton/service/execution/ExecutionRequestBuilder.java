@@ -12,6 +12,8 @@ package org.ucl.newton.service.execution;
 import org.ucl.newton.bridge.ExecutionRequest;
 import org.ucl.newton.framework.Experiment;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -22,28 +24,28 @@ import java.util.UUID;
 public class ExecutionRequestBuilder
 {
     private String id;
-    private int experimentId;
-    private int experimentVersion;
-    private String mainFilename;
-    private String repoUrl;
-    private int type;
-    private String outputPattern;
+    private String experiment;
+    private String version;
+    private String processor;
+    private String script;
+    private String output;
+    private Collection<String> dataSources;
 
     public ExecutionRequestBuilder() {
         this.id = UUID.randomUUID().toString();
-        this.type = 0;
-        this.mainFilename = "test.py";
-        this.repoUrl = "https://github.com/ziad-alhalabi/python-test/archive/master.zip";
-        this.outputPattern = "*.csv";
+        this.processor = "python";
+        this.script = "test.py";
+        this.output = "*.csv";
+        this.dataSources = Arrays.asList("weather.csv");
     }
 
     public ExecutionRequestBuilder forExperiment(Experiment experiment) {
-        experimentId = experiment.getId();
-        experimentVersion = experiment.getVersions().size() + 1;
+        this.experiment = experiment.getIdentifier();
+        this.version = Integer.toString(experiment.getVersions().size() + 1);
         return this;
     }
 
     public ExecutionRequest build() {
-        return new ExecutionRequest(id, experimentId, experimentVersion, mainFilename, repoUrl, type, outputPattern);
+        return new ExecutionRequest(id, experiment, version, processor, script, output, dataSources);
     }
 }
