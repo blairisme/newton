@@ -14,6 +14,7 @@ package org.ucl.newton.sdk.data;
  * source has been updated.
  *
  * @author Blair Butterworth
+ * @author Xiaolong Chen
  */
 public interface DataProviderObserver
 {

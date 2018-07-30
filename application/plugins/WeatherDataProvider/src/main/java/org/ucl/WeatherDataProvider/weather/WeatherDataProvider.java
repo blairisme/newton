@@ -17,9 +17,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
 /**
- * Instances of this class provide org.ucl.WeatherDataProvider.weather data to the Newton system.
+ * Instances of this class provide weather data to the Newton system.
  *
  * @author Xiaolong Chen
  * @author Blair Butterworth
@@ -28,6 +27,21 @@ public class WeatherDataProvider implements DataProvider
 {
     private DataProviderObserver observer;
     private ScheduledExecutorService scheduler;
+
+    @Override
+    public String getIdentifier() {
+        return "newton-weather";
+    }
+
+    @Override
+    public String getName() {
+        return "Weather Data Plugin";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Gathers weather data from World Weather Online weather data service.";
+    }
 
     @Override
     public void start(StorageProvider storageProvider) {

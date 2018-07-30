@@ -13,15 +13,12 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.application.system.ApplicationStorage;
-import org.ucl.newton.framework.SourceProvider;
-import org.ucl.newton.service.data.sdk.DataProvider;
-import org.ucl.newton.service.data.sdk.DataProviderObserver;
+import org.ucl.newton.sdk.data.DataProvider;
+import org.ucl.newton.sdk.data.DataProviderObserver;
+import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.sourceProvider.SourceProviderService;
 
 import javax.inject.Inject;
-import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -37,6 +34,7 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
     private Collection<DataProvider> dataProviders;
     private SourceProviderService sourceProviderService;
     private ApplicationStorage applicationStorage;
+    private PluginService pluginService;
 
     @Inject
     public DataService(SourceProviderService sourceProviderService, ApplicationStorage applicationStorage) {
@@ -47,33 +45,14 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
     }
 
     public void run(){
-        for(SourceProvider sourceProvider : sourceProviderService.getSourceProviders()){
+        for (DataProvider dataProvider : pluginService.getDataProviders()){
             DataStorage dataStorage = new DataStorage(applicationStorage);
-            dataStorage.setProviderId(sourceProvider.getProviderName());
-
-            DataProvider dataProvider = getDataProvider(sourceProvider);
+            dataStorage.setProviderId(dataProvider.getIdentifier());
 
             dataProvider.addObserver(new ProviderObserver());
             dataProvider.start(dataStorage);
             this.dataProviders.add(dataProvider);
         }
-    }
-
-    private DataProvider getDataProvider(SourceProvider sourceProvider) {
-        try {
-            String jarPath = sourceProvider.getJarPath();
-            File file = new File(jarPath);
-            if(!file.exists()) return null;
-
-            URLClassLoader classLoader = new URLClassLoader(new URL[]{file.toURI().toURL()},this.getClass().getClassLoader());
-
-            String providerName = sourceProvider.getProviderName();
-            Class<?> c = classLoader.loadClass(providerName);
-            return (DataProvider)c.newInstance();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public Collection<DataProvider> getDataProviders(){

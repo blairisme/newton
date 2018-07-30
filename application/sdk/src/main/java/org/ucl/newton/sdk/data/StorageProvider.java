@@ -17,6 +17,7 @@ import java.io.OutputStream;
  * Instances of this interface provide access to persisted resources.
  *
  * @author Blair Butterworth
+ * @author Xiaolong Chen
  */
 public interface StorageProvider
 {

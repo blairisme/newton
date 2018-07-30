@@ -10,8 +10,10 @@
 package org.ucl.newton.service.plugin;
 
 import org.springframework.stereotype.Service;
+import org.ucl.newton.sdk.data.DataProvider;
 
 import javax.inject.Inject;
+import java.util.Collection;
 
 /**
  * Instances of this interface provide access to plugin data.
@@ -31,4 +33,27 @@ public class PluginService
     public Plugin getPlugin(String identifier) {
         return pluginRepository.getPluginByIdentifier(identifier);
     }
+
+    public Collection<DataProvider> getDataProviders() {
+        throw new UnsupportedOperationException();
+    }
 }
+
+/*
+    private DataProvider getDataProvider(SourceProvider sourceProvider) {
+        try {
+            String jarPath = sourceProvider.getJarPath();
+            File file = new File(jarPath);
+            if(!file.exists()) return null;
+
+            URLClassLoader classLoader = new URLClassLoader(new URL[]{file.toURI().toURL()},this.getClass().getClassLoader());
+
+            String providerName = sourceProvider.getProviderName();
+            Class<?> c = classLoader.loadClass(providerName);
+            return (DataProvider)c.newInstance();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+ */
