@@ -9,6 +9,7 @@
 
 package org.ucl.WeatherDataProvider.weather;
 
+import org.ucl.newton.common.concurrent.DaemonThreadFactory;
 import org.ucl.newton.sdk.data.DataProvider;
 import org.ucl.newton.sdk.data.DataProviderObserver;
 import org.ucl.newton.sdk.data.StorageProvider;
@@ -45,7 +46,7 @@ public class WeatherDataProvider implements DataProvider
 
     @Override
     public void start(StorageProvider storageProvider) {
-        this.scheduler = Executors.newSingleThreadScheduledExecutor();
+        this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
         this.scheduler.scheduleAtFixedRate(new GetWeatherData(storageProvider),0,1,TimeUnit.HOURS); //run every hour
         observer.dataUpdated();
     }
