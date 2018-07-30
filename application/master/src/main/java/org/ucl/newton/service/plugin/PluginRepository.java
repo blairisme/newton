@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.Collection;
 
 /**
  * Instances of this class provide access to persisted plugin data.
@@ -39,6 +40,15 @@ public class PluginRepository
         Session session = getSession();
         Integer generatedId = (Integer)session.save(project);
         return project.setId(generatedId);
+    }
+
+    @Transactional(readOnly=true)
+    public Collection<Plugin> getPlugins() {
+        Session session = getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Plugin> criteria = builder.createQuery(Plugin.class);
+        criteria.from(Plugin.class);
+        return session.createQuery(criteria).getResultList();
     }
 
     @Transactional(readOnly=true)

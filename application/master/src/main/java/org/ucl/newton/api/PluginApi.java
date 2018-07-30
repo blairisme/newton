@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.ucl.newton.application.resource.ApplicationResource;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.service.plugin.Plugin;
 import org.ucl.newton.service.plugin.PluginService;
@@ -44,6 +43,6 @@ public class PluginApi
     @ResponseBody
     public Resource getProcessor(@PathVariable("processorId") String processorId) {
         Plugin plugin = pluginService.getPlugin(processorId);
-        return new ApplicationResource(plugin.getLocation());
+        return plugin.asResource();
     }
 }

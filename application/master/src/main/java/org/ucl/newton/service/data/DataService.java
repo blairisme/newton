@@ -14,9 +14,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.sdk.data.DataProvider;
-import org.ucl.newton.sdk.data.DataProviderObserver;
 import org.ucl.newton.service.plugin.PluginService;
-import org.ucl.newton.service.sourceProvider.SourceProviderService;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -27,29 +25,30 @@ import java.util.Collection;
  * data sets to the system.
  *
  * @author Blair Butterworth
+ * @author Xiaolong Chen
  */
 @Service
 public class DataService implements ApplicationListener<ContextRefreshedEvent>
 {
-    private Collection<DataProvider> dataProviders;
-    private SourceProviderService sourceProviderService;
-    private ApplicationStorage applicationStorage;
     private PluginService pluginService;
+    private ApplicationStorage applicationStorage;
+    private Collection<DataProvider> dataProviders;
 
     @Inject
-    public DataService(SourceProviderService sourceProviderService, ApplicationStorage applicationStorage) {
+    public DataService(ApplicationStorage applicationStorage, PluginService pluginService) {
 
         this.dataProviders = new ArrayList<>();
-        this.sourceProviderService = sourceProviderService;
+        this.pluginService = pluginService;
         this.applicationStorage = applicationStorage;
     }
 
-    public void run(){
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
         for (DataProvider dataProvider : pluginService.getDataProviders()){
             DataStorage dataStorage = new DataStorage(applicationStorage);
             dataStorage.setProviderId(dataProvider.getIdentifier());
 
-            dataProvider.addObserver(new ProviderObserver());
+            dataProvider.addObserver(new DataObserver());
             dataProvider.start(dataStorage);
             this.dataProviders.add(dataProvider);
         }
@@ -57,18 +56,5 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
 
     public Collection<DataProvider> getDataProviders(){
         return dataProviders;
-    }
-
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-//        run();
-    }
-
-    private class ProviderObserver implements DataProviderObserver
-    {
-        @Override
-        public void dataUpdated() {
-
-        }
     }
 }

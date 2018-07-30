@@ -9,10 +9,17 @@
 
 package org.ucl.newton.service.plugin;
 
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.ucl.newton.common.exception.InvalidPluginException;
+import org.ucl.newton.common.lang.JarClassLoader;
+import org.ucl.newton.common.lang.JarInstanceLoader;
 import org.ucl.newton.sdk.data.DataProvider;
 
 import javax.inject.Inject;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -35,25 +42,24 @@ public class PluginService
     }
 
     public Collection<DataProvider> getDataProviders() {
-        throw new UnsupportedOperationException();
+        try {
+            Collection<URL> plugins = getPluginLocations();
+            JarClassLoader classLoader = new JarClassLoader(plugins);
+            JarInstanceLoader instanceLoader = new JarInstanceLoader(classLoader);
+            return instanceLoader.getImplementors(DataProvider.class, "org.ucl");
+        }
+        catch (ReflectiveOperationException | IOException error) {
+            throw new InvalidPluginException(error);
+        }
+    }
+
+    private Collection<URL> getPluginLocations() throws IOException {
+
+        Collection<URL> result = new ArrayList<>();
+        for (Plugin plugin: pluginRepository.getPlugins()) {
+            Resource resource = plugin.asResource();
+            result.add(resource.getURL());
+        }
+        return result;
     }
 }
-
-/*
-    private DataProvider getDataProvider(SourceProvider sourceProvider) {
-        try {
-            String jarPath = sourceProvider.getJarPath();
-            File file = new File(jarPath);
-            if(!file.exists()) return null;
-
-            URLClassLoader classLoader = new URLClassLoader(new URL[]{file.toURI().toURL()},this.getClass().getClassLoader());
-
-            String providerName = sourceProvider.getProviderName();
-            Class<?> c = classLoader.loadClass(providerName);
-            return (DataProvider)c.newInstance();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
- */
