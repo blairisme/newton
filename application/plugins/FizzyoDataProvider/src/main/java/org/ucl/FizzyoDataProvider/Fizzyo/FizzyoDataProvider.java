@@ -1,8 +1,8 @@
 package org.ucl.FizzyoDataProvider.Fizzyo;
 
-import org.ucl.newton.service.data.sdk.DataProvider;
-import org.ucl.newton.service.data.sdk.DataProviderObserver;
-import org.ucl.newton.service.data.sdk.StorageProvider;
+import org.ucl.newton.sdk.data.DataProvider;
+import org.ucl.newton.sdk.data.DataProviderObserver;
+import org.ucl.newton.sdk.data.StorageProvider;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

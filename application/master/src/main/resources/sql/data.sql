@@ -143,8 +143,8 @@ INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 2);
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 3);
 
 /* Source Provider */
-INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (1, 'lib/WeatherDataProvider.jar', 'org.ucl.WeatherDataProvider.weather.WeatherDataProvider', '1.0');
-INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (2, 'lib/FizzyoDataProvider.jar', 'org.ucl.FizzyoDataProvider.Fizzyo.FizzyoDataProvider', '1.0');
+INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (1, 'src/main/resources/plugins/data/WeatherDataProvider.jar', 'org.ucl.WeatherDataProvider.weather.WeatherDataProvider', '1.0');
+INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (2, 'src/main/resources/plugins/data/FizzyoDataProvider.jar', 'org.ucl.FizzyoDataProvider.Fizzyo.FizzyoDataProvider', '1.0');
 
 /*** System Settings ***/
 
