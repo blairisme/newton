@@ -12,9 +12,25 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Xiaolong Chen
  */
-public class FizzyoDataProvider implements DataProvider {
+public class FizzyoDataProvider implements DataProvider
+{
     private DataProviderObserver observer;
     private ScheduledExecutorService scheduler;
+
+    @Override
+    public String getIdentifier() {
+        return "newton-fizzyo";
+    }
+
+    @Override
+    public String getName() {
+        return "Fizzyo Data Provider";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Obtains data from the Fizzyo cloud.";
+    }
 
     @Override
     public void start(StorageProvider storageProvider) {

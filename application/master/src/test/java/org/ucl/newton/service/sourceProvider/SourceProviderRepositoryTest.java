@@ -1,6 +1,7 @@
 package org.ucl.newton.service.sourceProvider;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
@@ -12,6 +13,7 @@ import org.ucl.newton.framework.SourceProvider;
 import javax.inject.Inject;
 import java.util.Collection;
 
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DeveloperPersistenceConfiguration.class})
 @ActiveProfiles("development")
