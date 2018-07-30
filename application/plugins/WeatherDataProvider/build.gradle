@@ -13,7 +13,6 @@ apply plugin: 'java'
 apply plugin: 'idea'
 
 group = 'org.ucl.newton'
-version = '0.0.1'
 
 dependencies {
     compile project(':application:sdk')
@@ -26,11 +25,6 @@ dependencies {
     testCompile group: 'org.mockito', name:'mockito-core', version: '2.7.22'
 }
 
-jar {
-    from {
-        configurations.runtime.collect { zipTree(it) }
-    }
-}
 
 
 

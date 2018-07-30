@@ -17,7 +17,6 @@ buildscript {
     }
 }
 group = 'org.ucl.newton'
-version = '0.0.1'
 
 dependencies {
 	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
@@ -26,12 +25,6 @@ dependencies {
 
     testCompile group: 'junit', name:'junit', version: '4.12'
     testCompile group: 'org.mockito', name:'mockito-core', version: '2.7.22'
-}
-
-jar {
-    from {
-        configurations.runtime.collect { zipTree(it) }
-    }
 }
 
 
