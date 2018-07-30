@@ -29,9 +29,8 @@ apply plugin: 'org.akhikhl.gretty'
 dependencies {
     compile project(':application:common')
     compile project(':application:bridge')
-    
-	compile files('lib/WeatherDataProvider.jar','lib/FizzyoDataProvider.jar')
-//    compile.files('lib/FizzyoDataProvider.jar')
+    compile project(':application:plugins:WeatherDataProvider')
+    compile project(':application:plugins:FizzyoDataProvider')
     
 	compile group: 'javax.servlet', name: 'jstl', version: '1.2'
     compile group: 'javax.inject', name: 'javax.inject', version: '1'
@@ -80,6 +79,18 @@ task updateJupyterPlugin(type: Copy, dependsOn: ':application:plugins:jupyter:ja
     into project.file('src/main/resources/plugins/processor')
 }
 project.tasks.war.dependsOn updateJupyterPlugin
+
+task updateFizzyoDataProviderJar(type: Copy, dependsOn: ':application:plugins:FizzyoDataProvider:jar'){
+    from project(':application:plugins:FizzyoDataProvider').collect{it.tasks.withType(Jar)}
+    into project.file('src/main/resources/plugins/data')
+}
+project.tasks.war.dependsOn updateFizzyoDataProviderJar
+
+task updateWeatherDataProviderJar(type: Copy, dependsOn: ':application:plugins:WeatherDataProvider:jar'){
+    from project(':application:plugins:WeatherDataProvider').collect{it.tasks.withType(Jar)}
+    into project.file('src/main/resources/plugins/data')
+}
+project.tasks.war.dependsOn updateWeatherDataProviderJar
 
 
 gretty {

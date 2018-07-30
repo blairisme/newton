@@ -118,7 +118,6 @@ public class GetFizzyoData implements Runnable {
         System.out.println(data);
         Gson gson = new Gson();
         fizzyoToken = gson.fromJson(data,FizzyoToken.class);
-
         return fizzyoToken;
 
     }
