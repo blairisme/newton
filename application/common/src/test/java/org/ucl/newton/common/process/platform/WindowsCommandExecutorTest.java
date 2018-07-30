@@ -46,6 +46,6 @@ public class WindowsCommandExecutorTest
         executor.execute(Arrays.asList("echo", "foo"));
 
         String commandOutput = FileUtils.readFileToString(logFile.toFile(), StandardCharsets.UTF_8);
-        Assert.assertEquals("foo\n", commandOutput);
+        Assert.assertEquals("foo"+System.lineSeparator(), commandOutput);
     }
 }
