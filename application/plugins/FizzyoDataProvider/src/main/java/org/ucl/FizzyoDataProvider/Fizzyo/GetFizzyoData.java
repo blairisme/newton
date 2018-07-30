@@ -33,10 +33,10 @@ public class GetFizzyoData implements Runnable {
 
     @Override
     public void run() {
-//        fizzyoToken = new FizzyoToken();
-//
-//        String accessToken = "A1oRkpQJ0dNEGjwVLVmJKKzbLOvE2Mwz";
-//        fizzyoToken.setAccessToken(accessToken);
+        fizzyoToken = new FizzyoToken();
+
+        String accessToken = "NR8M7Vl4zbqM7VJrrYZkvrpbprOZqEgL";
+        fizzyoToken.setAccessToken(accessToken);
         Records records = getPacientRecords();
         if(records == null)
             return;
