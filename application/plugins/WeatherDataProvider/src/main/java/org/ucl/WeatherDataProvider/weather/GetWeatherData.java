@@ -8,6 +8,7 @@ import org.ucl.WeatherDataProvider.FileUtils;
 import org.ucl.WeatherDataProvider.HttpUtils;
 import org.ucl.WeatherDataProvider.weather.model.WeatherData;
 import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
+import org.ucl.newton.sdk.data.DataProviderObserver;
 import org.ucl.newton.sdk.data.StorageProvider;
 
 
@@ -30,9 +31,11 @@ import java.util.Map;
 
 public class GetWeatherData implements Runnable{
     private StorageProvider storageProvider;
+    private DataProviderObserver observer;
 
-    public GetWeatherData(StorageProvider storageProvider){
+    public GetWeatherData(StorageProvider storageProvider, DataProviderObserver observer){
         this.storageProvider = storageProvider;
+        this.observer = observer;
     }
     @Override
     public void run() {
@@ -46,8 +49,10 @@ public class GetWeatherData implements Runnable{
                 continue;
             listOfRecord.add(getContent(data));
         }
-        if(!listOfRecord.isEmpty())
+        if(!listOfRecord.isEmpty()) {
             writeToOutput(listOfRecord);
+            observer.dataUpdated();
+        }
     }
 
     // list of properties need to be configured instead of hardcode
@@ -60,8 +65,12 @@ public class GetWeatherData implements Runnable{
         Path path = Paths.get(System.getProperty("user.home")).resolve(".newton");
         path = path.resolve("weather").resolve("setting");
         String jsonStr = FileUtils.readFile(path);
-        if (jsonStr == null)
+        if (jsonStr == null){
+            WeatherProperty property = new WeatherProperty("london","united kingdom", "2018-07-04","0252e94bd710446c908123539182906");
+            weatherList.add(property);
             return weatherList;
+        }
+
         Gson gson = new Gson();
         Type type = new TypeToken<List<WeatherProperty>>(){}.getType();
         weatherList = gson.fromJson(jsonStr, type);

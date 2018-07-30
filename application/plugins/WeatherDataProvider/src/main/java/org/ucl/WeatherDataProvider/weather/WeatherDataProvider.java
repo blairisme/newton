@@ -47,8 +47,7 @@ public class WeatherDataProvider implements DataProvider
     @Override
     public void start(StorageProvider storageProvider) {
         this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
-        this.scheduler.scheduleAtFixedRate(new GetWeatherData(storageProvider),0,1,TimeUnit.HOURS); //run every hour
-        observer.dataUpdated();
+        this.scheduler.scheduleAtFixedRate(new GetWeatherData(storageProvider, observer),0,1,TimeUnit.HOURS); //run every hour
     }
 
     @Override
