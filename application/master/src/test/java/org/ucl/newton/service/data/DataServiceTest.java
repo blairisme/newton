@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
-import org.ucl.newton.service.data.sdk.DataProvider;
+import org.ucl.newton.sdk.data.DataProvider;
 
 import javax.inject.Inject;
 import java.util.Collection;
