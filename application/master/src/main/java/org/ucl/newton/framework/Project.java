@@ -55,7 +55,7 @@ public class Project implements Serializable
     @ManyToOne
     private User owner;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @JoinTable(name = "project_membership",
         joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -63,7 +63,6 @@ public class Project implements Serializable
     private Collection<User> members;
 
     @OneToMany
-    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "project_starred",
             joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_starred_project")),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_starred_user"))
@@ -71,7 +70,6 @@ public class Project implements Serializable
     private Collection<User> membersThatStar;
 
     @OneToMany
-    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "project_datasources",
             joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_projds_project")),
             inverseJoinColumns = @JoinColumn(name = "ds_id", referencedColumnName = "ds_id", foreignKey = @ForeignKey(name = "fk_projds_ds"))

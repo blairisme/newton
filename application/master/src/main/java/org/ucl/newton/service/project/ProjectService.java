@@ -49,23 +49,41 @@ public class ProjectService
         return project;
     }
 
-    public Project getProjectByLink(String link) {
-        Project project = repository.getProjectByIdentifier(link);
+    public Project getProjectByIdentifier(String identifier, boolean eagerly) {
+        Project project;
+        if(eagerly) {
+            project = repository.getProjectEagerlyByIdentifier(identifier);
+        } else {
+            project = repository.getProjectByIdentifier(identifier);
+        }
+
         if (project == null) {
-            throw new UnknownProjectException(link);
+            throw new UnknownProjectException(identifier);
         }
         return project;
     }
 
-    public void persistUnstar(String projectName, User user) {
-        Project project = repository.getProjectByIdentifier(projectName);
+    public void persistUnstar(String projectIdentifier, User user) {
+        Project project = getProjectByIdentifier(projectIdentifier, true);
         project.getMembersThatStar().remove(user);
         repository.updateProject(project);
     }
 
-    public void persistStar(String projectName, User user) {
-        Project project = repository.getProjectByIdentifier(projectName);
+    public void persistStar(String projectIdentifier, User user) {
+        Project project = getProjectByIdentifier(projectIdentifier, true);
         project.getMembersThatStar().add(user);
+        repository.updateProject(project);
+    }
+
+    public void persistAddMemberToProject(String projectIdentifier, User user) {
+        Project project = getProjectByIdentifier(projectIdentifier, true);
+        project.getMembers().add(user);
+        repository.updateProject(project);
+    }
+
+    public void persistRemoveMemberFromProject(String projectIdentifier, User user) {
+        Project project = getProjectByIdentifier(projectIdentifier, true);
+        project.getMembers().remove(user);
         repository.updateProject(project);
     }
 }

@@ -27,6 +27,7 @@ import java.util.List;
  * Instances of this class provide access to persisted project data.
  *
  * @author Blair Butterworth
+ * @author John Wilkie
  */
 @Repository
 public class ProjectRepository
@@ -63,6 +64,21 @@ public class ProjectRepository
         criteria.where(builder.equal(projects.get("identifier"), identifier));
 
         return session.createQuery(criteria).getSingleResult();
+    }
+
+    @Transactional(readOnly=true)
+    public Project getProjectEagerlyByIdentifier(String identifier) {
+        Session session = getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Project> criteria = builder.createQuery(Project.class);
+        Root<Project> projects = criteria.from(Project.class);
+        criteria.select(projects);
+        criteria.where(builder.equal(projects.get("identifier"), identifier));
+        Project project = session.createQuery(criteria).getSingleResult();
+        project.getMembers().size();
+        project.getMembersThatStar().size();
+        project.getDataSources().size();
+        return project;
     }
 
     @Transactional(readOnly=true)

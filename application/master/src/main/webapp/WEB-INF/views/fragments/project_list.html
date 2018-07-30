@@ -31,8 +31,8 @@
                     </td>
                     <td class="project-column project-state-container" th:attr="data-order=${project.getLastUpdatedAsEpoch()}">
                         <div class="aligned-cell aligned-right">
-                            <span th:if="${project.getMembersThatStar().contains(user)}"><img class="star"></span>
-                            <span th:unless="${project.getMembersThatStar().contains(user)}"><img class="no-star"></span>
+                            <span th:if="${starredProjects.contains(project)}"><img class="star"></span>
+                            <span th:unless="${starredProjects.contains(project)}"><img class="no-star"></span>
                         </div>
                         <span th:text="${project.getLastUpdatedDescription()}" th:class="cell-text">last updated</span>
                     </td>

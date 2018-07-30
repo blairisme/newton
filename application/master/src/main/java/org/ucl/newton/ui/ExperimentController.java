@@ -80,7 +80,7 @@ public class ExperimentController
     @GetMapping(value = "/project/{project}/new")
     public String newExperiment(@PathVariable("project") String projectName, ModelMap model){
         model.addAttribute("user", userService.getAuthenticatedUser());
-        model.addAttribute("project", projectService.getProjectByLink(projectName));
+        model.addAttribute("project", projectService.getProjectByIdentifier(projectName, true));
         model.addAttribute("experiment", new ExperimentDto());
         model.addAttribute("triggerValues", new String[] {"Manual", "On data change"});
         model.addAttribute("storageValues", new String[] {"Newton"});
@@ -132,7 +132,7 @@ public class ExperimentController
         builder.generateIdentifier(experimentDto.getName());
         builder.setDescription(experimentDto.getDescription());
         builder.setCreator(userService.getAuthenticatedUser());
-        builder.setProject(projectService.getProjectByLink(projectName));
+        builder.setProject(projectService.getProjectByIdentifier(projectName, true));
         builder.setStorageConfiguration(new StorageConfiguration(0, experimentDto.getSelectedStorageValue()));
         builder.setProcessorConfiguration(new DataProcessorConfiguration(0, "", new DataProcessor(0, "", "", experimentDto.getSelectedTypeValue())));
         builder.addDataSources(experimentDto.getDataSourceIds(), experimentDto.getDataSourceLocs());

@@ -49,6 +49,8 @@ INSERT INTO project_membership (project_id, user_id) VALUES (1, 5);
 INSERT INTO project_membership (project_id, user_id) VALUES (2, 1);
 INSERT INTO project_membership (project_id, user_id) VALUES (2, 2);
 INSERT INTO project_membership (project_id, user_id) VALUES (3, 2);
+INSERT INTO project_membership (project_id, user_id) VALUES (3, 3);
+INSERT INTO project_membership (project_id, user_id) VALUES (3, 5);
 INSERT INTO project_membership (project_id, user_id) VALUES (4, 2);
 INSERT INTO project_membership (project_id, user_id) VALUES (5, 2);
 INSERT INTO project_membership (project_id, user_id) VALUES (6, 2);
@@ -65,6 +67,7 @@ INSERT INTO project_starred (project_id, user_id) VALUES (1, 1);
 INSERT INTO project_starred (project_id, user_id) VALUES (1, 2);
 INSERT INTO project_starred (project_id, user_id) VALUES (2, 1);
 INSERT INTO project_starred (project_id, user_id) VALUES (3, 2);
+INSERT INTO project_starred (project_id, user_id) VALUES (3, 5);
 INSERT INTO project_starred (project_id, user_id) VALUES (4, 2);
 INSERT INTO project_starred (project_id, user_id) VALUES (2, 2);
 INSERT INTO project_starred (project_id, user_id) VALUES (8, 2);
@@ -139,10 +142,6 @@ INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 1);
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 2);
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 3);
 
-/* Source Provider */
-INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (1, 'lib/WeatherDataProvider.jar', 'org.ucl.WeatherDataProvider.weather.WeatherDataProvider', '1.0');
-INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (2, 'lib/FizzyoDataProvider.jar', 'org.ucl.FizzyoDataProvider.Fizzyo.FizzyoDataProvider', '1.0');
-
 /*** System Settings ***/
 
 /* Slave configuration */
@@ -150,4 +149,6 @@ INSERT INTO executors (id, address, username, password) VALUES (1, 'http://local
 
 INSERT INTO plugin (id, identifier, location) VALUES (1, 'newton-python', 'classpath:/plugins/processor/python.jar');
 INSERT INTO plugin (id, identifier, location) VALUES (2, 'newton-jupyter', 'classpath:/plugins/processor/jupyter.jar');
+INSERT INTO plugin (id, identifier, location) VALUES (3, 'newton-weather', 'classpath:/plugins/data/WeatherDataProvider.jar');
+INSERT INTO plugin (id, identifier, location) VALUES (4, 'newton-fizzyo', 'classpath:/plugins/data/FizzyoDataProvider.jar');
 

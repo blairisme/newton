@@ -53,32 +53,11 @@ public class HttpUtils {
         }
     }
 
-
-    public static String doPost(String url, Map header, String body){
-
-        try{
-            HttpRequestWithBody request =Unirest.post(url).headers(header);
-            request.body(body);
-            HttpResponse<String> response = request.asString();
-            int status = response.getStatus();
-            if (status >= 200 && status <300){
-                return response.getBody();
-            }
-            else {
-                System.out.println("status code:" + status);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
     public static String doPost(String url, Map header, Map params){
 
         try{
             HttpRequestWithBody request =Unirest.post(url).headers(header);
             request.fields(params);
-//            request.body(toBody(params));
-//            request.queryString(params);
             HttpResponse<String> response = request.asString();
             int status = response.getStatus();
             if (status >= 200 && status <300){
@@ -93,15 +72,6 @@ public class HttpUtils {
         }
         return null;
     }
-
-//    private static String toBody(Map<String, String> params) {
-//        List<String> paramList = new ArrayList<>();
-//        for(String key : params.keySet()){
-//            String value = params.get(key);
-//            paramList.add(key + ": " + value);
-//        }
-//        return String.join("\\n",paramList);
-//    }
 
     public static String doGet(String url, Map header, Map params){
         try {

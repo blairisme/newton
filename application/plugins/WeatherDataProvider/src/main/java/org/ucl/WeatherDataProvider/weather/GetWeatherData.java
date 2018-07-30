@@ -8,7 +8,9 @@ import org.ucl.WeatherDataProvider.FileUtils;
 import org.ucl.WeatherDataProvider.HttpUtils;
 import org.ucl.WeatherDataProvider.weather.model.WeatherData;
 import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
-import org.ucl.newton.service.data.sdk.StorageProvider;
+import org.ucl.newton.sdk.data.DataProviderObserver;
+import org.ucl.newton.sdk.data.StorageProvider;
+
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,23 +31,28 @@ import java.util.Map;
 
 public class GetWeatherData implements Runnable{
     private StorageProvider storageProvider;
+    private DataProviderObserver observer;
 
-    public GetWeatherData(StorageProvider storageProvider){
+    public GetWeatherData(StorageProvider storageProvider, DataProviderObserver observer){
         this.storageProvider = storageProvider;
+        this.observer = observer;
     }
     @Override
     public void run() {
-        //List<WeatherProperty> weatherList = fromConfiguration("weatherProperties");
         List<WeatherProperty> weatherList = getWeatherList();
         List<List<String>> listOfRecord = new ArrayList<>();
         if(!weatherList.isEmpty())
             listOfRecord.add(getHeader());
         for (WeatherProperty property : weatherList){
             String data = getDataFromWWO(property);
+            if (data == null)
+                continue;
             listOfRecord.add(getContent(data));
         }
-        if(!listOfRecord.isEmpty())
+        if(!listOfRecord.isEmpty()) {
             writeToOutput(listOfRecord);
+            observer.dataUpdated();
+        }
     }
 
     // list of properties need to be configured instead of hardcode
@@ -58,8 +65,12 @@ public class GetWeatherData implements Runnable{
         Path path = Paths.get(System.getProperty("user.home")).resolve(".newton");
         path = path.resolve("weather").resolve("setting");
         String jsonStr = FileUtils.readFile(path);
-        if (jsonStr == null)
+        if (jsonStr == null){
+            WeatherProperty property = new WeatherProperty("london","united kingdom", "2018-07-04","0252e94bd710446c908123539182906");
+            weatherList.add(property);
             return weatherList;
+        }
+
         Gson gson = new Gson();
         Type type = new TypeToken<List<WeatherProperty>>(){}.getType();
         weatherList = gson.fromJson(jsonStr, type);

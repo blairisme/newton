@@ -28,6 +28,7 @@ import static java.util.Collections.unmodifiableList;
  *
  * @author Blair Butterworth
  */
+@SuppressWarnings("unused")
 public class JupyterProcessor implements DataProcessor
 {
     private static final List<String> GENERATE_HTML = unmodifiableList(asList("jupyter", "nbconvert", "--to", "html"));
@@ -46,11 +47,6 @@ public class JupyterProcessor implements DataProcessor
     @Override
     public String getDescription() {
         return "Provides the ability to use Jupyter notebooks to perform data analysis.";
-    }
-
-    @Override
-    public String getTechnologyType() {
-        return "Jupyter Notebook";
     }
 
     @Override

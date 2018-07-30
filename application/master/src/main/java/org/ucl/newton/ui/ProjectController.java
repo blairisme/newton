@@ -66,14 +66,14 @@ public class ProjectController
         User user = userService.getAuthenticatedUser();
         model.addAttribute("user", user);
         model.addAttribute("projects", projectService.getProjects(user));
-        model.addAttribute("projectsStarred", projectService.getStarredProjects(user));
+        model.addAttribute("starredProjects", projectService.getStarredProjects(user));
         return "project/list";
     }
 
     @RequestMapping(value = "/project/{name}", method = RequestMethod.GET)
     public String details(@PathVariable("name")String name, ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
-        model.addAttribute("project", projectService.getProjectByLink(name));
+        model.addAttribute("project", projectService.getProjectByIdentifier(name, true));
         model.addAttribute("experiments", experimentService.getExperimentsByParentProjectName(name));
         return "project/details";
     }
@@ -94,16 +94,11 @@ public class ProjectController
 
     @RequestMapping(value = "/project/{name}/settings", method = RequestMethod.GET)
     public String setting(@PathVariable("name")String name, ModelMap model) {
-        model.addAttribute("user", userService.getAuthenticatedUser());
-        model.addAttribute("project", projectService.getProjectByLink(name));
+        User user = userService.getAuthenticatedUser();
+        model.addAttribute("user", user);
+        model.addAttribute("project", projectService.getProjectByIdentifier(name, true));
+        model.addAttribute("starredProjects", projectService.getStarredProjects(user));
         return "project/settings";
-    }
-
-    @RequestMapping(value = "/project/{name}/members", method = RequestMethod.GET)
-    public String members(@PathVariable("name")String name, ModelMap model) {
-        model.addAttribute("user", userService.getAuthenticatedUser());
-        model.addAttribute("project", projectService.getProjectByLink(name));
-        return "project/members";
     }
 
     @RequestMapping(value = "/project/new", method = RequestMethod.GET)

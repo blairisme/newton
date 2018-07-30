@@ -29,7 +29,7 @@ public class PythonProcessor implements DataProcessor
 
     @Override
     public String getIdentifier() {
-        return "python";//"org.ucl.newton.python";
+        return "newton-python";
     }
 
     @Override
@@ -40,11 +40,6 @@ public class PythonProcessor implements DataProcessor
     @Override
     public String getDescription() {
         return "Provides the ability to use Python scripts to perform data analysis.";
-    }
-
-    @Override
-    public String getTechnologyType() {
-        return "Python";
     }
 
     @Override

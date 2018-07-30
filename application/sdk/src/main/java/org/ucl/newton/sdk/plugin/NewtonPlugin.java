@@ -21,6 +21,4 @@ public interface NewtonPlugin
     String getName();
 
     String getDescription();
-
-    String getTechnologyType();
 }

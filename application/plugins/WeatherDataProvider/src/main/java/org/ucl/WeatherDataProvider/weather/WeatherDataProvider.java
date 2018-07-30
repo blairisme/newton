@@ -9,17 +9,17 @@
 
 package org.ucl.WeatherDataProvider.weather;
 
-import org.ucl.newton.service.data.sdk.DataProvider;
-import org.ucl.newton.service.data.sdk.DataProviderObserver;
-import org.ucl.newton.service.data.sdk.StorageProvider;
+import org.ucl.newton.common.concurrent.DaemonThreadFactory;
+import org.ucl.newton.sdk.data.DataProvider;
+import org.ucl.newton.sdk.data.DataProviderObserver;
+import org.ucl.newton.sdk.data.StorageProvider;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
 /**
- * Instances of this class provide org.ucl.WeatherDataProvider.weather data to the Newton system.
+ * Instances of this class provide weather data to the Newton system.
  *
  * @author Xiaolong Chen
  * @author Blair Butterworth
@@ -30,10 +30,24 @@ public class WeatherDataProvider implements DataProvider
     private ScheduledExecutorService scheduler;
 
     @Override
+    public String getIdentifier() {
+        return "newton-weather";
+    }
+
+    @Override
+    public String getName() {
+        return "Weather Data Plugin";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Gathers weather data from World Weather Online weather data service.";
+    }
+
+    @Override
     public void start(StorageProvider storageProvider) {
-        this.scheduler = Executors.newSingleThreadScheduledExecutor();
-        this.scheduler.scheduleAtFixedRate(new GetWeatherData(storageProvider),0,1,TimeUnit.HOURS); //run every hour
-        observer.dataUpdated();
+        this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
+        this.scheduler.scheduleAtFixedRate(new GetWeatherData(storageProvider, observer),0,1,TimeUnit.HOURS); //run every hour
     }
 
     @Override

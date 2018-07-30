@@ -7,13 +7,14 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.service.data.sdk;
+package org.ucl.newton.sdk.data;
 
 /**
  * Implementors of this interface provide a method that is called when a data
  * source has been updated.
  *
  * @author Blair Butterworth
+ * @author Xiaolong Chen
  */
 public interface DataProviderObserver
 {

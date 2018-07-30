@@ -11,15 +11,12 @@
 
 apply plugin: 'java'
 apply plugin: 'idea'
-buildscript {
-    repositories {
-        jcenter()
-    }
-}
+
 group = 'org.ucl.newton'
-version = '0.0.1'
 
 dependencies {
+    compile project(':application:sdk')
+
 	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
 	compile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
 	compile group: 'net.sourceforge.javacsv', name: 'javacsv', version: '2.0'
@@ -28,11 +25,6 @@ dependencies {
     testCompile group: 'org.mockito', name:'mockito-core', version: '2.7.22'
 }
 
-jar {
-    from {
-        configurations.runtime.collect { zipTree(it) }
-    }
-}
 
 
 

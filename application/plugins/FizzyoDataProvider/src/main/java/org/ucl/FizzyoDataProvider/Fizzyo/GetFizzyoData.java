@@ -2,12 +2,10 @@ package org.ucl.FizzyoDataProvider.Fizzyo;
 
 import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import javafx.util.Pair;
 import org.ucl.FizzyoDataProvider.FileUtils;
 import org.ucl.FizzyoDataProvider.Fizzyo.model.*;
 import org.ucl.FizzyoDataProvider.HttpUtils;
-import org.ucl.newton.service.data.sdk.StorageProvider;
+import org.ucl.newton.sdk.data.StorageProvider;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -35,10 +33,10 @@ public class GetFizzyoData implements Runnable {
 
     @Override
     public void run() {
-//        fizzyoToken = new FizzyoToken();
-//
-//        String accessToken = "A1oRkpQJ0dNEGjwVLVmJKKzbLOvE2Mwz";
-//        fizzyoToken.setAccessToken(accessToken);
+        fizzyoToken = new FizzyoToken();
+
+        String accessToken = "NR8M7Vl4zbqM7VJrrYZkvrpbprOZqEgL";
+        fizzyoToken.setAccessToken(accessToken);
         Records records = getPacientRecords();
         if(records == null)
             return;
@@ -118,7 +116,6 @@ public class GetFizzyoData implements Runnable {
         System.out.println(data);
         Gson gson = new Gson();
         fizzyoToken = gson.fromJson(data,FizzyoToken.class);
-
         return fizzyoToken;
 
     }
