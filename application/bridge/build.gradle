@@ -12,9 +12,6 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 
-group = 'org.ucl.newton'
-version = '0.0.1'
-
 dependencies {
   compile project(':application:common')
 
@@ -26,4 +23,7 @@ dependencies {
 
   compile group: 'org.springframework', name: 'spring-web', version: '5.0.7.RELEASE'
   compile group: 'org.springframework', name: 'spring-webmvc', version: '5.0.7.RELEASE'
+
+  testCompile group: 'junit', name:'junit', version: '4.12'
+  testCompile group: 'org.mockito', name:'mockito-core', version: '2.7.22'
 }
