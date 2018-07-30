@@ -14,8 +14,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.framework.SourceProvider;
-import org.ucl.newton.service.data.sdk.DataProvider;
-import org.ucl.newton.service.data.sdk.DataProviderObserver;
+import org.ucl.newton.sdk.data.DataProvider;
+import org.ucl.newton.sdk.data.DataProviderObserver;
 import org.ucl.newton.service.sourceProvider.SourceProviderService;
 
 import javax.inject.Inject;

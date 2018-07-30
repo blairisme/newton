@@ -3,7 +3,7 @@ package org.ucl.newton.FizzyoDataProvider;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.ucl.FizzyoDataProvider.Fizzyo.GetFizzyoData;
-import org.ucl.newton.service.data.sdk.StorageProvider;
+import org.ucl.newton.sdk.data.StorageProvider;
 
 import java.io.IOException;
 import java.io.OutputStream;

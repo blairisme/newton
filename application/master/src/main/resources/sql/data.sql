@@ -143,8 +143,8 @@ INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 2);
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 3);
 
 /* Source Provider */
-INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (1, 'lib/WeatherDataProvider.jar', 'org.ucl.WeatherDataProvider.weather.WeatherDataProvider', '1.0');
-INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (2, 'lib/FizzyoDataProvider.jar', 'org.ucl.FizzyoDataProvider.Fizzyo.FizzyoDataProvider', '1.0');
+INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (1, 'src/main/resources/plugins/data/WeatherDataProvider.jar', 'org.ucl.WeatherDataProvider.weather.WeatherDataProvider', '1.0');
+INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (2, 'src/main/resources/plugins/data/FizzyoDataProvider.jar', 'org.ucl.FizzyoDataProvider.Fizzyo.FizzyoDataProvider', '1.0');
 
 /*** System Settings ***/
 
@@ -153,4 +153,6 @@ INSERT INTO executors (id, address, username, password) VALUES (1, 'http://local
 
 INSERT INTO plugin (id, identifier, location) VALUES (1, 'newton-python', 'classpath:/plugins/processor/python.jar');
 INSERT INTO plugin (id, identifier, location) VALUES (2, 'newton-jupyter', 'classpath:/plugins/processor/jupyter.jar');
+INSERT INTO plugin (id, identifier, location) VALUES (3, 'newton-data', 'classpath:/plugins/data/WeatherDataProvider.jar');
+INSERT INTO plugin (id, identifier, location) VALUES (4, 'newton-data', 'classpath:/plugins/data/FizzyoDataProvider.jar');
 
