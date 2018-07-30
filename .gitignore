@@ -17,3 +17,5 @@ bin/
 
 ### Visual Studio Code ###
 \.vscode/
+
+application/master/src/main/resources/plugins/data/
