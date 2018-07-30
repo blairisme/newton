@@ -21,7 +21,7 @@ public class SourceProviderRepositoryTest {
 
     @Test
     public void addSourceProvider(){
-        SourceProvider sourceProvider = new SourceProvider(0,"lib/WeatherDataProvider.jar","org.ucl.WeatherDataProvider.weather.WeatherDataProvider","1.0");
+        SourceProvider sourceProvider = new SourceProvider(0,"src/main/resources/plugins/data/WeatherDataProvider.jar","org.ucl.WeatherDataProvider.weather.WeatherDataProvider","1.0");
         SourceProvider a = repository.addSourceProvider(sourceProvider);
         Assert.assertEquals(3,a.getId());
     }
@@ -34,9 +34,9 @@ public class SourceProviderRepositoryTest {
     @Test
     public void getSourceProviderByIdTest(){
         SourceProvider sourceProvider = repository.getSourceProviderById(1);
-        Assert.assertEquals(sourceProvider.getProviderName(),"org.ucl.WeatherDataProvider.weather.WeatherDataProvider");
-        Assert.assertEquals(sourceProvider.getJarPath(),"lib/WeatherDataProvider.jar");
-        Assert.assertEquals(sourceProvider.getVersion(),"1.0");
+        Assert.assertEquals("org.ucl.WeatherDataProvider.weather.WeatherDataProvider",sourceProvider.getProviderName());
+        Assert.assertEquals("src/main/resources/plugins/data/WeatherDataProvider.jar",sourceProvider.getJarPath());
+        Assert.assertEquals("1.0",sourceProvider.getVersion());
     }
 
     @Test
