@@ -19,9 +19,9 @@ import java.io.OutputStream;
  * @author Blair Butterworth
  * @author Xiaolong Chen
  */
-public interface StorageProvider
+public interface DataStorage
 {
-    InputStream getInputStream(String id) throws IOException;
+    InputStream getInputStream(DataSource dataSource) throws IOException;
 
-    OutputStream getOutputStream(String id) throws IOException;
+    OutputStream getOutputStream(DataSource dataSource) throws IOException;
 }

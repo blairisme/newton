@@ -10,10 +10,10 @@
 package org.ucl.WeatherDataProvider.weather;
 
 import org.ucl.newton.common.concurrent.DaemonThreadFactory;
-import org.ucl.newton.sdk.data.DataProvider;
-import org.ucl.newton.sdk.data.DataProviderObserver;
-import org.ucl.newton.sdk.data.StorageProvider;
+import org.ucl.newton.sdk.data.*;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -24,10 +24,12 @@ import java.util.concurrent.TimeUnit;
  * @author Xiaolong Chen
  * @author Blair Butterworth
  */
-public class WeatherDataProvider implements DataProvider
+public class WeatherDataProvider extends BasicDataProvider
 {
-    private DataProviderObserver observer;
     private ScheduledExecutorService scheduler;
+
+    public WeatherDataProvider(){
+    }
 
     @Override
     public String getIdentifier() {
@@ -45,23 +47,18 @@ public class WeatherDataProvider implements DataProvider
     }
 
     @Override
-    public void start(StorageProvider storageProvider) {
+    public Collection<DataSource> getDataSources() {
+        return Arrays.asList(new BasicDataSource(this, "weather", "Weather Data"));
+    }
+
+    @Override
+    public void start() {
         this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
-        this.scheduler.scheduleAtFixedRate(new GetWeatherData(storageProvider, observer),0,1,TimeUnit.HOURS); //run every hour
+        this.scheduler.scheduleAtFixedRate(new GetWeatherData(this), 0, 1, TimeUnit.HOURS); //run every hour
     }
 
     @Override
     public void stop() {
         this.scheduler.shutdown();
-    }
-
-    @Override
-    public void addObserver(DataProviderObserver observer) {
-        this.observer = observer;
-    }
-
-    @Override
-    public void removeObserver(DataProviderObserver observer) {
-        this.observer = null;
     }
 }

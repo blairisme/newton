@@ -1,3 +1,12 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.WeatherDataProvider.weather;
 
 import com.csvreader.CsvWriter;
@@ -8,9 +17,8 @@ import org.ucl.WeatherDataProvider.FileUtils;
 import org.ucl.WeatherDataProvider.HttpUtils;
 import org.ucl.WeatherDataProvider.weather.model.WeatherData;
 import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
-import org.ucl.newton.sdk.data.DataProviderObserver;
-import org.ucl.newton.sdk.data.StorageProvider;
-
+import org.ucl.newton.sdk.data.DataSource;
+import org.ucl.newton.sdk.data.DataStorage;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,15 +36,13 @@ import java.util.Map;
  *
  * @author Xiaolong Chen
  */
+public class GetWeatherData implements Runnable {
+    private WeatherDataProvider provider;
 
-public class GetWeatherData implements Runnable{
-    private StorageProvider storageProvider;
-    private DataProviderObserver observer;
-
-    public GetWeatherData(StorageProvider storageProvider, DataProviderObserver observer){
-        this.storageProvider = storageProvider;
-        this.observer = observer;
+    public GetWeatherData(WeatherDataProvider provider){
+        this.provider = provider;
     }
+
     @Override
     public void run() {
         List<WeatherProperty> weatherList = getWeatherList();
@@ -51,7 +57,7 @@ public class GetWeatherData implements Runnable{
         }
         if(!listOfRecord.isEmpty()) {
             writeToOutput(listOfRecord);
-            observer.dataUpdated();
+            provider.notifyDataUpdated();
         }
     }
 
@@ -116,8 +122,10 @@ public class GetWeatherData implements Runnable{
         return values;
     }
     private void writeToOutput(List<List<String>> list){
-        try {
-            OutputStream output = storageProvider.getOutputStream("weatherData");
+        DataStorage storage = provider.getStorage();
+        DataSource dataSource = provider.getDataSources().iterator().next();
+
+        try (OutputStream output = storage.getOutputStream(dataSource)) {
             if (output != null) {
                 CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("utf-8"));
                 for (List<String> record : list) {
@@ -125,7 +133,8 @@ public class GetWeatherData implements Runnable{
                 }
                 csvWriter.close();
             }
-        }catch (IOException e){
+        }
+        catch (IOException e){
             e.printStackTrace();
         }
     }

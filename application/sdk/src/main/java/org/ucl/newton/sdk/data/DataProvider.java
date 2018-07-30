@@ -11,6 +11,8 @@ package org.ucl.newton.sdk.data;
 
 import org.ucl.newton.sdk.plugin.NewtonPlugin;
 
+import java.util.Collection;
+
 /**
  * Implementors of this interface provide data to the Newton system.
  *
@@ -19,9 +21,15 @@ import org.ucl.newton.sdk.plugin.NewtonPlugin;
  */
 public interface DataProvider extends NewtonPlugin
 {
-    void start(StorageProvider storageProvider);
+    void start();
 
     void stop();
+
+    Collection<DataSource> getDataSources();
+
+    DataStorage getStorage();
+
+    void setStorage(DataStorage storage);
 
     void addObserver(DataProviderObserver observer);
 

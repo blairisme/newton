@@ -12,8 +12,6 @@ package org.ucl.newton.framework;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import javax.persistence.*;
@@ -69,12 +67,14 @@ public class Project implements Serializable
     )
     private Collection<User> membersThatStar;
 
-    @OneToMany
-    @JoinTable(name = "project_datasources",
-            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_projds_project")),
-            inverseJoinColumns = @JoinColumn(name = "ds_id", referencedColumnName = "ds_id", foreignKey = @ForeignKey(name = "fk_projds_ds"))
-    )
-    private Collection<DataSource> dataSources;
+//    @OneToMany
+//    @JoinTable(name = "project_datasources",
+//            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_projds_project"))
+//    )
+    @ElementCollection
+    @CollectionTable(name="project_datasources", joinColumns=@JoinColumn(name="pds_project"))
+    @Column(name = "pds_datasource")
+    private Collection<String> dataSources;
 
     public Project() {
     }
@@ -88,7 +88,7 @@ public class Project implements Serializable
         Date updated,
         User owner,
         Collection<User> members,
-        Collection<DataSource> dataSources)
+        Collection<String> dataSources)
     {
         this.id = id;
         this.identifier = identifier;
@@ -159,11 +159,11 @@ public class Project implements Serializable
         this.membersThatStar = membersThatStar;
     }
 
-    public Collection<DataSource> getDataSources() {
+    public Collection<String> getDataSources() {
         return dataSources;
     }
 
-    public void setDataSources(Collection<DataSource> dataSources) {
+    public void setDataSources(Collection<String> dataSources) {
         this.dataSources = dataSources;
     }
 

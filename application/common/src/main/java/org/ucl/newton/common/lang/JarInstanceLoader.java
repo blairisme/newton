@@ -11,6 +11,7 @@ package org.ucl.newton.common.lang;
 
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -32,7 +33,9 @@ public class JarInstanceLoader
     public <T> Set<T> getImplementors(Class<T> type, String packageRestriction) throws ReflectiveOperationException {
         Set<T> result = new HashSet<>();
         for (Class<? extends T> subType: classLoader.findSubTypes(type, packageRestriction)) {
-            result.add(ConstructorUtils.invokeConstructor(subType));
+            if (! Modifier.isAbstract(subType.getModifiers())) {
+                result.add(ConstructorUtils.invokeConstructor(subType));
+            }
         }
         return result;
     }

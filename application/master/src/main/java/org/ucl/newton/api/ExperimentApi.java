@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.common.archive.ZipUtils;
-import org.ucl.newton.common.file.FileUtils;
-import org.ucl.newton.service.experiment.ExperimentService;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -34,13 +32,11 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public class ExperimentApi
 {
-    private ExperimentService experimentService;
     private ApplicationStorage applicationStorage;
 
     @Inject
-    public ExperimentApi(ApplicationStorage applicationStorage, ExperimentService experimentService) {
+    public ExperimentApi(ApplicationStorage applicationStorage) {
         this.applicationStorage = applicationStorage;
-        this.experimentService = experimentService;
     }
 
     @RequestMapping(value = "/api/experiment/{experimentId}/repository", method = RequestMethod.GET)
@@ -52,7 +48,6 @@ public class ExperimentApi
 
         Path tempPath = applicationStorage.getTempDirectory();
         Path archive = tempPath.resolve(UUID.randomUUID().toString() + ".zip");
-        FileUtils.createNew(archive.toFile());
 
         ZipUtils.zip(repositoryPath, archive);
         return new FileSystemResource(archive.toFile());

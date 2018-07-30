@@ -73,18 +73,9 @@ INSERT INTO project_starred (project_id, user_id) VALUES (2, 2);
 INSERT INTO project_starred (project_id, user_id) VALUES (8, 2);
 INSERT INTO project_starred (project_id, user_id) VALUES (13, 2);
 
-/* Data sources */
-INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (1, 'Weather temp', 'some/loc1');
-INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (2, 'Weather rain', 'some/loc2');
-INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (3, 'Fizzyo HR', 'some/loc3');
-INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (4, 'Fizzyo ACT use', 'some/loc4');
-INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (5, 'Fizzyo steps', 'some/loc5');
-
 /* Project data sources */
-INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 1);
-INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 3);
-INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 4);
-INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 5);
+INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (1, 1, 'newton-weather');
+INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (2, 1, 'newton-fizzyo');
 
 /* Insert into storage configuration */
 INSERT INTO storage_configuration (sc_id, sc_type) VALUES (1, 'Newton');
