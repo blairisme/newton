@@ -66,7 +66,7 @@
                     <div th:replace="fragments/project_list :: project_list(*{__@{projects}__}, 'projectList')"></div>
                 </div>
                 <div id="starredProjects" class="tab-pane fade">
-                    <div th:replace="fragments/project_list :: project_list(*{__@{projectsStarred}__}, 'projectListStarred')"></div>
+                    <div th:replace="fragments/project_list :: project_list(*{__@{starredProjects}__}, 'projectListStarred')"></div>
                 </div>
             </div>
         </div>

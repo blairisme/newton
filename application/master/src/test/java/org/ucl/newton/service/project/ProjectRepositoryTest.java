@@ -9,6 +9,8 @@
 
 package org.ucl.newton.service.project;
 
+import org.hibernate.LazyInitializationException;
+import org.hibernate.NonUniqueResultException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +39,7 @@ public class ProjectRepositoryTest
     private ProjectRepository repository;
     private final int fizzyoId = 1;
     private final int projCancerResId = 2;
+    private String projectFizzyoIdentifier = "project-fizzyo";
 
     @Test
     public void addProjectTest() throws Exception {
@@ -45,6 +48,15 @@ public class ProjectRepositoryTest
 
         Project actual = repository.getProjectByIdentifier("project-a");
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test(expected = NonUniqueResultException.class)
+    public void testAddDuplicateProjects() throws Exception {
+        Project project1 = createProject("project-z", "project Z");
+        Project project2 = createProject("project-z", "project Z");
+        repository.addProject(project1);
+        repository.addProject(project2);
+        repository.getProjectByIdentifier("project-z");
     }
 
     @Test
@@ -60,6 +72,19 @@ public class ProjectRepositoryTest
     }
 
     @Test
+    public void testGetProjectEager() {
+        Project project = repository.getProjectEagerlyByIdentifier(projectFizzyoIdentifier);
+        Assert.assertEquals(5, project.getMembers().size());
+    }
+
+    @Test(expected = LazyInitializationException.class)
+    public void testGetProjectLazy() {
+        Project project = repository.getProjectByIdentifier(projectFizzyoIdentifier);
+        project.getMembers().size();
+    }
+    
+
+    @Test
     public void removeProjectTest() throws Exception {
         Project project = createProject("project-b", "project B");
 
@@ -73,6 +98,22 @@ public class ProjectRepositoryTest
     }
 
     @Test
+    public void testUpdateProject() throws Exception {
+        User userBlair = new User(3, "Blair Butterworth", "blair.butterworth.17@ucl.ac.uk", "default.jpg");
+        Project newProject = createProject("project-d", "Project d");
+        repository.addProject(newProject);
+        Project projectD = repository.getProjectEagerlyByIdentifier("project-d");
+        Collection<User> projectMembers =  projectD.getMembers();
+        Assert.assertTrue(projectMembers.contains(userBlair));
+
+        projectMembers.remove(userBlair);
+        projectD.setMembers(projectMembers);
+        repository.updateProject(projectD);
+        projectD = repository.getProjectEagerlyByIdentifier("project-d");
+        Assert.assertFalse(projectD.getMembers().contains(userBlair));
+    }
+
+    @Test
     public void testProjectOwner() throws Exception {
         Project expected = createProject("project-c", "project c");
         repository.addProject(expected);
@@ -82,54 +123,9 @@ public class ProjectRepositoryTest
 
     @Test
     public void membersTest() {
-        Project project = repository.getProjectByIdentifier("project-fizzyo");
+        Project project = repository.getProjectEagerlyByIdentifier(projectFizzyoIdentifier);
         Collection<User> members = project.getMembers();
         Assert.assertEquals(5, members.size());
-    }
-
-    @Test
-    public void testAddMemberToProject() {
-        int projCancerResId = 2;
-        Project projCancerRes = repository.getProjectById(projCancerResId);
-        Collection<User> memberList= projCancerRes.getMembers();
-        User newUser = new User(6, "John Wilkie", "john.wilkie.17@ucl.ac.uk", "default.jpg");
-
-        Assert.assertEquals(2, memberList.size());
-        Assert.assertFalse(memberList.contains(newUser));
-
-        addUserToProjectMembers(newUser, projCancerRes);
-        projCancerRes = repository.getProjectById(projCancerResId);
-
-        Assert.assertEquals(3, projCancerRes.getMembers().size());
-        Assert.assertTrue(projCancerRes.getMembers().contains(newUser));
-    }
-
-    @Test
-    public void testRemoveMemberFromProject() {
-
-        Project projCancerRes = repository.getProjectById(projCancerResId);
-        Collection<User> memberList;
-        User user5 = new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk", "default.jpg");
-
-        addUserToProjectMembers(user5, projCancerRes);
-        projCancerRes = repository.getProjectById(projCancerResId);
-        memberList= projCancerRes.getMembers();
-        Assert.assertTrue(memberList.contains(user5));
-
-        memberList.remove(user5);
-        projCancerRes.setMembers(memberList);
-        repository.updateProject(projCancerRes);
-        projCancerRes = repository.getProjectById(projCancerResId);
-        memberList= projCancerRes.getMembers();
-
-        Assert.assertFalse(memberList.contains(user5));
-    }
-
-    private void addUserToProjectMembers(User user, Project project) {
-        Collection<User> memberList = project.getMembers();
-        memberList.add(user);
-        project.setMembers(memberList);
-        repository.updateProject(project);
     }
 
     @Test
@@ -147,48 +143,17 @@ public class ProjectRepositoryTest
     }
 
     @Test
-    public void testStarAProject() {
-        User user4 = new User(4, "Xiaolong Chen", "xiaolong.chen@ucl.ac.uk", "default.jpg");
-        Project fizzyo = repository.getProjectById(fizzyoId);
-        Collection<User> starredMembers = fizzyo.getMembersThatStar();
-        Assert.assertEquals(2, starredMembers.size());
-        Assert.assertFalse(starredMembers.contains(user4));
-
-        starAProject(user4, fizzyo);
-
-        fizzyo = repository.getProjectById(fizzyoId);
-        starredMembers = fizzyo.getMembersThatStar();
-
-        Assert.assertEquals(3, starredMembers.size());
-        Assert.assertTrue(starredMembers.contains(user4));
+    public void testGetStaredProjectsEmpty() {
+        User userJohn = new User(6, "John Wilkie", "john.ilkie.17@ucl.ac.uk", "pp_1.jpg");
+        List<Project> projects = repository.getProjectsStarredByUser(userJohn);
+        Assert.assertEquals(0, projects.size());
     }
 
     @Test
-    public void testUnstarAProject() {
-        User user5 = new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk", "default.jpg");
-        Project aidsRes = repository.getProjectById(3);
-        starAProject(user5, aidsRes);
-
-        aidsRes = repository.getProjectById(3);
-        Collection<User> starredMembers = aidsRes.getMembersThatStar();
-        Assert.assertEquals(2, starredMembers.size());
-        Assert.assertTrue(starredMembers.contains(user5));
-
-        starredMembers.remove(user5);
-        aidsRes.setMembersThatStar(starredMembers);
-        repository.updateProject(aidsRes);
-        aidsRes = repository.getProjectById(3);
-        starredMembers = aidsRes.getMembersThatStar();
-
-        Assert.assertEquals(1, starredMembers.size());
-        Assert.assertFalse(starredMembers.contains(user5));
-    }
-
-    private void starAProject(User user, Project project){
-        Collection<User> starredMembers = project.getMembersThatStar();
-        starredMembers.add(user);
-        project.setMembersThatStar(starredMembers);
-        repository.updateProject(project);
+    public void testGetStaredProjectsUnknownUser() {
+        User unknown = new User(888, "Not known", "notknown@ucl.ac.uk", "default.jpg");
+        List<Project> projects = repository.getProjectsStarredByUser(unknown);
+        Assert.assertEquals(0, projects.size());
     }
 
     private Project createProject(String identifier, String name) throws Exception {
