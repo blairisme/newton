@@ -8,7 +8,8 @@ import org.ucl.WeatherDataProvider.FileUtils;
 import org.ucl.WeatherDataProvider.HttpUtils;
 import org.ucl.WeatherDataProvider.weather.model.WeatherData;
 import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
-import org.ucl.newton.service.data.sdk.StorageProvider;
+import org.ucl.newton.sdk.data.StorageProvider;
+
 
 import java.io.IOException;
 import java.io.OutputStream;

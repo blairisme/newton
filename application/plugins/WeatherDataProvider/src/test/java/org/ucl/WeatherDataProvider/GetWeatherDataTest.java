@@ -11,7 +11,7 @@ package org.ucl.WeatherDataProvider;
 
 import org.junit.Test;
 import org.ucl.WeatherDataProvider.weather.GetWeatherData;
-import org.ucl.newton.service.data.sdk.StorageProvider;
+import org.ucl.newton.sdk.data.StorageProvider;
 
 import java.io.IOException;
 import java.io.OutputStream;
