@@ -26,7 +26,7 @@ public class UrlUtils
     public static URL createUrl(URL base, Path path) throws MalformedURLException {
         try {
             URIBuilder builder = new URIBuilder(base.toURI());
-            builder.setPath(path.toString());
+            builder.setPath(builder.getPath() + "/" + path);
             return builder.build().toURL();
         }
         catch (URISyntaxException syntaxException) {

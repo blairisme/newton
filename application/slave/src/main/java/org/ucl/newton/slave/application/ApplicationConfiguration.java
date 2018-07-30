@@ -15,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.inject.Inject;
 import java.io.File;
 
 /**
@@ -29,9 +30,16 @@ import java.io.File;
 @SuppressWarnings("unused")
 public class ApplicationConfiguration implements WebMvcConfigurer
 {
+    private ApplicationStorage applicationStorage;
+
+    @Inject
+    public ApplicationConfiguration(ApplicationStorage applicationStorage) {
+        this.applicationStorage = applicationStorage;
+    }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String path = new File("").getAbsolutePath();
-        registry.addResourceHandler("/files/**").addResourceLocations("file://" + path +"/");
+        String path = applicationStorage.getRootDirectory().toString();
+        registry.addResourceHandler("/files/**").addResourceLocations("file://" + path + "/");
     }
 }
