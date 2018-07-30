@@ -9,7 +9,6 @@ import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
 
-@Ignore
 public class ExperimentApiTest
 {
     private Path tempDirectory;

@@ -100,8 +100,10 @@ CREATE TABLE IF NOT EXISTS processor_configuration (
 /*** Experiments ***/
 /* Create table to store an experiments storage configuration */
 CREATE TABLE IF NOT EXISTS storage_configuration (
-  sc_id INT NOT NULL AUTO_INCREMENT,
-  sc_type VARCHAR(20) NOT NULL,
+    sc_id INT NOT NULL AUTO_INCREMENT,
+    sc_type VARCHAR(20) NOT NULL,
+    sc_location VARCHAR(200) NOT NULL,
+    PRIMARY KEY (sc_id)
 );
 
 /* Create experiment table to store data relating to experiments */

@@ -78,7 +78,7 @@ INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (1,
 INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (2, 1, 'newton-fizzyo');
 
 /* Insert into storage configuration */
-INSERT INTO storage_configuration (sc_id, sc_type) VALUES (1, 'Newton');
+INSERT INTO storage_configuration (sc_id, sc_type, sc_location) VALUES (1, 'Newton', 'classpath:/experiment/experiment-1/repository');
 
 /* Data processors */
 INSERT INTO process (proc_id, proc_repo_url, proc_initial_script, proc_engine) VALUES (1, 'https://github.com/blairisme/newton', 'test.py', 'python');

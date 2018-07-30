@@ -1,5 +1,8 @@
 package org.ucl.newton.framework;
 
+import org.springframework.core.io.Resource;
+import org.ucl.newton.application.resource.ApplicationResource;
+
 import javax.persistence.*;
 
 /**
@@ -7,11 +10,10 @@ import javax.persistence.*;
  *
  * @author John Wilkie
  */
-
 @Entity
 @Table(name = "storage_configuration")
-public class StorageConfiguration {
-
+public class StorageConfiguration
+{
     @Id
     @Column(name = "sc_id")
     @GeneratedValue(generator = "increment")
@@ -21,9 +23,11 @@ public class StorageConfiguration {
     @Enumerated(EnumType.STRING)
     private StorageType storageType;
 
-    // location?
+    @Column(name = "sc_location")
+    private String location;
 
-    public StorageConfiguration() { }
+    public StorageConfiguration() {
+    }
 
     public StorageConfiguration(int id, StorageType storageType) {
         this.id = id;
@@ -37,5 +41,17 @@ public class StorageConfiguration {
         } else {
             //throw new IllegalAccessException(storageTypeAsString);
         }
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public StorageType getStorageType() {
+        return storageType;
+    }
+
+    public Resource getLocation() {
+        return new ApplicationResource(location);
     }
 }
