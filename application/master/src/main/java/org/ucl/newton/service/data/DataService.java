@@ -44,14 +44,14 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        for (DataProvider dataProvider : pluginService.getDataProviders()){
-            DataStorage dataStorage = new DataStorage(applicationStorage);
-            dataStorage.setProviderId(dataProvider.getIdentifier());
-
-            dataProvider.addObserver(new DataObserver());
-            dataProvider.start(dataStorage);
-            this.dataProviders.add(dataProvider);
-        }
+//        for (DataProvider dataProvider : pluginService.getDataProviders()){
+//            DataStorage dataStorage = new DataStorage(applicationStorage);
+//            dataStorage.setProviderId(dataProvider.getIdentifier());
+//
+//            dataProvider.addObserver(new DataObserver());
+//            dataProvider.start(dataStorage);
+//            this.dataProviders.add(dataProvider);
+//        }
     }
 
     public Collection<DataProvider> getDataProviders(){

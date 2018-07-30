@@ -59,10 +59,6 @@ public class Plugin
         return identifier;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
     public Resource asResource() {
         return new ApplicationResource(location);
     }

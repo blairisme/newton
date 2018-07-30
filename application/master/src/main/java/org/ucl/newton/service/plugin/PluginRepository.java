@@ -24,6 +24,7 @@ import java.util.Collection;
  * Instances of this class provide access to persisted plugin data.
  *
  * @author Blair Butterworth
+ * @author Xiaolong Chen
  */
 @Repository
 public class PluginRepository

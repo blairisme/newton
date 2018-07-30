@@ -33,7 +33,7 @@ public class ExecutionRequestBuilder
 
     public ExecutionRequestBuilder() {
         this.id = UUID.randomUUID().toString();
-        this.processor = "python";
+        this.processor = "newton-python";
         this.script = "test.py";
         this.output = "*.csv";
         this.dataSources = Arrays.asList("weather.csv");
