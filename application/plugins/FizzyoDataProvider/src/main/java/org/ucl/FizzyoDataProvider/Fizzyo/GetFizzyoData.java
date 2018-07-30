@@ -3,7 +3,7 @@ package org.ucl.FizzyoDataProvider.Fizzyo;
 import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import javafx.util.Pair;
+
 import org.ucl.FizzyoDataProvider.FileUtils;
 import org.ucl.FizzyoDataProvider.Fizzyo.model.*;
 import org.ucl.FizzyoDataProvider.HttpUtils;
