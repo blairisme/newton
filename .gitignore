@@ -19,3 +19,5 @@ bin/
 \.vscode/
 
 application/master/src/main/resources/plugins/data/
+
+application/plugins/python/src/test/resources/
