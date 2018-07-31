@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.springframework.security.core.parameters.P;
 import org.ucl.newton.framework.Plugin;
 import org.ucl.newton.sdk.data.DataProvider;
 import org.ucl.newton.sdk.processor.DataProcessor;
