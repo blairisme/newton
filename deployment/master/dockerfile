@@ -33,7 +33,7 @@ ENV newton_jupyter_port $jupyter_port
 ENV newton_slave_host $slave_host
 ENV newton_slave_port $slave_port
 
-COPY ./libs/master.war /var/lib/jetty/webapps/ROOT.war
+COPY ./libs/master-0.0.1.war /var/lib/jetty/webapps/ROOT.war
 EXPOSE 8080
 
 USER root
