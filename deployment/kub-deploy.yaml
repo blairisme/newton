@@ -1,15 +1,15 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: master
+  name: master-newton
 spec:
   template:
     metadata:
       labels:
-        app: master
+        app: master-newton
     spec:
       containers:
-      - name: master
+      - name: master-newton
         image: newtonregistry.azurecr.io/blairisme/newton:latest
         args: [“database_host=database”, ”database_port=3306”, “database_user=root”, “database_password=Newton*123”, “jupyter_host=jupyter”, “jupyter_port=8000”, “slave_host=slave”, “slave_port=8070”]
         ports:
@@ -20,10 +20,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: master
+  name: master-newton
 spec:
   type: LoadBalancer
   ports:
   - port: 8080
   selector:
-    app: master
+    app: master-newton
