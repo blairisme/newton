@@ -11,10 +11,8 @@ package org.ucl.newton.service.project;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.omg.CORBA.UnknownUserException;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
 

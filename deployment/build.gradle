@@ -12,6 +12,7 @@
 task updateMasterWar(type: Copy, dependsOn: ':application:master:war') {
   from project(':application:master').collect{it.tasks.withType(War)}
   into project.file('master/libs')
+  rename '(.*)-(.*).war', '$1.war'
 }
 
 task systemStart(type: Exec, dependsOn: updateMasterWar) {
