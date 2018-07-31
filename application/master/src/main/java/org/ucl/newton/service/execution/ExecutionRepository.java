@@ -65,8 +65,9 @@ public class ExecutionRepository
         return result;
     }
 
-    private Path downloadOutput(ExecutionNode executionNode, ExecutionResult executionResult, Path destination) throws ConnectionException {
+    private Path downloadOutput(ExecutionNode executionNode, ExecutionResult executionResult, Path destination) throws IOException {
         Path logPath = destination.resolve(OUTPUT_FILE_NAME);
+        PathUtils.createNew(logPath);
         try(InputStream inputStream = executionNode.getOutput(executionResult);
             OutputStream outputStream = applicationStorage.getOutputStream(logPath)) {
             IOUtils.copy(inputStream, outputStream);

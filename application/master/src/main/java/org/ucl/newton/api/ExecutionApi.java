@@ -37,6 +37,4 @@ public class ExecutionApi
     public Boolean isExecutionComplete(@RequestParam String experiment) {
         return executionService.isExecutionComplete(experiment);
     }
-
-
 }

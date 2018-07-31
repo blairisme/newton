@@ -31,7 +31,7 @@ public class ProjectBuilder
     private Date updated;
     private User owner;
     private Collection<User> members;
-    private Collection<DataSource> dataSources;
+    private Collection<String> dataSources;
 
     public ProjectBuilder() {
         this.description = "";

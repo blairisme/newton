@@ -15,6 +15,7 @@ import com.google.gson.GsonBuilder;
 import java.io.Reader;
 import java.io.Writer;
 import java.text.DateFormat;
+import java.time.Duration;
 import java.util.Date;
 
 /**
@@ -30,8 +31,8 @@ public class JsonSerializer implements Serializer
 
     public JsonSerializer() {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setDateFormat(DateFormat.FULL);
-        gsonBuilder.registerTypeAdapter(Date.class, new DurationAdapter());
+        gsonBuilder.setDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+        gsonBuilder.registerTypeAdapter(Duration.class, new DurationAdapter());
         gson = gsonBuilder.create();
     }
 
