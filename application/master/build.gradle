@@ -31,7 +31,6 @@ dependencies {
     compile project(':application:common')
     compile project(':application:bridge')
     compile project(':application:plugins:WeatherDataProvider')
-    compile project(':application:plugins:FizzyoDataProvider')
 
     compile group: 'javax.servlet', name: 'jstl', version: '1.2'
     compile group: 'javax.inject', name: 'javax.inject', version: '1'

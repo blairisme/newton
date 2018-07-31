@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.springframework.security.core.parameters.P;
 import org.ucl.newton.framework.Plugin;
 import org.ucl.newton.sdk.data.DataProvider;
 import org.ucl.newton.sdk.processor.DataProcessor;
@@ -24,9 +25,11 @@ public class PluginServiceTest {
 
     @Before
     public void setUp(){
-        plugin = new Plugin(1,"test-plugin","src/test/resources/jupyter.jar");
+        plugin = new Plugin(1,"test-jupyter","src/test/resources/jupyter.jar");
+        Plugin plugin2 = new Plugin(2,"test-weather", "src/test/resources/WeatherDataProvider.jar");
         plugins = new ArrayList<>();
         plugins.add(plugin);
+        plugins.add(plugin2);
         repository = mock(PluginRepository.class);
         service = new PluginService(repository);
     }
@@ -34,7 +37,7 @@ public class PluginServiceTest {
     @Test
     public void getProvidersTest(){
         Collection<DataProvider> providers = service.getDataProviders();
-        Assert.assertEquals(2, providers.size());
+        Assert.assertEquals(1, providers.size());
     }
     @Test
     public void getProcessersTest(){
@@ -44,10 +47,10 @@ public class PluginServiceTest {
     }
 
     @Test
-    public void getPluginById(){
-        when(repository.getPluginByIdentifier("test-plugin")).thenReturn(plugin);
-        Plugin plugin= service.getPlugin("test-plugin");
-        Assert.assertEquals("test-plugin",plugin.getIdentifier());
+    public void getPluginByIdentifier(){
+        when(repository.getPluginByIdentifier("test-jupyter")).thenReturn(plugin);
+        Plugin plugin= service.getPlugin("test-jupyter");
+        Assert.assertEquals("test-jupyter",plugin.getIdentifier());
     }
 
 
