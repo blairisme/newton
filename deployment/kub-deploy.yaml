@@ -43,8 +43,6 @@ spec:
         image: newtonregistry.azurecr.io/blairisme/newton-jupyter:latest
         ports:
         - containerPort: 8000
-        volumes:
-        - ~/.newton/experiment:/var/newton/experiment
       imagePullSecrets:
       - name: acr-auth
 ---
