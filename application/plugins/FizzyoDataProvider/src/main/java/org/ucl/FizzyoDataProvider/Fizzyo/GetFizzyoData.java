@@ -39,7 +39,7 @@ public class GetFizzyoData implements Runnable {
     public void run() {
         fizzyoToken = new FizzyoToken();
 
-        String accessToken = "NR8M7Vl4zbqM7VJrrYZkvrpbprOZqEgL";
+        String accessToken = "yNzqmQO5xe7pxgKN9vXZPjOa7rJX0A4o";
         fizzyoToken.setAccessToken(accessToken);
         Records records = getPacientRecords();
         if(records == null)
