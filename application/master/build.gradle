@@ -61,7 +61,7 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name:'jackson-databind', version: '2.9.6'
     compile group: 'net.sourceforge.javacsv', name: 'javacsv', version: '2.0'
 
-    compile 'io.jsonwebtoken:jjwt:0.9.1'
+    compile group: 'io.jsonwebtoken', name:'jjwt', version:'0.9.1'
 
     testCompile group: 'junit', name:'junit', version: '4.12'
     testCompile group: 'org.mockito', name:'mockito-core', version: '2.7.22'
@@ -71,24 +71,28 @@ dependencies {
 task updatePythonPlugin(type: Copy, dependsOn: ':application:plugins:python:jar') {
     from project(':application:plugins:python').collect{it.tasks.withType(Jar)}
     into project.file('src/main/resources/plugins/processor')
+    rename '(.*)-(.*).jar', '$1.jar'
 }
 project.tasks.war.dependsOn updatePythonPlugin
 
 task updateJupyterPlugin(type: Copy, dependsOn: ':application:plugins:jupyter:jar') {
     from project(':application:plugins:jupyter').collect{it.tasks.withType(Jar)}
     into project.file('src/main/resources/plugins/processor')
+    rename '(.*)-(.*).jar', '$1.jar'
 }
 project.tasks.war.dependsOn updateJupyterPlugin
 
 task updateFizzyoDataProviderJar(type: Copy, dependsOn: ':application:plugins:FizzyoDataProvider:jar'){
     from project(':application:plugins:FizzyoDataProvider').collect{it.tasks.withType(Jar)}
     into project.file('src/main/resources/plugins/data')
+    rename '(.*)-(.*).jar', '$1.jar'
 }
 project.tasks.war.dependsOn updateFizzyoDataProviderJar
 
 task updateWeatherDataProviderJar(type: Copy, dependsOn: ':application:plugins:WeatherDataProvider:jar'){
     from project(':application:plugins:WeatherDataProvider').collect{it.tasks.withType(Jar)}
     into project.file('src/main/resources/plugins/data')
+    rename '(.*)-(.*).jar', '$1.jar'
 }
 project.tasks.war.dependsOn updateWeatherDataProviderJar
 
