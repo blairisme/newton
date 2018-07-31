@@ -66,8 +66,26 @@ public class ExperimentRepositoryTest {
         Assert.assertEquals(0, experiments.size());
     }
 
+    @Test
+    public void testGetExperimentsForProjectForUnknownProject() {
+        String unknownProject = "asdijosdi";
+        Collection<Experiment> experiments = repository.getExperimentsForProject(unknownProject);
+        Assert.assertEquals(0, experiments.size());
+    }
 
-    // test update
+
+    @Test
+    public void testUpdateProject() {
+        Experiment experiment12 = repository.getExperimentById(12);
+        Assert.assertEquals(0, experiment12.getVersions().size());
+        ExperimentBuilder experimentBuilder = new ExperimentBuilder();
+        experimentBuilder.copyExperiment(experiment12);
+        experimentBuilder.setName("new name");
+        experiment12 = experimentBuilder.build();
+        repository.update(experiment12);
+        Experiment experiment12Loaded = repository.getExperimentById(12);
+        Assert.assertEquals(experiment12, experiment12Loaded);
+    }
 
 
     // test addVersion
