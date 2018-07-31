@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS eds (
     eds_id INT NOT NULL AUTO_INCREMENT,
     ds_id INT NOT NULL,
     eds_custom_location VARCHAR(100) NOT NULL,
-    PRIMARY KEY (eds_id),
+    PRIMARY KEY (eds_id)
 );
 
 /* Create table to link experiments to the experiment data sources used */
