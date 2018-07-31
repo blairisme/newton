@@ -133,15 +133,21 @@ public class ExperimentController
         builder.setDescription(experimentDto.getDescription());
         builder.setCreator(userService.getAuthenticatedUser());
         builder.setProject(projectService.getProjectByIdentifier(projectName, true));
-        builder.setStorageConfiguration(new StorageConfiguration(0, experimentDto.getSelectedStorageValue()));
-        builder.setProcessorConfiguration(new DataProcessorConfiguration(0, "", new DataProcessor(0, "", "", experimentDto.getSelectedTypeValue())));
-        builder.addDataSources(experimentDto.getDataSourceIds(), experimentDto.getDataSourceLocs());
         builder.setExperimentVersions(new ArrayList<>());
-        builder.setOutputPattern(experimentDto.getOutputPattern());
-        builder.addTrigger(experimentDto.getSelectedTriggerValue());
+        builder.setConfiguration(createExperimentConfiguration(experimentDto));
         experimentService.addExperiment(builder.build());
 
         return "redirect:/project/" + projectName;
+    }
+
+    private ExperimentConfiguration createExperimentConfiguration(ExperimentDto experimentDto) {
+        ExperimentConfigurationBuilder builder = new ExperimentConfigurationBuilder();
+        builder.setStorageConfiguration(new StorageConfiguration(0, experimentDto.getSelectedStorageValue(), "",""));
+        builder.setProcessorPluginId(experimentDto.getSelectedTypeValue());
+        builder.addDataSources(experimentDto.getDataSourceIds(), experimentDto.getDataSourceLocs());
+        builder.setOutputPattern(experimentDto.getOutputPattern());
+        builder.addTrigger(experimentDto.getSelectedTriggerValue());
+        return builder.build();
     }
 
 

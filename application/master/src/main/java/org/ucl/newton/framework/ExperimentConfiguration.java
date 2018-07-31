@@ -1,0 +1,127 @@
+package org.ucl.newton.framework;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Collection;
+
+/**
+ * Instances of this class represent the configuration for an experiment. That is where the data relating to
+ * the experiment is stored, what processor to use, the data sources the experiment will use and the output pattern
+ * that is used to define which outputs to save.
+ *
+ * @author John Wilkie
+ */
+
+@Entity
+@Table(name = "experiment_config")
+public class ExperimentConfiguration implements Serializable {
+
+    @Id
+    @Column(name = "exp_config_id")
+    @GeneratedValue(generator = "increment")
+    private int id;
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "storage_config_id")
+    private StorageConfiguration storageConfig;
+
+    @Column(name = "exp_proc_engine")
+    private String processorPluginId;
+
+    //@ManyToOne(cascade = {CascadeType.ALL})
+    //@JoinColumn(name="processor_configuration_id")
+    //private ExperimentProcessorConfiguration processorConfiguration;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "experiment_eds_link",
+            joinColumns = @JoinColumn(name = "exp_config_id", referencedColumnName = "exp_config_id"),
+            inverseJoinColumns = @JoinColumn( name = "eds_id", referencedColumnName = "eds_id"))
+    private Collection<ExperimentDataSource> dataSources;
+
+    @Column(name = "exp_out_pattern")
+    private String outputPattern;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "exp_trigger")
+    private ExperimentTriggerType trigger;
+
+    public ExperimentConfiguration(
+        StorageConfiguration storageConfig,
+        String processorPluginId,
+        Collection<ExperimentDataSource> dataSources,
+        String outputPattern,
+        ExperimentTriggerType trigger)
+    {
+        this.storageConfig = storageConfig;
+        this.processorPluginId = processorPluginId;
+        this.dataSources = dataSources;
+        this.outputPattern = outputPattern;
+        this.trigger = trigger;
+    }
+
+    public ExperimentConfiguration() { }
+
+    public StorageConfiguration getStorageConfiguration() {
+        return storageConfig;
+    }
+
+    public String getProcessorPluginId() {
+        return processorPluginId;
+    }
+
+    public Collection<ExperimentDataSource> getExperimentDataSources() {
+        return dataSources;
+    }
+
+    public String getOutputPattern() {
+        return outputPattern;
+    }
+
+    public ExperimentTriggerType getTrigger() {
+        return trigger;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) { return false; }
+        if (obj == this) { return true; }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        ExperimentConfiguration other = (ExperimentConfiguration)obj;
+        return new EqualsBuilder()
+            .append(storageConfig, other.storageConfig)
+            .append(processorPluginId, other.processorPluginId)
+            .append(outputPattern, other.outputPattern)
+            .append(trigger, other.trigger)
+            .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+            .append(storageConfig)
+            .append(processorPluginId)
+            .append(outputPattern)
+            .append(trigger)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("storageConfig", storageConfig)
+            .append("processorConfiguration", processorPluginId)
+            .append("dataSources", dataSources)
+            .append("outputPattern", outputPattern)
+            .append("trigger", trigger)
+            .toString();
+    }
+}

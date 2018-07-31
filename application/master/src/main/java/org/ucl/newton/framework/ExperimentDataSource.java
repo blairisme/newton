@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * The ExperimentDataSource class contains information relating to a data sources for a specific experiment
@@ -13,7 +14,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "eds")
-public class ExperimentDataSource {
+public class ExperimentDataSource implements Serializable {
 
     @Id
     @Column(name = "eds_id")
@@ -41,11 +42,11 @@ public class ExperimentDataSource {
         if (obj.getClass() != getClass()) {
             return false;
         }
-        ExperimentDataSource eds = (ExperimentDataSource) obj;
+        ExperimentDataSource other = (ExperimentDataSource) obj;
         return new EqualsBuilder()
-            .append(id, eds.id)
-            .append(dataSourceId, eds.dataSourceId)
-            .append(customLocation, eds.customLocation)
+            .append(id, other.id)
+            .append(dataSourceId, other.dataSourceId)
+            .append(customLocation, other.customLocation)
             .isEquals();
     }
 

@@ -17,7 +17,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.ucl.newton.service.experiment.MissingVersionException;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -53,21 +52,6 @@ public class Experiment
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "storage_config_id")
-    private StorageConfiguration storageConfig;
-
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name="processor_configuration_id")
-    private DataProcessorConfiguration processorConfiguration;
-
-    @OneToMany(cascade = {CascadeType.ALL})
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name = "experiment_eds_link",
-        joinColumns = @JoinColumn(name = "exp_id", referencedColumnName = "exp_id"),
-        inverseJoinColumns = @JoinColumn( name = "eds_id", referencedColumnName = "eds_id"))
-    private Collection<ExperimentDataSource> dataSources;
-
     @OneToMany(cascade = {CascadeType.ALL})
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "experiment_versions",
@@ -75,12 +59,9 @@ public class Experiment
         inverseJoinColumns = @JoinColumn(name = "version_id", referencedColumnName = "ver_id"))
     private List<ExperimentVersion> versions;
 
-    @Column(name = "exp_out_pattern")
-    private String outputPattern;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "exp_trigger")
-    private ExperimentTriggerType trigger;
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "exp_config_id")
+    private ExperimentConfiguration configuration;
 
     public Experiment() {
     }
@@ -92,12 +73,8 @@ public class Experiment
         String description,
         User creator,
         Project project,
-        StorageConfiguration storageConfig,
-        DataProcessorConfiguration processorConfiguration,
-        Collection<ExperimentDataSource> dataSources,
         List<ExperimentVersion> versions,
-        String outputPattern,
-        ExperimentTriggerType trigger)
+        ExperimentConfiguration configuration)
     {
         this.id = id;
         this.identifier = identifier;
@@ -105,12 +82,8 @@ public class Experiment
         this.description = description;
         this.creator = creator;
         this.project = project;
-        this.storageConfig = storageConfig;
-        this.processorConfiguration = processorConfiguration;
-        this.dataSources = dataSources;
         this.versions = versions;
-        this.outputPattern = outputPattern;
-        this.trigger = trigger;
+        this.configuration = configuration;
     }
 
     public int getId() {
@@ -140,18 +113,6 @@ public class Experiment
 
     public Project getProject() {
         return project;
-    }
-
-    public StorageConfiguration getStorageConfiguration() {
-        return storageConfig;
-    }
-
-    public DataProcessorConfiguration getProcessorConfiguration() {
-        return processorConfiguration;
-    }
-
-    public Collection<ExperimentDataSource> getExperimentDataSources() {
-        return dataSources;
     }
 
     public List<ExperimentVersion> getVersions() {
@@ -184,12 +145,8 @@ public class Experiment
         return this;
     }
 
-    public String getOutputPattern() {
-        return outputPattern;
-    }
-
-    public ExperimentTriggerType getTrigger() {
-        return trigger;
+    public ExperimentConfiguration getConfiguration() {
+        return configuration;
     }
 
     @Override
@@ -206,12 +163,7 @@ public class Experiment
             .append(this.description, that.description)
             .append(this.creator, that.creator)
             .append(this.project, that.project)
-            .append(this.storageConfig, that.storageConfig)
-            .append(this.processorConfiguration, that.processorConfiguration)
-            .append(this.dataSources, that.dataSources)
-            .append(this.versions, that.versions)
-            .append(this.outputPattern, that.outputPattern)
-            .append(this.trigger, that.trigger)
+            .append(this.configuration, that.configuration)
             .isEquals();
     }
 
@@ -224,12 +176,7 @@ public class Experiment
             .append(description)
             .append(creator)
             .append(project)
-            .append(storageConfig)
-            .append(processorConfiguration)
-            .append(dataSources)
-            .append(versions)
-            .append(outputPattern)
-            .append(trigger)
+            .append(configuration)
             .toHashCode();
     }
 
@@ -242,12 +189,8 @@ public class Experiment
             .append( "description", description)
             .append("creator", creator)
             .append("project", project)
-            .append("storageConfig", storageConfig)
-            .append("processorConfiguration", processorConfiguration)
-            .append("dataSources", dataSources)
             .append("versions", versions)
-            .append("outputPattern", outputPattern)
-            .append("trigger", trigger)
+            .append("configuration", configuration)
             .toString();
     }
 }

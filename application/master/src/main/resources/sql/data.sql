@@ -78,29 +78,35 @@ INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (1,
 INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (2, 1, 'newton-fizzyo');
 
 /* Insert into storage configuration */
-INSERT INTO storage_configuration (sc_id, sc_type, sc_location) VALUES (1, 'Newton', 'classpath:/experiment/experiment-1/repository');
+INSERT INTO storage_configuration (sc_id, sc_type, sc_location, sc_initial_script) VALUES (1, 'Newton', 'classpath:/experiment/experiment-1/repository', 'main.ipynb');
 
-/* Data processors */
-INSERT INTO process (proc_id, proc_repo_url, proc_initial_script, proc_engine) VALUES (1, 'https://github.com/blairisme/newton', 'test.py', 'python');
-
-/* Experiment process configurations */
-INSERT INTO processor_configuration(id, processor_id, configuration_path) VALUES (1, 1, 'config.json');
-INSERT INTO processor_configuration(id, processor_id, configuration_path) VALUES (2, 1, 'config.json');
-INSERT INTO processor_configuration(id, processor_id, configuration_path) VALUES (3, 1, 'config.json');
+/* Insert into experiment configurations */
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (1, 1, 'python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (2, 1, 'ruby', '/*.csv', 'Onchange');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (3, 1, 'python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (4, 1, 'python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (5, 1, 'python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (6, 1, 'python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (7, 1, 'python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (8, 1, 'python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (9, 1, 'python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (10, 1, 'python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (11, 1, 'python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (12, 1, 'python', '/*.csv', 'Manual');
 
 /* Experiments */
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (1, 'experiment-1', 'HR classification', 'Experiment description', 1, 3, 1, 1, '/*.csv', 'Manual');
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (2, 'experiment-2', 'Exercise level classification', 'Experiment description', 1, 4, 1, 2, '/*.csv', 'Onchange');
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (3, 'experiment-3', 'Weather temperature classification', 'Experiment description', 1, 5, 1, 3, '/*.csv', 'Manual');
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (4, 'experiment-4', 'Weather data aggrigator', 'Experiment description', 1, 3, 1, 2, '/*.csv', 'Manual');
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (5, 'experiment-5', 'HR normalisation', 'Experiment description', 1, 2, 1, 1, '/*.csv', 'Manual');
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (6, 'experiment-6', 'Adherence rate classification', 'Experiment description', 1, 1, 1, 1, '/*.csv', 'Manual');
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (7, 'experiment-7', 'Achievement rate classification', 'Experiment description', 1, 2, 1, 2, '/*.csv', 'Manual');
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (8, 'experiment-8', 'Weather percipitation classification', 'Experiment description', 1, 4, 1, 3, '/*.csv', 'Manual');
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (9, 'experiment-9', 'Weather humidity classification', 'Experiment description', 1, 4, 1, 1, '/*.csv', 'Manual');
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (10, 'experiment-10', 'ACT adherence by type', 'Experiment description', 1, 5, 1, 2, '/*.csv', 'Manual');
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (11, 'experiment-11', 'Impact of gamification on adherence', 'Experiment description', 1, 2, 1, 3, '/*.csv', 'Manual');
-INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, storage_config_id, processor_configuration_id, exp_out_pattern, exp_trigger) VALUES (12, 'experiment-12', 'Gamification impact by game', 'Experiment description', 1, 1, 1, 1, '/*.csv', 'Manual');
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (1, 'experiment-1', 'HR classification', 'Experiment description', 1, 3, 1);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (2, 'experiment-2', 'Exercise level classification', 'Experiment description', 1, 4, 2);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (3, 'experiment-3', 'Weather temperature classification', 'Experiment description', 1, 5, 3);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (4, 'experiment-4', 'Weather data aggrigator', 'Experiment description', 1, 3, 4);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (5, 'experiment-5', 'HR normalisation', 'Experiment description', 1, 2, 5);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (6, 'experiment-6', 'Adherence rate classification', 'Experiment description', 1, 1, 6);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (7, 'experiment-7', 'Achievement rate classification', 'Experiment description', 1, 2, 7);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (8, 'experiment-8', 'Weather percipitation classification', 'Experiment description', 1, 4, 8);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (9, 'experiment-9', 'Weather humidity classification', 'Experiment description', 1, 4, 9);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (10, 'experiment-10', 'ACT adherence by type', 'Experiment description', 1, 5, 10);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (11, 'experiment-11', 'Impact of gamification on adherence', 'Experiment description', 1, 2, 11);
+INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (12, 'experiment-12', 'Gamification impact by game', 'Experiment description', 1, 1, 12);
 
 /* Insert into experiment data sources */
 INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (1, 1, 'someloc/input.csv');
@@ -110,12 +116,12 @@ INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (4, 3, 'someloc/inpu
 INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (5, 4, 'someloc/input.csv');
 
 /* Insert into join table between experiments and experiment data sources */
-INSERT INTO experiment_eds_link (exp_id, eds_id) VALUES (1, 1);
-INSERT INTO experiment_eds_link (exp_id, eds_id) VALUES (1, 2);
-INSERT INTO experiment_eds_link (exp_id, eds_id) VALUES (2, 3);
-INSERT INTO experiment_eds_link (exp_id, eds_id) VALUES (2, 4);
-INSERT INTO experiment_eds_link (exp_id, eds_id) VALUES (3, 5);
-INSERT INTO experiment_eds_link (exp_id, eds_id) VALUES (3, 2);
+INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (1, 1);
+INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (1, 2);
+INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (2, 3);
+INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (2, 4);
+INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (3, 5);
+INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (3, 2);
 
 /* Insert experiment version data */
 INSERT INTO versions (ver_id, ver_number) VALUES (1, 1);
