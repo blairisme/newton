@@ -23,5 +23,6 @@ dependencies {
 task updateTestJar(type: Copy, dependsOn: 'jar') {
     from project.collect{it.tasks.withType(Jar)}
     into project.file('src/test/resources')
+    rename '(.*)-(.*).jar', '$1.jar'
 }
 project.tasks.assemble.dependsOn updateTestJar
