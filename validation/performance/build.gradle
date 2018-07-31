@@ -1,0 +1,29 @@
+/*
+ * MIT License (c)
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ *
+ * Author: Ziad Halabi
+ * Author: Blair Butterworth
+ */
+
+buildscript {
+  repositories {
+     maven {
+         url "https://plugins.gradle.org/m2/"
+     }
+  }
+
+  dependencies {
+    classpath "gradle.plugin.net.foragerr.jmeter:jmeter-gradle-plugin:1.0.10-3.3"
+  }
+}
+
+apply plugin: "net.foragerr.jmeter"
+
+jmeter {
+    jmTestFiles = [file("src/test/jmeter/Test1.jmx")] //if jmx file is not in the default location
+}
