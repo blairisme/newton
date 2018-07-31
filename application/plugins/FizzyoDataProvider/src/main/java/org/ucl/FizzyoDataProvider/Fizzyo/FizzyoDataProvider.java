@@ -58,7 +58,7 @@ public class FizzyoDataProvider extends BasicDataProvider
     @Override
     public void start() {
         this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
-        this.scheduler.scheduleAtFixedRate(new GetFizzyoData(storage, getFizzyoDataSource()),0,1,TimeUnit.HOURS); //run every hour
+        this.scheduler.scheduleAtFixedRate(new GetFizzyoData(this),0,1,TimeUnit.HOURS); //run every hour
     }
 
     @Override

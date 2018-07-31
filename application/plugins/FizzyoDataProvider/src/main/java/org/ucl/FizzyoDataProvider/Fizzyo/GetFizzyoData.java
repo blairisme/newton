@@ -25,14 +25,12 @@ import java.util.Map;
  */
 public class GetFizzyoData implements Runnable {
     private FizzyoToken fizzyoToken;
-    private DataStorage dataStorage;
-    private DataSource dataSource;
+    private FizzyoDataProvider provider;
 
 //    private String clientId = "00dc0898-8ff9-11e8-9eb6-529269fb1459";
 //    private String sycSecret = "ml8rVoJX7axoJGggDo2xXJneyv4Ek36W7BErm0wMvbmMJOlKqAVzp0AbYAlO1nqV";
-    public GetFizzyoData(DataStorage dataStorage, DataSource dataSource){
-        this.dataStorage = dataStorage;
-        this.dataSource = dataSource;
+    public GetFizzyoData(FizzyoDataProvider provider){
+        this.provider = provider;
     }
 
     @Override
@@ -59,8 +57,10 @@ public class GetFizzyoData implements Runnable {
             }
 
         }
-        if(!listOfRecords.isEmpty())
+        if(!listOfRecords.isEmpty()) {
             writeToOutput(listOfRecords);
+            provider.notifyDataUpdated();
+        }
     }
 
     private PressureRaw getPressureRaw(String pressureRawId) {
@@ -143,7 +143,9 @@ public class GetFizzyoData implements Runnable {
     }
 
     private void writeToOutput(List<List<String>> listOfRecords) {
-        try (OutputStream output = dataStorage.getOutputStream(dataSource)){
+        DataStorage storage = provider.getStorage();
+        DataSource dataSource = provider.getDataSources().iterator().next();
+        try (OutputStream output = storage.getOutputStream(dataSource)){
             if (output != null) {
                 CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("utf-8"));
                 for (List<String> record : listOfRecords) {
