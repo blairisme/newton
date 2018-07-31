@@ -2,12 +2,11 @@ package org.ucl.FizzyoDataProvider.Fizzyo;
 
 import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 import org.ucl.FizzyoDataProvider.FileUtils;
 import org.ucl.FizzyoDataProvider.Fizzyo.model.*;
 import org.ucl.FizzyoDataProvider.HttpUtils;
-import org.ucl.newton.service.data.sdk.StorageProvider;
+import org.ucl.newton.sdk.data.DataSource;
+import org.ucl.newton.sdk.data.DataStorage;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,20 +24,23 @@ import java.util.Map;
  * @author Xiaolong Chen
  */
 public class GetFizzyoData implements Runnable {
-    private StorageProvider storageProvider;
     private FizzyoToken fizzyoToken;
+    private DataStorage dataStorage;
+    private DataSource dataSource;
+
 //    private String clientId = "00dc0898-8ff9-11e8-9eb6-529269fb1459";
 //    private String sycSecret = "ml8rVoJX7axoJGggDo2xXJneyv4Ek36W7BErm0wMvbmMJOlKqAVzp0AbYAlO1nqV";
-    public GetFizzyoData(StorageProvider storageProvider){
-        this.storageProvider = storageProvider;
+    public GetFizzyoData(DataStorage dataStorage, DataSource dataSource){
+        this.dataStorage = dataStorage;
+        this.dataSource = dataSource;
     }
 
     @Override
     public void run() {
-//        fizzyoToken = new FizzyoToken();
-//
-//        String accessToken = "A1oRkpQJ0dNEGjwVLVmJKKzbLOvE2Mwz";
-//        fizzyoToken.setAccessToken(accessToken);
+        fizzyoToken = new FizzyoToken();
+
+        String accessToken = "NR8M7Vl4zbqM7VJrrYZkvrpbprOZqEgL";
+        fizzyoToken.setAccessToken(accessToken);
         Records records = getPacientRecords();
         if(records == null)
             return;
@@ -59,9 +61,7 @@ public class GetFizzyoData implements Runnable {
         }
         if(!listOfRecords.isEmpty())
             writeToOutput(listOfRecords);
-
     }
-
 
     private PressureRaw getPressureRaw(String pressureRawId) {
         String url = "https://api-staging.fizzyo-ucl.co.uk/api/v1/pressure/" + pressureRawId + "/raw";
@@ -95,7 +95,6 @@ public class GetFizzyoData implements Runnable {
         Gson gson = new Gson();
         Records records = gson.fromJson(data,Records.class);
         return records;
-
     }
 
     private FizzyoToken getFizzyoToken() {
@@ -118,9 +117,7 @@ public class GetFizzyoData implements Runnable {
         System.out.println(data);
         Gson gson = new Gson();
         fizzyoToken = gson.fromJson(data,FizzyoToken.class);
-
         return fizzyoToken;
-
     }
 
     private String getAuthCode() {
@@ -145,10 +142,8 @@ public class GetFizzyoData implements Runnable {
         return content;
     }
 
-
     private void writeToOutput(List<List<String>> listOfRecords) {
-        try {
-            OutputStream output = storageProvider.getOutputStream("FizzyoData");
+        try (OutputStream output = dataStorage.getOutputStream(dataSource)){
             if (output != null) {
                 CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("utf-8"));
                 for (List<String> record : listOfRecords) {
@@ -156,11 +151,9 @@ public class GetFizzyoData implements Runnable {
                 }
                 csvWriter.close();
             }
-        }catch (IOException e){
+        }
+        catch (IOException e){
             e.printStackTrace();
         }
     }
-
-
-
 }

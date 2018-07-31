@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.ucl.newton.application.system.ApplicationStorage;
+import org.ucl.newton.sdk.data.DataSource;
+import org.ucl.newton.service.data.DataService;
+import org.ucl.newton.service.data.DataStorageProvider;
 
 import javax.inject.Inject;
 import java.nio.file.Path;
@@ -29,18 +31,19 @@ import java.nio.file.Path;
 @SuppressWarnings("unused")
 public class DataApi
 {
-    private ApplicationStorage applicationStorage;
+    private DataService dataService;
 
     @Inject
-    public DataApi(ApplicationStorage applicationStorage) {
-        this.applicationStorage = applicationStorage;
+    public DataApi(DataService dataService) {
+        this.dataService = dataService;
     }
 
     @RequestMapping(value = "/api/data/{dataSourceId}", method = RequestMethod.GET)
     @ResponseBody
     public FileSystemResource getDataSource(@PathVariable("dataSourceId") String dataSourceId) {
-        Path directory = applicationStorage.getDataDirectory();
-        Path dataSource = directory.resolve(dataSourceId);
-        return new FileSystemResource(dataSource.toFile());
+        DataSource dataSource = dataService.getDataSource(dataSourceId);
+        DataStorageProvider dataStorage = dataService.getDataStorage(dataSource.getProvider());
+        Path dataPath = dataStorage.getPath(dataSource);
+        return new FileSystemResource(dataPath.toFile());
     }
 }

@@ -129,7 +129,8 @@ public class RequestHandler
         Path archive = workspace.getOutput();
         ZipUtils.zip(contents, archive);
 
-        return UrlUtils.createUrl(getBaseAddress(), workspace.getRoot().relativize(archive));
+        Path applicationPath = applicationPreferences.getApplicationPath();
+        return UrlUtils.createUrl(getBaseAddress(), applicationPath.relativize(archive));
     }
 
     private URL getBaseAddress() throws MalformedURLException {

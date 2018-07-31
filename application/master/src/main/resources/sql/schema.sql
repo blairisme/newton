@@ -69,22 +69,14 @@ CREATE TABLE IF NOT EXISTS project_starred (
 
 /* Create join table to connect selected data sources to a project */
 CREATE TABLE IF NOT EXISTS project_datasources (
-    project_id INT NOT NULL,
-    ds_id INT NOT NULL,
-    PRIMARY KEY (project_id, ds_id),
-    CONSTRAINT fk_projds_project FOREIGN KEY (project_id) REFERENCES projects(id),
-    CONSTRAINT fk_projds_ds FOREIGN KEY (ds_id) REFERENCES users(id)
+    pds_id INT NOT NULL AUTO_INCREMENT,
+    pds_project INT NOT NULL,
+    pds_datasource VARCHAR(100) NOT NULL,
+    PRIMARY KEY (pds_id),
+    CONSTRAINT fk_projds_project FOREIGN KEY (pds_project) REFERENCES projects(id)
 );
 
 /*** Plugins ***/
-
-/* Create table to store data relating to data sources */
-CREATE TABLE IF NOT EXISTS datasources (
-    ds_id INT NOT NULL AUTO_INCREMENT,
-    ds_name VARCHAR(45) NOT NULL,
-    ds_data_location VARCHAR(100) NOT NULL,
-    PRIMARY KEY (ds_id)
-);
 
 /* Create table to store data relating to the script to run*/
 CREATE TABLE IF NOT EXISTS process (
@@ -108,8 +100,10 @@ CREATE TABLE IF NOT EXISTS processor_configuration (
 /*** Experiments ***/
 /* Create table to store an experiments storage configuration */
 CREATE TABLE IF NOT EXISTS storage_configuration (
-  sc_id INT NOT NULL AUTO_INCREMENT,
-  sc_type VARCHAR(20) NOT NULL,
+    sc_id INT NOT NULL AUTO_INCREMENT,
+    sc_type VARCHAR(20) NOT NULL,
+    sc_location VARCHAR(200) NOT NULL,
+    PRIMARY KEY (sc_id)
 );
 
 /* Create experiment table to store data relating to experiments */

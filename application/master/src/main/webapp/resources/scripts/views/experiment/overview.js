@@ -44,7 +44,7 @@ function checkComplete() {
     experimentId = $('#experimentId').val();
     $.ajax({
         type: 'GET',
-        url: "/api/experiment/iscomplete?experimentId=" + experimentId,
+        url: "/api/experiment/iscomplete?experiment=" + experimentId,
         success: function(data) {
             if (data === true) {
                 location.reload();
@@ -56,7 +56,7 @@ function checkComplete() {
     });
 }
 
-// Builds the HTML Table out of myList.
+// Builds the HTML Table out of myList.s
 // Code heavily based on: https://stackoverflow.com/questions/5180382/convert-json-data-to-a-html-table
 function buildHtmlTable(selector, myList) {
 

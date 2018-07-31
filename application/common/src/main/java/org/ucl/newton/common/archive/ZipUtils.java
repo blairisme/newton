@@ -80,6 +80,10 @@ public class ZipUtils
         return unzippedPaths;
     }
 
+    public static void zip(File directory, File zipFile) throws IOException {
+        zip(directory.toPath(), zipFile.toPath());
+    }
+
     public static void zip(Path directory, Path zipFile) throws IOException {
         PathUtils.createNew(zipFile);
 

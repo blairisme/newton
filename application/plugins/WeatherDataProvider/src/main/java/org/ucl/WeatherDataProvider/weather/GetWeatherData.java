@@ -1,3 +1,12 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.WeatherDataProvider.weather;
 
 import com.csvreader.CsvWriter;
@@ -8,7 +17,8 @@ import org.ucl.WeatherDataProvider.FileUtils;
 import org.ucl.WeatherDataProvider.HttpUtils;
 import org.ucl.WeatherDataProvider.weather.model.WeatherData;
 import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
-import org.ucl.newton.service.data.sdk.StorageProvider;
+import org.ucl.newton.sdk.data.DataSource;
+import org.ucl.newton.sdk.data.DataStorage;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,26 +36,29 @@ import java.util.Map;
  *
  * @author Xiaolong Chen
  */
+public class GetWeatherData implements Runnable {
+    private WeatherDataProvider provider;
 
-public class GetWeatherData implements Runnable{
-    private StorageProvider storageProvider;
-
-    public GetWeatherData(StorageProvider storageProvider){
-        this.storageProvider = storageProvider;
+    public GetWeatherData(WeatherDataProvider provider){
+        this.provider = provider;
     }
+
     @Override
     public void run() {
-        //List<WeatherProperty> weatherList = fromConfiguration("weatherProperties");
         List<WeatherProperty> weatherList = getWeatherList();
         List<List<String>> listOfRecord = new ArrayList<>();
         if(!weatherList.isEmpty())
             listOfRecord.add(getHeader());
         for (WeatherProperty property : weatherList){
             String data = getDataFromWWO(property);
+            if (data == null)
+                continue;
             listOfRecord.add(getContent(data));
         }
-        if(!listOfRecord.isEmpty())
+        if(!listOfRecord.isEmpty()) {
             writeToOutput(listOfRecord);
+            provider.notifyDataUpdated();
+        }
     }
 
     // list of properties need to be configured instead of hardcode
@@ -58,8 +71,12 @@ public class GetWeatherData implements Runnable{
         Path path = Paths.get(System.getProperty("user.home")).resolve(".newton");
         path = path.resolve("weather").resolve("setting");
         String jsonStr = FileUtils.readFile(path);
-        if (jsonStr == null)
+        if (jsonStr == null){
+            WeatherProperty property = new WeatherProperty("london","united kingdom", "2018-07-04","0252e94bd710446c908123539182906");
+            weatherList.add(property);
             return weatherList;
+        }
+
         Gson gson = new Gson();
         Type type = new TypeToken<List<WeatherProperty>>(){}.getType();
         weatherList = gson.fromJson(jsonStr, type);
@@ -105,8 +122,10 @@ public class GetWeatherData implements Runnable{
         return values;
     }
     private void writeToOutput(List<List<String>> list){
-        try {
-            OutputStream output = storageProvider.getOutputStream("weatherData");
+        DataStorage storage = provider.getStorage();
+        DataSource dataSource = provider.getDataSources().iterator().next();
+
+        try (OutputStream output = storage.getOutputStream(dataSource)) {
             if (output != null) {
                 CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("utf-8"));
                 for (List<String> record : list) {
@@ -114,7 +133,8 @@ public class GetWeatherData implements Runnable{
                 }
                 csvWriter.close();
             }
-        }catch (IOException e){
+        }
+        catch (IOException e){
             e.printStackTrace();
         }
     }

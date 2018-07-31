@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Set;
 
 import static org.ucl.newton.common.file.PathUtils.toUrl;
@@ -36,10 +38,13 @@ public class JarClassLoader implements Closeable
     }
 
     public JarClassLoader(URL jar) {
-        Validate.notNull(jar);
-        URL[] urls = {jar};
+        this(Arrays.asList(jar));
+    }
+
+    public JarClassLoader(Collection<URL> jars) {
+        Validate.notNull(jars);
         ClassLoader parent = getClass().getClassLoader();
-        delegate = new URLClassLoader(urls, parent);
+        delegate = new URLClassLoader(jars.toArray(new URL[0]), parent);
     }
 
     public <T> Set<Class<? extends T>> findSubTypes(Class<T> type) {

@@ -12,6 +12,8 @@ package org.ucl.newton.service.plugin;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.core.io.Resource;
+import org.ucl.newton.application.resource.ApplicationResource;
 
 import javax.persistence.*;
 
@@ -57,8 +59,8 @@ public class Plugin
         return identifier;
     }
 
-    public String getLocation() {
-        return location;
+    public Resource asResource() {
+        return new ApplicationResource(location);
     }
 
     @Override

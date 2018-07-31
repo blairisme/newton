@@ -1,32 +1,47 @@
 package org.ucl.newton.service.data;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
-import org.ucl.newton.service.data.sdk.DataProvider;
+import org.mockito.Mockito;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.ucl.newton.application.system.ApplicationStorage;
+import org.ucl.newton.sdk.data.DataProvider;
+import org.ucl.newton.sdk.data.DataProviderObserver;
+import org.ucl.newton.sdk.data.DataStorage;
+import org.ucl.newton.service.plugin.PluginService;
 
-import javax.inject.Inject;
+import java.util.Arrays;
 import java.util.Collection;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {DeveloperPersistenceConfiguration.class})
-@ActiveProfiles("development")
 public class DataServiceTest
 {
-    @Inject
-    private DataService dataService;
-
-
     @Test
-    @Ignore //causes tests to hang
-    public void runTest() throws Exception{
+    public void runTest() {
+        ApplicationStorage applicationStorage = Mockito.mock(ApplicationStorage.class);
+        PluginService pluginService = Mockito.mock(PluginService.class);
+
+        DataProvider provider1 = Mockito.mock(DataProvider.class);
+        DataProvider provider2 = Mockito.mock(DataProvider.class);
+        Mockito.when(pluginService.getDataProviders()).thenReturn(Arrays.asList(provider1, provider2));
+
+        DataService dataService = new DataService(applicationStorage, pluginService);
+
+        ContextRefreshedEvent event = Mockito.mock(ContextRefreshedEvent.class);
+        dataService.onApplicationEvent(event);
+
         Collection<DataProvider> dataProviders = dataService.getDataProviders();
-        Assert.assertEquals(2,dataProviders.size());
+        Assert.assertEquals(2, dataProviders.size());
+        Assert.assertTrue(dataProviders.contains(provider1));
+        Assert.assertTrue(dataProviders.contains(provider2));
+
+        Mockito.verify(provider1, times(1)).start();
+        Mockito.verify(provider1, times(1)).setStorage(any(DataStorage.class));
+        Mockito.verify(provider1, times(1)).addObserver(any(DataProviderObserver.class));
+        Mockito.verify(provider2, times(1)).start();
+        Mockito.verify(provider2, times(1)).setStorage(any(DataStorage.class));
+        Mockito.verify(provider2, times(1)).addObserver(any(DataProviderObserver.class));
     }
 }

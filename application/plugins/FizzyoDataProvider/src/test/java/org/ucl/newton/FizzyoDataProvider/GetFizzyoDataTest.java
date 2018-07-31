@@ -1,0 +1,35 @@
+package org.ucl.newton.FizzyoDataProvider;
+
+import org.junit.Ignore;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.ucl.FizzyoDataProvider.Fizzyo.GetFizzyoData;
+import org.ucl.newton.sdk.data.DataSource;
+import org.ucl.newton.sdk.data.DataStorage;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+/**
+ * Instances of this class provide utils for file reading.
+ *
+ * @author Xiaolong Chen
+ */
+
+public class GetFizzyoDataTest {
+    @Test
+    @Ignore //it need set authCode manually every time
+    public void GetFizzyoDataTest()throws IOException {
+        DataSource dataSource = Mockito.mock(DataSource.class);
+        DataStorage storageProvider = mock(DataStorage.class);
+        when(storageProvider.getOutputStream(any(DataSource.class))).thenReturn(mock(OutputStream.class));
+
+//        when(storageProvider.getOutputStream(anyString())).thenReturn(new FileOutputStream("D:\\Code\\Newton\\newton\\Fizzyo"));
+        GetFizzyoData getWeatherData = new GetFizzyoData(storageProvider, dataSource);
+        getWeatherData.run();
+    }
+}

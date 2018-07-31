@@ -73,21 +73,12 @@ INSERT INTO project_starred (project_id, user_id) VALUES (2, 2);
 INSERT INTO project_starred (project_id, user_id) VALUES (8, 2);
 INSERT INTO project_starred (project_id, user_id) VALUES (13, 2);
 
-/* Data sources */
-INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (1, 'Weather temp', 'some/loc1');
-INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (2, 'Weather rain', 'some/loc2');
-INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (3, 'Fizzyo HR', 'some/loc3');
-INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (4, 'Fizzyo ACT use', 'some/loc4');
-INSERT INTO datasources (ds_id, ds_name, ds_data_location) VALUES (5, 'Fizzyo steps', 'some/loc5');
-
 /* Project data sources */
-INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 1);
-INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 3);
-INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 4);
-INSERT INTO project_datasources (project_id, ds_id) VALUES (1, 5);
+INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (1, 1, 'newton-weather');
+INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (2, 1, 'newton-fizzyo');
 
 /* Insert into storage configuration */
-INSERT INTO storage_configuration (sc_id, sc_type) VALUES (1, 'Newton');
+INSERT INTO storage_configuration (sc_id, sc_type, sc_location) VALUES (1, 'Newton', 'classpath:/experiment/experiment-1/repository');
 
 /* Data processors */
 INSERT INTO process (proc_id, proc_repo_url, proc_initial_script, proc_engine) VALUES (1, 'https://github.com/blairisme/newton', 'test.py', 'python');
@@ -142,10 +133,6 @@ INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 1);
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 2);
 INSERT INTO version_outcomes (ver_id, out_id) VALUES (1, 3);
 
-/* Source Provider */
-INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (1, 'lib/WeatherDataProvider.jar', 'org.ucl.WeatherDataProvider.weather.WeatherDataProvider', '1.0');
-INSERT INTO source_providers (id, jarPath, providerName, version) VALUES (2, 'lib/FizzyoDataProvider.jar', 'org.ucl.FizzyoDataProvider.Fizzyo.FizzyoDataProvider', '1.0');
-
 /*** System Settings ***/
 
 /* Slave configuration */
@@ -153,4 +140,6 @@ INSERT INTO executors (id, address, username, password) VALUES (1, 'http://local
 
 INSERT INTO plugin (id, identifier, location) VALUES (1, 'newton-python', 'classpath:/plugins/processor/python.jar');
 INSERT INTO plugin (id, identifier, location) VALUES (2, 'newton-jupyter', 'classpath:/plugins/processor/jupyter.jar');
+INSERT INTO plugin (id, identifier, location) VALUES (3, 'newton-weather', 'classpath:/plugins/data/WeatherDataProvider.jar');
+INSERT INTO plugin (id, identifier, location) VALUES (4, 'newton-fizzyo', 'classpath:/plugins/data/FizzyoDataProvider.jar');
 
