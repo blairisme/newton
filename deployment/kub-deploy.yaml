@@ -75,7 +75,7 @@ spec:
       containers:
       - name: master-newton
         image: newtonregistry.azurecr.io/blairisme/newton:latest
-        args: 
+        env: 
           - name: database_host
           - value: database
           - name: database_port
