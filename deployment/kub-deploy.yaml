@@ -11,7 +11,9 @@ spec:
       containers:
       - name: database-newton
         image: newtonregistry.azurecr.io/blairisme/newton-database:latest
-        args: ["database_user=root", "database_password=Newton*123"]
+        args:
+          - "database_user=root"
+          - "database_password=Newton*123"
         ports:
         - containerPort: 3306
       imagePullSecrets:
@@ -43,6 +45,7 @@ spec:
         image: newtonregistry.azurecr.io/blairisme/newton-jupyter:latest
         ports:
         - containerPort: 8000
+        - containerPort: 8888
       imagePullSecrets:
       - name: acr-auth
 ---
@@ -70,7 +73,15 @@ spec:
       containers:
       - name: master-newton
         image: newtonregistry.azurecr.io/blairisme/newton:latest
-        args: ["database_host=database", "database_port=3306", "database_user=root", "database_password=Newton*123", "jupyter_host=jupyter", "jupyter_port=8000", "slave_host=slave", "slave_port=8070"]
+        args: 
+          - "database_host=database"
+          - "database_port=3306"
+          - "database_user=root"
+          - "database_password=Newton*123"
+          - "jupyter_host=jupyter"
+          - "jupyter_port=8000"
+          - "slave_host=slave"
+          - "slave_port=8070"
         ports:
         - containerPort: 8080
       imagePullSecrets:
