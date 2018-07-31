@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.ucl.newton.application.system.ApplicationStorage;
-import org.ucl.newton.service.plugin.Plugin;
+import org.ucl.newton.framework.Plugin;
 import org.ucl.newton.service.plugin.PluginService;
 
 import javax.inject.Inject;
