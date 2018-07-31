@@ -3,7 +3,9 @@ package org.ucl.newton.FizzyoDataProvider;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.ucl.FizzyoDataProvider.Fizzyo.FizzyoDataProvider;
 import org.ucl.FizzyoDataProvider.Fizzyo.GetFizzyoData;
+import org.ucl.newton.sdk.data.DataProviderObserver;
 import org.ucl.newton.sdk.data.DataSource;
 import org.ucl.newton.sdk.data.DataStorage;
 
@@ -12,6 +14,7 @@ import java.io.OutputStream;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 /**
@@ -24,12 +27,19 @@ public class GetFizzyoDataTest {
     @Test
     @Ignore //it need set authCode manually every time
     public void GetFizzyoDataTest()throws IOException {
-        DataSource dataSource = Mockito.mock(DataSource.class);
+        DataProviderObserver observer = mock(DataProviderObserver.class);
         DataStorage storageProvider = mock(DataStorage.class);
         when(storageProvider.getOutputStream(any(DataSource.class))).thenReturn(mock(OutputStream.class));
 
+        FizzyoDataProvider dataProvider = new FizzyoDataProvider();
+        dataProvider.setStorage(storageProvider);
+        dataProvider.addObserver(observer);
+
 //        when(storageProvider.getOutputStream(anyString())).thenReturn(new FileOutputStream("D:\\Code\\Newton\\newton\\Fizzyo"));
-        GetFizzyoData getWeatherData = new GetFizzyoData(storageProvider, dataSource);
+        GetFizzyoData getWeatherData = new GetFizzyoData(dataProvider);
         getWeatherData.run();
+
+        Mockito.verify(observer, times(1)).dataUpdated();
+        Mockito.verify(storageProvider, times(1)).getOutputStream(any(DataSource.class));
     }
 }

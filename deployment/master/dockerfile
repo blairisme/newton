@@ -39,7 +39,7 @@ EXPOSE 8080
 USER root
 COPY ./config/wait-for-it.sh /tmp/jetty/wait-for-it.sh
 RUN chmod +x /tmp/jetty/wait-for-it.sh
-USER jetty
+#USER jetty
 
 WORKDIR $JETTY_BASE
 CMD /tmp/jetty/wait-for-it.sh database:3306 -t 60 -- java -jar $JETTY_HOME/start.jar
