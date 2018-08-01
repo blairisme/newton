@@ -11,11 +11,6 @@ spec:
       containers:
       - name: database-newton
         image: newtonregistry.azurecr.io/blairisme/newton-database:latest
-        env:
-          - name: "database_user"
-          - value: "root"
-          - name: "database_password"
-          - value: "Newton*123"
         ports:
         - containerPort: 3306
       imagePullSecrets:
@@ -75,23 +70,6 @@ spec:
       containers:
       - name: master-newton
         image: newtonregistry.azurecr.io/blairisme/newton:latest
-        env: 
-          - name: "database_host"
-          - value: "database"
-          - name: "database_port"
-          - value: "3306"
-          - name: "database_user"
-          - value: "root"
-          - name: "database_password"
-          - value: "Newton*123"
-          - name: "jupyter_host"
-          - value: "jupyter"
-          - name: "jupyter_port"
-          - value: "8000"
-          - name: "slave_host"
-          - value: "slave"
-          - name: "slave_port"
-          - value: "8070"
         ports:
         - containerPort: 8080
       imagePullSecrets:
