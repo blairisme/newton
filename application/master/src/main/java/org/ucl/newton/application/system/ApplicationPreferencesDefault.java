@@ -28,7 +28,7 @@ public class ApplicationPreferencesDefault
     }
 
     public String getDatabaseHost() {
-        return "database";
+        return "database-newton";
     }
 
     public String getDatabasePort() {
@@ -44,7 +44,7 @@ public class ApplicationPreferencesDefault
     }
 
     public String getJupyterHost() {
-        return "jupyter";
+        return "jupyter-newton";
     }
     
     public String getJupyterPort() {
