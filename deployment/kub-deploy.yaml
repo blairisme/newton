@@ -47,7 +47,7 @@ spec:
         - containerPort: 8080
         volumeMounts:
         - name: shared-data
-          mountPath: ~/.newton/experiment:/var/newton/experiment
+          mountPath: ~/.newton/experiment
       - name: jupyter-newton
         image: newtonregistry.azurecr.io/blairisme/newton-jupyter:latest
         ports:
@@ -55,7 +55,7 @@ spec:
         - containerPort: 8888
         volumeMounts:
         - name: shared-data
-          mountPath: /etc/jupyterhub
+          mountPath: /var/newton/experiment
 
       imagePullSecrets:
       - name: acr-auth
