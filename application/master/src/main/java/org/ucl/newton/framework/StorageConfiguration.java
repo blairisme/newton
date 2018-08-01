@@ -2,6 +2,9 @@ package org.ucl.newton.framework;
 
 import org.springframework.core.io.Resource;
 import org.ucl.newton.application.resource.ApplicationResource;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 
@@ -24,23 +27,23 @@ public class StorageConfiguration
     private StorageType storageType;
 
     @Column(name = "sc_location")
-    private String location;
+    private String storageLocation;
+
+    @Column(name = "sc_initial_script")
+    private String nameOfInitialScript;
 
     public StorageConfiguration() {
     }
 
-    public StorageConfiguration(int id, StorageType storageType) {
-        this.id = id;
-        this.storageType = storageType;
-    }
-
-    public StorageConfiguration(int id, String storageTypeAsString) {
+    public StorageConfiguration(int id, String storageTypeAsString, String storageLocation, String nameOfInitialScript) {
         this.id = id;
         if(storageTypeAsString.equals("Newton")) {
             storageType = StorageType.Newton;
         } else {
             //throw new IllegalAccessException(storageTypeAsString);
         }
+        this.storageLocation = storageLocation;
+        this.nameOfInitialScript = nameOfInitialScript;
     }
 
     public int getId() {
@@ -51,7 +54,47 @@ public class StorageConfiguration
         return storageType;
     }
 
-    public Resource getLocation() {
-        return new ApplicationResource(location);
+    public Resource getStorageLocation() {
+        return new ApplicationResource(storageLocation);
+    }
+
+    public String getNameOfInitialScript() {
+        return nameOfInitialScript;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) { return false; }
+        if (obj == this) { return true; }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        StorageConfiguration other = (StorageConfiguration) obj;
+        return new EqualsBuilder()
+            .append(id, other.id)
+            .append(storageType, other.storageType)
+            .append(storageLocation, other.storageLocation)
+            .append(nameOfInitialScript, other.nameOfInitialScript)
+            .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+            .append(id)
+            .append(storageType)
+            .append(storageLocation)
+            .append(nameOfInitialScript)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("id", id)
+            .append("storageType", storageType)
+            .append("storageLocation", storageLocation)
+            .append("nameOfInitialScript", nameOfInitialScript)
+            .toString();
     }
 }

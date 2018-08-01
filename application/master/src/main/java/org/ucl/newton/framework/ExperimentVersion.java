@@ -95,7 +95,6 @@ public class ExperimentVersion {
         return new EqualsBuilder()
             .append(this.id, other.id)
             .append(this.number, other.number)
-            .append(this.outcomes, other.outcomes)
             .isEquals();
     }
 
@@ -104,7 +103,6 @@ public class ExperimentVersion {
         return new HashCodeBuilder(17, 37)
             .append(id)
             .append(number)
-            .append(outcomes)
             .toHashCode();
     }
 

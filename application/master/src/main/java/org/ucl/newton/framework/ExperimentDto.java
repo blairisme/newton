@@ -24,7 +24,7 @@ public class ExperimentDto {
 
     private String[] dataSourceLocs;
 
-    private int[] dataSourceIds;
+    private String[] dataSourceIds;
 
     public String getName() {
         return name;
@@ -82,11 +82,11 @@ public class ExperimentDto {
         this.selectedNotebookTypeValue = selectedNotebookTypeValue;
     }
 
-    public int[] getDataSourceIds() {
+    public String[] getDataSourceIds() {
         return dataSourceIds;
     }
 
-    public void setDataSourceIds(int[] dataSourceIds) {
+    public void setDataSourceIds(String[] dataSourceIds) {
         this.dataSourceIds = dataSourceIds;
     }
 

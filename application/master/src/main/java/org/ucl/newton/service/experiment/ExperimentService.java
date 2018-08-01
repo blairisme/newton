@@ -41,9 +41,7 @@ public class ExperimentService
     }
 
     public Collection<Experiment> getExperimentsByParentProjectName(String projectName) {
-        Collection<Experiment> experiments = repository.getExperimentsForProject(projectName);
-        // check experiments not null
-        return experiments;
+        return repository.getExperimentsForProject(projectName);
     }
 
     public Experiment getExperimentById(int experimentId) {

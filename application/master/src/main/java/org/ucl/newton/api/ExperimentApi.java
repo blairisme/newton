@@ -49,8 +49,8 @@ public class ExperimentApi
     @ResponseBody
     public FileSystemResource getRepository(@PathVariable("experimentId") String experimentId) throws IOException {
         Experiment experiment = experimentService.getExperimentByIdentifier(experimentId);
-        StorageConfiguration storage = experiment.getStorageConfiguration();
-        Resource resource = storage.getLocation();
+        StorageConfiguration storage = experiment.getConfiguration().getStorageConfiguration();
+        Resource resource = storage.getStorageLocation();
 
         Path tempPath = applicationStorage.getTempDirectory();
         Path archive = tempPath.resolve(UUID.randomUUID().toString() + ".zip");

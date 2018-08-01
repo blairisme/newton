@@ -78,11 +78,11 @@
                             <div class="radio">
                                 <input type="radio"
                                        th:field="*{selectedTypeValue}"
-                                       th:value="${typeValue}"
+                                       th:value="${typeValue.getName()}"
                                        th:name="expTypeRadio"/>
                                 <label
                                         th:for="${#ids.prev('selectedTypeValue')}"
-                                        th:text="${typeValue}"></label>
+                                        th:text="${typeValue.getName()}"></label>
                             </div>
                         </th:block>
                     </div>
@@ -137,7 +137,8 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <th:block th:each="dataSource : ${project.dataSources}">
-                                <a class="dropdown-item" href="#" th:text="${dataSource.name}" th:value="${dataSource.id}"></a>
+                                <!--<a class="dropdown-item" href="#" th:text="${dataSource.name}" th:value="${dataSource.id}"></a>-->
+                                <a class="dropdown-item" href="#" th:text="${dataSource}"></a>
                             </th:block>
                         </div>
                     </div>
@@ -145,7 +146,7 @@
 
                 <!-- Custom location selection -->
                 <div class="form-group">
-                    <label for="experimentDsLoc">Data location (allows you to specify a custom location for the data in your experiment)</label>
+                    <label for="experimentDsLoc">Data storage location (allows you to specify a custom storage location for the data in your experiment)</label>
                     <div class="input-group">
                         <input type="text" id="experimentDsLoc" class="form-control" placeholder="" aria-label="Recipient's username" aria-describedby="basic-addon2">
                         <div class="input-group-append">

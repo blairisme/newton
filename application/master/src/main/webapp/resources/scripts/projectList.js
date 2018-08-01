@@ -7,6 +7,7 @@ $(document).ready( function() {
         "iDisplayLength": 25,
         "bFilter": true,
         "searching": true,
+        "order": [[2, "desc"]],
         dom: "t"
     });
 
@@ -15,6 +16,7 @@ $(document).ready( function() {
         "iDisplayLength": 25,
         "bFilter": true,
         "searching": true,
+        "order": [[2, "desc"]],
         dom: "t"
     });
 

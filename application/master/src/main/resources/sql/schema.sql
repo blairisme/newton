@@ -76,26 +76,6 @@ CREATE TABLE IF NOT EXISTS project_datasources (
     CONSTRAINT fk_projds_project FOREIGN KEY (pds_project) REFERENCES projects(id)
 );
 
-/*** Plugins ***/
-
-/* Create table to store data relating to the script to run*/
-CREATE TABLE IF NOT EXISTS process (
-    proc_id INT NOT NULL AUTO_INCREMENT,
-    proc_repo_url VARCHAR(100) NOT NULL,
-    proc_initial_script VARCHAR(100) NOT NULL,
-    proc_engine VARCHAR(45) NOT NULL,
-    PRIMARY KEY (proc_id)
-);
-
-/* Create table to store experiment data processor */
-CREATE TABLE IF NOT EXISTS processor_configuration (
-    id INT NOT NULL AUTO_INCREMENT,
-    processor_id INT NOT NULL,
-    configuration_path VARCHAR(256) NOT NULL,
-    PRIMARY KEY (id),
-    CONSTRAINT fk_config_processor FOREIGN KEY (processor_id) REFERENCES process(proc_id)
-);
-
 
 /*** Experiments ***/
 /* Create table to store an experiments storage configuration */
@@ -103,7 +83,19 @@ CREATE TABLE IF NOT EXISTS storage_configuration (
     sc_id INT NOT NULL AUTO_INCREMENT,
     sc_type VARCHAR(20) NOT NULL,
     sc_location VARCHAR(200) NOT NULL,
+    sc_initial_script VARCHAR(100) NOT NULL,
     PRIMARY KEY (sc_id)
+);
+
+/* Creates table for experiment configurations */
+CREATE TABLE IF NOT EXISTS experiment_config (
+    exp_config_id INT NOT NULL AUTO_INCREMENT,
+    storage_config_id INT NOT NULL,
+    exp_proc_engine VARCHAR(45) NOT NULL,
+    exp_out_pattern VARCHAR(100) NOT NULL,
+    exp_trigger VARCHAR(20) NOT NULL,
+    PRIMARY KEY (exp_config_id),
+    CONSTRAINT fk_experiment_storage FOREIGN KEY (storage_config_id) REFERENCES storage_configuration(sc_id)
 );
 
 /* Create experiment table to store data relating to experiments */
@@ -114,31 +106,27 @@ CREATE TABLE IF NOT EXISTS experiments (
     exp_description VARCHAR(500),
     project_id INT NOT NULL,
     creator_id INT NOT NULL,
-    storage_config_id INT NOT NULL,
-    processor_configuration_id INT NOT NULL,
-    exp_out_pattern VARCHAR(100) NOT NULL,
-    exp_trigger VARCHAR(20) NOT NULL,
+    exp_config_id INT NOT NULL,
     PRIMARY KEY (exp_id),
     CONSTRAINT fk_experiment_project FOREIGN KEY (project_id) REFERENCES projects(id),
     CONSTRAINT fk_experiment_creator FOREIGN KEY (creator_id) REFERENCES users(id),
-    CONSTRAINT fk_experiment_storage FOREIGN KEY (storage_config_id) REFERENCES storage_configuration(sc_id),
-    CONSTRAINT fk_experiment_processor FOREIGN KEY (processor_configuration_id) REFERENCES processor_configuration(id)
+    CONSTRAINT fk_experiment_config FOREIGN KEY (exp_config_id) REFERENCES experiment_config(exp_config_id)
 );
 
 /* Creates table for experiment data sources */
 CREATE TABLE IF NOT EXISTS eds (
     eds_id INT NOT NULL AUTO_INCREMENT,
-    ds_id INT NOT NULL,
+    ds_id VARCHAR(50) NULL,
     eds_custom_location VARCHAR(100) NOT NULL,
     PRIMARY KEY (eds_id)
 );
 
-/* Create table to link experiments to the experiment data sources used */
+/* Create table to link experiment configuration to the experiment data sources configuration */
 CREATE TABLE IF NOT EXISTS experiment_eds_link (
-    exp_id INT NOT NULL,
+    exp_config_id INT NOT NULL,
     eds_id INT NOT NULL,
-    PRIMARY KEY (exp_id, eds_id),
-    CONSTRAINT fk_experiement FOREIGN KEY (exp_id) REFERENCES experiments(exp_id),
+    PRIMARY KEY (exp_config_id, eds_id),
+    CONSTRAINT fk_experiementconfig FOREIGN KEY (exp_config_id) REFERENCES experiment_config(exp_config_id),
     CONSTRAINT fk_datasource FOREIGN KEY (eds_id) REFERENCES eds(eds_id)
 );
 

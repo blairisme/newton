@@ -10,9 +10,9 @@ import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.*;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DeveloperPersistenceConfiguration.class})
@@ -29,6 +29,22 @@ public class ExperimentRepositoryTest {
         Assert.assertEquals("HR classification", experiment.getName());
         Assert.assertEquals(1, experiment.getId());
         Assert.assertEquals("project-fizzyo", parentProject.getIdentifier());
+        ExperimentConfiguration expConfog = experiment.getConfiguration();
+        Assert.assertNotNull(expConfog.getExperimentDataSources());
+        Assert.assertEquals(2, expConfog.getExperimentDataSources().size());
+        Assert.assertNotNull(expConfog.getOutputPattern());
+        Assert.assertEquals("python", expConfog.getProcessorPluginId());
+        Assert.assertNotNull(expConfog.getStorageConfiguration());
+        Assert.assertNotNull(expConfog.getTrigger());
+    }
+
+    @Test
+    public void testGetExperimentByIdentifier() throws Exception {
+        Experiment expected = createExperiment("test experiment 1");
+        Assert.assertEquals(expected.getIdentifier(), "test+experiment+1");
+        repository.addExperiment(expected);
+        Experiment actual = repository.getExperimentByIdentifier("test+experiment+1");
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
@@ -47,6 +63,40 @@ public class ExperimentRepositoryTest {
         Collection<Experiment> experiments = repository.getExperimentsForProject(aidsRes);
         Assert.assertEquals(0, experiments.size());
     }
+
+    @Test
+    public void testGetExperimentsForProjectForUnknownProject() {
+        String unknownProject = "asdijosdi";
+        Collection<Experiment> experiments = repository.getExperimentsForProject(unknownProject);
+        Assert.assertEquals(0, experiments.size());
+    }
+
+
+    @Test
+    public void testUpdateProject() {
+        Experiment experiment12 = repository.getExperimentById(12);
+        Assert.assertEquals(0, experiment12.getVersions().size());
+        ExperimentBuilder experimentBuilder = new ExperimentBuilder();
+        experimentBuilder.copyExperiment(experiment12);
+        experimentBuilder.setName("new name");
+        experiment12 = experimentBuilder.build();
+        repository.update(experiment12);
+        Experiment experiment12Loaded = repository.getExperimentById(12);
+        Assert.assertEquals(experiment12, experiment12Loaded);
+    }
+
+
+    // test addVersion
+
+
+    // test addVersions
+
+
+    // test addOutcome
+
+
+    // test addOutcomes
+
 
     @Test
     public void testCorrectExperimentCreator() {
@@ -73,32 +123,6 @@ public class ExperimentRepositoryTest {
     }
 
     @Test
-    public void testProcessorConfiguration() {
-        Experiment experiment = repository.getExperimentById(1);
-        DataProcessorConfiguration configuration = experiment.getProcessorConfiguration();
-        DataProcessor processor = configuration.getProcessor();
-
-        Assert.assertEquals(1, configuration.getId());
-        Assert.assertEquals("config.json", configuration.getPath());
-        Assert.assertEquals(1, processor.getId());
-        Assert.assertEquals("https://github.com/blairisme/newton", processor.getRepoUrl());
-        Assert.assertEquals("test.py", processor.getNameOfInitialScript());
-        Assert.assertEquals("python", processor.getProcessEngine());
-    }
-
-    @Test
-    public void testDataSources() {
-        Collection<ExperimentDataSource> expected = new ArrayList<>();
-        expected.add(new ExperimentDataSource(1, 1,"someloc/input.csv"));
-        expected.add(new ExperimentDataSource(2, 2, "someloc/input.csv"));
-
-        Experiment experiment = repository.getExperimentById(1);
-        Collection<ExperimentDataSource> actual = experiment.getExperimentDataSources();
-
-        Assert.assertEquals(expected, actual);
-    }
-
-    @Test
     public void testExperimentVersionOutcomes() {
         Experiment experiment = repository.getExperimentById(1);
         Collection<ExperimentVersion> versions = experiment.getVersions();
@@ -119,6 +143,54 @@ public class ExperimentRepositoryTest {
         Assert.assertEquals(ExperimentOutcomeType.Log, outcome.getType());
     }
 
+    private Experiment createExperiment(String name) throws Exception {
+        ExperimentBuilder builder = new ExperimentBuilder();
+        builder.setName(name);
+        builder.generateIdentifier(name);
+        builder.setDescription("A simple but brief experiment description");
+        builder.setCreator(createUser());
+        builder.setProject(createProject());
+        builder.setExperimentVersions(createVersions());
+        builder.setConfiguration(createExperimentConfiguration());
+        return builder.build();
+    }
 
+    private User createUser() {
+        return new User(4, "Xiaolong Chen", "xiaolong.chen@ucl.ac.uk", "pp_2.jpg");
+    }
+
+    private Project createProject() throws Exception {
+        User owner = new User(2, "admin", "admin@ucl.ac.uk", "pp_4.jpg");
+        return new Project(13, "gosh-apollo", "GOSH Project Apollo", "Project description",
+                "default.png", createDate("2017-07-07 10:09:08"), owner , new ArrayList<>(), new ArrayList<>());
+    }
+
+    private Date createDate(String date) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateFormat.parse(date);
+    }
+
+    private List<ExperimentVersion> createVersions() {
+        List<ExperimentVersion> versions = new ArrayList<>();
+        versions.add(new ExperimentVersion(1, createOutcomes()));
+        return versions;
+    }
+
+    private List<ExperimentOutcome> createOutcomes() {
+        List<ExperimentOutcome> outcomes = new ArrayList<>();
+        outcomes.add(new ExperimentOutcome(4,"outcome1", "somelocation", ExperimentOutcomeType.Data));
+        outcomes.add(new ExperimentOutcome(5,"logFile", "anotherlocation", ExperimentOutcomeType.Log));
+        return outcomes;
+    }
+
+    private ExperimentConfiguration createExperimentConfiguration() {
+        ExperimentConfigurationBuilder builder = new ExperimentConfigurationBuilder();
+        builder.setStorageConfiguration(new StorageConfiguration(0, "Newton", "experimentlocation", "main.ipynb"));
+        builder.setProcessorPluginId("Python");
+        builder.addDataSources(new String[]{"newton-weather", "newton-fizzyo"}, new String[]{"myproj/data1.csv", "myproj/data2.json"});
+        builder.setOutputPattern("outputs/*.csv");
+        builder.addTrigger("Manual");
+        return builder.build();
+    }
 
 }
