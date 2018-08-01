@@ -78,11 +78,11 @@
                             <div class="radio">
                                 <input type="radio"
                                        th:field="*{selectedTypeValue}"
-                                       th:value="${typeValue}"
+                                       th:value="${typeValue.getName()}"
                                        th:name="expTypeRadio"/>
                                 <label
                                         th:for="${#ids.prev('selectedTypeValue')}"
-                                        th:text="${typeValue}"></label>
+                                        th:text="${typeValue.getName()}"></label>
                             </div>
                         </th:block>
                     </div>

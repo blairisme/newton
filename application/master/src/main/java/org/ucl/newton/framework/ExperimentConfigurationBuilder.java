@@ -1,6 +1,7 @@
 package org.ucl.newton.framework;
 
 import org.apache.commons.lang3.Validate;
+import org.ucl.newton.sdk.processor.DataProcessor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,8 +23,13 @@ public class ExperimentConfigurationBuilder {
         this.storageConfiguration = storageConfiguration;
     }
 
-    public void setProcessorPluginId(String processorPluginId) {
-        this.processorPluginId = processorPluginId;
+    public void setProcessorPluginId(String processorPluginName, Collection<DataProcessor> processors) {
+        for(DataProcessor processor: processors) {
+            if(processor.getName().equals(processorPluginName)) {
+                processorPluginId = processor.getIdentifier();
+                System.out.println(processorPluginId);
+            }
+        }
     }
 
     public void addDataSources(String[] dataSourceIds, String[] dataSourceLocs) {

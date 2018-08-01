@@ -18,6 +18,7 @@ import org.ucl.newton.framework.*;
 import org.ucl.newton.service.execution.ExecutionService;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.jupyter.JupyterServer;
+import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
 
@@ -44,6 +45,7 @@ public class ExperimentController
     private ExecutionService executionService;
     private JupyterServer jupyterServer;
     private ProjectService projectService;
+    private PluginService pluginService;
 
     @Inject
     public ExperimentController(
@@ -51,13 +53,15 @@ public class ExperimentController
         ExperimentService experimentService,
         ExecutionService executionService,
         JupyterServer jupyterServer,
-        ProjectService projectService)
+        ProjectService projectService,
+        PluginService pluginService)
     {
         this.userService = userService;
         this.experimentService = experimentService;
         this.executionService = executionService;
         this.jupyterServer = jupyterServer;
         this.projectService = projectService;
+        this.pluginService = pluginService;
     }
 
     @GetMapping(value = "/project/{project}/{experiment}")
@@ -85,7 +89,7 @@ public class ExperimentController
         model.addAttribute("experiment", new ExperimentDto());
         model.addAttribute("triggerValues", new String[] {"Manual", "On data change"});
         model.addAttribute("storageValues", new String[] {"Newton"});
-        model.addAttribute("typeValues", new String[] {"Python", "Ruby", "Jupyter notebook (Python)", "Jupyter notebook (ruby)"});
+        model.addAttribute("typeValues", pluginService.getDataProcessors());
         return "experiment/new";
     }
 
@@ -144,7 +148,7 @@ public class ExperimentController
     private ExperimentConfiguration createExperimentConfiguration(ExperimentDto experimentDto) {
         ExperimentConfigurationBuilder builder = new ExperimentConfigurationBuilder();
         builder.setStorageConfiguration(new StorageConfiguration(0, experimentDto.getSelectedStorageValue(), "",""));
-        builder.setProcessorPluginId(experimentDto.getSelectedTypeValue());
+        builder.setProcessorPluginId(experimentDto.getSelectedTypeValue(), pluginService.getDataProcessors());
         builder.addDataSources(experimentDto.getDataSourceIds(), experimentDto.getDataSourceLocs());
         builder.setOutputPattern(experimentDto.getOutputPattern());
         builder.addTrigger(experimentDto.getSelectedTriggerValue());

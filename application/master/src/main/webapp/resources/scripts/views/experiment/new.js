@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    //var currentDsId;
 
     $(".dropdown-menu a").click(function(e) {
         e.preventDefault();
@@ -33,10 +32,6 @@ $(document).ready(function() {
     $("#selectedStorageValue1").prop("checked", true);
 
     $("#selectedTypeValue1").prop("checked", true);
-
-    $("#selectedTypeValue2").prop("disabled", true);
-
-    $("#selectedTypeValue4").prop("disabled", true);
 
     $("#dsList").on("click", ".remove_button", function() {
         var name = $(this).val();
