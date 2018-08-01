@@ -20,7 +20,7 @@
 
 .computer-graphic {
     width: 400px;
-    content: url("/resources/images/logo-white.png");
+    content: url("/resources/images/front.png");
 }
 
 #signUpBtn {
