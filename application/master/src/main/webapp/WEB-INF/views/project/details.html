@@ -27,6 +27,8 @@
                 <a  th:text="@{'/ '+${project.name}}" > / project name</a>
             </h1>
 
+            <input type="hidden" id="identifier" th:value="${project.identifier}" />
+
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link active" href="#">Experiments</a>
