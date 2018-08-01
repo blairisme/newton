@@ -37,8 +37,8 @@ INSERT INTO projects (id, owner_id, identifier, name, description, image, update
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (9, 2, 'gosh-dmd', 'GOSH Duchenne muscular dystrophy treatment', 'Project description', 'default.png', '2018-02-05 10:09:08');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (10, 2, 'rm-cns-lymphoma', 'RM Primary CNS Lymphoma', 'Project description', 'rm.png', '2018-01-07 10:09:08');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (11, 2, 'ucl-vega', 'UCL Vega', 'Project description', 'ucl.png', '2017-12-07 10:09:08');
-INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (12, 2, 'ucl-camelot', 'UCL Project Camelot', 'Project description', 'ucl.png', '2017-08-07 10:09:08');
-INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (13, 2, 'gosh-apollo', 'GOSH Project Apollo', 'Project description', 'default.png', '2017-07-07 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (12, 2, 'ucl-camelot', 'UCL Project Camelot', 'Project description', 'ucl.png', '2017-07-07 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (13, 2, 'gosh-apollo', 'GOSH Project Apollo', 'Project description', 'default.png', '2017-08-07 10:09:08');
 
 /* Project membership */
 INSERT INTO project_membership (project_id, user_id) VALUES (1, 1);
