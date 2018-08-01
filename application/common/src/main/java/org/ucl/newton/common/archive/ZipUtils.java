@@ -48,6 +48,7 @@ public class ZipUtils
                 if (!entry.isDirectory()) {
                     OutputStream outputStream = new FileOutputStream(entryFile);
                     IOUtils.copy(zipStream, outputStream);
+                    outputStream.close();
                 }
                 else {
                     entryFile.mkdirs();

@@ -106,7 +106,6 @@ public class ExperimentOutcome
         }
         ExperimentOutcome other = (ExperimentOutcome)obj;
         return new EqualsBuilder()
-            .append(this.id, other.id)
             .append(this.name, other.name)
             .append(this.location, other.location)
             .append(this.type, other.type)
@@ -116,7 +115,6 @@ public class ExperimentOutcome
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-            .append(id)
             .append(name)
             .append(location)
             .append(type)

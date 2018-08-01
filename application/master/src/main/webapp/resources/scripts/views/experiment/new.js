@@ -1,12 +1,11 @@
 $(document).ready(function() {
-    var currentDsId;
 
     $(".dropdown-menu a").click(function(e) {
         e.preventDefault();
         var selText = $(this).text();
         $("#dropdownDsButton").text(selText);
-        currentDsId = $(this).attr("value");
-        var default_loc = "data/" + selText.split(' ').join('_').toLowerCase() + ".csv" // temporary
+        //currentDsId = $(this).attr("value");
+        var default_loc = "data/" + selText.split(' ').join('_').toLowerCase() + ".csv"; // temporary
         $("#experimentDsLoc").val(default_loc);
     });
 
@@ -20,10 +19,10 @@ $(document).ready(function() {
                 $("#dsListEmpty").hide();
             }
 
-            if ($("#ds" + currentDsId).length != 0) {
+            if ($("#ds" + dsName).length != 0) {
                 console.log("duplication"); //convert to validation error
             } else {
-                addDs(currentDsId, dsName, dsLoc);
+                addDs(dsName, dsLoc);
             }
         }
     });
@@ -34,34 +33,35 @@ $(document).ready(function() {
 
     $("#selectedTypeValue1").prop("checked", true);
 
-    $("#selectedTypeValue2").prop("disabled", true);
-
-    $("#selectedTypeValue4").prop("disabled", true);
+    $("#dsList").on("click", ".remove_button", function() {
+        var name = $(this).val();
+        removeDs(name);
+    });
 
 });
 
 
-function addDs(id, name, loc) {
+function addDs(name, loc) {
     $("#dsList").append(
-        "<li class=\"list-group-item project-list-item\" id=\"ds" + id + "\">" +
+        "<li class=\"list-group-item project-list-item\" id=\"ds" + name + "\">" +
         "<p class=\"float-left\">Name: " + name + "<br />Location: " + loc + "</p>" +
-        "<button type=\"button\" class=\"btn btn-outline-primary remove_button float-right\" onclick=\"removeDs(" + id + ")\">Remove</button>" +
+        "<button type=\"button\" class=\"btn btn-outline-primary remove_button float-right\" value=\"" + name + "\">Remove</button>" +
         "</li>"
     );
 
     $("#experimentDsDataIds").append(
-        "<option id=\"dsId" + id + "\" value=\"" + id +"\" selected=\"selected\"></option>"
+        "<option id=\"dsId" + name + "\" value=\"" + name +"\" selected=\"selected\"></option>"
     );
 
     $("#experimentDsDataLoc").append(
-        "<option id=\"dsLoc" + id + "\" value=\"" + loc +"\" selected=\"selected\"></option>"
+        "<option id=\"dsLoc" + name + "\" value=\"" + loc +"\" selected=\"selected\"></option>"
     );
 }
 
-function removeDs(id) {
-    var idString = "#ds" + id;
-    var id = "#dsId" + id;
-    var loc = "#dsLoc" + id;
+function removeDs(name) {
+    var idString = "#ds" + name;
+    var id = "#dsId" + name;
+    var loc = "#dsLoc" + name;
     $(idString).remove();
     $(id).remove();
     $(loc).remove();
