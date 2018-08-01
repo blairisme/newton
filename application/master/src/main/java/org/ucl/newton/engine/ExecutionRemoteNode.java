@@ -13,13 +13,16 @@ import org.ucl.newton.application.system.ApplicationPreferences;
 import org.ucl.newton.bridge.ExecutionNode;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Provider;
 
 /**
- *
+ * Creates a new {@link ExecutionNode} through which execution requests can be
+ * made to Newton slaves.
  *
  * @author Blair Butterworth
  */
+@Named
 public class ExecutionRemoteNode implements Provider<ExecutionNode>
 {
     private ApplicationPreferences preferences;

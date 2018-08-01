@@ -39,9 +39,7 @@ public class DataServiceTest
 
         Mockito.verify(provider1, times(1)).start();
         Mockito.verify(provider1, times(1)).setStorage(any(DataStorage.class));
-        Mockito.verify(provider1, times(1)).addObserver(any(DataProviderObserver.class));
         Mockito.verify(provider2, times(1)).start();
         Mockito.verify(provider2, times(1)).setStorage(any(DataStorage.class));
-        Mockito.verify(provider2, times(1)).addObserver(any(DataProviderObserver.class));
     }
 }

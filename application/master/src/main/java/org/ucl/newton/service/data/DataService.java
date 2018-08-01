@@ -41,7 +41,7 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
 
     @Inject
     public DataService(ApplicationStorage applicationStorage, PluginService pluginService) {
-        this.dataProviders = new ArrayList<>();
+        this.dataProviders = null;
         this.pluginService = pluginService;
         this.applicationStorage = applicationStorage;
     }
@@ -52,17 +52,17 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
     }
 
     private void loadProviders() {
-        if (dataProviders.isEmpty()) {
+        if (dataProviders == null) {
+            dataProviders = new ArrayList<>();
             for (DataProvider dataProvider : pluginService.getDataProviders()) {
                 dataProvider.setStorage(createDataStorage(dataProvider));
                 dataProvider.start();
-                this.dataProviders.add(dataProvider);
+                dataProviders.add(dataProvider);
             }
         }
     }
 
     public void addDataObserver(DataProviderObserver observer) {
-
 //        for (DataProvider dataProvider: getDataProviders()) {
 //            dataProvider.addObserver(observer);
 //        }

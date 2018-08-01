@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.ucl.newton.common.exception.InvalidPluginException;
 import org.ucl.newton.common.lang.JarClassLoader;
 import org.ucl.newton.common.lang.JarInstanceLoader;
-import org.ucl.newton.framework.Plugin;
 import org.ucl.newton.sdk.data.DataProvider;
 import org.ucl.newton.sdk.processor.DataProcessor;
 

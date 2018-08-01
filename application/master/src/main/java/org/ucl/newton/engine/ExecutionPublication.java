@@ -18,13 +18,15 @@ import javax.inject.Named;
  * @author Blair Butterworth
  */
 @Named
-public class ExecutionPublication extends ExecutionPipelineElement
+public class ExecutionPublication extends ExecutionPipelineBase
 {
     @Override
-    public void process(ExecutionTask context) {
+    public void process(ExecutionTask task) {
+        finish(task);
     }
 
     @Override
-    public void cancel(ExecutionTask context) {
+    public void cancel(ExecutionTask task) {
+        finish(task);
     }
 }

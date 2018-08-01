@@ -46,8 +46,8 @@ public class ExecutionEngine implements ExecutionController, ExecutionPipelineOb
     @Override
     public void startExecution(Experiment experiment) {
         ExecutionTask task = new ExecutionTask(experiment);
-        pipeline.process(task);
         tasks.put(experiment.getIdentifier(), task);
+        pipeline.process(task);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ExecutionEngine implements ExecutionController, ExecutionPipelineOb
 
     @Override
     public boolean isExecutionComplete(Experiment experiment) {
-        return tasks.containsKey(experiment.getIdentifier());
+        return !tasks.containsKey(experiment.getIdentifier());
     }
 
     @Override

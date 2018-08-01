@@ -15,31 +15,13 @@ package org.ucl.newton.engine;
  *
  * @author Blair Butterworth
  */
-public abstract class ExecutionPipelineElement implements ExecutionPipeline
+public interface ExecutionPipelineElement extends ExecutionPipeline
 {
-    private ExecutionPipeline next;
-    private ExecutionPipelineObserver observer;
+    public void setNext(ExecutionPipeline next);
 
-    public ExecutionPipelineElement() {
-    }
+    public void setObserver(ExecutionPipelineObserver observer);
 
-    public void setNext(ExecutionPipeline next) {
-        this.next = next;
-    }
+    public void proceed(ExecutionTask task);
 
-    public void setObserver(ExecutionPipelineObserver observer) {
-        this.observer = observer;
-    }
-
-    public void proceed(ExecutionTask task) {
-        if (next != null) {
-            next.process(task);
-        }
-    }
-
-    public void halt(ExecutionTask task) {
-        if (observer != null) {
-            observer.executionComplete(task);
-        }
-    }
+    public void finish(ExecutionTask task);
 }

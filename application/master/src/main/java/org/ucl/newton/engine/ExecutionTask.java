@@ -21,18 +21,13 @@ import org.ucl.newton.framework.Experiment;
  */
 public class ExecutionTask
 {
-    private String identifier;
     private Experiment experiment;
     private ExecutionRequest request;
     private ExecutionResult result;
     private String error;
 
     public ExecutionTask(Experiment experiment) {
-        this.identifier = experiment.getIdentifier();
-    }
-
-    public String getIdentifier() {
-        return identifier;
+        this.experiment = experiment;
     }
 
     public Experiment getExperiment() {

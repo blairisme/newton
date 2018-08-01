@@ -22,7 +22,7 @@ import java.util.Map;
  * @author Blair Butterworth
  */
 @Named
-public class ExecutionRemote extends ExecutionPipelineElement implements ExecutionCoordinatorServer
+public class ExecutionRemote extends ExecutionPipelineBase implements ExecutionCoordinatorServer
 {
     private ExecutionNode executionNode;
     private Map<String, ExecutionTask> executionRequests;
@@ -44,11 +44,11 @@ public class ExecutionRemote extends ExecutionPipelineElement implements Executi
             executionTask.setRequest(executionRequest);
 
             executionNode.execute(executionRequest);
-            executionRequests.put(executionRequest.getExperiment(), executionTask);
+            executionRequests.put(executionRequest.getId(), executionTask);
         }
         catch (Throwable error) {
             executionTask.setError(error);
-            halt(executionTask);
+            finish(executionTask);
         }
     }
 
@@ -74,7 +74,7 @@ public class ExecutionRemote extends ExecutionPipelineElement implements Executi
         ExecutionTask context = executionRequests.remove(failure.getId());
         if (context != null) {
             context.setError(failure);
-            halt(context);
+            finish(context);
         }
     }
 }
