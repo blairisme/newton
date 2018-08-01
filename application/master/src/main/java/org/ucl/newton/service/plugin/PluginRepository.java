@@ -13,7 +13,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.ucl.newton.framework.Plugin;
 
 import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;

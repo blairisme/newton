@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.framework;
+package org.ucl.newton.service.plugin;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -50,7 +50,7 @@ public class Plugin
         return id;
     }
 
-    public Plugin setId(int id) {
+    Plugin setId(int id) {
         this.id = id;
         return this;
     }

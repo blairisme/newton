@@ -14,8 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.ucl.newton.engine.ExecutionEngine;
 import org.ucl.newton.framework.*;
-import org.ucl.newton.service.execution.ExecutionService;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.jupyter.JupyterServer;
 import org.ucl.newton.service.plugin.PluginService;
@@ -42,7 +42,7 @@ public class ExperimentController
 {
     private UserService userService;
     private ExperimentService experimentService;
-    private ExecutionService executionService;
+    private ExecutionEngine executionEngine;
     private JupyterServer jupyterServer;
     private ProjectService projectService;
     private PluginService pluginService;
@@ -51,14 +51,14 @@ public class ExperimentController
     public ExperimentController(
         UserService userService,
         ExperimentService experimentService,
-        ExecutionService executionService,
+        ExecutionEngine executionEngine,
         JupyterServer jupyterServer,
         ProjectService projectService,
         PluginService pluginService)
     {
         this.userService = userService;
         this.experimentService = experimentService;
-        this.executionService = executionService;
+        this.executionEngine = executionEngine;
         this.jupyterServer = jupyterServer;
         this.projectService = projectService;
         this.pluginService = pluginService;
@@ -77,7 +77,7 @@ public class ExperimentController
         model.addAttribute("experiment", experiment);
         model.addAttribute("project", experiment.getProject());
         model.addAttribute("version", getVersion(experiment, version));
-        model.addAttribute("executing", !executionService.isExecutionComplete(experiment));
+        model.addAttribute("executing", !executionEngine.isExecutionComplete(experiment));
 
         return "experiment/overview";
     }
@@ -109,7 +109,8 @@ public class ExperimentController
         @PathVariable("experiment") String experimentIdentifier,
         ModelMap model)
     {
-        executionService.beginExecution(experimentService.getExperimentByIdentifier(experimentIdentifier));
+        Experiment experiment = experimentService.getExperimentByIdentifier(experimentIdentifier);
+        executionEngine.startExecution(experiment);
         return "redirect:/project/" + projectIdentifier + "/" + experimentIdentifier;
     }
 

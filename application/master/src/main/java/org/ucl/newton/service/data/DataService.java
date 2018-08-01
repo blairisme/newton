@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.common.exception.UnknownEntityException;
 import org.ucl.newton.sdk.data.DataProvider;
+import org.ucl.newton.sdk.data.DataProviderObserver;
 import org.ucl.newton.sdk.data.DataSource;
 import org.ucl.newton.sdk.data.DataStorage;
 import org.ucl.newton.service.plugin.PluginService;
@@ -40,30 +41,31 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
 
     @Inject
     public DataService(ApplicationStorage applicationStorage, PluginService pluginService) {
-        this.dataProviders = new ArrayList<>();
+        this.dataProviders = null;
         this.pluginService = pluginService;
         this.applicationStorage = applicationStorage;
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        try {
-            loadProviders();
-        }
-        catch (Exception error) {
-            //log error
-        }
+        loadProviders();
     }
 
     private void loadProviders() {
-        if (dataProviders.isEmpty()) {
+        if (dataProviders == null) {
+            dataProviders = new ArrayList<>();
             for (DataProvider dataProvider : pluginService.getDataProviders()) {
-                dataProvider.addObserver(new DataObserver());
                 dataProvider.setStorage(createDataStorage(dataProvider));
                 dataProvider.start();
-                this.dataProviders.add(dataProvider);
+                dataProviders.add(dataProvider);
             }
         }
+    }
+
+    public void addDataObserver(DataProviderObserver observer) {
+//        for (DataProvider dataProvider: getDataProviders()) {
+//            dataProvider.addObserver(observer);
+//        }
     }
 
     public Collection<DataProvider> getDataProviders() {

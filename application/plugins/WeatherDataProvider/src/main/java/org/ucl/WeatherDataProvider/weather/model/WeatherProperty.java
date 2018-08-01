@@ -12,6 +12,12 @@ public class WeatherProperty{
     private String key;
     public WeatherProperty() {
     }
+    public WeatherProperty(String[] property){
+        this.city = property[0];
+        this.country = property[1];
+        this.date = property[2];
+        this.key = property[3];
+    }
     public WeatherProperty(String city, String country, String date, String key){
         this.city = city;
         this.country = country;

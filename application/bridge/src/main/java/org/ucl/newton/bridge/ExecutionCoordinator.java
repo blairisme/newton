@@ -25,9 +25,9 @@ public interface ExecutionCoordinator
 
     InputStream getExperimentRepository(String experimentId) throws ExecutionException;
 
-    void executionComplete(ExecutionResult executionResult);
+    void executionComplete(ExecutionResult result);
 
-    void executionFailed(String error);
+    void executionFailed(ExecutionFailure failure);
 
     void setHost(String host);
 

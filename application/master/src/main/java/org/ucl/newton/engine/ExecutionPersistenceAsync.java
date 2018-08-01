@@ -7,11 +7,13 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.service.execution;
+package org.ucl.newton.engine;
 
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.bridge.ExecutionNode;
 import org.ucl.newton.bridge.ExecutionResult;
@@ -24,38 +26,75 @@ import org.ucl.newton.framework.ExperimentVersion;
 import org.ucl.newton.framework.ExperimentVersionBuilder;
 import org.ucl.newton.service.experiment.ExperimentService;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
- * Instances of this class store the results of experiment execution.
+ * Persists {@link ExecutionResult ExecutionResults} returned from remote
+ * execution of {@link ExecutionTask ExecutionTasks}.
  *
  * @author Blair Butterworth
  */
-@Service
-public class ExecutionRepository
+@Named
+public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements ExecutionPersistence
 {
     private static final String REPOSITORY_ROOT = "experiment";
     private static final String OUTPUT_FILE_NAME = "output.zip";
 
-    private ApplicationStorage applicationStorage;
+    private ExecutionNode executionNode;
     private ExperimentService experimentService;
+    private ApplicationStorage applicationStorage;
+    private Map<ExecutionTask, Future<ExecutionTask>> tasks;
 
-    @Autowired
-    public ExecutionRepository(ApplicationStorage applicationStorage, ExperimentService experimentService) {
-        this.applicationStorage = applicationStorage;
+    @Inject
+    public ExecutionPersistenceAsync(
+        ApplicationStorage applicationStorage,
+        ExperimentService experimentService,
+        ExecutionRemoteNode nodeFactory)
+    {
+        this.executionNode = nodeFactory.get();
         this.experimentService = experimentService;
+        this.applicationStorage = applicationStorage;
+        this.tasks = new HashMap<>();
     }
 
-    public void persistResult(ExecutionNode executionNode, ExecutionResult executionResult) throws IOException {
-        Path destination = getDestination(executionResult);
-        Path output = downloadOutput(executionNode, executionResult, destination);
-        Collection<Path> outputs = uncompressOutput(output, destination);
-        persistExperiment(executionResult, outputs);
+    @Override
+    public void process(ExecutionTask task) {
+        ListenableFuture<ExecutionTask> future = persist(task);
+        future.addCallback(new PersistObserver(task, future));
+        tasks.put(task, future);
+    }
+
+    @Override
+    public void cancel(ExecutionTask task) {
+        Future<ExecutionTask> future = tasks.get(task);
+        if (future != null && ! future.isDone()) {
+            future.cancel(false);
+        }
+    }
+
+    @Async
+    public AsyncResult<ExecutionTask> persist(ExecutionTask task) {
+        try {
+            ExecutionResult executionResult = task.getResult();
+            Path destination = getDestination(executionResult);
+            Path output = downloadOutput(executionNode, executionResult, destination);
+            Collection<Path> outputs = uncompressOutput(output, destination);
+            persistExperiment(executionResult, outputs);
+        }
+        catch (Throwable error) {
+            task.setError(error);
+        }
+        return new AsyncResult<>(task);
     }
 
     private Path getDestination(ExecutionResult executionResult) {
@@ -101,5 +140,37 @@ public class ExecutionRepository
         Experiment newExperiment = experimentBuilder.build();
 
         experimentService.update(newExperiment);
+    }
+
+    private class PersistObserver implements ListenableFutureCallback<ExecutionTask>
+    {
+        private ExecutionTask task;
+        private Future<ExecutionTask> future;
+
+        public PersistObserver(ExecutionTask task, Future<ExecutionTask> future) {
+            this.task = task;
+            this.future = future;
+        }
+
+        @Override
+        public void onSuccess(ExecutionTask newTask) {
+            evaluate(newTask);
+        }
+
+        @Override
+        public void onFailure(Throwable error) {
+            task.setError(error);
+            evaluate(task);
+        }
+
+        private void evaluate(ExecutionTask task) {
+            if (! future.isCancelled()) {
+                if (task.hasError()) {
+                    finish(task);
+                } else {
+                    proceed(task);
+                }
+            }
+        }
     }
 }

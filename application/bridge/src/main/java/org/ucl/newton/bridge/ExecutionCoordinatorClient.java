@@ -55,11 +55,11 @@ public class ExecutionCoordinatorClient implements ExecutionCoordinator
     }
 
     @Override
-    public void executionComplete(ExecutionResult executionResult) {
+    public void executionComplete(ExecutionResult result) {
         try {
             RestServer server = getServer();
             RestRequest request = server.post("api/experiment/complete");
-            request.setBody(executionResult, ExecutionResult.class);
+            request.setBody(result, ExecutionResult.class);
             request.make();
         }
         catch (Exception e) {
@@ -68,11 +68,11 @@ public class ExecutionCoordinatorClient implements ExecutionCoordinator
     }
 
     @Override
-    public void executionFailed(String error) {
+    public void executionFailed(ExecutionFailure failure) {
         try {
             RestServer server = getServer();
             RestRequest request = server.post("api/experiment/failed");
-            request.setBody(error);
+            request.setBody(failure, ExecutionFailure.class);
             request.make();
         }
         catch (Exception e) {

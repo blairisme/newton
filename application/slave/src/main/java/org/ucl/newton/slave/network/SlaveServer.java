@@ -45,7 +45,12 @@ public class SlaveServer implements ExecutionNodeServer
         }
         catch (Exception error) {
             error.printStackTrace(); //log this instead
-            executionCoordinator.executionFailed(error.getMessage());
+
+            ExecutionFailure executionFailure = new ExecutionFailureBuilder()
+                .forRequest(request)
+                .setException(error)
+                .build();
+            executionCoordinator.executionFailed(executionFailure);
         }
     }
 
