@@ -149,7 +149,7 @@ public class ExperimentController
     private ExperimentConfiguration createExperimentConfiguration(ExperimentDto experimentDto) {
         ExperimentConfigurationBuilder builder = new ExperimentConfigurationBuilder();
         //builder.setStorageConfiguration(new StorageConfiguration(0, experimentDto.getSelectedStorageValue(), "file:/experiment/experimentid/repository",""));
-        builder.setStorageConfiguration(new StorageConfiguration(0, experimentDto.getSelectedStorageValue(), "file:/experiment/experiment-1/repository","script.py"));
+        builder.setStorageConfiguration(new StorageConfiguration(0, experimentDto.getSelectedStorageValue(), "classpath:/experiment/experiment-1/repository","main.py"));
         builder.setProcessorPluginId(experimentDto.getSelectedTypeValue(), pluginService.getDataProcessors());
         builder.addDataSources(experimentDto.getDataSourceIds(), experimentDto.getDataSourceLocs());
         builder.setOutputPattern(experimentDto.getOutputPattern());
