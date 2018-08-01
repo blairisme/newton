@@ -92,6 +92,20 @@
                     <h4>Project Data Sources</h4>
                     <p>Choose which data sources are available to experiments in this project</p>
 
+                    <ul>
+                        <li th:each="provider : ${dataProviders}">
+                            <input type="checkbox" class="form-check-input" name="sources" th:value="${provider.getIdentifier()}" />
+                            <label th:text="${provider.getName()}"></label>
+                        </li>
+                    </ul>
+
+                </section>
+
+                <!--
+                <section class="form-section section-divider">
+                    <h4>Project Data Sources</h4>
+                    <p>Choose which data sources are available to experiments in this project</p>
+
                     <ul id="projectSourceList" class="list-group list-group-flush">
                         <p id="projectSourceListEmpty" class="empty_message project-list-item">This project doesn't have any data sources yet. Use the form below to add a data source.</p>
                     </ul>
@@ -109,7 +123,7 @@
                         </div>
                     </div>
                 </section>
-
+                -->
                 <input type="submit" class="btn btn-lg btn-primary" value="Create Project"/>
             </form>
         </div>
