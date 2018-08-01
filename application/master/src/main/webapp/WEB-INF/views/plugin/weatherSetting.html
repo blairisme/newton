@@ -79,12 +79,12 @@
     $(document).ready(function(){
         var properties = [[${properties}]];
         var key = null;
-        for(var a in properties){
-            var property = properties[a];
-            var city = property.city;
-            var country = property.country;
-            var date = property.date;
-            key = property.key;
+        for(var i in properties){
+            var property = properties[i];
+            var city = property[0];
+            var country = property[1];
+            var date = property[2];
+            key = property[3];
             var id = buildId(city,country,date);
             addEntry(id,city,country,date);
         }

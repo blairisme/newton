@@ -30,7 +30,7 @@ apply plugin: 'org.akhikhl.gretty'
 dependencies {
     compile project(':application:common')
     compile project(':application:bridge')
-    compile project(':application:plugins:WeatherDataProvider')
+    compile project(':application:sdk')
 
     compile group: 'javax.servlet', name: 'jstl', version: '1.2'
     compile group: 'javax.inject', name: 'javax.inject', version: '1'

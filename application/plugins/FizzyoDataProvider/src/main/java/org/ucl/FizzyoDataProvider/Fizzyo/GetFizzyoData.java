@@ -33,11 +33,12 @@ public class GetFizzyoData implements Runnable {
         this.provider = provider;
     }
 
+
     @Override
     public void run() {
         fizzyoToken = new FizzyoToken();
 
-        String accessToken = "yNzqmQO5xe7pxgKN9vXZPjOa7rJX0A4o";
+        String accessToken = "9w3Bk61YQdJ6VrXR5vJN592dOGpJZn4W";
         fizzyoToken.setAccessToken(accessToken);
         Records records = getPacientRecords();
         if(records == null)

@@ -9,11 +9,10 @@
 
 package org.ucl.WeatherDataProvider.weather;
 
+import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
-import org.ucl.WeatherDataProvider.FileUtils;
 import org.ucl.WeatherDataProvider.HttpUtils;
 import org.ucl.WeatherDataProvider.weather.model.WeatherData;
 import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
@@ -22,7 +21,6 @@ import org.ucl.newton.sdk.data.DataStorage;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -70,16 +68,23 @@ public class GetWeatherData implements Runnable {
         List<WeatherProperty> weatherList = new ArrayList<>();
         Path path = Paths.get(System.getProperty("user.home")).resolve(".newton");
         path = path.resolve("weather").resolve("setting");
-        String jsonStr = FileUtils.readFile(path);
-        if (jsonStr == null){
-            WeatherProperty property = new WeatherProperty("london","united kingdom", "2018-07-04","0252e94bd710446c908123539182906");
-            weatherList.add(property);
-            return weatherList;
+        try {
+            CsvReader reader = new CsvReader(path.toString(),',');
+            reader.readHeaders();
+            while(reader.readRecord()) {
+                WeatherProperty property= new WeatherProperty(reader.getValues());
+                weatherList.add(property);
+            }
+            reader.close();
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<WeatherProperty>>(){}.getType();
-        weatherList = gson.fromJson(jsonStr, type);
+        //set default weather list
+        if (weatherList.isEmpty()){
+            WeatherProperty property = new WeatherProperty("london","united kingdom", "2018-07-04","0252e94bd710446c908123539182906");
+            weatherList.add(property);
+        }
 
         return  weatherList;
     }
