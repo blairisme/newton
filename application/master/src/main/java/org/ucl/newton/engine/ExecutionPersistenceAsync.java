@@ -9,6 +9,7 @@
 
 package org.ucl.newton.engine;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -32,7 +33,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +47,7 @@ import java.util.concurrent.Future;
 @Named
 public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements ExecutionPersistence
 {
-    private static final String REPOSITORY_ROOT = "experiment";
+    private static final String VERSIONS_DIRECTORY = "versions";
     private static final String OUTPUT_FILE_NAME = "output.zip";
 
     private ExecutionNode executionNode;
@@ -89,6 +89,7 @@ public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements 
             Path destination = getDestination(executionResult);
             Path output = downloadOutput(executionNode, executionResult, destination);
             Collection<Path> outputs = uncompressOutput(output, destination);
+            FileUtils.deleteQuietly(output.toFile());
             persistExperiment(executionResult, outputs);
         }
         catch (Throwable error) {
@@ -98,8 +99,9 @@ public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements 
     }
 
     private Path getDestination(ExecutionResult executionResult) {
-        Path result = Paths.get(REPOSITORY_ROOT);
+        Path result = applicationStorage.getExperimentDirectory();
         result = result.resolve(executionResult.getExperiment());
+        result = result.resolve(VERSIONS_DIRECTORY);
         result = result.resolve(executionResult.getVersion());
         return result;
     }
