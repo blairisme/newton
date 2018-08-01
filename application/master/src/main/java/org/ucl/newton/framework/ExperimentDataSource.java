@@ -22,14 +22,14 @@ public class ExperimentDataSource implements Serializable {
     private int id;
 
     @Column(name = "ds_id")
-    private int dataSourceId;
+    private String dataSourceId;
 
     @Column(name = "eds_custom_location")
     private String customLocation;
 
     public ExperimentDataSource() { }
 
-    public ExperimentDataSource(int id, int dataSourceId, String customLocation) {
+    public ExperimentDataSource(int id, String dataSourceId, String customLocation) {
         this.id = id;
         this.dataSourceId = dataSourceId;
         this.customLocation = customLocation;

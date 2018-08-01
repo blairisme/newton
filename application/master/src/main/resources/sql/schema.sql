@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS experiments (
 /* Creates table for experiment data sources */
 CREATE TABLE IF NOT EXISTS eds (
     eds_id INT NOT NULL AUTO_INCREMENT,
-    ds_id INT NOT NULL,
+    ds_id VARCHAR(50) NULL,
     eds_custom_location VARCHAR(100) NOT NULL,
     PRIMARY KEY (eds_id)
 );

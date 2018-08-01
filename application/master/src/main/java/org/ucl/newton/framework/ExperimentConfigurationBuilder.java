@@ -26,7 +26,7 @@ public class ExperimentConfigurationBuilder {
         this.processorPluginId = processorPluginId;
     }
 
-    public void addDataSources(int[] dataSourceIds, String[] dataSourceLocs) {
+    public void addDataSources(String[] dataSourceIds, String[] dataSourceLocs) {
         // should check both arrays are equal length
         dataSources = new ArrayList<>();
         if(dataSourceIds != null && dataSourceLocs != null) {

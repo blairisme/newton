@@ -189,7 +189,7 @@ public class ExperimentRepositoryTest {
         ExperimentConfigurationBuilder builder = new ExperimentConfigurationBuilder();
         builder.setStorageConfiguration(new StorageConfiguration(0, "Newton", "experimentlocation", "main.ipynb"));
         builder.setProcessorPluginId("Python");
-        builder.addDataSources(new int[]{1, 2}, new String[]{"myproj/data1.csv", "myproj/data2.json"});
+        builder.addDataSources(new String[]{"newton-weather", "newton-fizzyo"}, new String[]{"myproj/data1.csv", "myproj/data2.json"});
         builder.setOutputPattern("outputs/*.csv");
         builder.addTrigger("Manual");
         return builder.build();

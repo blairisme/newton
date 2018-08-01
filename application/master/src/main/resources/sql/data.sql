@@ -109,11 +109,11 @@ INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, proj
 INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (12, 'experiment-12', 'Gamification impact by game', 'Experiment description', 1, 1, 12);
 
 /* Insert into experiment data sources */
-INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (1, 1, 'someloc/input.csv');
-INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (2, 2, 'someloc/input.csv');
-INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (3, 3, 'someloc/input.csv');
-INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (4, 3, 'someloc/input.csv');
-INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (5, 4, 'someloc/input.csv');
+INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (1, 'newton-weather', 'someloc/input.csv');
+INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (2, 'newton-fizzyo', 'someloc/input.csv');
+INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (3, 'newton-weather', 'someloc/input.csv');
+INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (4, 'newton-fizzyo', 'someloc/input.csv');
+INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (5, 'newton-fizzyo', 'someloc/input.csv');
 
 /* Insert into join table between experiments and experiment data sources */
 INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (1, 1);

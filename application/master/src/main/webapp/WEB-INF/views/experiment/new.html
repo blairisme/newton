@@ -137,7 +137,8 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <th:block th:each="dataSource : ${project.dataSources}">
-                                <a class="dropdown-item" href="#" th:text="${dataSource.name}" th:value="${dataSource.id}"></a>
+                                <!--<a class="dropdown-item" href="#" th:text="${dataSource.name}" th:value="${dataSource.id}"></a>-->
+                                <a class="dropdown-item" href="#" th:text="${dataSource}"></a>
                             </th:block>
                         </div>
                     </div>
