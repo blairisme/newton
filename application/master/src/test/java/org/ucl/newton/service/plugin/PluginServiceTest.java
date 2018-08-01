@@ -30,6 +30,7 @@ public class PluginServiceTest {
         plugins.add(plugin);
         plugins.add(plugin2);
         repository = mock(PluginRepository.class);
+        when(repository.getPlugins()).thenReturn(plugins);
         service = new PluginService(repository);
     }
 
@@ -41,7 +42,6 @@ public class PluginServiceTest {
     }
     @Test
     public void getProcessersTest(){
-        when(repository.getPlugins()).thenReturn(plugins);
         Collection<DataProcessor> processors = service.getDataProcessors();
         Assert.assertEquals(1, processors.size());
     }
