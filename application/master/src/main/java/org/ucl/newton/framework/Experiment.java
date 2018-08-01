@@ -140,9 +140,13 @@ public class Experiment
         return versions.get(versions.size() - 1);
     }
 
-    public Experiment setVersions(List<ExperimentVersion> versions){
+    public Experiment setVersions(List<ExperimentVersion> versions) {
         this.versions = versions;
         return this;
+    }
+
+    public void addVersion(ExperimentVersion version) {
+        versions.add(version);
     }
 
     public ExperimentConfiguration getConfiguration() {
