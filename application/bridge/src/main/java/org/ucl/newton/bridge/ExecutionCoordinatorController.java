@@ -47,9 +47,9 @@ public class ExecutionCoordinatorController
     }
 
     @RequestMapping("/api/experiment/failed")
-    public ResponseEntity<?> executionFailed(@RequestBody String error) {
+    public ResponseEntity<?> executionFailed(@RequestBody String requestBody) {
         if (delegate != null) {
-            delegate.executionFailed(error);
+            delegate.executionFailed(serializer.deserialize(requestBody, ExecutionFailure.class));
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();

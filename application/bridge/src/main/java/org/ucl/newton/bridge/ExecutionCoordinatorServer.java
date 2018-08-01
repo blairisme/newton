@@ -17,7 +17,7 @@ package org.ucl.newton.bridge;
  */
 public interface ExecutionCoordinatorServer
 {
-    void executionComplete(ExecutionResult executionResult);
+    void executionComplete(ExecutionResult result);
 
-    void executionFailed(String error);
+    void executionFailed(ExecutionFailure failure);
 }

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.ucl.newton.service.execution.ExecutionService;
+import org.ucl.newton.engine.ExecutionEngine;
+import org.ucl.newton.framework.Experiment;
+import org.ucl.newton.service.experiment.ExperimentService;
 
 import javax.inject.Inject;
 
@@ -26,15 +28,18 @@ import javax.inject.Inject;
 @SuppressWarnings("unused")
 public class ExecutionApi
 {
-    private ExecutionService executionService;
+    private ExecutionEngine executionEngine;
+    private ExperimentService experimentService;
 
     @Inject
-    public ExecutionApi(ExecutionService executionService) {
-        this.executionService = executionService;
+    public ExecutionApi(ExecutionEngine executionEngine, ExperimentService experimentService) {
+        this.executionEngine = executionEngine;
+        this.experimentService = experimentService;
     }
 
     @RequestMapping(value = "/api/experiment/iscomplete", method = RequestMethod.GET)
-    public Boolean isExecutionComplete(@RequestParam String experiment) {
-        return executionService.isExecutionComplete(experiment);
+    public Boolean isExecutionComplete(@RequestParam("experiment") String identifier) {
+        Experiment experiment = experimentService.getExperimentByIdentifier(identifier);
+        return executionEngine.isExecutionComplete(experiment);
     }
 }
