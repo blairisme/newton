@@ -16,9 +16,6 @@ services:
     image: newton-database
     build:
       context: ./database
-      args:
-        - database_user=root
-        - database_password=Newton*123
     ports:
       - "3306:3306"
     networks:
@@ -41,15 +38,6 @@ services:
     image: newton-master
     build:
       context: ./master
-      args:
-        - database_host=database
-        - database_port=3306
-        - database_user=root
-        - database_password=Newton*123
-        - jupyter_host=jupyter
-        - jupyter_port=8000
-        - slave_host=slave
-        - slave_port=8070
     ports:
       - "8080:8080"
     depends_on:
