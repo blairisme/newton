@@ -22,6 +22,9 @@ ARG jupyter_host
 ARG jupyter_port
 ARG slave_host
 ARG slave_port
+ARG master_host
+ARG master_port
+ARG user_dir
 
 ENV newton_profile production
 ENV newton_database_host $database_host
@@ -32,9 +35,16 @@ ENV newton_jupyter_host $jupyter_host
 ENV newton_jupyter_port $jupyter_port
 ENV newton_slave_host $slave_host
 ENV newton_slave_port $slave_port
+ENV newton_master_host $master_host
+ENV newton_master_port $master_port
+ENV user_home user_dir
+ENV newton_profile development
 
 COPY ./libs/master.war /var/lib/jetty/webapps/ROOT.war
-EXPOSE 8080
+EXPOSE 9090
+
+
+RUN mkdir -p /var/lib/jetty/.newton/experiment
 
 USER root
 COPY ./config/wait-for-it.sh /tmp/jetty/wait-for-it.sh
@@ -42,4 +52,4 @@ RUN chmod +x /tmp/jetty/wait-for-it.sh
 #USER jetty
 
 WORKDIR $JETTY_BASE
-CMD /tmp/jetty/wait-for-it.sh database:3306 -t 60 -- java -jar $JETTY_HOME/start.jar
+CMD /tmp/jetty/wait-for-it.sh database:3306 -t 60 -- java -jar $JETTY_HOME/start.jar -Djetty.port=9090

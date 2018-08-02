@@ -39,7 +39,7 @@ public class DataApiTest
         File dataSourceFile = dataSourcePath.toFile();
         dataSourceFile.createNewFile();
 
-        URL dataSourceUrl = new URL("http://localhost:8090/api/data/weather");
+        URL dataSourceUrl = new URL("http://localhost:9090/api/data/weather");
 
         try (InputStream inputStream = dataSourceUrl.openStream();
              OutputStream outputStream = new FileOutputStream(dataSourceFile)) {

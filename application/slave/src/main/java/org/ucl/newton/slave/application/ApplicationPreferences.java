@@ -34,7 +34,7 @@ public class ApplicationPreferences
     }
 
     public int getMasterPort() {
-        return Integer.parseInt(getProperty("newton.master.port", "8090"));
+        return Integer.parseInt(getProperty("newton.master.port", "9090"));
     }
 
     public String getApplicationHost() {
