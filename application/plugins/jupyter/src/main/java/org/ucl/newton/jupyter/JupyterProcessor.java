@@ -36,7 +36,7 @@ public class JupyterProcessor implements DataProcessor
 
     @Override
     public String getIdentifier() {
-        return "org.ucl.newton.jupyter";
+        return "newton-jupyter";
     }
 
     @Override
