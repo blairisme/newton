@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.Date;
 
 /**
- * Instances of this class build {@link ExecutionResult} objects.
+ * Instances of this class build {@link ExecutionResult ExecutionResults}.
  *
  * @author Blair Butterworth
  */

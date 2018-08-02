@@ -9,7 +9,9 @@
 
 package org.ucl.newton.jupyter;
 
+import org.apache.commons.io.FileUtils;
 import org.ucl.newton.common.collection.CollectionUtils;
+import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.common.process.CommandExecutor;
 import org.ucl.newton.sdk.processor.DataProcessor;
 import org.ucl.newton.sdk.processor.DataProcessorException;
@@ -33,10 +35,11 @@ public class JupyterProcessor implements DataProcessor
 {
     private static final List<String> GENERATE_HTML = unmodifiableList(asList("jupyter", "nbconvert", "--to", "html"));
     private static final List<String> GENERATE_SCRIPT = unmodifiableList(asList("jupyter", "nbconvert", "--to", "script"));
+    private static final List<String> INVOKE_SCRIPT = unmodifiableList(asList("python"));
 
     @Override
     public String getIdentifier() {
-        return "org.ucl.newton.jupyter";
+        return "newton-jupyter";
     }
 
     @Override
@@ -51,11 +54,11 @@ public class JupyterProcessor implements DataProcessor
 
     @Override
     public void process(CommandExecutor commandExecutor, Path script) throws DataProcessorException {
-        String scriptName = script.getFileName().toString();
+        String notebookPath = "\"" + script.toString() + "\"";
+        String scriptPath = notebookPath.replace(".ipynb", ".py");
 
-        commandExecutor.workingDirectory(script.getParent());
-        commandExecutor.execute(CollectionUtils.append(GENERATE_HTML, scriptName));
-        commandExecutor.execute(CollectionUtils.append(GENERATE_SCRIPT, scriptName));
-        //execute script
+        commandExecutor.execute(CollectionUtils.append(GENERATE_HTML, notebookPath));
+        commandExecutor.execute(CollectionUtils.append(GENERATE_SCRIPT, notebookPath));
+        commandExecutor.execute(CollectionUtils.append(INVOKE_SCRIPT, scriptPath));
     }
 }

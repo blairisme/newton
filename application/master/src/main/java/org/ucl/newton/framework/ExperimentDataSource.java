@@ -35,6 +35,14 @@ public class ExperimentDataSource implements Serializable {
         this.customLocation = customLocation;
     }
 
+    public String getDataSourceId() {
+        return dataSourceId;
+    }
+
+    public String getCustomLocation() {
+        return customLocation;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) { return false; }

@@ -19,6 +19,7 @@ import java.util.List;
  * Instances of this class build {@link Experiment Experiments}.
  *
  * @author Blair Butterworth
+ * @author John Wilkie
  */
 public class ExperimentBuilder
 {
@@ -55,13 +56,8 @@ public class ExperimentBuilder
         this.name = name;
     }
 
-    public void generateIdentifier(String text) {
-        try {
-            this.identifier = URLEncoder.encode(text, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException(e);
-        }
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public void setDescription(String description) {

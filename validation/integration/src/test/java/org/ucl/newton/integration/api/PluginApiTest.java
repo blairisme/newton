@@ -36,12 +36,22 @@ public class PluginApiTest
     }
 
     @Test
-    public void getProcessorTest() throws Exception{
+    public void getPythonProcessorTest() throws Exception {
+        getProcessorTest("newton-python");
+    }
+
+    @Test
+    public void getJupyterProcessorTest() throws Exception {
+        getProcessorTest("newton-jupyter");
+    }
+
+    private void getProcessorTest(String pluginId) throws Exception {
         Path processorPath = tempDirectory.resolve("download.jar");
         File processorFile = processorPath.toFile();
         processorFile.createNewFile();
 
-        URL processorUrl = new URL("http://localhost:9090/api/plugin/processor/newton-python");
+
+        URL processorUrl = new URL("http://localhost:9090/api/plugin/processor/" + pluginId);
 
         try (InputStream inputStream = processorUrl.openStream();
              OutputStream outputStream = new FileOutputStream(processorFile)) {

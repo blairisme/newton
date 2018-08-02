@@ -65,7 +65,7 @@ public class ExperimentServiceTest
         builder.setName("Experiment 1");
         builder.setExperimentVersions(new ArrayList<>());
         builder.setDescription("Short description");
-        builder.generateIdentifier(identifier);
+        builder.setIdentifier(identifier);
         builder.setProject(createProject());
         builder.setCreator(createUser());
         builder.setConfiguration(new ExperimentConfiguration());
