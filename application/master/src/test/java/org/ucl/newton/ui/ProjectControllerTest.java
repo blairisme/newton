@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.springframework.ui.ModelMap;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.service.experiment.ExperimentService;
+import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
 
@@ -26,8 +27,9 @@ public class ProjectControllerTest
         ProjectService projectService = Mockito.mock(ProjectService.class);
         ExperimentService experimentService = Mockito.mock(ExperimentService.class);
         ApplicationStorage applicationStorage = Mockito.mock(ApplicationStorage.class);
+        PluginService pluginService = Mockito.mock(PluginService.class);
 
-        ProjectController controller = new ProjectController(userService, projectService, experimentService, applicationStorage);
+        ProjectController controller = new ProjectController(userService, projectService, experimentService, applicationStorage, pluginService);
         Assert.assertEquals("project/list", controller.list(new ModelMap()));
     }
 
@@ -37,8 +39,9 @@ public class ProjectControllerTest
         ProjectService projectService = Mockito.mock(ProjectService.class);
         ExperimentService experimentService = Mockito.mock(ExperimentService.class);
         ApplicationStorage applicationStorage = Mockito.mock(ApplicationStorage.class);
+        PluginService pluginService = Mockito.mock(PluginService.class);
 
-        ProjectController controller = new ProjectController(userService, projectService, experimentService, applicationStorage);
+        ProjectController controller = new ProjectController(userService, projectService, experimentService, applicationStorage, pluginService);
         Assert.assertEquals("project/details", controller.details("test", new ModelMap()));
     }
 }

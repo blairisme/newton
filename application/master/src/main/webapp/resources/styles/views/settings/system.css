@@ -1,0 +1,34 @@
+.typeahead {
+    width: 100%;
+}
+
+.twitter-typeahead {
+    width: 100%;
+}
+
+.suggestion {
+    margin-top: 0.5em;
+}
+
+#userInput {
+    width: 50%;
+}
+
+#selectedUser {
+    display: none;
+    margin-top: 2em;
+}
+
+#messageSuccess {
+    display: none;
+    margin-top: 1em;
+}
+
+#setUserRoleBtn {
+    margin-top: 1em;
+}
+
+#roleLabel {
+    margin-bottom: 0em;
+    margin-top: 0.5em;
+}

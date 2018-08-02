@@ -9,7 +9,6 @@
 
 package org.ucl.newton.python;
 
-import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.common.process.CommandExecutor;
 import org.ucl.newton.sdk.processor.DataProcessor;
 import org.ucl.newton.sdk.processor.DataProcessorException;
@@ -44,7 +43,7 @@ public class PythonProcessor implements DataProcessor
 
     @Override
     public void process(CommandExecutor commandExecutor, Path scriptPath) throws DataProcessorException {
-        commandExecutor.workingDirectory(scriptPath.getParent());
-        commandExecutor.execute(asList(PYTHON_COMMAND, PathUtils.getName(scriptPath)));
+        String script = "\"" + scriptPath.toString() + "\"";
+        commandExecutor.execute(asList(PYTHON_COMMAND, script));
     }
 }

@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.python;
+package org.ucl.newton.jupyter;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.*;
@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Set;
 
-public class PythonProcessorTest
+public class JupyterProcessorTest
 {
     private Path tempDirectory;
 
@@ -41,7 +41,7 @@ public class PythonProcessorTest
     }
 
     @Test
-    @Ignore //requires python to be installed
+    @Ignore //Not guaranteed to have Jupyter installed.
     public void processTest() throws Exception {
         Path workingDirectory = tempDirectory.resolve("output");
         workingDirectory.toFile().mkdirs();
@@ -49,7 +49,7 @@ public class PythonProcessorTest
         Path logFile = tempDirectory.resolve("log.txt");
         PathUtils.createNew(logFile);
 
-        URL scriptUrl = getClass().getResource("/main.py");
+        URL scriptUrl = getClass().getResource("/main.ipynb");
         File file = new File(scriptUrl.toURI());
 
         CommandExecutorFactory executorFactory = new CommandExecutorFactory();
@@ -58,11 +58,13 @@ public class PythonProcessorTest
         executor.redirectOutput(logFile);
         executor.workingDirectory(workingDirectory);
 
-        PythonProcessor processor = new PythonProcessor();
+        JupyterProcessor processor = new JupyterProcessor();
         processor.process(executor, file.toPath());
 
         String commandOutput = FileUtils.readFileToString(logFile.toFile(), StandardCharsets.UTF_8);
-        Assert.assertEquals("", commandOutput);
+        Assert.assertTrue(commandOutput.contains("[NbConvertApp] Converting notebook"));
+        Assert.assertTrue(commandOutput.contains("main.ipynb to html"));
+        Assert.assertTrue(commandOutput.contains("main.ipynb to script"));
 
         File[] outputs = workingDirectory.toFile().listFiles();
         Assert.assertEquals(2, outputs.length);
@@ -70,14 +72,14 @@ public class PythonProcessorTest
 
     @Test
     public void visualizationTest() {
-        PythonProcessor processor = new PythonProcessor();
+        JupyterProcessor processor = new JupyterProcessor();
         Assert.assertTrue(! processor.getName().isEmpty());
         Assert.assertTrue(! processor.getDescription().isEmpty());
     }
 
     @Test
     public void discoveryTest() throws Exception {
-        URL jarUrl = getClass().getResource("/python.jar");
+        URL jarUrl = getClass().getResource("/jupyter.jar");
         JarClassLoader jarClassLoader = new JarClassLoader(jarUrl);
         JarInstanceLoader jarInstanceLoader = new JarInstanceLoader(jarClassLoader);
         Set<DataProcessor> processors = jarInstanceLoader.getImplementors(DataProcessor.class, "org.ucl.newton");

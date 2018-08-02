@@ -9,6 +9,7 @@
 
 package org.ucl.newton.engine;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -21,8 +22,6 @@ import org.ucl.newton.common.archive.ZipUtils;
 import org.ucl.newton.common.exception.ConnectionException;
 import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.framework.Experiment;
-import org.ucl.newton.framework.ExperimentBuilder;
-import org.ucl.newton.framework.ExperimentVersion;
 import org.ucl.newton.framework.ExperimentVersionBuilder;
 import org.ucl.newton.service.experiment.ExperimentService;
 
@@ -32,7 +31,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +45,7 @@ import java.util.concurrent.Future;
 @Named
 public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements ExecutionPersistence
 {
-    private static final String REPOSITORY_ROOT = "experiment";
+    private static final String VERSIONS_DIRECTORY = "versions";
     private static final String OUTPUT_FILE_NAME = "output.zip";
 
     private ExecutionNode executionNode;
@@ -89,6 +87,7 @@ public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements 
             Path destination = getDestination(executionResult);
             Path output = downloadOutput(executionNode, executionResult, destination);
             Collection<Path> outputs = uncompressOutput(output, destination);
+            FileUtils.deleteQuietly(output.toFile());
             persistExperiment(executionResult, outputs);
         }
         catch (Throwable error) {
@@ -98,8 +97,9 @@ public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements 
     }
 
     private Path getDestination(ExecutionResult executionResult) {
-        Path result = Paths.get(REPOSITORY_ROOT);
+        Path result = applicationStorage.getExperimentDirectory();
         result = result.resolve(executionResult.getExperiment());
+        result = result.resolve(VERSIONS_DIRECTORY);
         result = result.resolve(executionResult.getVersion());
         return result;
     }
@@ -130,16 +130,8 @@ public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements 
         ExperimentVersionBuilder versionBuilder = new ExperimentVersionBuilder();
         versionBuilder.forExperiment(experiment);
         versionBuilder.setExperimentOutputs(outputs);
-
-        ExperimentVersion version = versionBuilder.build();
-        ExperimentVersion newVersion = experimentService.addVersion(version);
-
-        ExperimentBuilder experimentBuilder = new ExperimentBuilder();
-        experimentBuilder.copyExperiment(experiment);
-        experimentBuilder.addVersion(newVersion);
-        Experiment newExperiment = experimentBuilder.build();
-
-        experimentService.update(newExperiment);
+        experiment.addVersion(versionBuilder.build());
+        experimentService.update(experiment);
     }
 
     private class PersistObserver implements ListenableFutureCallback<ExecutionTask>

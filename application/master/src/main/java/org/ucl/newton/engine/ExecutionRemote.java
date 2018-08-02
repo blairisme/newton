@@ -37,8 +37,8 @@ public class ExecutionRemote extends ExecutionPipelineBase implements ExecutionC
     @Override
     public void process(ExecutionTask executionTask) {
         try {
-            ExecutionRequestBuilder requestBuilder = new ExecutionRequestBuilder();
-            requestBuilder.forExperiment(executionTask.getExperiment());
+            ExecutionRequestFactory requestBuilder = new ExecutionRequestFactory();
+            requestBuilder.setExperiment(executionTask.getExperiment());
 
             ExecutionRequest executionRequest = requestBuilder.build();
             executionTask.setRequest(executionRequest);

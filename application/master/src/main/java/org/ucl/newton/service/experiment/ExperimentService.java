@@ -11,7 +11,6 @@ package org.ucl.newton.service.experiment;
 
 import org.springframework.stereotype.Service;
 import org.ucl.newton.framework.Experiment;
-import org.ucl.newton.framework.ExperimentVersion;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -34,10 +33,6 @@ public class ExperimentService
 
     public Experiment addExperiment(Experiment experiment) {
         return repository.addExperiment(experiment);
-    }
-
-    public ExperimentVersion addVersion(ExperimentVersion experimentVersion) {
-        return repository.addVersion(experimentVersion);
     }
 
     public Collection<Experiment> getExperimentsByParentProjectName(String projectName) {

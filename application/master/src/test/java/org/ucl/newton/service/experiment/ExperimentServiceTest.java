@@ -60,19 +60,12 @@ public class ExperimentServiceTest
         Assert.assertEquals(expectedExperiment, service.addExperiment(expectedExperiment));
     }
 
-    @Test
-    public void testAddVersion() {
-        ExperimentVersion version = createVersion();
-        Mockito.when(repository.addVersion(version)).thenReturn(version);
-        Assert.assertEquals(version, service.addVersion(version));
-    }
-
     private Experiment createDummyExperiment(int id, String identifier) {
         ExperimentBuilder builder = new ExperimentBuilder();
         builder.setName("Experiment 1");
         builder.setExperimentVersions(new ArrayList<>());
         builder.setDescription("Short description");
-        builder.generateIdentifier(identifier);
+        builder.setIdentifier(identifier);
         builder.setProject(createProject());
         builder.setCreator(createUser());
         builder.setConfiguration(new ExperimentConfiguration());

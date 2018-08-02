@@ -27,6 +27,8 @@
                 <a  th:text="@{'/ '+${project.name}}" > / project name</a>
             </h1>
 
+            <input type="hidden" id="identifier" th:value="${project.identifier}" />
+
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link active" href="#">Experiments</a>
@@ -41,7 +43,7 @@
                     <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/new'}" role="button" id="newExpBtn">New Experiment</a>
                 </li>
             </ul>
-            </ul>
+
 
             <table class="experiment-list">
                 <tr th:each="experiment, iteration : ${experiments}" class="experiment-row experiment-row-underline">
