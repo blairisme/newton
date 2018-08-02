@@ -67,5 +67,7 @@ spec:
   type: LoadBalancer
   ports:
   - port: 8080
+  - port: 8888
+  - port: 8000
   selector:
     app: master-newton
