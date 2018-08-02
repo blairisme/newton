@@ -9,7 +9,7 @@
 
         <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
-        <link rel="stylesheet" type="text/css" href="/resources/styles/system.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/views/settings/system.css"/>
 
         <script src="/resources/scripts/libraries/jquery.js"></script>
         <script src="/resources/scripts/libraries/popper.js"></script>
@@ -33,9 +33,13 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#dataSourcesTab">Data sources</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#pluginTab">Data sources</a>
+                </li>
             </ul>
 
             <div class="tab-content">
+
                 <!-- User settings tab -->
                 <div id="userSettingsTab" class="tab-pane active fade show">
                     <h4>Change user role</h4>
@@ -45,29 +49,32 @@
                         <input id="userInput" type="text" class="typeahead form-control" placeholder="Begin typing to find a user">
                     </div>
 
-                    <div id="userDetails"></div>
+                    <div id="messageSuccess" class="alert alert-success"></div>
 
-                    <ul id="projectMembersList" class="list-group list-group-flush">
-                    </ul>
+                    <div id="selectedUser">
 
-                    <div id="roleRadioDiv">
-                        <p>Role</p>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="radio" class="form-check-input" id="adminRadio" name="optradio" value="admin">Admin
-                            </label>
+                        <label for="projectMembersList">Selected Member</label>
+                        <ul id="projectMembersList" class="list-group list-group-flush"></ul>
+
+                        <div>
+                            <label for="roleRadios" id="roleLabel">Role</label>
+                            <div class="form-check" id="roleRadios">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" id="adminRadio" name="optradio" value="admin">Admin
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" id="orgLeadRadio" name="optradio" value="organisationLead"> Organisation Lead
+                                </label>
+                            </div>
+                            <div class="form-check disabled">
+                                <label class="form-check-label">
+                                    <input type="radio" class="form-check-input" id="userRadio" name="optradio" value="user">User
+                                </label>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="setUserRoleBtn">Update Role</button>
                         </div>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="radio" class="form-check-input" id="orgLeadRadio" name="optradio" value="organisationLead"> Organisation Lead
-                            </label>
-                        </div>
-                        <div class="form-check disabled">
-                            <label class="form-check-label">
-                                <input type="radio" class="form-check-input" id="userRadio" name="optradio" value="user">User
-                            </label>
-                        </div>
-                        <button type="button" class="btn btn-primary" id="setUserRoleBtn">Update Role</button>
                     </div>
 
                 </div>
@@ -75,6 +82,11 @@
                 <!-- data sources tab -->
                 <div id="dataSourcesTab" class="tab-pane fade">
                     <p>Data sources place holder</p>
+                </div>
+
+                <!-- Plugin tab -->
+                <div id="pluginTab" class="tab-pane fade">
+                    <p>Plugin place holder</p>
                 </div>
         </div>
 

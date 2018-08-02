@@ -20,12 +20,14 @@ import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.service.experiment.ExperimentService;
+import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -47,18 +49,21 @@ public class ProjectController
     private ProjectService projectService;
     private ExperimentService experimentService;
     private ApplicationStorage applicationStorage;
+    private PluginService pluginService;
 
     @Inject
     public ProjectController(
         UserService userService,
         ProjectService projectService,
         ExperimentService experimentService,
-        ApplicationStorage applicationStorage)
+        ApplicationStorage applicationStorage,
+        PluginService pluginService)
     {
         this.userService = userService;
         this.projectService = projectService;
         this.experimentService = experimentService;
         this.applicationStorage = applicationStorage;
+        this.pluginService = pluginService;
     }
 
     @RequestMapping(value = "/projects", method = RequestMethod.GET)
@@ -104,6 +109,8 @@ public class ProjectController
     @RequestMapping(value = "/project/new", method = RequestMethod.GET)
     public String newProject(ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("dataProviders", pluginService.getDataProviders());
+       // model.addAttribute("sources", new ArrayList<String>());
         return "project/new";
     }
 
@@ -124,6 +131,7 @@ public class ProjectController
             projectBuilder.setImage(persistProjectImage(image));
             projectBuilder.setOwner(userService.getAuthenticatedUser());
             projectBuilder.setMembers(userService.getUsers(stringToInt(ensureNotNull(members))));
+            projectBuilder.setDataSources(sources);
             projectService.addProject(projectBuilder.build());
             return "redirect:/projects";
         }

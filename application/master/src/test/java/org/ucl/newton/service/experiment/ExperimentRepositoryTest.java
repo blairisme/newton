@@ -10,6 +10,8 @@ import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.*;
 
 import javax.inject.Inject;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -76,27 +78,21 @@ public class ExperimentRepositoryTest {
     public void testUpdateProject() {
         Experiment experiment12 = repository.getExperimentById(12);
         Assert.assertEquals(0, experiment12.getVersions().size());
-        ExperimentBuilder experimentBuilder = new ExperimentBuilder();
-        experimentBuilder.copyExperiment(experiment12);
-        experimentBuilder.setName("new name");
-        experiment12 = experimentBuilder.build();
+        ExperimentVersionBuilder builder = new ExperimentVersionBuilder();
+        builder.forExperiment(experiment12);
+        Collection<Path> outputs = new ArrayList<>();
+        outputs.add(Paths.get("/outputs/log.txt"));
+        outputs.add(Paths.get("/outputs/output1.png"));
+        outputs.add(Paths.get("/outputs/output2.csv"));
+        builder.setExperimentOutputs(outputs);
+        ExperimentVersion version = builder.build();
+        experiment12.addVersion(version);
         repository.update(experiment12);
         Experiment experiment12Loaded = repository.getExperimentById(12);
         Assert.assertEquals(experiment12, experiment12Loaded);
+        Assert.assertEquals(1, experiment12Loaded.getVersions().size());
+        Assert.assertTrue(experiment12Loaded.getVersions().contains(version));
     }
-
-
-    // test addVersion
-
-
-    // test addVersions
-
-
-    // test addOutcome
-
-
-    // test addOutcomes
-
 
     @Test
     public void testCorrectExperimentCreator() {

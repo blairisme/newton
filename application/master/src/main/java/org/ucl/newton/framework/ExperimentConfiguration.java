@@ -34,10 +34,6 @@ public class ExperimentConfiguration implements Serializable {
     @Column(name = "exp_proc_engine")
     private String processorPluginId;
 
-    //@ManyToOne(cascade = {CascadeType.ALL})
-    //@JoinColumn(name="processor_configuration_id")
-    //private ExperimentProcessorConfiguration processorConfiguration;
-
     @OneToMany(cascade = {CascadeType.ALL})
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "experiment_eds_link",

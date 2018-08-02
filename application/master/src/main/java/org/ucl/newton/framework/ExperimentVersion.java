@@ -35,7 +35,7 @@ public class ExperimentVersion {
     @Column(name = "ver_number")
     private int number;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "version_outcomes",
             joinColumns = @JoinColumn(name = "ver_id", referencedColumnName = "ver_id", foreignKey = @ForeignKey(name = "fk_vo_ver")),

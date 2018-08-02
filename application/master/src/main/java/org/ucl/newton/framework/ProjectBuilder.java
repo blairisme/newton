@@ -79,6 +79,10 @@ public class ProjectBuilder
         this.members.addAll(members);
     }
 
+    public void setDataSources(Collection<String> dataSources) {
+        this.dataSources = dataSources;
+    }
+
     public Project build() {
         Validate.notNull(identifier);
         Validate.notNull(name);

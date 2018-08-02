@@ -22,8 +22,6 @@ import org.ucl.newton.common.archive.ZipUtils;
 import org.ucl.newton.common.exception.ConnectionException;
 import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.framework.Experiment;
-import org.ucl.newton.framework.ExperimentBuilder;
-import org.ucl.newton.framework.ExperimentVersion;
 import org.ucl.newton.framework.ExperimentVersionBuilder;
 import org.ucl.newton.service.experiment.ExperimentService;
 
@@ -132,16 +130,8 @@ public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements 
         ExperimentVersionBuilder versionBuilder = new ExperimentVersionBuilder();
         versionBuilder.forExperiment(experiment);
         versionBuilder.setExperimentOutputs(outputs);
-
-        ExperimentVersion version = versionBuilder.build();
-        ExperimentVersion newVersion = experimentService.addVersion(version);
-
-        ExperimentBuilder experimentBuilder = new ExperimentBuilder();
-        experimentBuilder.copyExperiment(experiment);
-        experimentBuilder.addVersion(newVersion);
-        Experiment newExperiment = experimentBuilder.build();
-
-        experimentService.update(newExperiment);
+        experiment.addVersion(versionBuilder.build());
+        experimentService.update(experiment);
     }
 
     private class PersistObserver implements ListenableFutureCallback<ExecutionTask>
