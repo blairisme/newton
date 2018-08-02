@@ -10,10 +10,7 @@
 package org.ucl.newton.python;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.common.file.SystemPaths;
 import org.ucl.newton.common.lang.JarClassLoader;
@@ -44,6 +41,7 @@ public class PythonProcessorTest
     }
 
     @Test
+    @Ignore //requires python to be installed
     public void processTest() throws Exception {
         Path workingDirectory = tempDirectory.resolve("output");
         workingDirectory.toFile().mkdirs();
