@@ -44,7 +44,7 @@ public class ApplicationPreferencesDefault
     }
 
     public String getJupyterHost() {
-        return "localhost";
+        return "jupyter-newton";
     }
     
     public String getJupyterPort() {
