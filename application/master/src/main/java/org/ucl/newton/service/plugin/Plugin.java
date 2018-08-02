@@ -46,7 +46,7 @@ public class Plugin
         this.location = location;
     }
 
-    int getId() {
+    public int getId() {
         return id;
     }
 

@@ -71,6 +71,11 @@ public class PluginRepository
 
         return session.createQuery(criteria).getSingleResult();
     }
+    @Transactional
+    public void removePlugin(Plugin plugin) {
+        Session session = getSession();
+        session.delete(plugin);
+    }
 
     private Session getSession() {
         return this.sessionFactory.getCurrentSession();
