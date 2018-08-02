@@ -41,7 +41,7 @@ public class ExecutionCoordinatorClient implements ExecutionCoordinator
     @Autowired
     public ExecutionCoordinatorClient() {
         host = "localhost";
-        port = 8090;
+        port = 9090;
     }
 
     @Override

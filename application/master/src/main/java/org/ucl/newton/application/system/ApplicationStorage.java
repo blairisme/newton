@@ -9,6 +9,7 @@
 
 package org.ucl.newton.application.system;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.common.file.PathUtils;
@@ -51,7 +52,8 @@ public class ApplicationStorage
     public OutputStream getOutputStream(Path relativePath) throws IOException {
         Path path = rootPath.resolve(relativePath);
         File file = path.toFile();
-        file.mkdirs();
+        FileUtils.forceMkdirParent(file);
+
         file.delete();
         return new FileOutputStream(file);
     }

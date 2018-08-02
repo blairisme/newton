@@ -40,7 +40,7 @@ public class LoginSteps
 
     @When("^the user is shown the login page$")
     public void showPage() {
-        driver.get("http://localhost:8090/login");
+        driver.get("http://localhost:9090/login");
     }
 
     @When("^the user enters \"(.*)\" as their username and \"(.*)\" as their password$")
@@ -60,12 +60,12 @@ public class LoginSteps
 
     @Then("^the user should be shown the project list$")
     public void assertShownProjects() { ;
-        Assert.assertEquals("http://localhost:8090/projects", driver.getCurrentUrl());
+        Assert.assertEquals("http://localhost:9090/projects", driver.getCurrentUrl());
     }
 
     @Then("^the user should be shown an authentication error$")
     public void assertShownError() {
-        Assert.assertEquals("http://localhost:8090/login?error=true", driver.getCurrentUrl());
+        Assert.assertEquals("http://localhost:9090/login?error=true", driver.getCurrentUrl());
         Assert.assertTrue(elementExists(driver, By.id("authentication_error")));
     }
 }

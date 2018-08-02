@@ -41,7 +41,7 @@ public class PluginApiTest
         File processorFile = processorPath.toFile();
         processorFile.createNewFile();
 
-        URL processorUrl = new URL("http://localhost:8090/api/plugin/processor/newton-python");
+        URL processorUrl = new URL("http://localhost:9090/api/plugin/processor/newton-python");
 
         try (InputStream inputStream = processorUrl.openStream();
              OutputStream outputStream = new FileOutputStream(processorFile)) {
