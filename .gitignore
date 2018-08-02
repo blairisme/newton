@@ -18,6 +18,6 @@ bin/
 ### Visual Studio Code ###
 \.vscode/
 
+### Backstop to ignore test jars ###
 application/master/src/main/resources/plugins/data/
-
-application/plugins/python/src/test/resources/
+application/plugins/jupyter/src/test/resources/jupyter\.jar
