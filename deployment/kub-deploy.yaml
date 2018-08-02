@@ -30,36 +30,6 @@ spec:
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: jupyter-newton
-spec:
-  template:
-    metadata:
-      labels:
-        app: jupyter-newton
-    spec:
-      containers:
-      - name: jupyter-newton
-        image: newtonregistry.azurecr.io/blairisme/newton-jupyter:latest
-        ports:
-        - containerPort: 8000
-        - containerPort: 8888
-      imagePullSecrets:
-      - name: acr-auth
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: jupyter-newton
-spec:
-  type: LoadBalancer
-  ports:
-  - port: 8000
-  selector:
-    app: jupyter-newton
----
-apiVersion: apps/v1beta1
-kind: Deployment
-metadata:
   name: master-newton
 spec:
   template:
@@ -67,11 +37,25 @@ spec:
       labels:
         app: master-newton
     spec:
+      volumes:
+      - name: shared-data
+        emptyDir: {}
       containers:
       - name: master-newton
         image: newtonregistry.azurecr.io/blairisme/newton:latest
         ports:
         - containerPort: 8080
+        volumeMounts:
+        - name: shared-data
+          mountPath: ~/.newton/experiment
+      - name: jupyter-newton
+        image: newtonregistry.azurecr.io/blairisme/newton-jupyter:latest
+        ports:
+        - containerPort: 8000
+        - containerPort: 8888
+        volumeMounts:
+        - name: shared-data
+          mountPath: /var/newton/experiment
       imagePullSecrets:
       - name: acr-auth
 ---
