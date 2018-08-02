@@ -42,10 +42,10 @@ public class ExperimentRepositoryTest {
 
     @Test
     public void testGetExperimentByIdentifier() throws Exception {
-        Experiment expected = createExperiment("test experiment 1");
-        Assert.assertEquals(expected.getIdentifier(), "test+experiment+1");
+        Experiment expected = createExperiment("test experiment 1", "test-experiment-1");
+        Assert.assertEquals(expected.getIdentifier(), "test-experiment-1");
         repository.addExperiment(expected);
-        Experiment actual = repository.getExperimentByIdentifier("test+experiment+1");
+        Experiment actual = repository.getExperimentByIdentifier("test-experiment-1");
         Assert.assertEquals(expected, actual);
     }
 
@@ -139,10 +139,10 @@ public class ExperimentRepositoryTest {
         Assert.assertEquals(ExperimentOutcomeType.Log, outcome.getType());
     }
 
-    private Experiment createExperiment(String name) throws Exception {
+    private Experiment createExperiment(String name, String identifier) throws Exception {
         ExperimentBuilder builder = new ExperimentBuilder();
         builder.setName(name);
-        builder.generateIdentifier(name);
+        builder.setIdentifier(identifier);
         builder.setDescription("A simple but brief experiment description");
         builder.setCreator(createUser());
         builder.setProject(createProject());
