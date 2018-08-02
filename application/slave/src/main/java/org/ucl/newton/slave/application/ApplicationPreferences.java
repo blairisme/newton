@@ -30,11 +30,11 @@ public class ApplicationPreferences
     }
 
     public String getMasterHost() {
-        return getProperty("newton.master.host", "localhost");
+        return getProperty("newton.master.host", "master-newton");
     }
 
     public int getMasterPort() {
-        return Integer.parseInt(getProperty("newton.master.port", "8090"));
+        return Integer.parseInt(getProperty("newton.master.port", "9090"));
     }
 
     public String getApplicationHost() {

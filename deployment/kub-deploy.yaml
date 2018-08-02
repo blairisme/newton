@@ -44,7 +44,7 @@ spec:
       - name: master-newton
         image: newtonregistry.azurecr.io/blairisme/newton:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 9090
         volumeMounts:
         - name: shared-data
           mountPath: ~/.newton/experiment
@@ -67,8 +67,8 @@ spec:
   type: LoadBalancer
   ports:
   - name: http
-    port: 8080
-    targetPort: 8080
+    port: 9090
+    targetPort: 9090
   - name: jupyter
     port: 8000
     targetPort: 8000
@@ -77,3 +77,33 @@ spec:
     targetPort: 8888
   selector:
     app: master-newton
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: slave-newton
+spec:
+  template:
+    metadata:
+      labels:
+        app: slave-newton
+    spec:
+      containers:
+      - name: slave-newton
+        image: newtonregistry.azurecr.io/blairisme/newton-slave:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: acr-auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: slave-newton
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+  selector:
+    app: slave-newton
+---

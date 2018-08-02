@@ -29,7 +29,7 @@ public class ExperimentApiTest
         File repositoryFile = repositoryPath.toFile();
         repositoryFile.createNewFile();
 
-        URL repositoryUrl = new URL("http://localhost:8090/api/experiment/experiment-1/repository");
+        URL repositoryUrl = new URL("http://localhost:9090/api/experiment/experiment-1/repository");
 
         try (InputStream inputStream = repositoryUrl.openStream();
              OutputStream outputStream = new FileOutputStream(repositoryFile)) {

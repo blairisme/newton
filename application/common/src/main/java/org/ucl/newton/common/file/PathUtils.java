@@ -17,7 +17,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Utility functions to assist work with {@link Path Paths}.
@@ -54,7 +56,11 @@ public class PathUtils
     }
 
     public static Collection<Path> findChildren(Path directory, String pattern) {
-        Collection<File> files = FileUtils.findChildren(directory.toFile(), pattern);
+        return findChildren(directory, Arrays.asList(pattern));
+    }
+
+    public static Collection<Path> findChildren(Path directory, List<String> patterns) {
+        Collection<File> files = FileUtils.findChildren(directory.toFile(), patterns);
         Collection<Path> result = new ArrayList<>(files.size());
         for (File file: files) {
             result.add(file.toPath());
