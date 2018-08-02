@@ -38,7 +38,7 @@ public class ApplicationPreferences
     }
 
     public String getApplicationHost() {
-        return getProperty("newton.slave.host", "localhost");
+        return getProperty("newton.slave.host", "slave-newton");
     }
 
     public int getApplicationPort() {
