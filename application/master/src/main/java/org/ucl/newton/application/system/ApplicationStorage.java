@@ -75,6 +75,9 @@ public class ApplicationStorage
         }
     }
 
+    public Path getApplicationDirectory() {
+        return rootPath;
+    }
 
     public Path getTempDirectory() {
         return rootPath.resolve("temp");

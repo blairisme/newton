@@ -33,9 +33,9 @@ public class ExperimentRepositoryTest {
         Assert.assertEquals("project-fizzyo", parentProject.getIdentifier());
         ExperimentConfiguration expConfog = experiment.getConfiguration();
         Assert.assertNotNull(expConfog.getExperimentDataSources());
-        Assert.assertEquals(2, expConfog.getExperimentDataSources().size());
+        Assert.assertEquals(1, expConfog.getExperimentDataSources().size());
         Assert.assertNotNull(expConfog.getOutputPattern());
-        Assert.assertEquals("python", expConfog.getProcessorPluginId());
+        Assert.assertEquals("newton-python", expConfog.getProcessorPluginId());
         Assert.assertNotNull(expConfog.getStorageConfiguration());
         Assert.assertNotNull(expConfog.getTrigger());
     }

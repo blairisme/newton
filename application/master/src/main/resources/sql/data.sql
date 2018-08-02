@@ -81,18 +81,18 @@ INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (2,
 INSERT INTO storage_configuration (sc_id, sc_type, sc_location, sc_initial_script) VALUES (1, 'Newton', 'classpath:/experiment/experiment-1/repository', 'main.ipynb');
 
 /* Insert into experiment configurations */
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (1, 1, 'python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (2, 1, 'ruby', '/*.csv', 'Onchange');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (3, 1, 'python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (4, 1, 'python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (5, 1, 'python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (6, 1, 'python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (7, 1, 'python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (8, 1, 'python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (9, 1, 'python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (10, 1, 'python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (11, 1, 'python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (12, 1, 'python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (1, 1, 'newton-python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (2, 1, 'newton-ruby', '/*.csv', 'Onchange');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (3, 1, 'newton-python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (4, 1, 'newton-python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (5, 1, 'newton-python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (6, 1, 'newton-python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (7, 1, 'newton-python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (8, 1, 'newton-python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (9, 1, 'newton-python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (10, 1, 'newton-python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (11, 1, 'newton-python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (12, 1, 'newton-python', '/*.csv', 'Manual');
 
 /* Experiments */
 INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (1, 'experiment-1', 'HR classification', 'Experiment description', 1, 3, 1);
@@ -109,19 +109,12 @@ INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, proj
 INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (12, 'experiment-12', 'Gamification impact by game', 'Experiment description', 1, 1, 12);
 
 /* Insert into experiment data sources */
-INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (1, 'newton-weather', 'someloc/input.csv');
-INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (2, 'newton-fizzyo', 'someloc/input.csv');
-INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (3, 'newton-weather', 'someloc/input.csv');
-INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (4, 'newton-fizzyo', 'someloc/input.csv');
-INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (5, 'newton-fizzyo', 'someloc/input.csv');
+INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (1, 'weather', 'someloc/input.csv');
 
 /* Insert into join table between experiments and experiment data sources */
 INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (1, 1);
-INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (1, 2);
-INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (2, 3);
-INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (2, 4);
-INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (3, 5);
-INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (3, 2);
+INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (2, 1);
+INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (3, 1);
 
 /* Insert experiment version data */
 INSERT INTO versions (ver_id, ver_number) VALUES (1, 1);
