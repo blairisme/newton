@@ -85,8 +85,10 @@ public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements 
         try {
             ExecutionResult executionResult = task.getResult();
             Path destination = getDestination(executionResult);
+
             Path output = downloadOutput(executionNode, executionResult, destination);
             Collection<Path> outputs = uncompressOutput(output, destination);
+
             FileUtils.deleteQuietly(output.toFile());
             persistExperiment(executionResult, outputs);
         }
@@ -120,7 +122,8 @@ public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements 
     private Collection<Path> uncompressOutput(Path archive, Path destination) throws IOException  {
         try(InputStream inputStream = applicationStorage.getInputStream(archive)) {
             Collection<Path> contents = ZipUtils.unzip(inputStream, applicationStorage.getOutputStreamFactory(destination));
-            return PathUtils.resolve(destination, contents);
+            Path resourcePath = applicationStorage.getApplicationDirectory().relativize(destination);
+            return PathUtils.resolve(resourcePath, contents);
         }
     }
 
