@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Utility functions for working with {@link File Files}.
@@ -28,7 +29,11 @@ import java.util.Collections;
 public class FileUtils
 {
     public static Collection<File> findChildren(File directory, String pattern) {
-        FileFilter fileFilter = new WildcardFileFilter(pattern);
+        return findChildren(directory, Arrays.asList(pattern));
+    }
+
+    public static Collection<File> findChildren(File directory, List<String> patterns) {
+        FileFilter fileFilter = new WildcardFileFilter(patterns);
         File[] files = directory.listFiles(fileFilter);
         if (files != null) {
             return Arrays.asList(files);

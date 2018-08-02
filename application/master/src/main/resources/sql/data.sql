@@ -78,21 +78,21 @@ INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (1,
 INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (2, 1, 'newton-fizzyo');
 
 /* Insert into storage configuration */
-INSERT INTO storage_configuration (sc_id, sc_type, sc_location, sc_initial_script) VALUES (1, 'Newton', 'classpath:/experiment/experiment-1/repository', 'main.ipynb');
+INSERT INTO storage_configuration (sc_id, sc_type, sc_location, sc_initial_script) VALUES (1, 'Newton', 'classpath:/experiment/experiment-1/repository', 'main.py');
 
 /* Insert into experiment configurations */
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (1, 1, 'newton-python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (2, 1, 'newton-ruby', '/*.csv', 'Onchange');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (3, 1, 'newton-python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (4, 1, 'newton-python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (5, 1, 'newton-python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (6, 1, 'newton-python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (7, 1, 'newton-python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (8, 1, 'newton-python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (9, 1, 'newton-python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (10, 1, 'newton-python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (11, 1, 'newton-python', '/*.csv', 'Manual');
-INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (12, 1, 'newton-python', '/*.csv', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (1, 1, 'newton-python', '*.csv, *.png', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (2, 1, 'newton-ruby', '*.csv, *.png', 'Onchange');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (3, 1, 'newton-python', '*.csv, *.png', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (4, 1, 'newton-python', '*.csv, *.png', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (5, 1, 'newton-python', '*.csv, *.png', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (6, 1, 'newton-python', '*.csv, *.png', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (7, 1, 'newton-python', '*.csv, *.png', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (8, 1, 'newton-python', '*.csv, *.png', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (9, 1, 'newton-python', '*.csv, *.png', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (10, 1, 'newton-python', '*.csv, *.png', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (11, 1, 'newton-python', '*.csv, *.png', 'Manual');
+INSERT INTO experiment_config (exp_config_id, storage_config_id, exp_proc_engine, exp_out_pattern, exp_trigger) VALUES (12, 1, 'newton-python', '*.csv, *.png', 'Manual');
 
 /* Experiments */
 INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (1, 'experiment-1', 'HR classification', 'Experiment description', 1, 3, 1);
