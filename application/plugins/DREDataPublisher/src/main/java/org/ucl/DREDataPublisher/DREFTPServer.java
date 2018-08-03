@@ -2,6 +2,7 @@ package org.ucl.DREDataPublisher;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
+import org.ucl.DREDataPublisher.model.FTPConfig;
 import org.ucl.newton.sdk.publisher.BasicFTPServer;
 
 import java.io.File;
@@ -10,11 +11,11 @@ import java.io.InputStream;
 
 public class DREFTPServer extends BasicFTPServer {
 
-    public DREFTPServer(){
-        userName = "test";
-        userPassword = "test";
-        hostName = "10.97.40.165";
-        port = 7777;
+    public DREFTPServer(FTPConfig config){
+        this.userName = config.getUserName();
+        this.userPassword = config.getUserPassword();
+        this.hostName = config.getHostName();
+        this.port = config.getPort();
     }
     public void setFTPClient(FTPClient ftpClient){
         this.ftpClient = ftpClient;

@@ -2,6 +2,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.junit.Test;
 import org.ucl.DREDataPublisher.DREFTPServer;
 import org.ucl.DREDataPublisher.PublishData;
+import org.ucl.DREDataPublisher.model.FTPConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +16,8 @@ public class PublishDataTest {
     public void runTest() throws IOException {
 
         FTPClient ftpClient = mock(FTPClient.class);
-        DREFTPServer dreftpServer = new DREFTPServer();
+        FTPConfig config = new FTPConfig("0.0.0.0","username","password",0);
+        DREFTPServer dreftpServer = new DREFTPServer(config);
         dreftpServer.setFTPClient(ftpClient);
         when(ftpClient.getReplyCode()).thenReturn(200);
 
