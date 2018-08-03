@@ -1,19 +1,19 @@
 package org.ucl.FizzyoDataProvider.Fizzyo.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class PressureRecord {
-    int goodBreaths;
-    int breaths;
-    int averageBreathLength;
-    String id;
-    String startTime;
-    String endTime;
-    String averagePressure;
-    String pressureRawId;
-    String patientRecordId;
+    private int goodBreaths;
+    private int breaths;
+    private int averageBreathLength;
+    private String id;
+    private String startTime;
+    private  String endTime;
+    private  String averagePressure;
+    private  String pressureRawId;
+    private  String patientRecordId;
+
     public List<String> getKeys(){
         List<String> keys = new ArrayList<>();
         keys.add("patientRecordId");

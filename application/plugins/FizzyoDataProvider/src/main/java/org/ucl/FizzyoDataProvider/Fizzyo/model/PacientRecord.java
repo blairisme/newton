@@ -6,10 +6,10 @@ package org.ucl.FizzyoDataProvider.Fizzyo.model;
  * @author Xiaolong Chen
  */
 public class PacientRecord {
-    String id;
-    String userId;
-    String firstName;
-    String lastName;
+    private String id;
+    private String userId;
+    private String firstName;
+    private String lastName;
 
     public String getId() { return id; }
 

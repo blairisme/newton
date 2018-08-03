@@ -5,7 +5,7 @@ package org.ucl.FizzyoDataProvider.Fizzyo.model;
  * @author Xiaolong Chen
  */
 public class PressureRaw {
-    PressureRawRecord pressure;
+    private PressureRawRecord pressure;
 
     public PressureRawRecord getPressure() { return pressure; }
     public void setPressure(PressureRawRecord pressure) { this.pressure = pressure; }

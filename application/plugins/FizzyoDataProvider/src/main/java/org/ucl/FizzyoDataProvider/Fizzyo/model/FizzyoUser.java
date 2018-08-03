@@ -5,11 +5,11 @@ package org.ucl.FizzyoDataProvider.Fizzyo.model;
  * @author Xiaolong Chen
  */
 public class FizzyoUser {
-    String id;
-    String firstName;
-    String lastName;
-    String role;
-    String patientRecordId;
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String role;
+    private String patientRecordId;
 
     public String getId() { return id; }
 

@@ -5,9 +5,9 @@ package org.ucl.FizzyoDataProvider.Fizzyo.model;
  * @author Xiaolong Chen
  */
 public class FizzyoToken {
-    String accessToken;
-    int expiresIn;
-    FizzyoUser user;
+    private String accessToken;
+    private int expiresIn;
+    private FizzyoUser user;
 
     public String getAccessToken() { return accessToken; }
 
