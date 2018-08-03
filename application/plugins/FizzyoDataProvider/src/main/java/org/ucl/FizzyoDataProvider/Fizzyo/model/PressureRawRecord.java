@@ -10,12 +10,12 @@ import java.util.List;
  * @author Xiaolong Chen
  */
 public class PressureRawRecord {
-    String id;
-    boolean processed;
-    String startTime;
-    String endTime;
-    String pressureValues;
-    String patientRecordId;
+    private String id;
+    private boolean processed;
+    private String startTime;
+    private String endTime;
+    private String pressureValues;
+    private String patientRecordId;
 
     public List<String> getKeys(){
         List<String> keys = new ArrayList<>();

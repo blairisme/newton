@@ -3,7 +3,6 @@ package org.ucl.WeatherDataProvider;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
-import com.mashape.unirest.request.HttpRequestWithBody;
 
 import java.util.Map;
 /**

@@ -151,4 +151,5 @@ INSERT INTO plugin (id, identifier, location) VALUES (1, 'newton-python', 'class
 INSERT INTO plugin (id, identifier, location) VALUES (2, 'newton-jupyter', 'classpath:/plugins/processor/jupyter.jar');
 INSERT INTO plugin (id, identifier, location) VALUES (3, 'newton-weather', 'classpath:/plugins/data/WeatherDataProvider.jar');
 INSERT INTO plugin (id, identifier, location) VALUES (4, 'newton-fizzyo', 'classpath:/plugins/data/FizzyoDataProvider.jar');
+INSERT INTO plugin (id, identifier, location) VALUES (5, 'newton-DRE', 'classpath:/plugins/publisher/DREDataPublisher.jar');
 

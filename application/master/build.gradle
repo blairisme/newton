@@ -96,6 +96,13 @@ task updateWeatherDataProviderJar(type: Copy, dependsOn: ':application:plugins:W
 }
 project.tasks.war.dependsOn updateWeatherDataProviderJar
 
+task updateDREDataPublisherJar(type: Copy, dependsOn: ':application:plugins:DREDataPublisher:jar'){
+    from project(':application:plugins:DREDataPublisher').collect{it.tasks.withType(Jar)}
+    into project.file('src/main/resources/plugins/publisher')
+    rename '(.*)-(.*).jar', '$1.jar'
+}
+project.tasks.war.dependsOn updateDREDataPublisherJar
+
 gretty {
     servletContainer = 'jetty9.4'
     contextPath = '/'

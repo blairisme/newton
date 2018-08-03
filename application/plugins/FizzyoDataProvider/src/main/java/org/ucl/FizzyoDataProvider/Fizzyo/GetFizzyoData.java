@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Instances of this class provide utils for file reading.
+ * Instances of this class provide data from Fizzyo..
  *
  * @author Xiaolong Chen
  */

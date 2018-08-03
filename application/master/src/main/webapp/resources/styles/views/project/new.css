@@ -37,3 +37,8 @@
 .project-list-item {
     padding: 1.25rem;
 }
+
+.create-button {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}

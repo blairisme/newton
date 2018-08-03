@@ -15,9 +15,8 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+
 /**
  * Instances of this class provide utils for http operations.
  *

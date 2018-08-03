@@ -8,7 +8,7 @@ import java.util.List;
  * @author Xiaolong Chen
  */
 public class Records {
-    List<PacientRecord> records;
+    private List<PacientRecord> records;
 
     public List<PacientRecord> getRecords() { return records; }
 

@@ -67,10 +67,6 @@ public class Project implements Serializable
     )
     private Collection<User> membersThatStar;
 
-//    @OneToMany
-//    @JoinTable(name = "project_datasources",
-//            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_projds_project"))
-//    )
     @ElementCollection
     @CollectionTable(name="project_datasources", joinColumns=@JoinColumn(name="pds_project"))
     @Column(name = "pds_datasource")
@@ -122,12 +118,24 @@ public class Project implements Serializable
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getImage() {
         return image;
     }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public Date getLastUpdated() {
         return updated;
+    }
+
+    public void setLastUpdated( Date lastUpdated) {
+        this.updated = lastUpdated;
     }
 
     public long getLastUpdatedAsEpoch() {
