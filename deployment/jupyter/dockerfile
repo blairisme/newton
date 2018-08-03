@@ -41,4 +41,4 @@ EXPOSE 8000
 EXPOSE 8888
 
 WORKDIR /etc/jupyterhub
-CMD jupyterhub --ip 0.0.0.0 --port 8000
+CMD jupyterhub --ip 40.127.161.113 --port 8000
