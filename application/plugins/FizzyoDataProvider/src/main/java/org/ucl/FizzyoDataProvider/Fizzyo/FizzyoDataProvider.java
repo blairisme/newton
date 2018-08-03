@@ -20,7 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 /**
- * Instances of this class provide utils for file reading.
+ * Instances of this class provide data from Fizzyo.
  *
  * @author Xiaolong Chen
  */

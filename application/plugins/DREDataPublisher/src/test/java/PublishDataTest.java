@@ -2,7 +2,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.junit.Test;
 import org.ucl.DREDataPublisher.DREFTPServer;
 import org.ucl.DREDataPublisher.PublishData;
-import org.ucl.DREDataPublisher.model.FTPConfig;
+import org.ucl.newton.sdk.publisher.FTPConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,4 +26,5 @@ public class PublishDataTest {
 
         verify(ftpClient,times(1)).storeFile(any(String.class),any(InputStream.class));
     }
+
 }

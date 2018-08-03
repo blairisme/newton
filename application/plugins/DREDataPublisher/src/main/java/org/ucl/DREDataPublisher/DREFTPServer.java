@@ -2,13 +2,18 @@ package org.ucl.DREDataPublisher;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
-import org.ucl.DREDataPublisher.model.FTPConfig;
+import org.ucl.newton.sdk.publisher.FTPConfig;
 import org.ucl.newton.sdk.publisher.BasicFTPServer;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+/**
+ * Instances of this class publish data into DRE.
+ *
+ * @author Xiaolong Chen
+ */
 public class DREFTPServer extends BasicFTPServer {
 
     public DREFTPServer(FTPConfig config){

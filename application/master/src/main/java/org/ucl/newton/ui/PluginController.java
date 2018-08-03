@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static org.ucl.newton.common.file.FileUtils.readFile;
+
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
@@ -101,22 +103,7 @@ public class PluginController {
         return "redirect:/weatherSetting";
     }
 
-    private String readFile(File file){
-        String ret = null;
-        if(!file.exists())
-            return ret;
-        Long len = file.length();
-        byte[] content = new byte[len.intValue()];
-        try {
-            InputStream input = new FileInputStream(file);
-            input.read(content);
-            input.close();
-            ret = new String(content);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return ret;
-    }
+
 
     private String[] getHeader() {
         String[] header = new String[4];

@@ -1,9 +1,13 @@
 package org.ucl.DREDataPublisher;
 
-import org.ucl.DREDataPublisher.model.FTPConfig;
+import org.ucl.newton.sdk.publisher.FTPConfig;
 import org.ucl.newton.sdk.publisher.DataPublisher;
 
-
+/**
+ * Instances of this class publish data into DRE.
+ *
+ * @author Xiaolong Chen
+ */
 public class DREDataPublisher implements DataPublisher {
     FTPConfig config;
     @Override
@@ -16,8 +20,19 @@ public class DREDataPublisher implements DataPublisher {
         publishData.run();
     }
 
-    public void setConfig(FTPConfig config) {
-        this.config = config;
+    @Override
+    public String getConfigName() {
+        return "DREFTPConfig.json";
+    }
+
+    @Override
+    public Class<?> getConfigClass() {
+        return FTPConfig.class;
+    }
+
+    @Override
+    public <T> void setConfig(T config) {
+        this.config = (FTPConfig) config;
     }
 
     @Override

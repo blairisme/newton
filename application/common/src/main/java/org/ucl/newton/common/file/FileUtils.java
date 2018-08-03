@@ -12,9 +12,7 @@ package org.ucl.newton.common.file;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang3.Validate;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,5 +44,21 @@ public class FileUtils
         if (! file.exists() && ! file.createNewFile()) {
             throw new IOException("Unable to create new file");
         }
+    }
+    public static String readFile(File file){
+        String ret = null;
+        if(!file.exists())
+            return ret;
+        Long len = file.length();
+        byte[] content = new byte[len.intValue()];
+        try {
+            InputStream input = new FileInputStream(file);
+            input.read(content);
+            input.close();
+            ret = new String(content);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return ret;
     }
 }

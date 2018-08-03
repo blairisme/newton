@@ -1,7 +1,11 @@
-package org.ucl.DREDataPublisher.model;
+package org.ucl.newton.sdk.publisher;
 
-
-public class FTPConfig{
+/**
+ * Instances of this class publish data into DRE.
+ *
+ * @author Xiaolong Chen
+ */
+public class FTPConfig {
     String hostName;
     String userName;
     String userPassword;
