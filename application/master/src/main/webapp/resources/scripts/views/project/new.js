@@ -85,6 +85,7 @@ function addMember(id, name, email, image) {
 }
 
 function removeMember(id) {
+    console.log("called");
     $(`#listItem${id}`).remove();
     $(`#dataItem${id}`).remove();
 
