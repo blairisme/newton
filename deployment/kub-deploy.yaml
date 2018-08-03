@@ -106,4 +106,3 @@ spec:
   - port: 8080
   selector:
     app: slave-newton
----
