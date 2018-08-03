@@ -37,7 +37,7 @@ public class RestServer
     @Inject
     @SuppressWarnings("unused")
     public RestServer() {
-        this.address = "http://localhost:8080";
+        this.address = "http://localhost:9090";
         this.serializer = new JsonSerializer();
         this.headers = new HashMap<>();
     }

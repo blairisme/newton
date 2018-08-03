@@ -18,6 +18,7 @@ import org.ucl.newton.bridge.ExecutionResultBuilder;
 import org.ucl.newton.common.archive.ZipUtils;
 import org.ucl.newton.common.exception.InvalidPluginException;
 import org.ucl.newton.common.file.PathUtils;
+import org.ucl.newton.common.lang.Strings;
 import org.ucl.newton.common.network.UriSchemes;
 import org.ucl.newton.common.network.UrlUtils;
 import org.ucl.newton.common.process.CommandExecutor;
@@ -36,8 +37,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -123,7 +124,10 @@ public class RequestHandler
     }
 
     private URL getOutput(ExecutionRequest request, RequestWorkspace workspace) throws IOException {
-        Collection<Path> contents = PathUtils.findChildren(workspace.getRoot(), request.getOutput());
+        List<String> patterns = Strings.split(request.getOutput(), ",");
+        patterns = Strings.trim(patterns);
+
+        Collection<Path> contents = PathUtils.findChildren(workspace.getRoot(), patterns);
         contents.add(workspace.getLog());
 
         Path archive = workspace.getOutput();

@@ -106,8 +106,9 @@ project.tasks.war.dependsOn updateDREDataPublisherJar
 gretty {
     servletContainer = 'jetty9.4'
     contextPath = '/'
-    httpPort = 8090
+    httpPort = 9090
     jvmArgs = ['-Dnewton.profile=' + getProperty('run.profile')]
+
     jacocoEnabled = false
 }
 
