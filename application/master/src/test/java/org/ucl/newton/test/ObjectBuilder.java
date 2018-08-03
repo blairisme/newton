@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
@@ -21,7 +22,7 @@ import java.util.Random;
 /**
  * Instances of this class build objects using mock data.
  *
- * @author Blair
+ * @author Blair Butterworth
  */
 public class ObjectBuilder
 {
@@ -65,6 +66,9 @@ public class ObjectBuilder
 
         if (type.isAssignableFrom(String.class)) {
             return Integer.toString(random.nextInt());
+        }
+        if (type.isAssignableFrom(Duration.class)) {
+            return Duration.ofMillis(random.nextLong());
         }
         if (type.isAssignableFrom(int.class) || type.isAssignableFrom(Integer.class)) {
             return random.nextInt();

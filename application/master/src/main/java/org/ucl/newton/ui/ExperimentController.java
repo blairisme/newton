@@ -172,6 +172,7 @@ public class ExperimentController
         builder.setProcessorPluginId(experimentDto.getSelectedTypeValue(), pluginService.getDataProcessors());
         builder.addDataSources(experimentDto.getDataSourceIds(), experimentDto.getDataSourceLocs());
         builder.setOutputPattern(experimentDto.getOutputPattern());
+        builder.setDisplayPattern(experimentDto.getSelectedTypeValue().equals("newton-jupyter") ? "*.html" : "");
         builder.addTrigger(experimentDto.getSelectedTriggerValue());
         return builder.build();
     }

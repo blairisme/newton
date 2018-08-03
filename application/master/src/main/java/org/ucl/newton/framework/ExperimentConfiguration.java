@@ -1,3 +1,12 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.framework;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -16,8 +25,8 @@ import java.util.Collection;
  * that is used to define which outputs to save.
  *
  * @author John Wilkie
+ * @author Blair Butterworth
  */
-
 @Entity
 @Table(name = "experiment_config")
 public class ExperimentConfiguration implements Serializable {
@@ -44,6 +53,9 @@ public class ExperimentConfiguration implements Serializable {
     @Column(name = "exp_out_pattern")
     private String outputPattern;
 
+    @Column(name = "exp_display_pattern")
+    private String displayPattern;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "exp_trigger")
     private ExperimentTriggerType trigger;
@@ -53,12 +65,14 @@ public class ExperimentConfiguration implements Serializable {
         String processorPluginId,
         Collection<ExperimentDataSource> dataSources,
         String outputPattern,
+        String displayPattern,
         ExperimentTriggerType trigger)
     {
         this.storageConfig = storageConfig;
         this.processorPluginId = processorPluginId;
         this.dataSources = dataSources;
         this.outputPattern = outputPattern;
+        this.displayPattern = displayPattern;
         this.trigger = trigger;
     }
 
@@ -80,6 +94,10 @@ public class ExperimentConfiguration implements Serializable {
         return outputPattern;
     }
 
+    public String getDisplayPattern() {
+        return displayPattern;
+    }
+
     public ExperimentTriggerType getTrigger() {
         return trigger;
     }
@@ -96,6 +114,7 @@ public class ExperimentConfiguration implements Serializable {
             .append(storageConfig, other.storageConfig)
             .append(processorPluginId, other.processorPluginId)
             .append(outputPattern, other.outputPattern)
+            .append(displayPattern, other.displayPattern)
             .append(trigger, other.trigger)
             .isEquals();
     }
@@ -106,6 +125,7 @@ public class ExperimentConfiguration implements Serializable {
             .append(storageConfig)
             .append(processorPluginId)
             .append(outputPattern)
+            .append(displayPattern)
             .append(trigger)
             .toHashCode();
     }
@@ -117,6 +137,7 @@ public class ExperimentConfiguration implements Serializable {
             .append("processorConfiguration", processorPluginId)
             .append("dataSources", dataSources)
             .append("outputPattern", outputPattern)
+            .append("displayPattern", displayPattern)
             .append("trigger", trigger)
             .toString();
     }

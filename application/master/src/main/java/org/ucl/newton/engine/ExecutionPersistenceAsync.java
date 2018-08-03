@@ -133,6 +133,9 @@ public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements 
         ExperimentVersionBuilder versionBuilder = new ExperimentVersionBuilder();
         versionBuilder.forExperiment(experiment);
         versionBuilder.setExperimentOutputs(outputs);
+        versionBuilder.setCreated(executionResult.getDate());
+        versionBuilder.setDuration(executionResult.getDuration());
+
         experiment.addVersion(versionBuilder.build());
         experimentService.update(experiment);
     }

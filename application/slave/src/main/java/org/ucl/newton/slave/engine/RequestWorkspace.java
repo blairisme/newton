@@ -29,8 +29,8 @@ public class RequestWorkspace
     private Path log;
     private Path output;
 
-    public RequestWorkspace(Path applicationDirectory, ExecutionRequest request) {
-        root = applicationDirectory.resolve(request.getExperiment()).resolve(request.getVersion());
+    public RequestWorkspace(Path workspaceDirectory, ExecutionRequest request) {
+        root = workspaceDirectory.resolve(request.getExperiment()).resolve(request.getVersion());
         data = root.resolve("data");
         repo = root;
         script = root.resolve(request.getScript());

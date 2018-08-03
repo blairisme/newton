@@ -1,3 +1,12 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.framework;
 
 import org.springframework.core.io.Resource;
@@ -9,7 +18,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.persistence.*;
 
 /**
- * Instances of this class contain information relating to how an experiment and it's related data should be stored.
+ * Instances of this class contain information relating to how an
+ * {@link Experiment} and it's related data should be stored.
  *
  * @author John Wilkie
  */

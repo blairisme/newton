@@ -25,6 +25,7 @@ import org.ucl.newton.common.process.CommandExecutor;
 import org.ucl.newton.common.process.CommandExecutorFactory;
 import org.ucl.newton.sdk.processor.DataProcessor;
 import org.ucl.newton.slave.application.ApplicationPreferences;
+import org.ucl.newton.slave.application.ApplicationStorage;
 import org.ucl.newton.slave.service.DataProcessorService;
 import org.ucl.newton.slave.service.DataSourceService;
 import org.ucl.newton.slave.service.ExperimentService;
@@ -51,6 +52,7 @@ import java.util.concurrent.TimeUnit;
 @Named
 public class RequestHandler
 {
+    private ApplicationStorage applicationStorage;
     private ApplicationPreferences applicationPreferences;
     private CommandExecutorFactory commandExecutorFactory;
     private DataProcessorService dataProcessorService;
@@ -59,12 +61,14 @@ public class RequestHandler
 
     @Inject
     public RequestHandler(
+        ApplicationStorage applicationStorage,
         ApplicationPreferences applicationPreferences,
         CommandExecutorFactory commandExecutorFactory,
         DataProcessorService dataProcessorService,
         DataSourceService dataSourceService,
         ExperimentService experimentService)
     {
+        this.applicationStorage = applicationStorage;
         this.applicationPreferences = applicationPreferences;
         this.commandExecutorFactory = commandExecutorFactory;
         this.dataProcessorService = dataProcessorService;
@@ -82,8 +86,8 @@ public class RequestHandler
     }
 
     private RequestWorkspace createWorkspace(ExecutionRequest request) {
-        Path applicationPath = applicationPreferences.getApplicationPath();
-        return new RequestWorkspace(applicationPath, request);
+        Path workspaceDirectory = applicationStorage.getWorkspaceDirectory();
+        return new RequestWorkspace(workspaceDirectory, request);
     }
 
     private void addDataSources(ExecutionRequest request, RequestWorkspace workspace) throws IOException {

@@ -47,13 +47,6 @@
         <div class="tab-content">
             <!-- Overview -->
             <div id="overviewTab" class="tab-pane active fade show">
-                <!-- No versions message -->
-                <div th:if="${version == null && executing == false}" class="message_container">
-                    <img src="/resources/images/common/information.png" alt="Information" width="200"/>
-                    <p>It looks like you've never run the experiment. Would you like to the run the experiment?</p>
-                    <a th:if="${executing == false}" class="btn btn-lrg btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/run'}" role="button" id="runExperimentBtn">Run Experiment</a>
-                </div>
-
                 <!-- Experiment running message -->
                 <div th:if="${executing == true}" class="message_container">
                     <img src="/resources/images/common/science_ing.gif" alt="Conducting experiment..." width="300">
@@ -62,54 +55,72 @@
                 </div>
 
                 <!-- Experiment results -->
-                <div th:if="${version != null && executing == false}">
+                <div th:if="${executing == false}">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-auto statistics_container">
                                 <h1 class="page-title" th:text="${experiment.name}"></h1>
-                                <p>Time: 20:04 10/07/18</p>
-                                <p>Duration: 1:32m</p>
+                                <div th:if="${version != null}">
+                                    <p th:text="@{'Run date: ' + ${#dates.format(version.created, 'dd-MM-yyyy HH:mm')}}">Run date</p>
+                                    <p th:text="@{'Run duration: ' + ${version.durationDescription}}">Run duration</p>
+                                </div>
                             </div>
                             <div class="col-4 ml-auto">
                                 <div class="control_container">
                                     <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/edit'}" role="button">Edit</a>
-                                    <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/run'}" role="button">Rerun</a>
-                                    <a class="btn btn-primary" href="#" role="button">Publish Results</a>
+                                    <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/run'}" role="button">Run</a>
+                                    <a class="btn btn-primary" th:disabled="${version == null}" href="#" role="button">Publish</a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- No versions message -->
+                    <div th:if="${version == null}" class="message_container">
+                        <img src="/resources/images/common/information.png" alt="Information" width="200"/>
+                        <p>It looks like you've never run the experiment. Would you like to the run the experiment?</p>
+                        <a th:if="${executing == false}" class="btn btn-lrg btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/run'}" role="button" id="runExperimentBtn">Run Experiment</a>
+                    </div>
+
                     <!-- Experiment result types -->
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item active">
-                            <a class="nav-link active" data-toggle="tab" href="#visualizationTab">Visualization</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#dataTab">Data</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#consoleTab">Console</a>
-                        </li>
-                    </ul>
+                    <div th:if="${version != null}">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item active" th:if="${not #lists.isEmpty(version.displayOutcomes)}">
+                                <a class="nav-link active" data-toggle="tab" href="#visualizationTab">Visualization</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:classappend="${#lists.isEmpty(version.displayOutcomes)} ? show : ''" data-toggle="tab" href="#dataTab">Data</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#consoleTab">Console</a>
+                            </li>
+                        </ul>
 
-                    <div class="tab-content">
-                        <div id="visualizationTab" class="tab-pane active fade show">
-                            <img th:each="outcome, iteration :${version.outcomes}" th:if="${outcome.isVisualType()}" th:src="@{'/resources/' + ${outcome.location}}"/>
-                        </div>
+                        <div class="tab-content">
+                            <div th:if="${not #lists.isEmpty(version.displayOutcomes)}" id="visualizationTab" class="tab-pane active fade show">
+                                <div th:each="outcome, iteration :${version.displayOutcomes}">
+                                    <img th:if="${#strings.endsWith(outcome.location, '.png')}" th:src="@{'/resources/' + ${outcome.location}}"/>
+                                    <img th:if="${#strings.endsWith(outcome.location, '.jpg')}" th:src="@{'/resources/' + ${outcome.location}}"/>
+                                    <img th:if="${#strings.endsWith(outcome.location, '.jpeg')}" th:src="@{'/resources/' + ${outcome.location}}"/>
+                                    <img th:if="${#strings.endsWith(outcome.location, '.bmp')}" th:src="@{'/resources/' + ${outcome.location}}"/>
+                                    <iframe th:if="${#strings.endsWith(outcome.location, '.html')}" th:src="@{'/resources/' + ${outcome.location}}" id="iframe1" onLoad="autoResize('iframe1');" marginheight="0" frameborder="0"></iframe>
+                                    <object th:if="${#strings.endsWith(outcome.location, '.txt')}" th:src="@{'/resources/' + ${outcome.location}}" ></object>
+                                </div>
+                            </div>
 
-                        <div id="dataTab" class="tab-pane fade">
-                            <ul class="list-group">
-                                <li th:each="outcome, iteration :${version.outcomes}" th:if="${outcome.isDataType()}" class="list-group-item file_output">
-                                    <img src="/resources/images/experiment/file.png" alt="file icon" width="20"/>
-                                    <span th:text="${outcome.name}">File name</span>
-                                    <a class="btn btn-primary" th:href="@{'/resources/' + ${outcome.location}}">Download</a>
-                                </li>
-                            </ul>
-                        </div>
+                            <div id="dataTab" class="tab-pane fade" th:classappend="${#lists.isEmpty(version.displayOutcomes)} ? show : ''">
+                                <ul class="list-group">
+                                    <li th:each="outcome, iteration :${version.dataOutcomes}" class="list-group-item file_output">
+                                        <img src="/resources/images/experiment/file.png" alt="file icon" width="20"/>
+                                        <span th:text="${outcome.name}">File name</span>
+                                        <a class="btn btn-primary" th:href="@{'/resources/' + ${outcome.location}}">Download</a>
+                                    </li>
+                                </ul>
+                            </div>
 
-                        <div id="consoleTab" class="tab-pane fade">
-                            <object th:each="outcome, iteration :${version.outcomes}" th:if="${outcome.isLogType()}" th:data="@{'/resources/' + ${outcome.location}}" width="100%" height="1000px">Log Text</object>
+                            <div id="consoleTab" class="tab-pane fade">
+                                <object th:each="outcome, iteration :${version.logOutcomes}" th:data="@{'/resources/' + ${outcome.location}}" width="100%" height="1000px">Log Text</object>
+                            </div>
                         </div>
                     </div>
                 </div>

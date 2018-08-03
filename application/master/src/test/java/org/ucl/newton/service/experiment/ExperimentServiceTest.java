@@ -14,8 +14,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.ucl.newton.framework.*;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 public class ExperimentServiceTest
 {
@@ -85,10 +87,13 @@ public class ExperimentServiceTest
     }
 
     private ExperimentVersion createVersion() {
+        Date date = new Date();
+        Duration duration = Duration.ZERO;
+
         Collection<ExperimentOutcome> outcomes = new ArrayList<>();
         outcomes.add(new ExperimentOutcome(1,"results", "output/results.txt", ExperimentOutcomeType.Data));
         outcomes.add(new ExperimentOutcome(2,"log", "output/log.txt", ExperimentOutcomeType.Log));
-        return new ExperimentVersion(1, outcomes);
+        return new ExperimentVersion(1, date, duration, outcomes);
     }
 
 }
