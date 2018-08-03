@@ -9,6 +9,8 @@
 
 package org.ucl.newton.slave.network;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.ucl.newton.bridge.*;
@@ -27,6 +29,8 @@ import javax.inject.Named;
 @SuppressWarnings("unused")
 public class SlaveServer implements ExecutionNodeServer
 {
+    private static final Log logger = LogFactory.getLog(SlaveServer.class);
+
     private RequestHandler requestHandler;
     private ExecutionCoordinator executionCoordinator;
 
@@ -43,8 +47,8 @@ public class SlaveServer implements ExecutionNodeServer
             ExecutionResult executionResult = requestHandler.process(request);
             executionCoordinator.executionComplete(executionResult);
         }
-        catch (Exception error) {
-            error.printStackTrace(); //log this instead
+        catch (Throwable error) {
+            logger.error("Experiment execution failed", error);
 
             ExecutionFailure executionFailure = new ExecutionFailureBuilder()
                 .forRequest(request)

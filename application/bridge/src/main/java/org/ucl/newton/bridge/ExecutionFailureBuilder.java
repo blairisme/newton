@@ -31,7 +31,7 @@ public class ExecutionFailureBuilder
         return this;
     }
 
-    public ExecutionFailureBuilder setException(Exception exception) {
+    public ExecutionFailureBuilder setException(Throwable exception) {
         this.error = exception.getMessage();
         return this;
     }

@@ -52,6 +52,8 @@ import java.util.concurrent.TimeUnit;
 @Named
 public class RequestHandler
 {
+//    private static final Log logger = LogFactory.getLog(RequestHandler.class);
+
     private ApplicationStorage applicationStorage;
     private ApplicationPreferences applicationPreferences;
     private CommandExecutorFactory commandExecutorFactory;

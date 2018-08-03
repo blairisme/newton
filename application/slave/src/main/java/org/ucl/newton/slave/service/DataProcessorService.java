@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toSet;
 
 /**
- * Instances of this class manage a local cache of{@link DataProcessor
+ * Instances of this class manage a local cache of {@link DataProcessor
  * DataProcessors}.
  *
  * @author Ziad Halabi
