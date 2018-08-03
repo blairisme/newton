@@ -18,7 +18,7 @@ from newtonauthenticator import NewtonAuthenticator
 
 c.JupyterHub.spawner_class = NewtonSpawner
 c.Spawner.default_url = '/lab'
-c.Spawner.ip = '40.127.161.113'
+c.Spawner.ip = '0.0.0.0'
 c.Spawner.args = ['--allow-root']
 c.Spawner.notebook_dir = '/var/newton/experiment/{experiment_id}/repository'
 c.Spawner.disable_user_config = True
