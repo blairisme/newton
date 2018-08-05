@@ -1,0 +1,12 @@
+.default-icon {
+    height: 48px;
+    width: 48px;
+    color: #ffffff;
+    line-height: 48px;
+}
+
+.default-icon-text {
+    font-size: 30px;
+    text-align: center;
+    vertical-align: middle;
+}

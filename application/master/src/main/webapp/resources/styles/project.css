@@ -41,6 +41,10 @@
     margin-right: 0.6em;
 }
 
+.project-icon-container a {
+    text-decoration: none;
+}
+
 .project-name-container a {
     color: #000000;
     font-weight: 600;

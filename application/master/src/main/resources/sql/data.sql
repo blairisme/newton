@@ -28,17 +28,17 @@ INSERT INTO credentials (id, user_id, username, password, role) VALUES (6, 6, 'j
 /* Projects */
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (1, 2, 'project-fizzyo', 'Project Fizzyo', 'project Fizzyo Description', 'fizzyo.png', '2018-06-20 12:34:56');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (2, 2, 'uclh-mf', 'UCLH Mycosis Fungoides classification', 'Cancer Research Trial 4 Description', 'uclh.png', '2018-05-19 11:12:13');
-INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (3, 2, 'gosh-jiro', 'GOSH Project Jiro', 'Project description ', 'default.png', '2018-04-07 10:09:08');
-INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (4, 2, 'gosh-icd', 'GOSH ICD prediction', 'Project description', 'default.png', '2018-03-07 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (3, 2, 'gosh-jiro', 'GOSH Project Jiro', 'Project description ', 'gosh.png', '2018-04-07 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (4, 2, 'gosh-icd', 'GOSH ICD prediction', 'Project description', 'gosh.png', '2018-03-07 10:09:08');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (5, 2, 'uclh-neuroblastome', 'UCLH Neuroblastoma in under children', 'Project description', 'uclh.png', '2018-03-06 10:09:08');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (6, 2, 'rm-ewing-sarcoma', 'RM Ewing Sarcoma', 'Project description', 'rm.png', '2018-03-05 10:09:08');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (7, 2, 'ucl-indigo', 'UCL Indigo', 'Project description', 'ucl.png', '2018-02-07 10:09:08');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (8, 2, 'uclh-cross-cont', 'UCLH Reducing cross contamination', 'Project description', 'uclh.png', '2018-02-06 10:09:08');
-INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (9, 2, 'gosh-dmd', 'GOSH Duchenne muscular dystrophy treatment', 'Project description', 'default.png', '2018-02-05 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (9, 2, 'gosh-dmd', 'GOSH Duchenne muscular dystrophy treatment', 'Project description', 'gosh.png', '2018-02-05 10:09:08');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (10, 2, 'rm-cns-lymphoma', 'RM Primary CNS Lymphoma', 'Project description', 'rm.png', '2018-01-07 10:09:08');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (11, 2, 'ucl-vega', 'UCL Vega', 'Project description', 'ucl.png', '2017-12-07 10:09:08');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (12, 2, 'ucl-camelot', 'UCL Project Camelot', 'Project description', 'ucl.png', '2017-07-07 10:09:08');
-INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (13, 2, 'gosh-apollo', 'GOSH Project Apollo', 'Project description', 'default.png', '2017-08-07 10:09:08');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (13, 2, 'gosh-apollo', 'GOSH Project Apollo', 'Project description', 'gosh.png', '2017-08-07 10:09:08');
 
 /* Project membership */
 INSERT INTO project_membership (project_id, user_id) VALUES (1, 1);

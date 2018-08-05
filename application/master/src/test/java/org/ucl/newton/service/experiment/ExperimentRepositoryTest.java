@@ -159,7 +159,7 @@ public class ExperimentRepositoryTest {
     private Project createProject() throws Exception {
         User owner = new User(2, "admin", "admin@ucl.ac.uk", "pp_4.jpg");
         return new Project(13, "gosh-apollo", "GOSH Project Apollo", "Project description",
-                "default.png", createDate("2017-07-07 10:09:08"), owner , new ArrayList<>(), new ArrayList<>());
+                "gosh.png", createDate("2017-07-07 10:09:08"), owner , new ArrayList<>(), new ArrayList<>());
     }
 
     private Date createDate(String date) throws ParseException {
