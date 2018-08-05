@@ -16,8 +16,8 @@
                 <tr th:each="project, iteration : ${projects}" class="project-row project-row-underline">
                     <td class="project-column project-icon-container">
                         <a href="/projects" th:href="@{'/project/' + ${project.identifier}}">
-                            <span th:if="${project.image} != 'default.jpg'"><img th:src="@{'/resources/images/project/' + ${project.image}}" class="rounded" alt="Project image" width="48" height="48"></span>
-                            <div th:if="${project.image} == 'default.jpg'" class="default-icon">
+                            <span th:if="${project.image} != 'default.png'"><img th:src="@{'/resources/images/project/' + ${project.image}}" class="rounded" alt="Project image" width="48" height="48"></span>
+                            <div th:if="${project.image} == 'default.png'" class="default-icon">
                                 <div th:text="${#strings.substring(#strings.capitalize(project.name), 0, 1)}" class="rounded default-icon-text"></div>
                             </div>
                         </a>
