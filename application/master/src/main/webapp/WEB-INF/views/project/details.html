@@ -5,16 +5,18 @@
     <head>
         <title>Newton - Projects</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link rel="icon" href="resources/images/common/favicon.ico">
+        <link rel="icon" href="resources/images/common/favicon.ico"/>
 
         <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/experiment.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/views/project/list.css"/>
 
         <script src="/resources/scripts/libraries/jquery.js"></script>
         <script src="/resources/scripts/libraries/popper.js"></script>
         <script src="/resources/scripts/libraries/bootstrap.js"></script>
         <script type="text/javascript" src="/resources/scripts/views/project/details.js"></script>
+        <script type="text/javascript" src="/resources/scripts/views/project/list.js"></script>
     </head>
     <body>
         <!-- Navigation -->
@@ -49,7 +51,9 @@
                 <tr th:each="experiment, iteration : ${experiments}" class="experiment-row experiment-row-underline">
                     <td class="experiment-column experiment-icon-container">
                         <a href="#" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier}}">
-                            <img th:src="@{'/resources/images/profile/' + ${experiment.creator.image}}" class="rounded" alt="Experiment icon" width="48" height="48">
+                            <div class="rounded default-icon">
+                                <div th:text="${#strings.substring(#strings.capitalize(experiment.name), 0, 1)}" class="rounded default-icon-text"></div>
+                            </div>
                         </a>
                     </td>
                     <td class="experiment-column experiment-column-expand experiment-name-container">
