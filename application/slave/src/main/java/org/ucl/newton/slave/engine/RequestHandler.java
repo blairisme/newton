@@ -9,6 +9,9 @@
 
 package org.ucl.newton.slave.engine;
 
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.ucl.newton.bridge.ExecutionRequest;
 import org.ucl.newton.bridge.ExecutionResult;
 import org.ucl.newton.slave.service.DataProcessorService;
@@ -18,7 +21,6 @@ import org.ucl.newton.slave.service.WorkspaceService;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.IOException;
 
 /**
  * Processes execution requests, downloading assets required for execution,
@@ -51,11 +53,18 @@ public class RequestHandler
         this.requestContextBuilder = requestContextBuilder;
     }
 
-    public ExecutionResult process(ExecutionRequest request) throws IOException {
-        RequestContext context = requestContextBuilder.newContext(request);
-        experimentService.addRepository(request, context);
-        dataSourceService.addDataSources(request, context);
-        dataProcessorService.invokeProcessor(request, context);
-        return workspaceService.collateResults(request, context);
+    @Async("experiment")
+    public ListenableFuture<ExecutionResult> process(ExecutionRequest request) {
+        try {
+            RequestContext context = requestContextBuilder.newContext(request);
+            experimentService.addRepository(request, context);
+            dataSourceService.addDataSources(request, context);
+            dataProcessorService.invokeProcessor(request, context);
+            ExecutionResult result = workspaceService.collateResults(request, context);
+            return new AsyncResult<>(result);
+        }
+        catch (Throwable error) {
+            return AsyncResult.forExecutionException(error);
+        }
     }
 }

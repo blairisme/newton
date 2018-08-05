@@ -127,6 +127,17 @@ public class ExperimentController
         return "redirect:/project/" + projectIdentifier + "/" + experimentIdentifier;
     }
 
+    @GetMapping(value = "/project/{project}/{experiment}/cancel")
+    public String cancel(
+        @PathVariable("project") String projectIdentifier,
+        @PathVariable("experiment") String experimentIdentifier,
+        ModelMap model)
+    {
+        Experiment experiment = experimentService.getExperimentByIdentifier(experimentIdentifier);
+        executionEngine.stopExecution(experiment);
+        return "redirect:/project/" + projectIdentifier + "/" + experimentIdentifier;
+    }
+
     @GetMapping(value = "/project/{project}/{experiment}/edit")
     public String edit(
         @PathVariable("project") String project,

@@ -18,9 +18,9 @@ import java.util.concurrent.Executor;
 public class ApplicationConcurrencyTest
 {
     @Test
-    public void asyncExecutorTest() {
+    public void experimentExecutorTest() {
         ApplicationConcurrency configuration = new ApplicationConcurrency();
-        Executor executor = configuration.asyncExecutor();
+        Executor executor = configuration.experimentExecutor();
 
         Assert.assertNotNull(executor);
         Assert.assertTrue(((ThreadPoolTaskExecutor)executor).isDaemon());

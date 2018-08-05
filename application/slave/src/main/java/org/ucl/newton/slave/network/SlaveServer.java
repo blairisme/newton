@@ -11,12 +11,17 @@ package org.ucl.newton.slave.network;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.ucl.newton.bridge.*;
 import org.ucl.newton.slave.engine.RequestHandler;
 
+import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
  * Instances of this execute experiment computation requests initiated by the
@@ -26,6 +31,7 @@ import javax.inject.Named;
  * @author Blair Butterworth
  */
 @Named
+@Singleton
 @SuppressWarnings("unused")
 public class SlaveServer implements ExecutionNodeServer
 {
@@ -33,33 +39,46 @@ public class SlaveServer implements ExecutionNodeServer
 
     private RequestHandler requestHandler;
     private ExecutionCoordinator executionCoordinator;
+    private Map<ExecutionRequest, Future<ExecutionResult>> requests;
 
-    @Autowired
+    @Inject
     public SlaveServer(RequestHandler requestHandler, MasterServerFactory masterServerFactory) {
+        this.requests = new HashMap<>();
         this.requestHandler = requestHandler;
         this.executionCoordinator = masterServerFactory.get();
     }
 
-    @Async
     @Override
+    @Async("network")
     public void execute(ExecutionRequest request) throws ExecutionException {
-        try {
-            ExecutionResult executionResult = requestHandler.process(request);
-            executionCoordinator.executionComplete(executionResult);
-        }
-        catch (Throwable error) {
-            logger.error("Experiment execution failed", error);
+        logger.info("Experiment execution requested: " + request);
+        ListenableFuture<ExecutionResult> future = requestHandler.process(request);
+        future.addCallback(new ExecutionObserver(this, request));
+        requests.put(request, future);
+    }
 
-            ExecutionFailure executionFailure = new ExecutionFailureBuilder()
-                .forRequest(request)
-                .setException(error)
-                .build();
-            executionCoordinator.executionFailed(executionFailure);
+    @Override
+    @Async("network")
+    public void cancel(ExecutionRequest request) throws ExecutionException {
+        Future<ExecutionResult> future = requests.get(request);
+        if (future != null && ! future.isCancelled()) {
+            logger.info("Experiment execution cancelled: " + request);
+            future.cancel(true);
         }
     }
 
-    @Async
-    @Override
-    public void cancel(ExecutionRequest executionRequest) throws ExecutionException {
+    @Async("network")
+    public void executionSuccess(ExecutionRequest request, ExecutionResult result) {
+        logger.info("Experiment execution completed: " + result);
+        executionCoordinator.executionComplete(result);
+    }
+
+    @Async("network")
+    public void executionFailure(ExecutionRequest request, Throwable error) {
+        logger.error("Experiment execution failed: " + request, error);
+        executionCoordinator.executionFailed(new ExecutionFailureBuilder()
+            .forRequest(request)
+            .setException(error)
+            .build());
     }
 }
