@@ -14,8 +14,7 @@ LABEL version="1.0"
 LABEL description="Contains the Newton web application"
 LABEL maintainer="blair.butterworth.17@ucl.ac.uk"
 
-ARG slave_host
-ENV newton_slave_host $slave_host
+
 
 COPY ./libs/master.war /var/lib/jetty/webapps/ROOT.war
 EXPOSE 9090

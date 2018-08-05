@@ -48,9 +48,6 @@ spec:
         volumeMounts:
         - name: shared-data
           mountPath: ~/.newton/experiment
-      - env:
-        - name: slave_host
-          value: "ziad"
       - name: jupyter-newton
         image: newtonregistry.azurecr.io/blairisme/newton-jupyter:latest
         ports:
