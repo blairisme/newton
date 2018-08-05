@@ -11,7 +11,6 @@ package org.ucl.newton.slave.engine;
 
 import org.ucl.newton.bridge.ExecutionRequest;
 
-import javax.inject.Named;
 import java.nio.file.Path;
 
 /**

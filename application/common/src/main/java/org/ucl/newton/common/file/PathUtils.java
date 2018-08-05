@@ -43,6 +43,14 @@ public class PathUtils
         return path.getFileName().toString();
     }
 
+    public static Collection<String> getNames(Collection<Path> paths) {
+        Collection<String> result = new ArrayList<>();
+        for (Path path: paths) {
+            result.add(getName(path));
+        }
+        return result;
+    }
+
     public static Collection<Path> getChildren(Path path) {
         Collection<Path> result = new ArrayList<>();
         File[] files = path.toFile().listFiles();
