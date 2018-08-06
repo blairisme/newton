@@ -44,7 +44,7 @@ spec:
       - name: master-newton
         env:
           - name: slave_host
-            value: ziad
+            value: slave-newton
         image: newtonregistry.azurecr.io/blairisme/newton:latest
         ports:
         - containerPort: 9090
