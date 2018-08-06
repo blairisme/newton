@@ -1,4 +1,4 @@
-package org.ucl.FizzyoDataProvider.Fizzyo.model;
+package org.ucl.newton.fizzyo.model;
 
 import java.util.List;
 

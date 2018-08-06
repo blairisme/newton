@@ -1,4 +1,4 @@
-package org.ucl.DREDataPublisher;
+package org.ucl.newton.drepublisher;
 
 import java.io.File;
 import java.nio.file.Paths;

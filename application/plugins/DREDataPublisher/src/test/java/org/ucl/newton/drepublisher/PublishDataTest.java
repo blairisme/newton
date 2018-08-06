@@ -1,7 +1,9 @@
+package org.ucl.newton.drepublisher;
+
 import org.apache.commons.net.ftp.FTPClient;
 import org.junit.Test;
-import org.ucl.DREDataPublisher.DREFTPServer;
-import org.ucl.DREDataPublisher.PublishData;
+import org.ucl.newton.drepublisher.DREFTPServer;
+import org.ucl.newton.drepublisher.PublishData;
 import org.ucl.newton.sdk.publisher.FTPConfig;
 
 import java.io.IOException;
@@ -9,7 +11,6 @@ import java.io.InputStream;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-
 
 public class PublishDataTest {
     @Test

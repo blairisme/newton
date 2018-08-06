@@ -1,10 +1,8 @@
-package org.ucl.newton.FizzyoDataProvider;
+package org.ucl.newton.fizzyo;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.ucl.FizzyoDataProvider.Fizzyo.FizzyoDataProvider;
-import org.ucl.FizzyoDataProvider.Fizzyo.GetFizzyoData;
 import org.ucl.newton.sdk.data.DataProviderObserver;
 import org.ucl.newton.sdk.data.DataSource;
 import org.ucl.newton.sdk.data.DataStorage;

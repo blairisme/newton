@@ -6,65 +6,59 @@
  *
  *      https://opensource.org/licenses/MIT
  */
-
-package org.ucl.WeatherDataProvider.weather;
+package org.ucl.newton.fizzyo;
 
 import org.ucl.newton.common.concurrent.DaemonThreadFactory;
 import org.ucl.newton.sdk.data.BasicDataProvider;
 import org.ucl.newton.sdk.data.BasicDataSource;
 import org.ucl.newton.sdk.data.DataSource;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Instances of this class provide weather data to the Newton system.
+ * Instances of this class provide data from Fizzyo.
  *
  * @author Xiaolong Chen
- * @author Blair Butterworth
  */
-public class WeatherDataProvider extends BasicDataProvider
+public class FizzyoDataProvider extends BasicDataProvider
 {
-    private List<DataSource> dataSources;
     private ScheduledExecutorService scheduler;
 
-    public WeatherDataProvider(){
-        this.dataSources = new ArrayList<>();
-        this.dataSources.add(new BasicDataSource(this, "weather", "Weather Data"));
-        this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
+    public FizzyoDataProvider(){
     }
 
     @Override
     public String getIdentifier() {
-        return "newton-weather";
+        return "newton-fizzyo";
     }
 
     @Override
     public String getName() {
-        return "Weather Data Plugin";
+        return "Fizzyo Data Provider";
     }
 
     @Override
     public String getDescription() {
-        return "Gathers weather data from World Weather Online weather data service.";
+        return "Obtains data from the Fizzyo cloud.";
     }
 
-    public DataSource getWeatherDataSource() {
-        return dataSources.get(0);
+    public DataSource getFizzyoDataSource() {
+        return new BasicDataSource(this, "fizzyo", "Fizzyo Data");
     }
 
     @Override
     public Collection<DataSource> getDataSources() {
-        return dataSources;
+        return Arrays.asList(getFizzyoDataSource());
     }
 
     @Override
     public void start() {
-        this.scheduler.scheduleAtFixedRate(new GetWeatherData(this), 0, 1, TimeUnit.HOURS); //run every hour
+        this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
+        this.scheduler.scheduleAtFixedRate(new GetFizzyoData(this),0,1,TimeUnit.HOURS); //run every hour
     }
 
     @Override

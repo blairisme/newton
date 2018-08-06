@@ -1,4 +1,4 @@
-package org.ucl.FizzyoDataProvider.Fizzyo.model;
+package org.ucl.newton.fizzyo.model;
 /**
  * Instances of this class provide org.ucl.FizzyoDataProvider.Fizzyo data to the Newton system.
  *

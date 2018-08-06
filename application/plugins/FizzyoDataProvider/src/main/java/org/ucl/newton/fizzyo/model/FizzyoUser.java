@@ -1,23 +1,19 @@
-package org.ucl.FizzyoDataProvider.Fizzyo.model;
-
+package org.ucl.newton.fizzyo.model;
 /**
  * Instances of this class provide org.ucl.FizzyoDataProvider.Fizzyo data to the Newton system.
  *
  * @author Xiaolong Chen
  */
-public class PacientRecord {
+public class FizzyoUser {
     private String id;
-    private String userId;
     private String firstName;
     private String lastName;
+    private String role;
+    private String patientRecordId;
 
     public String getId() { return id; }
 
     public void setId(String id) { this.id = id; }
-
-    public String getUserId() { return userId; }
-
-    public void setUserId(String userId) { this.userId = userId; }
 
     public String getFirstName() { return firstName; }
 
@@ -26,4 +22,12 @@ public class PacientRecord {
     public String getLastName() { return lastName; }
 
     public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getRole() { return role; }
+
+    public void setRole(String role) { this.role = role; }
+
+    public String getPatientRecordId() { return patientRecordId; }
+
+    public void setPatientRecordId(String patientRecordId) { this.patientRecordId = patientRecordId; }
 }

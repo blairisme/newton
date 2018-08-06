@@ -1,4 +1,4 @@
-package org.ucl.DREDataPublisher;
+package org.ucl.newton.drepublisher;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;

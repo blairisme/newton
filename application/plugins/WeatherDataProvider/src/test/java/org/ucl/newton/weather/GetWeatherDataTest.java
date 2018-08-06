@@ -7,12 +7,12 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.WeatherDataProvider;
+package org.ucl.newton.weather;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.ucl.WeatherDataProvider.weather.GetWeatherData;
-import org.ucl.WeatherDataProvider.weather.WeatherDataProvider;
+import org.ucl.newton.weather.GetWeatherData;
+import org.ucl.newton.weather.WeatherDataProvider;
 import org.ucl.newton.sdk.data.DataProviderObserver;
 import org.ucl.newton.sdk.data.DataSource;
 import org.ucl.newton.sdk.data.DataStorage;

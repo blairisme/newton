@@ -7,13 +7,13 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.WeatherDataProvider.weather;
+package org.ucl.newton.weather;
 
 import com.csvreader.CsvReader;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
-import org.ucl.WeatherDataProvider.weather.model.WeatherData;
-import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
+import org.ucl.newton.weather.model.WeatherData;
+import org.ucl.newton.weather.model.WeatherProperty;
 import org.ucl.newton.common.file.FileUtils;
 import org.ucl.newton.common.network.HttpUtils;
 import org.ucl.newton.sdk.data.DataSource;

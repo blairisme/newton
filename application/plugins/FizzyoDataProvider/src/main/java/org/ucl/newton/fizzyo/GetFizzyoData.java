@@ -1,9 +1,9 @@
-package org.ucl.FizzyoDataProvider.Fizzyo;
+package org.ucl.newton.fizzyo;
 
 import com.google.gson.Gson;
-import org.ucl.FizzyoDataProvider.Fizzyo.model.*;
 import org.ucl.newton.common.file.FileUtils;
 import org.ucl.newton.common.network.HttpUtils;
+import org.ucl.newton.fizzyo.model.*;
 import org.ucl.newton.sdk.data.DataSource;
 import org.ucl.newton.sdk.data.DataStorage;
 

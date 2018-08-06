@@ -1,4 +1,4 @@
-package org.ucl.DREDataPublisher;
+package org.ucl.newton.drepublisher;
 
 import org.ucl.newton.sdk.publisher.DataPublisher;
 import org.ucl.newton.sdk.publisher.FTPConfig;
