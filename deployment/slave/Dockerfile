@@ -13,7 +13,7 @@ FROM rappdw/docker-java-python:latest
 LABEL version="1.0"
 LABEL description="Contains the Newton slave application"
 LABEL maintainer="ziad.halabi.17@ucl.ac.uk"
-MAINTAINER ziad.halabi.17@ucl.ac.uk
+MAINTAINER Ziad Halabi <ziad.halabi.17@ucl.ac.uk>
 
 ARG master_host
 ARG master_port

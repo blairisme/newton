@@ -13,6 +13,7 @@ FROM jetty:9.4
 LABEL version="1.0"
 LABEL description="Contains the Newton web application"
 LABEL maintainer="blair.butterworth.17@ucl.ac.uk"
+MAINTAINER blair.butterworth.17@ucl.ac.uk
 
 ARG database_host
 ARG database_port
