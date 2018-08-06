@@ -44,7 +44,11 @@ spec:
       - name: master-newton
         env:
           - name: jupyter_host
-            value: 'ziad' 
+            value: "ziad"
+          - name: slave_host
+            value: "slave-newton"
+          - name: slave_port
+            value: "8080" 
         image: newtonregistry.azurecr.io/blairisme/newton:latest
         ports:
         - containerPort: 9090
