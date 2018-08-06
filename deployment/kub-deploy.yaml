@@ -42,6 +42,9 @@ spec:
         emptyDir: {}
       containers:
       - name: master-newton
+        envFrom:
+          - configMapRef:
+            name: my-env-var
         image: newtonregistry.azurecr.io/blairisme/newton:latest
         ports:
         - containerPort: 9090
@@ -106,3 +109,11 @@ spec:
   - port: 8080
   selector:
     app: slave-newton
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-env-var
+data:
+  slave_host: slave-newton
+  slave_port: 8080

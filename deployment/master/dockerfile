@@ -17,6 +17,14 @@ LABEL maintainer="blair.butterworth.17@ucl.ac.uk"
 
 
 
+ARG slave_host
+ARG slave_port
+
+
+ENV newton_slave_host $slave_host
+ENV newton_slave_port $slave_port
+
+
 COPY ./libs/master.war /var/lib/jetty/webapps/ROOT.war
 EXPOSE 9090
 
