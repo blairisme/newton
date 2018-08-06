@@ -45,15 +45,11 @@ public class StorageConfiguration
     public StorageConfiguration() {
     }
 
-    public StorageConfiguration(int id, String storageTypeAsString, String storageLocation, String nameOfInitialScript) {
+    public StorageConfiguration(int id, StorageType type, String location, String script) {
         this.id = id;
-        if(storageTypeAsString.equals("Newton")) {
-            storageType = StorageType.Newton;
-        } else {
-            //throw new IllegalAccessException(storageTypeAsString);
-        }
-        this.storageLocation = storageLocation;
-        this.nameOfInitialScript = nameOfInitialScript;
+        this.storageType = type;
+        this.storageLocation = location;
+        this.nameOfInitialScript = script;
     }
 
     public int getId() {

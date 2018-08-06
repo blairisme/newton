@@ -48,8 +48,6 @@ public class PublisherService  {
                 String configStr = FileUtils.readFile(file);
                 Gson gson = new Gson();
                 publisher.setConfig(gson.fromJson(configStr, configClass));
-            }else {
-                //should throw exception that config file not found
             }
             publishers.add(publisher);
         }

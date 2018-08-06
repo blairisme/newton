@@ -198,7 +198,7 @@ public class ExperimentController
 
     private StorageConfiguration createStorageConfiguration(ExperimentDto experimentDto, String experimentId) {
         String location = experimentStorage.getRepositoryPath(experimentId).toString();
-        String type = experimentDto.getSelectedStorageValue();
+        StorageType type = StorageType.Newton;
         String script = experimentDto.getSelectedTypeValue().equals("newton-jupyter") ? "main.ipynb" : "main.py";
         return new StorageConfiguration(0, type, location, script);
     }
