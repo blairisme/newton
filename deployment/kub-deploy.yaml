@@ -43,8 +43,6 @@ spec:
       containers:
       - name: master-newton
         env:
-          - name: jupyter_host
-            value: "ziad"
           - name: slave_host
             value: "slave-newton"
           - name: slave_port

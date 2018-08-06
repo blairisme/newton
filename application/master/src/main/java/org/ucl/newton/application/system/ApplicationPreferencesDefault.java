@@ -44,7 +44,7 @@ public class ApplicationPreferencesDefault
     }
 
     public String getJupyterHost() {
-        return "localhostgg";
+        return "65.52.76.99";
     }
     
     public String getJupyterPort() {
