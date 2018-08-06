@@ -60,7 +60,7 @@ public class ApplicationPreferencesDefault
     }
 
     public String getSlaveHost() {
-        return "slave-newton";
+        return "localhost";
     }
 
     public String getSlavePort() {
