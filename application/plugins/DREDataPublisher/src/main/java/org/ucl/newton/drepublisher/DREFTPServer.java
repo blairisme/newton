@@ -22,9 +22,11 @@ public class DREFTPServer extends BasicFTPServer {
         this.hostName = config.getHostName();
         this.port = config.getPort();
     }
+
     public void setFTPClient(FTPClient ftpClient){
         this.ftpClient = ftpClient;
     }
+    
     private void initFTPClient() {
         setFTPClient(new FTPClient());
     }
@@ -82,19 +84,14 @@ public class DREFTPServer extends BasicFTPServer {
         if(ftpClient==null){
             initFTPClient();
         }
-        if (connect()){
-            if (open()){
-                try {
-                    InputStream input = new FileInputStream(file);
-                    ftpClient.storeFile(file.getName(),input);
-                    close();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+        if (connect() && open()){
+            try {
+                InputStream input = new FileInputStream(file);
+                ftpClient.storeFile(file.getName(),input);
+                close();
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
     }
-
-
-
 }

@@ -13,7 +13,7 @@ import org.ucl.newton.sdk.data.BasicDataProvider;
 import org.ucl.newton.sdk.data.BasicDataSource;
 import org.ucl.newton.sdk.data.DataSource;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,8 +27,11 @@ import java.util.concurrent.TimeUnit;
 public class FizzyoDataProvider extends BasicDataProvider
 {
     private ScheduledExecutorService scheduler;
+    private Collection<DataSource> dataSources;
 
     public FizzyoDataProvider(){
+        dataSources = new ArrayList<>();
+        dataSources.add(new BasicDataSource(this, "fizzyo", "Fizzyo Data"));
     }
 
     @Override
@@ -47,12 +50,12 @@ public class FizzyoDataProvider extends BasicDataProvider
     }
 
     public DataSource getFizzyoDataSource() {
-        return new BasicDataSource(this, "fizzyo", "Fizzyo Data");
+        return dataSources.iterator().next();
     }
 
     @Override
     public Collection<DataSource> getDataSources() {
-        return Arrays.asList(getFizzyoDataSource());
+        return dataSources;
     }
 
     @Override

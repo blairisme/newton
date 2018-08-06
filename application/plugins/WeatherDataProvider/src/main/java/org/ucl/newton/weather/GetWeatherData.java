@@ -98,7 +98,7 @@ public class GetWeatherData implements Runnable {
         String location = locationBuilder(property.getCity(),property.getCountry());    //location format q=city(,country)
         params.put("q",location);
         String date = property.getDate();
-        if (date !=null && date != "")
+        if (!Strings.isNullOrEmpty(date))
             params.put("date",date);
         String data = HttpUtils.doGet(url, header, params);
         return data;

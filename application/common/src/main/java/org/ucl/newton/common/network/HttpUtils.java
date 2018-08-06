@@ -31,11 +31,11 @@ public class HttpUtils
             TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
                 @Override
                 public void checkClientTrusted(X509Certificate[] x509Certificates, String s){
-
+                    // Trust all certificates
                 }
                 @Override
                 public void checkServerTrusted(X509Certificate[] x509Certificates, String s){
-
+                    // Trust all servers
                 }
                 @Override
                 public X509Certificate[] getAcceptedIssuers() {

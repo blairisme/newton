@@ -11,6 +11,7 @@ package org.ucl.newton.common.archive;
 
 import org.apache.commons.io.IOUtils;
 import org.ucl.newton.common.file.FileUtils;
+import org.ucl.newton.common.file.IoFunction;
 import org.ucl.newton.common.file.PathUtils;
 
 import java.io.*;
@@ -18,7 +19,6 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Function;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -63,7 +63,7 @@ public class ZipUtils
         }
     }
 
-    public static Collection<Path> unzip(InputStream input, Function<Path, OutputStream> outputFactory) throws IOException {
+    public static Collection<Path> unzip(InputStream input, IoFunction<Path, OutputStream> outputFactory) throws IOException {
         Collection<Path> unzippedPaths = new ArrayList<>();
 
         try (ZipInputStream zipStream = new ZipInputStream(input)) {
@@ -74,7 +74,7 @@ public class ZipUtils
                     Path entryPath = Paths.get(entry.getName());
                     unzippedPaths.add(entryPath);
 
-                    try (OutputStream outputStream = outputFactory.apply(entryPath)) {
+                    try (OutputStream outputStream = outputFactory.get(entryPath)) {
                         IOUtils.copy(zipStream, outputStream);
                     }
                 }
