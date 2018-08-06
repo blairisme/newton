@@ -10,18 +10,18 @@
 package org.ucl.WeatherDataProvider.weather;
 
 import com.csvreader.CsvReader;
-import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
-import org.ucl.WeatherDataProvider.HttpUtils;
 import org.ucl.WeatherDataProvider.weather.model.WeatherData;
 import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
+import org.ucl.newton.common.file.FileUtils;
+
+import org.ucl.newton.common.network.HttpUtils;
 import org.ucl.newton.sdk.data.DataSource;
 import org.ucl.newton.sdk.data.DataStorage;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -131,19 +131,13 @@ public class GetWeatherData implements Runnable {
     private void writeToOutput(List<List<String>> list){
         DataStorage storage = provider.getStorage();
         DataSource dataSource = provider.getDataSources().iterator().next();
-
-        try (OutputStream output = storage.getOutputStream(dataSource)) {
-            if (output != null) {
-                CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("utf-8"));
-                for (List<String> record : list) {
-                    csvWriter.writeRecord(record.toArray(new String[record.size()]));
-                }
-                csvWriter.close();
-            }
-        }
-        catch (IOException e){
+        try {
+            OutputStream output = storage.getOutputStream(dataSource);
+            FileUtils.writeCSV(output,list);
+        }catch (IOException e){
             e.printStackTrace();
         }
+
     }
     private String getDataStr(String data){
         String weather = new JsonParser().parse(data).getAsJsonObject()

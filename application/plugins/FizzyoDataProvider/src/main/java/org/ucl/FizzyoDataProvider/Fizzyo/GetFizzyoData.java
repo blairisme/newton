@@ -1,16 +1,15 @@
 package org.ucl.FizzyoDataProvider.Fizzyo;
 
-import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
-import org.ucl.FizzyoDataProvider.FileUtils;
 import org.ucl.FizzyoDataProvider.Fizzyo.model.*;
-import org.ucl.FizzyoDataProvider.HttpUtils;
+import org.ucl.newton.common.file.FileUtils;
+import org.ucl.newton.common.network.HttpUtils;
 import org.ucl.newton.sdk.data.DataSource;
 import org.ucl.newton.sdk.data.DataStorage;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -124,7 +123,7 @@ public class GetFizzyoData implements Runnable {
     private String getAuthCode() {
         Path path = Paths.get(System.getProperty("user.home")).resolve(".newton");
         path = path.resolve("Fizzyo").resolve("authCode");
-        String authCode = FileUtils.readFile(path);
+        String authCode = FileUtils.readFile(path.toFile());
         return authCode;
     }
 
@@ -143,17 +142,11 @@ public class GetFizzyoData implements Runnable {
         return content;
     }
 
-    private void writeToOutput(List<List<String>> listOfRecords) {
+    private void writeToOutput(List<List<String>> list) {
         DataStorage storage = provider.getStorage();
         DataSource dataSource = provider.getDataSources().iterator().next();
         try (OutputStream output = storage.getOutputStream(dataSource)){
-            if (output != null) {
-                CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("utf-8"));
-                for (List<String> record : listOfRecords) {
-                    csvWriter.writeRecord(record.toArray(new String[record.size()]));
-                }
-                csvWriter.close();
-            }
+            FileUtils.writeCSV(output, list);
         }
         catch (IOException e){
             e.printStackTrace();
