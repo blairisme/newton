@@ -9,7 +9,6 @@ import org.ucl.newton.sdk.data.DataStorage;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -35,7 +34,6 @@ public class GetFizzyoData implements Runnable {
     @Override
     public void run() {
         fizzyoToken = new FizzyoToken();
-
         String accessToken = "9w3Bk61YQdJ6VrXR5vJN592dOGpJZn4W";
         fizzyoToken.setAccessToken(accessToken);
         Records records = getPacientRecords();
@@ -44,9 +42,7 @@ public class GetFizzyoData implements Runnable {
         List<List<String>> listOfRecords = new ArrayList<>();
         listOfRecords.add(getHeader());
         for(PacientRecord record : records.getRecords()){
-
             String patientRecordId = record.getId();
-
             Pressures pressures = getPressures(patientRecordId);
 
             for (PressureRecord pressureRecord : pressures.getPressure()){
@@ -54,7 +50,6 @@ public class GetFizzyoData implements Runnable {
                 PressureRaw pressureRaw = getPressureRaw(pressureRawId);
                 listOfRecords.add(getContent(pressureRecord,pressureRaw.getPressure()));
             }
-
         }
         if(!listOfRecords.isEmpty()) {
             writeToOutput(listOfRecords);

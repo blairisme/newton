@@ -1,7 +1,7 @@
 package org.ucl.DREDataPublisher;
 
-import org.ucl.newton.sdk.publisher.FTPConfig;
 import org.ucl.newton.sdk.publisher.DataPublisher;
+import org.ucl.newton.sdk.publisher.FTPConfig;
 
 /**
  * Instances of this class publish data into DRE.

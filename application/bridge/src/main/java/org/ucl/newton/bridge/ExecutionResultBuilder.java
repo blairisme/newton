@@ -13,8 +13,6 @@ import org.apache.commons.lang3.Validate;
 
 import java.net.URL;
 import java.time.Duration;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 
 /**

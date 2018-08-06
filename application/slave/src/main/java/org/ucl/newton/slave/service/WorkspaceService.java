@@ -10,7 +10,6 @@
 package org.ucl.newton.slave.service;
 
 import com.google.common.base.Stopwatch;
-import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.bridge.ExecutionRequest;
 import org.ucl.newton.bridge.ExecutionResult;

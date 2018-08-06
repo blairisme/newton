@@ -10,10 +10,11 @@
 package org.ucl.WeatherDataProvider.weather;
 
 import org.ucl.newton.common.concurrent.DaemonThreadFactory;
-import org.ucl.newton.sdk.data.*;
+import org.ucl.newton.sdk.data.BasicDataProvider;
+import org.ucl.newton.sdk.data.BasicDataSource;
+import org.ucl.newton.sdk.data.DataSource;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Executors;

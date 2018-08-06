@@ -15,7 +15,6 @@ import com.google.gson.JsonParser;
 import org.ucl.WeatherDataProvider.weather.model.WeatherData;
 import org.ucl.WeatherDataProvider.weather.model.WeatherProperty;
 import org.ucl.newton.common.file.FileUtils;
-
 import org.ucl.newton.common.network.HttpUtils;
 import org.ucl.newton.sdk.data.DataSource;
 import org.ucl.newton.sdk.data.DataStorage;
@@ -81,13 +80,10 @@ public class GetWeatherData implements Runnable {
                 e.printStackTrace();
             }
         }
-
-        //set default weather list
         if (weatherList.isEmpty()){
             WeatherProperty property = new WeatherProperty("london","united kingdom", "2018-07-04","0252e94bd710446c908123539182906");
             weatherList.add(property);
         }
-
         return  weatherList;
     }
 

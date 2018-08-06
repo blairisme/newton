@@ -13,10 +13,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
-import java.util.Collection;
 import java.util.Date;
 
 /**

@@ -3,6 +3,11 @@ package org.ucl.FizzyoDataProvider.Fizzyo.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a record type that stores pressure information.
+ *
+ * @author Xiaolong Chen
+ */
 public class PressureRecord {
     private int goodBreaths;
     private int breaths;

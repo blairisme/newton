@@ -2,7 +2,10 @@ package org.ucl.newton.integration.api;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.ucl.newton.common.file.SystemPaths;
 
 import java.io.*;

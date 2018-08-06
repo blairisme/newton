@@ -1,7 +1,16 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.sdk.publisher;
 
 /**
- * Instances of this class publish data into DRE.
+ * Instances of this class publish data into an FTP server.
  *
  * @author Xiaolong Chen
  */
