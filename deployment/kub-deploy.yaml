@@ -43,7 +43,7 @@ spec:
       containers:
       - name: master-newton
         envFrom:
-          - configMapRef:
+        - configMapRef:
             name: my-env-var
         image: newtonregistry.azurecr.io/blairisme/newton:latest
         ports:
@@ -93,6 +93,9 @@ spec:
     spec:
       containers:
       - name: slave-newton
+        envFrom:
+        - configMapRef:
+            name: my-env-var
         image: newtonregistry.azurecr.io/blairisme/newton-slave:latest
         ports:
         - containerPort: 8080
@@ -115,5 +118,13 @@ kind: ConfigMap
 metadata:
   name: my-env-var
 data:
-  slave_host: slave-newton
-  slave_port: 8080
+  slave_host: 'slave-newton'
+  slave_port: '8080'
+  database_host: 'database-newton'
+  database_port: '3306'
+  database_user: 'root'
+  database_password: 'Newton*123'
+  jupyter_host: '65.52.76.99'
+  jupyter_port: '8000'
+  master_host: 'master-newton'
+  master_port: '9090'
