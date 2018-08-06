@@ -50,6 +50,7 @@ public class FileUtils
             throw new IOException("Unable to create new file");
         }
     }
+
     public static String readFile(File file){
         String ret = null;
         if(!file.exists())

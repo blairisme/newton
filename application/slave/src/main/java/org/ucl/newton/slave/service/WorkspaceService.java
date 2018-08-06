@@ -10,6 +10,7 @@
 package org.ucl.newton.slave.service;
 
 import com.google.common.base.Stopwatch;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.bridge.ExecutionRequest;
 import org.ucl.newton.bridge.ExecutionResult;
@@ -19,6 +20,7 @@ import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.common.lang.Strings;
 import org.ucl.newton.common.network.UrlUtils;
 import org.ucl.newton.slave.application.ApplicationPreferences;
+import org.ucl.newton.slave.application.ApplicationStorage;
 import org.ucl.newton.slave.application.ApplicationUrls;
 import org.ucl.newton.slave.engine.RequestContext;
 import org.ucl.newton.slave.engine.RequestLogger;
@@ -44,13 +46,26 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class WorkspaceService
 {
-    private ApplicationPreferences preferences;
     private ApplicationUrls addresses;
+    private ApplicationStorage storage;
+    private ApplicationPreferences preferences;
 
     @Inject
-    public WorkspaceService(ApplicationPreferences preferences, ApplicationUrls addresses) {
+    public WorkspaceService(
+        ApplicationUrls addresses,
+        ApplicationStorage storage,
+        ApplicationPreferences preferences)
+    {
         this.preferences = preferences;
         this.addresses = addresses;
+        this.storage = storage;
+    }
+
+    public RequestContext createWorkspace(ExecutionRequest request) {
+        RequestWorkspace workspace = new RequestWorkspace(storage.getWorkspaceDirectory(), request);
+        RequestLogger logger = new RequestLogger(workspace);
+        Stopwatch timer = Stopwatch.createStarted();
+        return new RequestContext(workspace, logger, timer);
     }
 
     public ExecutionResult collateResults(ExecutionRequest request, RequestContext context) throws IOException {

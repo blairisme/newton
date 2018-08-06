@@ -50,7 +50,7 @@
             <div th:if="${executing == true}" class="message_container">
                 <img src="/resources/images/common/science_ing.gif" alt="Conducting experiment..." width="300">
                 <p>Running experiment...</p>
-                <p>Time Elasped: 1:32</p>
+                <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/cancel'}" role="button">Cancel</a>
             </div>
 
             <!-- Experiment results -->

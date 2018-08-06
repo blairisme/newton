@@ -108,7 +108,6 @@ gretty {
     contextPath = '/'
     httpPort = 9090
     jvmArgs = ['-Dnewton.profile=' + getProperty('run.profile')]
-
     jacocoEnabled = false
 }
 

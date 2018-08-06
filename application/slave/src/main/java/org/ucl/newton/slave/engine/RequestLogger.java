@@ -50,7 +50,7 @@ public class RequestLogger
         FileAppender fileAppender = new FileAppender();
         fileAppender.setContext(context);
         fileAppender.setEncoder(getEncoder(context));
-        fileAppender.setAppend(true);
+        fileAppender.setAppend(false);
         fileAppender.setFile(path.toString());
         fileAppender.start();
         return fileAppender;
