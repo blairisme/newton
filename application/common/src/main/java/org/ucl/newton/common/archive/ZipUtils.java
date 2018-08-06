@@ -30,6 +30,10 @@ import java.util.zip.ZipOutputStream;
  */
 public class ZipUtils
 {
+    private ZipUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     public static void unzip(Path zipPath, Path destinationPath) throws IOException {
         unzip(zipPath.toFile(), destinationPath.toFile());
     }

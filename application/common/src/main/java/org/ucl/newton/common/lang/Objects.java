@@ -20,6 +20,10 @@ import java.util.Collection;
  */
 public class Objects
 {
+    private Objects() {
+        throw new UnsupportedOperationException();
+    }
+
     public static <T> Collection<T> ensureNotNull(Collection<T> values) {
         return ensureNotNull(values, new ArrayList<T>());
     }

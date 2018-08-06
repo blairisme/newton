@@ -17,6 +17,10 @@ package org.ucl.newton.engine;
  */
 public class ExecutionPipelineSequence
 {
+    private ExecutionPipelineSequence() {
+        throw new UnsupportedOperationException();
+    }
+
     public static ExecutionPipeline from(ExecutionPipelineObserver observer, ExecutionPipelineElement ... elements) {
         if (elements != null && elements.length > 0) {
             ExecutionPipelineElement next = null;

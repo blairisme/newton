@@ -20,6 +20,10 @@ import java.util.Collection;
  */
 public class RestStatusStrategies
 {
+    private RestStatusStrategies() {
+        throw new UnsupportedOperationException();
+    }
+
     public static RestStatusStrategy throwOnFailure() {
         return (RestResponse response) -> {
             int code = response.getStatusCode();

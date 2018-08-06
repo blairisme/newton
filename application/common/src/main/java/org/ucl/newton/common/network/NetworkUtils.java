@@ -20,6 +20,10 @@ import java.net.UnknownHostException;
  */
 public class NetworkUtils
 {
+    private NetworkUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     public static String getIPAddress() throws UnknownHostException {
         return InetAddress.getLocalHost().getHostAddress();
     }

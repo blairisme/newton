@@ -27,6 +27,10 @@ import java.util.List;
  */
 public class FileUtils
 {
+    private FileUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     public static Collection<File> findChildren(File directory, String pattern) {
         return findChildren(directory, Arrays.asList(pattern));
     }

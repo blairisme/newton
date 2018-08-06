@@ -1,6 +1,5 @@
 package org.ucl.newton.common.network;
 
-
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
@@ -15,12 +14,18 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.X509Certificate;
 import java.util.Map;
+
 /**
  * Instances of this class provide utils for http operations.
  *
  * @author Xiaolong Chen
  */
-public class HttpUtils {
+public class HttpUtils
+{
+    private HttpUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     static {
         try {
             TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {

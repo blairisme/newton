@@ -23,6 +23,10 @@ import java.nio.file.Path;
  */
 public class UrlUtils
 {
+    private UrlUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     public static URL createUrl(URL base, Path path) throws MalformedURLException {
         try {
             URIBuilder builder = new URIBuilder(base.toURI());

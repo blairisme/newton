@@ -20,6 +20,10 @@ import java.util.List;
  */
 public class CollectionUtils
 {
+    private CollectionUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     public static <T> List<T> append(List<T> list, T value) {
         List<T> result = new ArrayList<>(list);
         result.add(value);

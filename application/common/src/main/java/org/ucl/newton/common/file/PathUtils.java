@@ -28,6 +28,10 @@ import java.util.List;
  */
 public class PathUtils
 {
+    private PathUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     public static String appendTrailingSeparator(String path) {
         if (! path.endsWith(File.separator)) {
             return path + File.separator;

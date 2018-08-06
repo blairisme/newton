@@ -13,7 +13,6 @@ import org.apache.commons.lang3.SystemUtils;
 import org.ucl.newton.common.process.platform.UnixCommandExecutor;
 import org.ucl.newton.common.process.platform.WindowsCommandExecutor;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 
@@ -25,10 +24,6 @@ import javax.inject.Provider;
 @Named
 public class CommandExecutorFactory implements Provider<CommandExecutor>
 {
-    @Inject
-    public CommandExecutorFactory(){
-    }
-
     @Override
     public CommandExecutor get() {
         if (SystemUtils.IS_OS_WINDOWS) {

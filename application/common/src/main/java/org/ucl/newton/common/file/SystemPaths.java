@@ -19,6 +19,10 @@ import java.nio.file.Paths;
  */
 public class SystemPaths
 {
+    private SystemPaths() {
+        throw new UnsupportedOperationException();
+    }
+
     public static Path getTempDirectory() {
         String tmpdir = System.getProperty("java.io.tmpdir");
         return Paths.get(tmpdir);
@@ -35,5 +39,4 @@ public class SystemPaths
         String userDirectory = System.getProperty("user.home");
         return Paths.get(userDirectory);
     }
-
 }

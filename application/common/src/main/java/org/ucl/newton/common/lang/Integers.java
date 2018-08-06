@@ -20,6 +20,10 @@ import java.util.Collection;
  */
 public class Integers
 {
+    private Integers() {
+        throw new UnsupportedOperationException();
+    }
+
     public static Collection<Integer> stringToInt(Collection<String> values){
         Collection<Integer> result = new ArrayList<>();
         for (String value: values) {

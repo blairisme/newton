@@ -33,6 +33,9 @@ import javax.inject.Inject;
 @SuppressWarnings("unused")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 {
+    @Inject
+    protected AuthenticationService authenticationService;
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -78,9 +81,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-
-    @Inject
-    protected AuthenticationService authenticationService;
 
     @Override
     protected UserDetailsService userDetailsService() {

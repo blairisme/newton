@@ -21,9 +21,6 @@ public class ExecutionFailureBuilder
     private String version;
     private String error;
 
-    public ExecutionFailureBuilder() {
-    }
-
     public ExecutionFailureBuilder forRequest(ExecutionRequest request) {
         this.id = request.getId();
         this.experiment = request.getExperiment();

@@ -16,6 +16,10 @@ public class Identifier
 {
     private static final int MAX_LENGTH = 100;
 
+    private Identifier() {
+        throw new UnsupportedOperationException();
+    }
+
     public static String create(String name) {
         try {
             String result = name;
