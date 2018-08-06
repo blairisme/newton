@@ -75,11 +75,11 @@ public class Weather {
         this.mintempC = mintempC;
     }
 
-    public String getTotalSnow_cm() {
+    public String getTotalSnowCm() {
         return totalSnow_cm;
     }
 
-    public void setTotalSnow_cm(String totalSnow_cm) {
+    public void setTotalSnowCm(String totalSnow_cm) {
         this.totalSnow_cm = totalSnow_cm;
     }
 

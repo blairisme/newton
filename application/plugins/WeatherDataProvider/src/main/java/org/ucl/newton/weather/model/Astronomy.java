@@ -68,19 +68,19 @@ public class Astronomy {
         this.moonset = moonset;
     }
 
-    public String getMoon_phase() {
+    public String getMoonPhase() {
         return moon_phase;
     }
 
-    public void setMoon_phase(String moon_phase) {
+    public void setMoonPhase(String moon_phase) {
         this.moon_phase = moon_phase;
     }
 
-    public String getMoon_illumination() {
+    public String getMoonIllumination() {
         return moon_illumination;
     }
 
-    public void setMoon_illumination(String moon_illumination) {
+    public void setMoonIllumination(String moon_illumination) {
         this.moon_illumination = moon_illumination;
     }
 }
