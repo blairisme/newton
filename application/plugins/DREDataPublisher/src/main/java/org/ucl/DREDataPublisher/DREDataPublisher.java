@@ -9,7 +9,7 @@ import org.ucl.newton.sdk.publisher.DataPublisher;
  * @author Xiaolong Chen
  */
 public class DREDataPublisher implements DataPublisher {
-    FTPConfig config;
+    private FTPConfig config;
     @Override
     public void start(String filePath) {
         if (config==null)

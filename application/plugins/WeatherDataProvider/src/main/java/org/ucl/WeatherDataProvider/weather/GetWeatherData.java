@@ -68,16 +68,18 @@ public class GetWeatherData implements Runnable {
         List<WeatherProperty> weatherList = new ArrayList<>();
         Path path = Paths.get(System.getProperty("user.home")).resolve(".newton");
         path = path.resolve("weather").resolve("setting");
-        try {
-            CsvReader reader = new CsvReader(path.toString(),',');
-            reader.readHeaders();
-            while(reader.readRecord()) {
-                WeatherProperty property= new WeatherProperty(reader.getValues());
-                weatherList.add(property);
+        if(path.toFile().exists()) {
+            try {
+                CsvReader reader = new CsvReader(path.toString(), ',');
+                reader.readHeaders();
+                while (reader.readRecord()) {
+                    WeatherProperty property = new WeatherProperty(reader.getValues());
+                    weatherList.add(property);
+                }
+                reader.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            reader.close();
-        }catch (Exception e){
-            e.printStackTrace();
         }
 
         //set default weather list

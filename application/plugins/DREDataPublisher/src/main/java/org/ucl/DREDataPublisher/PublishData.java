@@ -9,8 +9,8 @@ import java.nio.file.Paths;
  * @author Xiaolong Chen
  */
 public class PublishData implements Runnable{
-    DREFTPServer ftpServer;
-    String filePath;
+    private DREFTPServer ftpServer;
+    private String filePath;
     public PublishData(DREFTPServer ftpServer, String filePath){
         this.ftpServer = ftpServer;
         this.filePath = filePath;
