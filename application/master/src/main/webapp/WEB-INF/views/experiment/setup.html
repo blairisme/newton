@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>Newton - Experiment Setup</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="icon" href="resources/images/common/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/data_tables.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/views/experiment/overview.css"/>
+
+    <script src="/resources/scripts/libraries/jquery.js"></script>
+    <script src="/resources/scripts/libraries/popper.js"></script>
+    <script src="/resources/scripts/libraries/bootstrap.js"></script>
+    <script src="/resources/scripts/libraries/data_tables_jquery.js"></script>
+    <script src="/resources/scripts/libraries/data_tables_bootstrap.js"></script>
+
+</head>
+<body>
+    <!-- Navigation -->
+    <div th:replace="fragments/header :: header"></div>
+
+    <!-- Page Content -->
+    <div class="container-fluid">
+
+        <!-- Breadcrumbs -->
+        <h1 class="page-title" >
+            <a  href="/projects"> Projects</a>
+            <a  href="#" th:href="@{'/project/' + ${project.identifier}}" th:text="@{'/ '+${project.name}}" > / project name</a>
+            <a  th:text="@{'/ '+${experiment.name}}" > / project name</a>
+        </h1>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item active">
+                <a class="nav-link" href="#" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier}}">Overview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Setup</a>
+            </li>
+        </ul>
+
+
+        <p>temp text</p>
+    </div>
+
+</body>
+</html>

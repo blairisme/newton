@@ -138,6 +138,19 @@ public class ExperimentController
         return "redirect:/project/" + projectIdentifier + "/" + experimentIdentifier;
     }
 
+    @GetMapping(value = "/project/{project}/{experiment}/setup")
+    public String experimentSetup(
+            @PathVariable("project") String projectIdentifier,
+            @PathVariable("experiment") String experimentIdentifier,
+            ModelMap model)
+    {
+        model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("project", projectService.getProjectByIdentifier(projectIdentifier, false));
+        model.addAttribute("experiment", experimentService.getExperimentByIdentifier(experimentIdentifier));
+        return "experiment/setup";
+    }
+
+
     @GetMapping(value = "/project/{project}/{experiment}/edit")
     public String edit(
         @PathVariable("project") String project,
