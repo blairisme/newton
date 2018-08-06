@@ -10,15 +10,12 @@
 package org.ucl.newton.ui;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.Validate;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.common.identifier.Identifier;
 import org.ucl.newton.engine.ExecutionEngine;
 import org.ucl.newton.framework.*;
@@ -32,9 +29,7 @@ import org.ucl.newton.service.user.UserService;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**

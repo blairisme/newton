@@ -16,9 +16,7 @@ import org.ucl.newton.framework.ExperimentConfiguration;
 import org.ucl.newton.framework.ExperimentDataSource;
 import org.ucl.newton.framework.StorageConfiguration;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.UUID;
 
 /**
  * Instances of this class build {@link ExecutionRequest ExecutionRequests}

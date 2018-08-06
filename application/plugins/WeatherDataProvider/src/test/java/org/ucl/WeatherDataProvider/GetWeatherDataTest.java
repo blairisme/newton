@@ -41,7 +41,7 @@ public class GetWeatherDataTest
         GetWeatherData getWeatherData = new GetWeatherData(provider);
         getWeatherData.run();
 
-        Mockito.verify(observer, times(1)).dataUpdated();
-        Mockito.verify(storage, times(1)).getOutputStream(any(DataSource.class));
+        Mockito.verify(observer, times(1)).dataUpdated(provider.getWeatherDataSource());
+        Mockito.verify(storage, times(1)).getOutputStream(provider.getWeatherDataSource());
     }
 }

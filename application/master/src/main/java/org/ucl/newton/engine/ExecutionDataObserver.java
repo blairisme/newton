@@ -9,12 +9,18 @@
 
 package org.ucl.newton.engine;
 
+import org.ucl.newton.framework.Experiment;
+import org.ucl.newton.framework.ExperimentConfiguration;
+import org.ucl.newton.framework.ExperimentTriggerType;
 import org.ucl.newton.sdk.data.DataProviderObserver;
+import org.ucl.newton.sdk.data.DataSource;
 import org.ucl.newton.service.data.DataService;
 import org.ucl.newton.service.experiment.ExperimentService;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Monitors data sources provided by data providers, running experiments in
@@ -42,12 +48,17 @@ public class ExecutionDataObserver implements ExecutionTrigger, DataProviderObse
     }
 
     @Override
-    public void dataUpdated() {
-        throw new UnsupportedOperationException();
+    public void dataUpdated(DataSource dataSource) {
+        if (executionController != null) {
+            Collection<Experiment> experiments = experimentService.getExperimentsByDataSource(dataSource);
 
-//        Collection<Experiment> experiments = experimentService.getExperimentsByDataSource(dataSource);
-//        for (Experiment experiment: experiments) {
-//            executionController.startExecution(experiment);
-//        }
+            for (Experiment experiment : experiments) {
+                ExperimentConfiguration configuration = experiment.getConfiguration();
+
+                if (Objects.equals(configuration.getTrigger(), ExperimentTriggerType.Onchange)) {
+                    executionController.startExecution(experiment);
+                }
+            }
+        }
     }
 }

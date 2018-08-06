@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Starts and stop experiment execution.
+ * Starts and stops {@link Experiment} execution.
  *
  * @author Blair Butterworth
  */
@@ -27,15 +27,19 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ExecutionEngine implements ExecutionController, ExecutionPipelineObserver
 {
     private ExecutionPipeline pipeline;
+    private ExecutionTrigger trigger;
     private Map<String, ExecutionTask> tasks;
 
     @Inject
     public ExecutionEngine(
         ExecutionRemote executeRemotely,
         ExecutionPersistence persistResults,
-        ExecutionPublication publishResults)
+        ExecutionPublication publishResults,
+        ExecutionDataObserver dataObserver)
     {
         tasks = new ConcurrentHashMap<>();
+        trigger = dataObserver;
+        trigger.setController(this);
         pipeline = ExecutionPipelineSequence.from(
             this,
             executeRemotely,

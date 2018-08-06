@@ -36,9 +36,9 @@ public abstract class BasicDataProvider implements DataProvider
         observers.remove(observer);
     }
 
-    public void notifyDataUpdated() {
+    public void notifyDataUpdated(DataSource dataSource) {
         for (DataProviderObserver observer: observers){
-            observer.dataUpdated();
+            observer.dataUpdated(dataSource);
         }
     }
 

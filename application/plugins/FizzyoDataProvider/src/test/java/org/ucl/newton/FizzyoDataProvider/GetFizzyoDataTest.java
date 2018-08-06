@@ -39,7 +39,7 @@ public class GetFizzyoDataTest {
         GetFizzyoData getWeatherData = new GetFizzyoData(dataProvider);
         getWeatherData.run();
 
-        Mockito.verify(observer, times(1)).dataUpdated();
+        Mockito.verify(observer, times(1)).dataUpdated(Mockito.mock(DataSource.class));
         Mockito.verify(storageProvider, times(1)).getOutputStream(any(DataSource.class));
     }
 }

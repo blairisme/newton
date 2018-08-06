@@ -55,7 +55,7 @@ public class GetWeatherData implements Runnable {
         }
         if(!listOfRecord.isEmpty()) {
             writeToOutput(listOfRecord);
-            provider.notifyDataUpdated();
+            provider.notifyDataUpdated(provider.getWeatherDataSource());
         }
     }
 
@@ -130,7 +130,7 @@ public class GetWeatherData implements Runnable {
     }
     private void writeToOutput(List<List<String>> list){
         DataStorage storage = provider.getStorage();
-        DataSource dataSource = provider.getDataSources().iterator().next();
+        DataSource dataSource = provider.getWeatherDataSource();
         try {
             OutputStream output = storage.getOutputStream(dataSource);
             FileUtils.writeCSV(output,list);

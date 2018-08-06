@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Instances of this class provide data from Fizzyo..
+ * Instances of this class provide data from Fizzyo.
  *
  * @author Xiaolong Chen
  */
@@ -31,7 +31,6 @@ public class GetFizzyoData implements Runnable {
     public GetFizzyoData(FizzyoDataProvider provider){
         this.provider = provider;
     }
-
 
     @Override
     public void run() {
@@ -59,7 +58,7 @@ public class GetFizzyoData implements Runnable {
         }
         if(!listOfRecords.isEmpty()) {
             writeToOutput(listOfRecords);
-            provider.notifyDataUpdated();
+            provider.notifyDataUpdated(provider.getFizzyoDataSource());
         }
     }
 
@@ -144,7 +143,7 @@ public class GetFizzyoData implements Runnable {
 
     private void writeToOutput(List<List<String>> list) {
         DataStorage storage = provider.getStorage();
-        DataSource dataSource = provider.getDataSources().iterator().next();
+        DataSource dataSource = provider.getFizzyoDataSource();
         try (OutputStream output = storage.getOutputStream(dataSource)){
             FileUtils.writeCSV(output, list);
         }

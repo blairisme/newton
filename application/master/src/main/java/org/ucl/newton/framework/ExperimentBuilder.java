@@ -11,8 +11,6 @@ package org.ucl.newton.framework;
 
 import org.apache.commons.lang3.Validate;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 
 /**

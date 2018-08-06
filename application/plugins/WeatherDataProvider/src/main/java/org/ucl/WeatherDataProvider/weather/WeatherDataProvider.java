@@ -12,8 +12,10 @@ package org.ucl.WeatherDataProvider.weather;
 import org.ucl.newton.common.concurrent.DaemonThreadFactory;
 import org.ucl.newton.sdk.data.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -26,9 +28,13 @@ import java.util.concurrent.TimeUnit;
  */
 public class WeatherDataProvider extends BasicDataProvider
 {
+    private List<DataSource> dataSources;
     private ScheduledExecutorService scheduler;
 
     public WeatherDataProvider(){
+        this.dataSources = new ArrayList<>();
+        this.dataSources.add(new BasicDataSource(this, "weather", "Weather Data"));
+        this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
     }
 
     @Override
@@ -46,14 +52,17 @@ public class WeatherDataProvider extends BasicDataProvider
         return "Gathers weather data from World Weather Online weather data service.";
     }
 
+    public DataSource getWeatherDataSource() {
+        return dataSources.get(0);
+    }
+
     @Override
     public Collection<DataSource> getDataSources() {
-        return Arrays.asList(new BasicDataSource(this, "weather", "Weather Data"));
+        return dataSources;
     }
 
     @Override
     public void start() {
-        this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
         this.scheduler.scheduleAtFixedRate(new GetWeatherData(this), 0, 1, TimeUnit.HOURS); //run every hour
     }
 

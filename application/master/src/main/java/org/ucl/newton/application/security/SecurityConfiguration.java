@@ -22,8 +22,6 @@ import org.ucl.newton.service.authentication.AuthenticationService;
 
 import javax.inject.Inject;
 
-import static org.springframework.http.HttpMethod.POST;
-
 /**
  * Instances of this class configure which endpoints require authentication and
  * which do not.

@@ -9,11 +9,11 @@
 
 package org.ucl.newton.framework;
 
-import org.springframework.core.io.Resource;
-import org.ucl.newton.application.resource.ApplicationResource;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.core.io.Resource;
+import org.ucl.newton.application.resource.ApplicationResource;
 
 import javax.persistence.*;
 

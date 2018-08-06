@@ -2,12 +2,9 @@ package org.ucl.newton.service.publisher;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 import org.ucl.newton.sdk.publisher.DataPublisher;
-import org.ucl.newton.service.plugin.Plugin;
 import org.ucl.newton.service.plugin.PluginService;
 
-import java.io.File;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.mock;
