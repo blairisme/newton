@@ -45,6 +45,24 @@ spec:
         env:
           - name: slave_host
             value: slave-newton
+          - name: slave_port
+            value: '8080'
+          - name: database_host
+            value: database
+          - name: database_port
+            value: '3306'
+          - name: database_user
+            value: root
+          - name: database_password
+            value: Newton*123
+          - name: jupyter_host
+            value: jupyter
+          - name: jupyter_port
+            value: '8000'
+          - name: master_host
+            value: master-newton
+          - name: master_port
+            value: '9090'
         image: newtonregistry.azurecr.io/blairisme/newton:latest
         ports:
         - containerPort: 9090
@@ -93,6 +111,11 @@ spec:
     spec:
       containers:
       - name: slave-newton
+        env:
+          - name: master_host
+            value: master-newton
+          - name: master_port
+            value: '9090'
         image: newtonregistry.azurecr.io/blairisme/newton-slave:latest
         ports:
         - containerPort: 8080

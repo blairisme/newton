@@ -1,5 +1,10 @@
 FROM rappdw/docker-java-python
 
+ARG master_host
+ARG master_port
+
+ENV newton_master_host $master_host
+ENV newton_master_port $master_port
 
 RUN mkdir -p /.newton_slave/
 
