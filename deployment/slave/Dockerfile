@@ -23,9 +23,9 @@ ENV newton_master_port $master_port
 
 RUN mkdir -p /.newton_slave/
 
-COPY ./libs/engine-0.1.0.jar engine-0.1.0.jar
+COPY ./libs/engine.jar engine.jar
 EXPOSE 8080
 
-RUN sh -c 'touch /engine-0.1.0.jar'
+RUN sh -c 'touch /engine.jar'
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/engine-0.1.0.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/engine.jar"]
