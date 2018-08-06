@@ -21,3 +21,5 @@ bin/
 ### Backstop to ignore test jars ###
 application/master/src/main/resources/plugins/data/
 application/plugins/jupyter/src/test/resources/jupyter\.jar
+
+application/master/src/main/resources/plugins/publisher/

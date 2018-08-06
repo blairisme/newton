@@ -22,6 +22,10 @@ import java.util.List;
  */
 public class Strings
 {
+    private Strings() {
+        throw new UnsupportedOperationException();
+    }
+
     public static List<String> split(String value, String regex) {
         return Arrays.asList(value.split(regex));
     }

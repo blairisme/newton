@@ -46,6 +46,10 @@
     margin-right: 0.6em;
 }
 
+.experiment-icon-container a {
+    text-decoration: none;
+}
+
 .experiment-name-container a {
     color: #000000;
     font-weight: 600;

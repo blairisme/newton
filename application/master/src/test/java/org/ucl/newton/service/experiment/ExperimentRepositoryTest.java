@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -126,17 +127,17 @@ public class ExperimentRepositoryTest {
 
         ExperimentVersion version1 = versions.iterator().next();
         Collection<ExperimentOutcome> outcomes = version1.getOutcomes();
-        Assert.assertEquals(3, outcomes.size());
+        Assert.assertEquals(4, outcomes.size());
         Iterator<ExperimentOutcome> it = outcomes.iterator();
         ExperimentOutcome outcome = it.next();
-        ExperimentOutcome expectedOutcome = new ExperimentOutcome(1, "test1.json", "tempJson/testJSON.json", ExperimentOutcomeType.Data);
+        ExperimentOutcome expectedOutcome = new ExperimentOutcome(1, "data1.json", "experiment/experiment-1/versions/1/data1.json", ExperimentOutcomeType.Data);
         Assert.assertEquals(expectedOutcome, outcome);
 
         outcome = it.next();
         Assert.assertEquals(2, outcome.getId());
-        Assert.assertEquals("log.txt", outcome.getName());
-        Assert.assertEquals("demo/log.txt", outcome.getLocation());
-        Assert.assertEquals(ExperimentOutcomeType.Log, outcome.getType());
+        Assert.assertEquals("data2.json", outcome.getName());
+        Assert.assertEquals("experiment/experiment-1/versions/1/data2.json", outcome.getLocation());
+        Assert.assertEquals(ExperimentOutcomeType.Data, outcome.getType());
     }
 
     private Experiment createExperiment(String name, String identifier) throws Exception {
@@ -158,7 +159,7 @@ public class ExperimentRepositoryTest {
     private Project createProject() throws Exception {
         User owner = new User(2, "admin", "admin@ucl.ac.uk", "pp_4.jpg");
         return new Project(13, "gosh-apollo", "GOSH Project Apollo", "Project description",
-                "default.png", createDate("2017-07-07 10:09:08"), owner , new ArrayList<>(), new ArrayList<>());
+                "gosh.png", createDate("2017-07-07 10:09:08"), owner , new ArrayList<>(), new ArrayList<>());
     }
 
     private Date createDate(String date) throws ParseException {
@@ -168,7 +169,7 @@ public class ExperimentRepositoryTest {
 
     private List<ExperimentVersion> createVersions() {
         List<ExperimentVersion> versions = new ArrayList<>();
-        versions.add(new ExperimentVersion(1, createOutcomes()));
+        versions.add(new ExperimentVersion(1, new Date(), Duration.ZERO, createOutcomes()));
         return versions;
     }
 
@@ -181,7 +182,7 @@ public class ExperimentRepositoryTest {
 
     private ExperimentConfiguration createExperimentConfiguration() {
         ExperimentConfigurationBuilder builder = new ExperimentConfigurationBuilder();
-        builder.setStorageConfiguration(new StorageConfiguration(0, "Newton", "experimentlocation", "main.ipynb"));
+        builder.setStorageConfiguration(new StorageConfiguration(0, StorageType.Newton, "experimentlocation", "main.ipynb"));
         builder.setProcessorPluginId("Python");
         builder.addDataSources(new String[]{"newton-weather", "newton-fizzyo"}, new String[]{"myproj/data1.csv", "myproj/data2.json"});
         builder.setOutputPattern("outputs/*.csv");

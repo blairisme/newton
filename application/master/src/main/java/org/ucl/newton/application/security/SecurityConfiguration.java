@@ -22,8 +22,6 @@ import org.ucl.newton.service.authentication.AuthenticationService;
 
 import javax.inject.Inject;
 
-import static org.springframework.http.HttpMethod.POST;
-
 /**
  * Instances of this class configure which endpoints require authentication and
  * which do not.
@@ -35,6 +33,9 @@ import static org.springframework.http.HttpMethod.POST;
 @SuppressWarnings("unused")
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 {
+    @Inject
+    protected AuthenticationService authenticationService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -80,9 +81,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-
-    @Inject
-    protected AuthenticationService authenticationService;
 
     @Override
     protected UserDetailsService userDetailsService() {

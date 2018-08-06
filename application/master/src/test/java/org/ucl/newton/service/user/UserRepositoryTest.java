@@ -29,7 +29,7 @@ import java.util.Collection;
 public class UserRepositoryTest
 {
     @Inject
-    private UserRepository repository;
+    private org.ucl.newton.service.user.UserRepository repository;
 
     @Test
     public void getUserTest() {

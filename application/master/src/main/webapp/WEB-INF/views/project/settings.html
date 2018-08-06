@@ -5,15 +5,21 @@
     <head>
         <title>Newton - Projects</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link rel="icon" href="resources/images/common/favicon.ico">
+        <link rel="icon" href="/resources/images/common/favicon.ico">
 
         <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/typeahead.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
-        <link rel="stylesheet" type="text/css" href="/resources/styles/experiment.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/views/project/settings.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/views/project/new.css"/>
 
         <script src="/resources/scripts/libraries/jquery.js"></script>
         <script src="/resources/scripts/libraries/popper.js"></script>
         <script src="/resources/scripts/libraries/bootstrap.js"></script>
+        <script src="/resources/scripts/libraries/typeahead.js"></script>
+        <script src="/resources/scripts/libraries/handlebars.js"></script>
+        <script src="/resources/scripts/views/project/new.js"></script>
+        <script src="/resources/scripts/views/project/details.js"></script>
     </head>
     <body>
         <!-- Navigation -->
@@ -26,6 +32,8 @@
                 <a  th:text="@{'/ '+${project.name}}" > / project name</a>
             </h1>
 
+            <input type="hidden" id="identifier" th:value="${project.identifier}" />
+
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link" href="#" th:href="@{'/project/' + ${project.identifier}}">Experiments</a>
@@ -34,10 +42,114 @@
                     <a class="nav-link active" href="#" >Project Settings</a>
                 </li>
                 <li class="nav-item ml-auto">
-                    <button type="button" class="btn btn-primary">Star Project</button>
+                    <button th:text="${project.getMembersThatStar().contains(user)}? 'Unstar' : 'Star'" type="button" class="btn btn-primary" id="starBtn"></button>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/new'}" role="button" id="newExpBtn">New Experiment</a>
                 </li>
             </ul>
 
+            <!-- Page Content -->
+            <div class="container-fluid restricted-width-container">
+                <div th:if="${error != null}" class="alert alert-danger" role="alert" >
+                    <span th:text="${error}">Error message</span>
+                </div>
+
+                <form id="projectDetails" th:action="@{'/project/' + ${project.identifier} + '/settings'}" method="POST" enctype="multipart/form-data" class="requires-validation" novalidate="novalidate">
+                    <!-- General Settings -->
+                    <section class="form-section section-divider">
+                        <h4>General Project Settings</h4>
+                        <p>Update your project name, description, icon, and other general settings.</p>
+
+                        <div class="form-group">
+                            <label for="projectNameInput">Project name <span class="text-danger">*</span></label>
+                            <input id="projectNameInput" name="name" type="text" class="form-control"
+                                   th:value="${project.name}" required="required" th:readonly="true">
+                            <div class="invalid-feedback">Please provide a project name.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="projectDescriptionInput">Project Description (optional)</label>
+                            <textarea id="projectDescriptionInput" name="description" class="form-control" rows="3"
+                                      th:text="${project.description}" th:readonly="${project.owner.id} != ${user.id}"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Project Icon (optional)</label>
+                            <div class="custom-file">
+                                <input id="projectIconInput" name="image" type="file" accept="image/*" class="custom-file-input" th:disabled="${project.owner.id} != ${user.id}">
+                                <label id="projectIconLabel" class="custom-file-label" for="projectIconInput" th:text="${project.image}" >
+                                    Choose image...
+                                </label>
+                                <div class="invalid-feedback">Please provide an image (JPEG, PNG, GIF) smaller than 1MB.</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Project Members -->
+                    <section class="form-section section-divider">
+                        <h4>Project Members</h4>
+                        <p>Choose who can access this project.</p>
+
+                        <ul id="projectMembersList" class="list-group list-group-flush">
+                            <th:block th:each="member : ${project.members}" >
+                                <li th:id="'listItem' + ${member.id}" class="list-group-item project-list-item">
+                                    <img th:src="@{'/resources/images/profile/' + ${member.image}}" class="rounded-circle avatar" alt="Profile picture"/>
+                                    <span th:text="${member.name}"></span><span th:text="${member.email}"></span>
+                                    <button type="button" class="btn btn-outline-primary remove_button"
+                                            th:disabled="${project.owner.id} != ${user.id} or ${member.id} == ${project.owner.id}" th:onclick="'removeMember(' + ${member.id} + ')'" >Remove</button>
+                                </li>
+                            </th:block>
+                            <p id="projectMembersListEmpty" class="empty_message project-list-item">This project doesn't have any members. Use the form below to add a members.</p>
+                        </ul>
+
+                        <select id="projectMembersData" form="projectDetails" name="members" multiple="multiple" hidden="hidden">
+                            <option th:each="member : ${project.members}" th:id="'dataItem' + ${member.id}"
+                                    th:value="${member.id}" selected="selected">
+                            </option>
+                        </select>
+
+                        <div class="form-row add_form_group">
+                            <div class="form-group col-sm-10">
+                                <label for="projectMemberInput">Begin typing to select a new member</label>
+                                <input id="projectMemberInput" type="text" class="typeahead form-control" placeholder="" th:readonly="${project.owner.id} != ${user.id}">
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <input type="button" class="btn btn-primary add_button" value="Add Member" th:disabled="${project.owner.id} != ${user.id}" />
+                            </div>
+                        </div>
+                        <!--
+                        <div class="form-row add_form_group">
+                        <div class="form-group col-sm-10">
+                            <label for="projectMemberInput">Begin typing to select a new member</label>
+                            <input id="projectMemberInput" type="text" class="typeahead form-control" placeholder="">
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <input type="button" class="btn btn-primary add_button" value="Add Member" />
+                        </div>
+                    </div>
+                        -->
+                    </section>
+
+                    <!-- Project Data Sources -->
+                    <section class="form-section section-divider">
+                        <h4>Project Data Sources</h4>
+                        <p>Choose which data sources are available to experiments in this project</p>
+
+                        <ul>
+                            <li th:each="provider : ${dataProviders}" class="list-unstyled">
+                                <input type="checkbox" class="form-check-input" name="sources"
+                                       th:value="${provider.getIdentifier()}" th:disabled="${project.owner.id} != ${user.id}"
+                                       th:checked="${project.dataSources.contains(provider.getIdentifier())}"/>
+                                <label th:text="${provider.getName()}" class="list-unstyled"></label>
+                            </li>
+                        </ul>
+
+                    </section>
+
+                    <input type="submit" class="btn btn-primary float-right create-button" value="Update Project" th:disabled="${project.owner.id} != ${user.id}"/>
+                </form>
+            </div>
 
         </div>
     </body>

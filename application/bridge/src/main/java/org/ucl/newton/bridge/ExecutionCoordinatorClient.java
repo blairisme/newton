@@ -11,10 +11,8 @@ package org.ucl.newton.bridge;
 
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.utils.URIBuilder;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import org.ucl.newton.common.network.MimeTypes;
 import org.ucl.newton.common.network.RestRequest;
 import org.ucl.newton.common.network.RestServer;

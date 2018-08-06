@@ -6,7 +6,6 @@ import org.mockito.Mockito;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.sdk.data.DataProvider;
-import org.ucl.newton.sdk.data.DataProviderObserver;
 import org.ucl.newton.sdk.data.DataStorage;
 import org.ucl.newton.service.plugin.PluginService;
 

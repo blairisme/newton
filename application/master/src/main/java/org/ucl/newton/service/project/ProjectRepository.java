@@ -103,6 +103,12 @@ public class ProjectRepository
         session.update(project);
     }
 
+    @Transactional
+    public void mergeProject(Project project) {
+        Session session = getSession();
+        session.merge(project);
+    }
+
     @Transactional(readOnly=true)
     public List<Project> getProjectsStarredByUser(User user) {
         Session session = getSession();

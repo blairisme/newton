@@ -93,6 +93,7 @@ CREATE TABLE IF NOT EXISTS experiment_config (
     storage_config_id INT NOT NULL,
     exp_proc_engine VARCHAR(45) NOT NULL,
     exp_out_pattern VARCHAR(100) NOT NULL,
+    exp_display_pattern VARCHAR(100) NOT NULL,
     exp_trigger VARCHAR(20) NOT NULL,
     PRIMARY KEY (exp_config_id),
     CONSTRAINT fk_experiment_storage FOREIGN KEY (storage_config_id) REFERENCES storage_configuration(sc_id)
@@ -134,6 +135,8 @@ CREATE TABLE IF NOT EXISTS experiment_eds_link (
 CREATE TABLE IF NOT EXISTS versions (
     ver_id INT NOT NULL AUTO_INCREMENT,
     ver_number INT NOT NULL,
+    ver_created DATETIME NOT NULL,
+    ver_duration BIGINT NOT NULL,
     PRIMARY KEY (ver_id)
 );
 

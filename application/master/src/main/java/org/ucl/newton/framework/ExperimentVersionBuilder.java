@@ -12,8 +12,10 @@ package org.ucl.newton.framework;
 import org.apache.commons.lang3.Validate;
 
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * Instances of this class build {@link ExperimentVersion ExperimentVersions}.
@@ -23,10 +25,14 @@ import java.util.Collection;
 public class ExperimentVersionBuilder
 {
     private Integer number;
+    private Date created;
+    private Duration duration;
     private Collection<ExperimentOutcome> outcomes;
 
     public ExperimentVersionBuilder() {
         number = null;
+        created = new Date();
+        duration = Duration.ZERO;
         outcomes = new ArrayList<>();
     }
 
@@ -35,13 +41,26 @@ public class ExperimentVersionBuilder
         return this;
     }
 
+    public ExperimentVersionBuilder setCreated(Date created) {
+        this.created = created;
+        return this;
+    }
+
+    public ExperimentVersionBuilder setDuration(Duration duration) {
+        this.duration = duration;
+        return this;
+    }
+
     public ExperimentVersionBuilder setExperimentOutputs(Collection<Path> paths) {
         for (Path path: paths) {
-            if (path.endsWith("log.txt")) {
+            String output = path.toString();
+
+            if (output.endsWith("log.txt")) {
                 setExperimentLog(path);
             }
-            else if (path.endsWith(".html") || path.endsWith(".png") || path.endsWith(".jpg") || path.endsWith(".jpeg")) {
+            else if (output.endsWith(".html") || output.endsWith(".png") || output.endsWith(".jpg")) {
                 setExperimentVisuals(path);
+                setExperimentData(path);
             }
             else {
                 setExperimentData(path);
@@ -94,7 +113,9 @@ public class ExperimentVersionBuilder
 
     public ExperimentVersion build() {
         Validate.notNull(number);
+        Validate.notNull(created);
+        Validate.notNull(duration);
         Validate.notEmpty(outcomes);
-        return new ExperimentVersion(number, outcomes);
+        return new ExperimentVersion(number, created, duration, outcomes);
     }
 }

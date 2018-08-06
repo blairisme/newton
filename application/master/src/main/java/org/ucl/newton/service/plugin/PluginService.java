@@ -16,6 +16,7 @@ import org.ucl.newton.common.lang.JarClassLoader;
 import org.ucl.newton.common.lang.JarInstanceLoader;
 import org.ucl.newton.sdk.data.DataProvider;
 import org.ucl.newton.sdk.processor.DataProcessor;
+import org.ucl.newton.sdk.publisher.DataPublisher;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -49,6 +50,7 @@ public class PluginService
     public Collection<DataProcessor> getDataProcessors() {
         return getPlugins(DataProcessor.class);
     }
+    public Collection<DataPublisher> getDataPublishers() { return getPlugins(DataPublisher.class); }
 
     private <T> Collection<T> getPlugins(Class<T> type) {
         try {

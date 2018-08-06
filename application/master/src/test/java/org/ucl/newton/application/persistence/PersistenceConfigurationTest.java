@@ -12,7 +12,6 @@ package org.ucl.newton.application.persistence;
 import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;

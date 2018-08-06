@@ -14,9 +14,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.Reader;
 import java.io.Writer;
-import java.text.DateFormat;
 import java.time.Duration;
-import java.util.Date;
 
 /**
  * Instances of this class serialize objects into their equivalent JSON

@@ -35,6 +35,8 @@ public class ProjectService
         return repository.addProject(project);
     }
 
+    public void mergeProject(Project project) { repository.mergeProject(project); }
+
     public Collection<Project> getProjects(User user) {
         return repository.getProjects(user);
     }

@@ -17,4 +17,8 @@ package org.ucl.newton.common.network;
 public class MimeTypes
 {
     public static final String JSON = "application/json";
+
+    private MimeTypes() {
+        throw new UnsupportedOperationException();
+    }
 }

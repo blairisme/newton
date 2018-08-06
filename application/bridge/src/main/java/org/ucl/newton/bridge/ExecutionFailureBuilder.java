@@ -21,9 +21,6 @@ public class ExecutionFailureBuilder
     private String version;
     private String error;
 
-    public ExecutionFailureBuilder() {
-    }
-
     public ExecutionFailureBuilder forRequest(ExecutionRequest request) {
         this.id = request.getId();
         this.experiment = request.getExperiment();
@@ -31,7 +28,7 @@ public class ExecutionFailureBuilder
         return this;
     }
 
-    public ExecutionFailureBuilder setException(Exception exception) {
+    public ExecutionFailureBuilder setException(Throwable exception) {
         this.error = exception.getMessage();
         return this;
     }

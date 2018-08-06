@@ -16,7 +16,6 @@ import org.ucl.newton.application.system.ApplicationPreferences;
 import org.ucl.newton.application.system.ApplicationPreferencesDefault;
 import org.ucl.newton.application.system.ApplicationPreferencesUser;
 
-import javax.inject.Inject;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;

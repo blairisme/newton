@@ -1,15 +1,25 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.framework;
 
-import org.springframework.core.io.Resource;
-import org.ucl.newton.application.resource.ApplicationResource;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.core.io.Resource;
+import org.ucl.newton.application.resource.ApplicationResource;
 
 import javax.persistence.*;
 
 /**
- * Instances of this class contain information relating to how an experiment and it's related data should be stored.
+ * Instances of this class contain information relating to how an
+ * {@link Experiment} and it's related data should be stored.
  *
  * @author John Wilkie
  */
@@ -35,15 +45,11 @@ public class StorageConfiguration
     public StorageConfiguration() {
     }
 
-    public StorageConfiguration(int id, String storageTypeAsString, String storageLocation, String nameOfInitialScript) {
+    public StorageConfiguration(int id, StorageType type, String location, String script) {
         this.id = id;
-        if(storageTypeAsString.equals("Newton")) {
-            storageType = StorageType.Newton;
-        } else {
-            //throw new IllegalAccessException(storageTypeAsString);
-        }
-        this.storageLocation = storageLocation;
-        this.nameOfInitialScript = nameOfInitialScript;
+        this.storageType = type;
+        this.storageLocation = location;
+        this.nameOfInitialScript = script;
     }
 
     public int getId() {

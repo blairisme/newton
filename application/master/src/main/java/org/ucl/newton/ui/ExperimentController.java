@@ -10,15 +10,12 @@
 package org.ucl.newton.ui;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.Validate;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.common.identifier.Identifier;
 import org.ucl.newton.engine.ExecutionEngine;
 import org.ucl.newton.framework.*;
@@ -32,9 +29,7 @@ import org.ucl.newton.service.user.UserService;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -127,6 +122,30 @@ public class ExperimentController
         return "redirect:/project/" + projectIdentifier + "/" + experimentIdentifier;
     }
 
+    @GetMapping(value = "/project/{project}/{experiment}/cancel")
+    public String cancel(
+        @PathVariable("project") String projectIdentifier,
+        @PathVariable("experiment") String experimentIdentifier,
+        ModelMap model)
+    {
+        Experiment experiment = experimentService.getExperimentByIdentifier(experimentIdentifier);
+        executionEngine.stopExecution(experiment);
+        return "redirect:/project/" + projectIdentifier + "/" + experimentIdentifier;
+    }
+
+    @GetMapping(value = "/project/{project}/{experiment}/setup")
+    public String experimentSetup(
+            @PathVariable("project") String projectIdentifier,
+            @PathVariable("experiment") String experimentIdentifier,
+            ModelMap model)
+    {
+        model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("project", projectService.getProjectByIdentifier(projectIdentifier, false));
+        model.addAttribute("experiment", experimentService.getExperimentByIdentifier(experimentIdentifier));
+        return "experiment/setup";
+    }
+
+
     @GetMapping(value = "/project/{project}/{experiment}/edit")
     public String edit(
         @PathVariable("project") String project,
@@ -172,14 +191,16 @@ public class ExperimentController
         builder.setProcessorPluginId(experimentDto.getSelectedTypeValue(), pluginService.getDataProcessors());
         builder.addDataSources(experimentDto.getDataSourceIds(), experimentDto.getDataSourceLocs());
         builder.setOutputPattern(experimentDto.getOutputPattern());
+        builder.setDisplayPattern(experimentDto.getSelectedTypeValue().equals("newton-jupyter") ? "*.html" : "");
         builder.addTrigger(experimentDto.getSelectedTriggerValue());
         return builder.build();
     }
 
     private StorageConfiguration createStorageConfiguration(ExperimentDto experimentDto, String experimentId) {
         String location = experimentStorage.getRepositoryPath(experimentId).toString();
-        String type = experimentDto.getSelectedStorageValue();
-        return new StorageConfiguration(0, type, location, "main.py");
+        StorageType type = StorageType.Newton;
+        String script = experimentDto.getSelectedTypeValue().equals("newton-jupyter") ? "main.ipynb" : "main.py";
+        return new StorageConfiguration(0, type, location, script);
     }
 
     private void populateRepository(Experiment experiment) {

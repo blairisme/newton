@@ -28,6 +28,10 @@ import java.util.List;
  */
 public class PathUtils
 {
+    private PathUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     public static String appendTrailingSeparator(String path) {
         if (! path.endsWith(File.separator)) {
             return path + File.separator;
@@ -41,6 +45,14 @@ public class PathUtils
 
     public static String getName(Path path) {
         return path.getFileName().toString();
+    }
+
+    public static Collection<String> getNames(Collection<Path> paths) {
+        Collection<String> result = new ArrayList<>();
+        for (Path path: paths) {
+            result.add(getName(path));
+        }
+        return result;
     }
 
     public static Collection<Path> getChildren(Path path) {

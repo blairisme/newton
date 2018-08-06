@@ -9,16 +9,12 @@
 
 package org.ucl.newton.jupyter;
 
-import org.apache.commons.io.FileUtils;
 import org.ucl.newton.common.collection.CollectionUtils;
-import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.common.process.CommandExecutor;
 import org.ucl.newton.sdk.processor.DataProcessor;
 import org.ucl.newton.sdk.processor.DataProcessorException;
 
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -35,7 +31,7 @@ public class JupyterProcessor implements DataProcessor
 {
     private static final List<String> GENERATE_HTML = unmodifiableList(asList("jupyter", "nbconvert", "--to", "html"));
     private static final List<String> GENERATE_SCRIPT = unmodifiableList(asList("jupyter", "nbconvert", "--to", "script"));
-    private static final List<String> INVOKE_SCRIPT = unmodifiableList(asList("python"));
+    private static final List<String> INVOKE_SCRIPT = unmodifiableList(asList("ipython"));
 
     @Override
     public String getIdentifier() {

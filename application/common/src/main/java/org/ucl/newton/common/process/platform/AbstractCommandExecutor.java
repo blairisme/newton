@@ -15,7 +15,6 @@ import org.ucl.newton.common.process.CommandExecutor;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -31,9 +30,6 @@ public abstract class AbstractCommandExecutor implements CommandExecutor
     private Path errorRedirect;
     private Path outputRedirect;
     private Path workingDirectory;
-
-    public AbstractCommandExecutor() {
-    }
 
     @Override
     public void execute(List<String> commands) throws CommandExecutionException {

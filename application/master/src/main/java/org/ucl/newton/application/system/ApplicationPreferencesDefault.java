@@ -11,7 +11,6 @@ package org.ucl.newton.application.system;
 
 import org.ucl.newton.common.file.SystemPaths;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -23,10 +22,6 @@ import javax.inject.Named;
 @Named
 public class ApplicationPreferencesDefault
 {
-    @Inject
-    public ApplicationPreferencesDefault() {
-    }
-
     public String getDatabaseHost() {
         return "localhost";
     }

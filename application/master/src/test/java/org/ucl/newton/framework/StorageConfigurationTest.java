@@ -4,7 +4,8 @@ import org.junit.Test;
 import org.ucl.newton.test.EqualsTester;
 import org.ucl.newton.test.ToStringTester;
 
-public class StorageConfigurationTest {
+public class StorageConfigurationTest
+{
     @Test
     public void testEquality() {
         EqualsTester<StorageConfiguration> equalsTester = new EqualsTester<>();

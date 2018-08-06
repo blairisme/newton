@@ -10,21 +10,14 @@
  * Author: Xiaolong Chen
  */
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'org.akhikhl.gretty:gretty:2.0.0'
-    }
- }
+plugins {
+  id "org.akhikhl.gretty" version "2.0.0"
+}
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'war'
 apply plugin: 'jacoco'
-apply plugin: 'checkstyle'
 apply plugin: 'org.akhikhl.gretty'
 
 dependencies {
@@ -96,17 +89,19 @@ task updateWeatherDataProviderJar(type: Copy, dependsOn: ':application:plugins:W
 }
 project.tasks.war.dependsOn updateWeatherDataProviderJar
 
+task updateDREDataPublisherJar(type: Copy, dependsOn: ':application:plugins:DREDataPublisher:jar'){
+    from project(':application:plugins:DREDataPublisher').collect{it.tasks.withType(Jar)}
+    into project.file('src/main/resources/plugins/publisher')
+    rename '(.*)-(.*).jar', '$1.jar'
+}
+project.tasks.war.dependsOn updateDREDataPublisherJar
+
 gretty {
     servletContainer = 'jetty9.4'
     contextPath = '/'
     httpPort = 9090
     jvmArgs = ['-Dnewton.profile=' + getProperty('run.profile')]
-
     jacocoEnabled = false
-}
-
-checkstyle {
-  sourceSets = [project.sourceSets.main]
 }
 
 jacocoTestReport {

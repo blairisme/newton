@@ -14,7 +14,6 @@ import org.apache.commons.lang3.reflect.ConstructorUtils;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Predicate;
 
 /**
  * Instances of this object instance loader are used to create object instances

@@ -12,11 +12,16 @@ package org.ucl.newton.framework;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.time.Duration;
 import java.util.Collection;
+import java.util.Date;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
 * Instances of this class represent a unique running of an experiment.
@@ -35,6 +40,12 @@ public class ExperimentVersion {
     @Column(name = "ver_number")
     private int number;
 
+    @Column(name = "ver_created")
+    private Date created;
+
+    @Column(name = "ver_duration")
+    private Duration duration;
+
     @OneToMany(cascade = {CascadeType.ALL})
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "version_outcomes",
@@ -48,18 +59,24 @@ public class ExperimentVersion {
 
     public ExperimentVersion(
         int number,
+        Date created,
+        Duration duration,
         Collection<ExperimentOutcome> outcomes)
     {
-        this(0, number, outcomes);
+        this(0, number, created, duration, outcomes);
     }
 
     private ExperimentVersion(
         int id,
         int number,
+        Date created,
+        Duration duration,
         Collection<ExperimentOutcome> outcomes)
     {
         this.id = id;
         this.number = number;
+        this.created = created;
+        this.duration = duration;
         this.outcomes = outcomes;
     }
 
@@ -76,13 +93,36 @@ public class ExperimentVersion {
         return number;
     }
 
+    public Date getCreated() {
+        return created;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public String getDurationDescription() {
+        return DurationFormatUtils.formatDuration(duration.toMillis(), "H:mm:ss", true);
+    }
+
     public Collection<ExperimentOutcome> getOutcomes() {
         return outcomes;
     }
 
-    public ExperimentVersion setOutcomes(Collection<ExperimentOutcome> outcomes) {
-        this.outcomes = outcomes;
-        return this;
+    public Collection<ExperimentOutcome> getDataOutcomes() {
+        return getOutcomes((outcome) -> outcome.isDataType());
+    }
+
+    public Collection<ExperimentOutcome> getDisplayOutcomes() {
+        return getOutcomes((outcome) -> outcome.isVisualType());
+    }
+
+    public Collection<ExperimentOutcome> getLogOutcomes() {
+        return getOutcomes((outcome) -> outcome.isLogType());
+    }
+
+    private Collection<ExperimentOutcome> getOutcomes(Predicate<ExperimentOutcome> matching) {
+        return outcomes.stream().filter(matching).collect(Collectors.toList());
     }
 
     @Override
@@ -95,6 +135,8 @@ public class ExperimentVersion {
         return new EqualsBuilder()
             .append(this.id, other.id)
             .append(this.number, other.number)
+            .append(this.created, other.created)
+            .append(this.duration, other.duration)
             .isEquals();
     }
 
@@ -103,6 +145,8 @@ public class ExperimentVersion {
         return new HashCodeBuilder(17, 37)
             .append(id)
             .append(number)
+            .append(created)
+            .append(duration)
             .toHashCode();
     }
 
@@ -111,6 +155,8 @@ public class ExperimentVersion {
         return new ToStringBuilder(this)
             .append("id", id)
             .append("number", number)
+            .append("created", created)
+            .append("duration", duration)
             .append("outcomes", outcomes)
             .toString();
     }

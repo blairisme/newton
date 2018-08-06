@@ -17,6 +17,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.ucl.newton.application.system.ApplicationStorage;
+import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.service.experiment.ExperimentService;
@@ -27,8 +28,9 @@ import org.ucl.newton.service.user.UserService;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.ucl.newton.common.lang.Integers.stringToInt;
@@ -90,9 +92,9 @@ public class ProjectController
             ModelMap model)
     {
         User user = userService.getAuthenticatedUser();
-        if( type.equals("Unstar")) {
+        if(Objects.equals(type, "Unstar")) {
             projectService.persistUnstar(name, user);
-        } else if(type.equals("Star")) {
+        } else if(Objects.equals(type, "Star")) {
             projectService.persistStar(name, user);
         }
     }
@@ -103,6 +105,7 @@ public class ProjectController
         model.addAttribute("user", user);
         model.addAttribute("project", projectService.getProjectByIdentifier(name, true));
         model.addAttribute("starredProjects", projectService.getStarredProjects(user));
+        model.addAttribute("dataProviders", pluginService.getDataProviders());
         return "project/settings";
     }
 
@@ -110,7 +113,6 @@ public class ProjectController
     public String newProject(ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
         model.addAttribute("dataProviders", pluginService.getDataProviders());
-       // model.addAttribute("sources", new ArrayList<String>());
         return "project/new";
     }
 
@@ -140,6 +142,38 @@ public class ProjectController
             model.addAttribute("user", userService.getAuthenticatedUser());
             return "project/new";
         }
+    }
+
+    @PostMapping("/project/{ident}/settings")
+    public String updateProject(
+            @PathVariable("ident")String projectIdentifier,
+            @RequestParam(required=false) String description,
+            @RequestParam(required=false) MultipartFile image,
+            @RequestParam(required=false) Collection<String> members,
+            @RequestParam(required=false) Collection<String> sources,
+            ModelMap model) {
+        try {
+            Project projectToUpdate = projectService.getProjectByIdentifier(projectIdentifier, true);
+            projectToUpdate.setDescription(description);
+            if(image.getOriginalFilename() != null && image.getOriginalFilename().length() != 0
+                    && !image.getOriginalFilename().equals(projectToUpdate.getImage())) {
+                projectToUpdate.setImage(persistProjectImage(image));
+            }
+            projectToUpdate.setMembers(userService.getUsers(stringToInt(ensureNotNull(members))));
+            projectToUpdate.setDataSources(sources);
+            projectToUpdate.setLastUpdated(new Date());
+            projectService.mergeProject(projectToUpdate);
+        } catch (Throwable exception) {
+            model.addAttribute("error", exception.getMessage());
+            model.addAttribute("user", userService.getAuthenticatedUser());
+            model.addAttribute("project", projectService.getProjectByIdentifier(projectIdentifier, true));
+            model.addAttribute("dataProviders", pluginService.getDataProviders());
+            return "project/settings";
+        }
+        model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("project", projectService.getProjectByIdentifier(projectIdentifier, true));
+        model.addAttribute("dataProviders", pluginService.getDataProviders());
+        return "project/settings";
     }
 
     private String persistProjectImage(MultipartFile image) throws IOException {

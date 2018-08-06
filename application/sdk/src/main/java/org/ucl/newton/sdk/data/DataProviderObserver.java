@@ -18,5 +18,5 @@ package org.ucl.newton.sdk.data;
  */
 public interface DataProviderObserver
 {
-    void dataUpdated();
+    void dataUpdated(DataSource dataSource);
 }

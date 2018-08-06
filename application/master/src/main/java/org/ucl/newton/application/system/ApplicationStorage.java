@@ -12,13 +12,13 @@ package org.ucl.newton.application.system;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
+import org.ucl.newton.common.file.IoFunction;
 import org.ucl.newton.common.file.PathUtils;
 
 import javax.inject.Inject;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.function.Function;
 
 /**
  * Instances of this class provide access to file system resources
@@ -58,15 +58,8 @@ public class ApplicationStorage
         return new FileOutputStream(file);
     }
 
-    public Function<Path, OutputStream> getOutputStreamFactory(Path relativePath) {
-        return (path) -> {
-            try {
-                return getOutputStream(relativePath.resolve(path));
-            }
-            catch (IOException e) {
-                throw new RuntimeException(e); //bad form...
-            }
-        };
+    public IoFunction<Path, OutputStream> getOutputStreamFactory(Path relativePath) {
+        return (path) -> getOutputStream(relativePath.resolve(path));
     }
 
     public void write(String group, String identifier, InputStream inputStream) throws IOException {

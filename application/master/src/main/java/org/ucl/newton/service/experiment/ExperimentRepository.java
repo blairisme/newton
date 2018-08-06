@@ -6,16 +6,12 @@ import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.Experiment;
-import org.ucl.newton.framework.ExperimentOutcome;
-import org.ucl.newton.framework.ExperimentVersion;
 
 import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Instances of this class provide access to persisted experiment data.
@@ -38,6 +34,18 @@ public class ExperimentRepository {
         Session session = getSession();
         Integer generatedId = (Integer)session.save(experiment);
         return experiment.setId(generatedId);
+    }
+
+    @Transactional(readOnly=true)
+    public Collection<Experiment> getExperiments() {
+        Session session = getSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Experiment> criteria = builder.createQuery(Experiment.class);
+        Root<Experiment> experiments = criteria.from(Experiment.class);
+        criteria.select(experiments);
+
+        return session.createQuery(criteria).getResultList();
     }
 
     @Transactional(readOnly=true)

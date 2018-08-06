@@ -16,9 +16,7 @@ import org.ucl.newton.framework.ExperimentConfiguration;
 import org.ucl.newton.framework.ExperimentDataSource;
 import org.ucl.newton.framework.StorageConfiguration;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.UUID;
 
 /**
  * Instances of this class build {@link ExecutionRequest ExecutionRequests}
@@ -28,9 +26,6 @@ import java.util.UUID;
  */
 public class ExecutionRequestFactory extends ExecutionRequestBuilder
 {
-    public ExecutionRequestFactory() {
-    }
-
     public ExecutionRequestFactory setExperiment(Experiment experiment) {
         setExperiment(experiment.getIdentifier());
         setVersion(Integer.toString(experiment.getVersions().size() + 1));

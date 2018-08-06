@@ -13,6 +13,10 @@ import java.util.List;
  */
 public class HibernateUtils
 {
+    private HibernateUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     public static <T> T getSingleResultOrNull(Query<T> query){
         List<T> results = query.getResultList();
         if (results.isEmpty()) return null;

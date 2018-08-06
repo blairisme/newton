@@ -11,13 +11,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.ucl.newton.application.system.ApplicationStorage;
 
 import javax.inject.Inject;
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static org.ucl.newton.common.file.FileUtils.readFile;
 
 
 /**
@@ -101,22 +104,7 @@ public class PluginController {
         return "redirect:/weatherSetting";
     }
 
-    private String readFile(File file){
-        String ret = null;
-        if(!file.exists())
-            return ret;
-        Long len = file.length();
-        byte[] content = new byte[len.intValue()];
-        try {
-            InputStream input = new FileInputStream(file);
-            input.read(content);
-            input.close();
-            ret = new String(content);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return ret;
-    }
+
 
     private String[] getHeader() {
         String[] header = new String[4];

@@ -17,7 +17,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import java.util.concurrent.Executor;
 
 /**
- * Configures the thread pool used by the system.
+ * Configures the thread pools used by the system.
  *
  * @author Ziad Halabi
  * @author Blair Butterworth
@@ -27,14 +27,26 @@ import java.util.concurrent.Executor;
 @SuppressWarnings("unused")
 public class ApplicationConcurrency
 {
-    @Bean
-    public Executor asyncExecutor() {
+    @Bean(name = "experiment")
+    public Executor experimentExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(2);
         executor.setMaxPoolSize(2);
         executor.setQueueCapacity(500);
         executor.setDaemon(true);
-        executor.setThreadNamePrefix("SlaveThread-");
+        executor.setThreadNamePrefix("Experiment-");
+        executor.initialize();
+        return executor;
+    }
+
+    @Bean(name = "network")
+    public Executor networkExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(20);
+        executor.setQueueCapacity(1000);
+        executor.setDaemon(true);
+        executor.setThreadNamePrefix("Network-");
         executor.initialize();
         return executor;
     }

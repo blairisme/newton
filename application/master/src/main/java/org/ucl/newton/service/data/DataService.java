@@ -33,17 +33,20 @@ import java.util.Objects;
  * @author Xiaolong Chen
  */
 @Service
+@SuppressWarnings("unused")
 public class DataService implements ApplicationListener<ContextRefreshedEvent>
 {
     private PluginService pluginService;
     private ApplicationStorage applicationStorage;
     private Collection<DataProvider> dataProviders;
+    private Collection<DataProviderObserver> dataObservers;
 
     @Inject
     public DataService(ApplicationStorage applicationStorage, PluginService pluginService) {
         this.dataProviders = null;
         this.pluginService = pluginService;
         this.applicationStorage = applicationStorage;
+        this.dataObservers = new ArrayList<>();
     }
 
     @Override
@@ -56,6 +59,8 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
             dataProviders = new ArrayList<>();
             for (DataProvider dataProvider : pluginService.getDataProviders()) {
                 dataProvider.setStorage(createDataStorage(dataProvider));
+                dataObservers.forEach(observer -> dataProvider.addObserver(observer));
+
                 dataProvider.start();
                 dataProviders.add(dataProvider);
             }
@@ -63,9 +68,10 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
     }
 
     public void addDataObserver(DataProviderObserver observer) {
-//        for (DataProvider dataProvider: getDataProviders()) {
-//            dataProvider.addObserver(observer);
-//        }
+        dataObservers.add(observer);
+        if (dataProviders != null) {
+            dataProviders.forEach(provider -> provider.addObserver(observer));
+        }
     }
 
     public Collection<DataProvider> getDataProviders() {

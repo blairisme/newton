@@ -20,6 +20,7 @@ import org.ucl.newton.framework.UserRole;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Objects;
 
 /**
  * Instances of this class provide access to user credentials.
@@ -58,13 +59,13 @@ public class AuthenticationService implements UserDetailsService
         Credential credential = repository.getCredentialByName(userName);
         UserRole newRole = null;
         if(credential != null) {
-            if (role.equals("user")) {
+            if (Objects.equals(role, "user")) {
                 credential.setRole(UserRole.USER);
                 newRole = UserRole.USER;
-            } else if (role.equals("admin")) {
+            } else if (Objects.equals(role, "admin")) {
                 credential.setRole(UserRole.ADMIN);
                 newRole = UserRole.ADMIN;
-            } else if (role.equals("organisationLead")) {
+            } else if (Objects.equals(role, "organisationLead")) {
                 credential.setRole(UserRole.ORGANISATIONLEAD);
                 newRole = UserRole.ORGANISATIONLEAD;
             } else {
