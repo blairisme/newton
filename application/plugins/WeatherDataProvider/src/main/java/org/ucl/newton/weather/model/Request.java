@@ -1,4 +1,4 @@
-package org.ucl.WeatherDataProvider.weather.model;
+package org.ucl.newton.weather.model;
 
 import java.util.ArrayList;
 import java.util.List;

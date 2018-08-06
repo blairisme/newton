@@ -1,4 +1,4 @@
-package org.ucl.WeatherDataProvider.weather.model;
+package org.ucl.newton.weather.model;
 
 /**
  * Instances of this class provide org.ucl.WeatherDataProvider.weather data to the Newton system.
