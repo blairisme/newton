@@ -19,6 +19,7 @@
         <property name="max" value="300"/>
     </module>
     <module name="TreeWalker">
+        <module name="UnusedImports"/>
         <module name="TodoComment">
             <property name="format" value="(TODO)|(Todo)|(todo)"/>
         </module>

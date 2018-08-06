@@ -55,9 +55,16 @@ subprojects {
   }
 }
 
-task cleanIdeaForced(type: Delete) {
-  delete fileTree(dir: '.idea' , include: '**/*')
-  delete fileTree(dir: "${projectDir}" , include: '**/*.iml')
-  delete fileTree(dir: "${projectDir}" , include: '**/*.ipr')
+gradle.projectsEvaluated {
+  configure(projectsWithPlugin('java')) {
+    apply plugin: 'checkstyle'
+    checkstyle {
+      sourceSets = [project.sourceSets.main]
+      configFile = rootProject.file('gradle/config/checkstyle/checkstyle.xml')
+    }
+  }
 }
-project.tasks.cleanIdea.dependsOn cleanIdeaForced
+
+def projectsWithPlugin(def pluginName) {
+    return subprojects.findAll{subproject -> subproject.plugins.hasPlugin(pluginName)}
+}
