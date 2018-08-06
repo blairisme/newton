@@ -14,7 +14,6 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.bridge.ExecutionNode;
 import org.ucl.newton.bridge.ExecutionResult;
@@ -32,18 +31,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Future;
 
 /**
- * Persists {@link ExecutionResult ExecutionResults} returned from remote
- * execution of {@link ExecutionTask ExecutionTasks}.
+ * Asynchronously persists a given {@link ExecutionResult} returned from remote
+ * execution of and {@link ExecutionTask}.
  *
  * @author Blair Butterworth
  */
 @Named
-public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements ExecutionPersistence
+public class ExecutionPersistenceHandler
 {
     private static final String VERSIONS_DIRECTORY = "versions";
     private static final String OUTPUT_FILE_NAME = "output.zip";
@@ -51,10 +47,9 @@ public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements 
     private ExecutionNode executionNode;
     private ExperimentService experimentService;
     private ApplicationStorage applicationStorage;
-    private Map<ExecutionTask, Future<ExecutionTask>> tasks;
 
     @Inject
-    public ExecutionPersistenceAsync(
+    public ExecutionPersistenceHandler(
         ApplicationStorage applicationStorage,
         ExperimentService experimentService,
         ExecutionRemoteNode nodeFactory)
@@ -62,26 +57,10 @@ public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements 
         this.executionNode = nodeFactory.get();
         this.experimentService = experimentService;
         this.applicationStorage = applicationStorage;
-        this.tasks = new HashMap<>();
-    }
-
-    @Override
-    public void process(ExecutionTask task) {
-        ListenableFuture<ExecutionTask> future = persist(task);
-        future.addCallback(new PersistObserver(task, future));
-        tasks.put(task, future);
-    }
-
-    @Override
-    public void cancel(ExecutionTask task) {
-        Future<ExecutionTask> future = tasks.get(task);
-        if (future != null && ! future.isDone()) {
-            future.cancel(false);
-        }
     }
 
     @Async
-    public AsyncResult<ExecutionTask> persist(ExecutionTask task) {
+    public ListenableFuture<ExecutionTask> persist(ExecutionTask task) {
         try {
             ExecutionResult executionResult = task.getResult();
             Path destination = getDestination(executionResult);
@@ -138,37 +117,5 @@ public class ExecutionPersistenceAsync extends ExecutionPipelineBase implements 
 
         experiment.addVersion(versionBuilder.build());
         experimentService.update(experiment);
-    }
-
-    private class PersistObserver implements ListenableFutureCallback<ExecutionTask>
-    {
-        private ExecutionTask task;
-        private Future<ExecutionTask> future;
-
-        public PersistObserver(ExecutionTask task, Future<ExecutionTask> future) {
-            this.task = task;
-            this.future = future;
-        }
-
-        @Override
-        public void onSuccess(ExecutionTask newTask) {
-            evaluate(newTask);
-        }
-
-        @Override
-        public void onFailure(Throwable error) {
-            task.setError(error);
-            evaluate(task);
-        }
-
-        private void evaluate(ExecutionTask task) {
-            if (! future.isCancelled()) {
-                if (task.hasError()) {
-                    finish(task);
-                } else {
-                    proceed(task);
-                }
-            }
-        }
     }
 }
