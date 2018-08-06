@@ -13,6 +13,7 @@ FROM centos:7
 LABEL version="1.0"
 LABEL description="A Jupyterhub and JupyterLab docker image for use by the Newton web app."
 LABEL maintainer="blair.butterworth.17@ucl.ac.uk"
+MAINTAINER blair.butterworth.17@ucl.ac.uk
 
 ## Install Pip
 RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
@@ -22,9 +23,9 @@ RUN yum install python36-setuptools -y
 RUN easy_install-3.6 pip
 
 ## Install Jupyter applications
-RUN pip3 install jupyterhub
-RUN pip3 install jupyterlab
-RUN pip3 install jupyterhub-jwtauthenticator
+RUN pip3 install jupyterhub==0.9.1
+RUN pip3 install jupyterlab==0.32.1
+RUN pip3 install jupyterhub-jwtauthenticator==0.1
 
 # Install libraries required by Jupyter applications
 RUN yum install nodejs npm -y
