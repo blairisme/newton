@@ -20,9 +20,6 @@ public abstract class ExecutionPipelineBase implements ExecutionPipelineElement
     private ExecutionPipeline next;
     private ExecutionPipelineObserver observer;
 
-    public ExecutionPipelineBase() {
-    }
-
     public void setNext(ExecutionPipeline next) {
         this.next = next;
     }

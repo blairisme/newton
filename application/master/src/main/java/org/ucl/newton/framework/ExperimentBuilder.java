@@ -30,9 +30,6 @@ public class ExperimentBuilder
     private List<ExperimentVersion> versions;
     private ExperimentConfiguration configuration;
 
-    public ExperimentBuilder() {
-    }
-
     public ExperimentBuilder copyExperiment(Experiment experiment) {
         id = experiment.getId();
         identifier = experiment.getIdentifier();

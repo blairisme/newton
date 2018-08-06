@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.ucl.newton.common.lang.Integers.stringToInt;
@@ -91,9 +92,9 @@ public class ProjectController
             ModelMap model)
     {
         User user = userService.getAuthenticatedUser();
-        if( type.equals("Unstar")) {
+        if(Objects.equals(type, "Unstar")) {
             projectService.persistUnstar(name, user);
-        } else if(type.equals("Star")) {
+        } else if(Objects.equals(type, "Star")) {
             projectService.persistStar(name, user);
         }
     }
@@ -174,7 +175,6 @@ public class ProjectController
         model.addAttribute("dataProviders", pluginService.getDataProviders());
         return "project/settings";
     }
-
 
     private String persistProjectImage(MultipartFile image) throws IOException {
         if (image != null && ! image.isEmpty()) {

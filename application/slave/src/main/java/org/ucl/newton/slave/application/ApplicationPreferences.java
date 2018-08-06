@@ -11,7 +11,6 @@ package org.ucl.newton.slave.application;
 
 import org.ucl.newton.common.file.SystemPaths;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.nio.file.Path;
 
@@ -25,10 +24,6 @@ import java.nio.file.Path;
 @Named
 public class ApplicationPreferences
 {
-    @Inject
-    public ApplicationPreferences(){
-    }
-
     public String getMasterHost() {
         return getProperty("newton.master.host", "localhost");
     }

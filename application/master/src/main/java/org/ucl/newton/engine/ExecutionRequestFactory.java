@@ -26,9 +26,6 @@ import java.util.Collection;
  */
 public class ExecutionRequestFactory extends ExecutionRequestBuilder
 {
-    public ExecutionRequestFactory() {
-    }
-
     public ExecutionRequestFactory setExperiment(Experiment experiment) {
         setExperiment(experiment.getIdentifier());
         setVersion(Integer.toString(experiment.getVersions().size() + 1));

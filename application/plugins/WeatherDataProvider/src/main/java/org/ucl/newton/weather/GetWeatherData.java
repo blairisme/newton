@@ -10,6 +10,7 @@
 package org.ucl.newton.weather;
 
 import com.csvreader.CsvReader;
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import org.ucl.newton.weather.model.WeatherData;
@@ -104,11 +105,12 @@ public class GetWeatherData implements Runnable {
     }
 
     private String locationBuilder(String city, String country) {
-        city = city.replace(" ","+");
-        if (country==null||country=="")
-            return city;
+        String result = city.replace(" ", "+");
+        if (Strings.isNullOrEmpty(country)) {
+            return result;
+        }
         country = country.replace(" ", "+");
-        return city + ","+country;
+        return result + "," + country;
     }
     private List<String> getHeader() {
         WeatherData weatherData = new WeatherData();

@@ -31,9 +31,6 @@ public abstract class AbstractCommandExecutor implements CommandExecutor
     private Path outputRedirect;
     private Path workingDirectory;
 
-    public AbstractCommandExecutor() {
-    }
-
     @Override
     public void execute(List<String> commands) throws CommandExecutionException {
         try {

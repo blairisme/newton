@@ -42,9 +42,14 @@ public class Executor
     }
 
     public Executor(String address, String username, String password) {
+        this.id = 0;
         this.address = address;
         this.username = username;
         this.password = password;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getAddress() {

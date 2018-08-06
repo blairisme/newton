@@ -18,9 +18,9 @@ import java.net.URI;
  */
 public class UriSchemes
 {
+    public static final String HTTP = "http";
+
     private UriSchemes() {
         throw new UnsupportedOperationException();
     }
-
-    public static final String HTTP = "http";
 }

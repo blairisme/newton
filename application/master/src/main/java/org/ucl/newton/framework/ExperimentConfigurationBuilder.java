@@ -6,6 +6,7 @@ import org.ucl.newton.sdk.processor.DataProcessor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  * Instances of this class construct {@link ExperimentConfiguration} instances.
@@ -69,9 +70,9 @@ public class ExperimentConfigurationBuilder {
     }
 
     public ExperimentConfigurationBuilder addTrigger(String triggerLabel) {
-        if(triggerLabel.equals("Manual")){
+        if(Objects.equals(triggerLabel, "Manual")){
             trigger = ExperimentTriggerType.Manual;
-        } else if(triggerLabel.equals("On data change")) {
+        } else if(Objects.equals(triggerLabel, "On data change")) {
             trigger = ExperimentTriggerType.Onchange;
         }
         return this;

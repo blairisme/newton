@@ -68,6 +68,7 @@ public class ExperimentConfiguration implements Serializable {
         String displayPattern,
         ExperimentTriggerType trigger)
     {
+        this.id = 0;
         this.storageConfig = storageConfig;
         this.processorPluginId = processorPluginId;
         this.dataSources = dataSources;
@@ -76,7 +77,12 @@ public class ExperimentConfiguration implements Serializable {
         this.trigger = trigger;
     }
 
-    public ExperimentConfiguration() { }
+    public ExperimentConfiguration() {
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public StorageConfiguration getStorageConfiguration() {
         return storageConfig;
