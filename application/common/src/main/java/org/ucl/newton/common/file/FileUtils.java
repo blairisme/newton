@@ -9,11 +9,13 @@
 
 package org.ucl.newton.common.file;
 
+import com.csvreader.CsvWriter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang3.Validate;
 
+
 import java.io.*;
-import java.nio.file.Path;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -67,4 +69,14 @@ public class FileUtils
         }
         return ret;
     }
+    public static void writeCSV(OutputStream output,List<List<String>> listOfRecords) throws IOException {
+        if (output != null) {
+            CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("utf-8"));
+            for (List<String> record : listOfRecords) {
+                csvWriter.writeRecord(record.toArray(new String[record.size()]));
+            }
+            csvWriter.close();
+        }
+    }
+
 }

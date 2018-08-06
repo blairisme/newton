@@ -1,4 +1,5 @@
-package org.ucl.FizzyoDataProvider;
+package org.ucl.newton.common.network;
+
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
@@ -16,7 +17,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import java.util.Map;
-
 /**
  * Instances of this class provide utils for http operations.
  *
@@ -89,5 +89,4 @@ public class HttpUtils {
         }
         return null;
     }
-
 }
