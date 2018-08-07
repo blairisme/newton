@@ -47,7 +47,7 @@ public class ApplicationPreferencesDefault
     }
 
     public String getProfile() {
-        return "production";
+        return "development";
     }
 
     public String getProgramDirectory() {
