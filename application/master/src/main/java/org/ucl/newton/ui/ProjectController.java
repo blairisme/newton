@@ -17,6 +17,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.ucl.newton.application.system.ApplicationStorage;
+import org.ucl.newton.common.identifier.Identifier;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
@@ -127,8 +128,8 @@ public class ProjectController
     {
         try {
             ProjectBuilder projectBuilder = new ProjectBuilder();
-            projectBuilder.generateIdentifier(name);
             projectBuilder.setName(name);
+            projectBuilder.setIdentifier(Identifier.create(name));
             projectBuilder.setDescription(description);
             projectBuilder.setImage(persistProjectImage(image));
             projectBuilder.setOwner(userService.getAuthenticatedUser());

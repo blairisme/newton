@@ -16,6 +16,12 @@ import org.ucl.newton.common.serialization.JsonSerializer;
 import org.ucl.newton.integration.acceptance.newton.project.ProjectService;
 import org.ucl.newton.integration.acceptance.newton.user.UserService;
 
+/**
+ * Provides access to Newton server functionality via a thin Java wrapper
+ * around the Newton REST API.
+ *
+ * @author Blair Butterworth
+ */
 public class NewtonServer
 {
     private UserService userService;

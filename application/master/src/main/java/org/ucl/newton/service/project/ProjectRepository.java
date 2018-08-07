@@ -80,12 +80,40 @@ public class ProjectRepository
         project.getDataSources().size();
         return project;
     }
+    
+    @Transactional(readOnly=true)
+    public List<Project> getProjects() {
+        Session session = getSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Project> criteria = builder.createQuery(Project.class);
+        Root<Project> projects = criteria.from(Project.class);
+        criteria.select(projects);
+
+        List<Project> results = session.createQuery(criteria).getResultList();
+        for (Project result: results){
+            result.getMembers().size();
+            result.getMembersThatStar().size();
+            result.getDataSources().size();
+        }
+        return results;
+    }
 
     @Transactional(readOnly=true)
     public List<Project> getProjects(User user) {
         Session session = getSession();
         String sql = String.format("SELECT * FROM projects AS p INNER JOIN project_membership AS pm " +
                 "ON p.id = pm.project_id WHERE pm.user_id = %s", user.getId());
+        NativeQuery query = session.createNativeQuery(sql).addEntity(Project.class);
+        List<Project> result = query.list();
+        return result;
+    }
+
+    @Transactional(readOnly=true)
+    public List<Project> getProjectsStarredByUser(User user) {
+        Session session = getSession();
+        String sql = String.format("SELECT * FROM projects AS p INNER JOIN project_starred AS ps " +
+                "ON p.id = ps.project_id WHERE ps.user_id = %s", user.getId());
         NativeQuery query = session.createNativeQuery(sql).addEntity(Project.class);
         List<Project> result = query.list();
         return result;
@@ -107,16 +135,6 @@ public class ProjectRepository
     public void mergeProject(Project project) {
         Session session = getSession();
         session.merge(project);
-    }
-
-    @Transactional(readOnly=true)
-    public List<Project> getProjectsStarredByUser(User user) {
-        Session session = getSession();
-        String sql = String.format("SELECT * FROM projects AS p INNER JOIN project_starred AS ps " +
-                "ON p.id = ps.project_id WHERE ps.user_id = %s", user.getId());
-        NativeQuery query = session.createNativeQuery(sql).addEntity(Project.class);
-        List<Project> result = query.list();
-        return result;
     }
 
     private Session getSession() {

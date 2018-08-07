@@ -24,7 +24,6 @@ import java.util.List;
 public class ProjectServiceTest
 {
     private ProjectRepository repository;
-    private ExperimentService experimentSerivce;
     private ProjectService service;
     private String goshJiroIdentifier = "gosh-jiro";
     private int goshJiroId = 3;
@@ -36,8 +35,7 @@ public class ProjectServiceTest
     @Before
     public void setUp() {
         repository = Mockito.mock(ProjectRepository.class);
-        experimentSerivce = Mockito.mock(ExperimentService.class);
-        service = new ProjectService(repository, experimentSerivce);
+        service = new ProjectService(repository);
         goshJiro = new Project(3, "gosh-jiro", "GOSH Project Jiro", "Project description",
                 "default.png", new Date(), new User(), new ArrayList<>(), new ArrayList<>());
         newProject = new Project(99, "new-project", "New Project", "Project description",

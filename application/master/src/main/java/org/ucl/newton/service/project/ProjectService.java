@@ -10,10 +10,8 @@
 package org.ucl.newton.service.project;
 
 import org.apache.commons.lang3.Validate;
-import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.service.experiment.ExperimentService;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,12 +27,10 @@ import java.util.Collection;
 public class ProjectService
 {
     private ProjectRepository repository;
-    private ExperimentService experimentService;
 
     @Inject
-    public ProjectService(ProjectRepository repository, ExperimentService experimentService) {
+    public ProjectService(ProjectRepository repository) {
         this.repository = repository;
-        this.experimentService = experimentService;
     }
 
     public Project addProject(Project project) {
@@ -58,6 +54,10 @@ public class ProjectService
         Project project = getProjectByIdentifier(projectIdentifier, true);
         project.getMembers().add(user);
         repository.updateProject(project);
+    }
+
+    public Collection<Project> getProjects() {
+        return repository.getProjects();
     }
 
     public Collection<Project> getProjects(User user) {
@@ -112,15 +112,7 @@ public class ProjectService
 
     public void removeProject(Project project) {
         Validate.notNull(project);
-        removeExperiments(project);
         repository.removeProject(project);
-    }
-
-    private void removeExperiments(Project project) {
-        Collection<Experiment> experiments = experimentService.getExperimentsByProject(project);
-        for (Experiment experiment: experiments) {
-            experimentService.removeExperiment(experiment);
-        }
     }
 
     public void updateProject(Project project) {

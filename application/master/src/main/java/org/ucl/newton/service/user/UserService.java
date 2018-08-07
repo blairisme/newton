@@ -69,6 +69,15 @@ public class UserService
         return repository.getUserByEmail(emailAddress);
     }
 
+    public Collection<User> getUsersByEmail(Collection<String> emailAddresses) {
+        Validate.notNull(emailAddresses);
+        Collection<User> users = new ArrayList<>();
+        for (String emailAddress: emailAddresses) {
+            users.add(getUserByEmail(emailAddress));
+        }
+        return users;
+    }
+
     public Collection<User> getUsers() {
         return repository.getUsers();
     }

@@ -7,23 +7,23 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.integration.acceptance.newton.user;
+package org.ucl.newton.integration.acceptance.newton.project;
 
 import org.ucl.newton.common.network.RestResource;
 
 /**
- * Defines various user service endpoints exposed by the Newton REST API.
+ * Defines various project service endpoints exposed by the Newton REST API.
  *
  * @author Blair Butterworth
  */
-public enum UserResource implements RestResource
+public enum ProjectResource implements RestResource
 {
-    User    ("user"),
-    Users   ("users");
+    Project     ("project"),
+    Projects    ("projects");
 
     private String path;
 
-    UserResource(String path) {
+    ProjectResource(String path) {
         this.path = path;
     }
 

@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.ucl.newton.common.identifier.Identifier;
 import org.ucl.newton.framework.*;
 
 import java.time.Duration;
@@ -76,7 +77,7 @@ public class ExperimentServiceTest
 
     private Project createProject() {
         ProjectBuilder builder = new ProjectBuilder();
-        builder.generateIdentifier("Project 1");
+        builder.setIdentifier(Identifier.create("Project 1"));
         builder.setName("Project 1");
         builder.setOwner(createUser());
         return builder.build();
