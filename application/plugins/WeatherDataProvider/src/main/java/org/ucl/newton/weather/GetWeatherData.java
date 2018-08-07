@@ -91,7 +91,7 @@ public class GetWeatherData implements Runnable {
     private String getDataFromWWO(WeatherProperty property) {
         String url = "https://api.worldweatheronline.com/premium/v1/past-weather.ashx";
         Map<String,String> header = new HashMap<>();
-        Map<String,String> params = new HashMap<>();
+        Map<String,Object> params = new HashMap<>();
         params.put("key", property.getKey());
         params.put("format","json");
 
