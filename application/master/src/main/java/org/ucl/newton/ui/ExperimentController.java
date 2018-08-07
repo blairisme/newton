@@ -165,7 +165,7 @@ public class ExperimentController
         toUpdate.getConfiguration().setTrigger(temp.getConfiguration().getTrigger());
         toUpdate.getConfiguration().setOutputPattern(temp.getConfiguration().getOutputPattern());
         toUpdate.getConfiguration().setExperimentDataSources(temp.getConfiguration().getExperimentDataSources());
-        experimentService.update(toUpdate);
+        experimentService.updateExperiment(toUpdate);
         } catch (Throwable e) {
             redirectAttr.addFlashAttribute("message", "Update failed " + e.getMessage());
             redirectAttr.addFlashAttribute("alertClass", "alert-danger");
