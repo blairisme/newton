@@ -96,8 +96,16 @@ public class ExperimentConfiguration implements Serializable {
         return dataSources;
     }
 
+    public void setExperimentDataSources(Collection<ExperimentDataSource> dataSources) {
+        this.dataSources = dataSources;
+    }
+
     public String getOutputPattern() {
         return outputPattern;
+    }
+
+    public void setOutputPattern(String outputPattern) {
+        this.outputPattern = outputPattern;
     }
 
     public String getDisplayPattern() {
@@ -106,6 +114,10 @@ public class ExperimentConfiguration implements Serializable {
 
     public ExperimentTriggerType getTrigger() {
         return trigger;
+    }
+
+    public void setTrigger( ExperimentTriggerType trigger) {
+        this.trigger = trigger;
     }
 
     @Override

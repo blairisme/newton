@@ -4,7 +4,6 @@ $(document).ready(function() {
         e.preventDefault();
         var selText = $(this).text();
         $("#dropdownDsButton").text(selText);
-        //currentDsId = $(this).attr("value");
         var default_loc = "data/" + selText.split(' ').join('_').toLowerCase() + ".csv"; // temporary
         $("#experimentDsLoc").val(default_loc);
     });
@@ -26,12 +25,6 @@ $(document).ready(function() {
             }
         }
     });
-
-    $("#selectedTriggerValue1").prop("checked", true);
-
-    $("#selectedStorageValue1").prop("checked", true);
-
-    $("#selectedTypeValue1").prop("checked", true);
 
     $("#dsList").on("click", ".remove_button", function() {
         var name = $(this).val();
@@ -67,6 +60,8 @@ function removeDs(name) {
     $(loc).remove();
 
     if($("#dsList li").length < 1) {
-        $("#dsListEmpty").show();
+        var dsListEmpty = $("#dsListEmpty");
+        dsListEmpty.show();
+        dsListEmpty.prop("hidden", false);
     }
 }

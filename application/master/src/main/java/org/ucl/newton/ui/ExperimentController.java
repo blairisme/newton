@@ -16,6 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.ucl.newton.common.identifier.Identifier;
 import org.ucl.newton.engine.ExecutionEngine;
 import org.ucl.newton.framework.*;
@@ -139,10 +140,40 @@ public class ExperimentController
             @PathVariable("experiment") String experimentIdentifier,
             ModelMap model)
     {
+        System.out.println("Message" + model.get("message"));
         model.addAttribute("user", userService.getAuthenticatedUser());
-        model.addAttribute("project", projectService.getProjectByIdentifier(projectIdentifier, false));
+        model.addAttribute("project", projectService.getProjectByIdentifier(projectIdentifier, true));
         model.addAttribute("experiment", experimentService.getExperimentByIdentifier(experimentIdentifier));
+        model.addAttribute("triggerValues", new ExperimentTriggerType[] {ExperimentTriggerType.Manual, ExperimentTriggerType.Onchange});
+        model.addAttribute("storageValues", new StorageType[] {StorageType.Newton});
+        model.addAttribute("typeValues", pluginService.getDataProcessors());
+        model.addAttribute("experimentDto", new ExperimentDto());
         return "experiment/setup";
+    }
+
+    @PostMapping(value = "/project/{project}/{experiment}/setup")
+    public String experimentUpdate(
+            @PathVariable("project") String projectIdentifier,
+            @PathVariable("experiment") String experimentIdentifier,
+            @ModelAttribute("experimentDto") @Valid ExperimentDto experimentDto,
+            RedirectAttributes redirectAttr)
+    {
+        try {
+        Experiment toUpdate = experimentService.getExperimentByIdentifier(experimentIdentifier);
+        Experiment temp = createExperiment(experimentDto, experimentIdentifier, projectIdentifier);
+        toUpdate.setDescription(temp.getDescription());
+        toUpdate.getConfiguration().setTrigger(temp.getConfiguration().getTrigger());
+        toUpdate.getConfiguration().setOutputPattern(temp.getConfiguration().getOutputPattern());
+        toUpdate.getConfiguration().setExperimentDataSources(temp.getConfiguration().getExperimentDataSources());
+        experimentService.update(toUpdate);
+        } catch (Throwable e) {
+            redirectAttr.addFlashAttribute("message", "Update failed " + e.getMessage());
+            redirectAttr.addFlashAttribute("alertClass", "alert-danger");
+            return "redirect:/project/" + projectIdentifier + "/" + experimentIdentifier + "/setup";
+        }
+        redirectAttr.addFlashAttribute("message", "Update was successful");
+        redirectAttr.addFlashAttribute("alertClass", "alert-success");
+        return "redirect:/project/" + projectIdentifier + "/" + experimentIdentifier + "/setup";
     }
 
 
@@ -166,7 +197,6 @@ public class ExperimentController
     {
         String experimentId = Identifier.create(experimentDto.getName());
         Experiment experiment = createExperiment(experimentDto, experimentId, projectId);
-
         experimentService.addExperiment(experiment);
         populateRepository(experiment);
 

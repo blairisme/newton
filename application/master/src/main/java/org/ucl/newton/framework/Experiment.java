@@ -107,6 +107,10 @@ public class Experiment
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public User getCreator() {
         return creator;
     }

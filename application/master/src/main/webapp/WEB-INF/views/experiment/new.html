@@ -50,14 +50,15 @@
                 <div class="form-group">
                     <label for="experimentTriggerRadio">Experiment trigger</label>
                     <div id="experimentTriggerRadio">
-                        <th:block th:each="triggerValue: ${triggerValues}">
+                        <th:block th:each="triggerValue, itter: ${triggerValues}">
                             <div class="radio">
                                 <input type="radio"
-                                       th:field="*{selectedTriggerValue}"
+                                       th:id="'selectedTriggerValue' + ${itter.count}"
                                        th:value="${triggerValue}"
-                                        th:name="optradio"/>
+                                       name="selectedTriggerValue"
+                                       th:checked="${itter.count} == 1"/>
                                 <label
-                                        th:for="${#ids.prev('selectedTriggerValue')}"
+                                        th:for="'selectedTriggerValue' + ${itter.count}"
                                         th:text="${triggerValue}"></label>
                             </div>
                         </th:block>
@@ -74,14 +75,15 @@
                 <div class="form-group">
                     <label for="experimentProjectTypeRadio">Project Type</label>
                     <div id="experimentProjectTypeRadio">
-                        <th:block th:each="typeValue: ${typeValues}">
+                        <th:block th:each="typeValue, itter: ${typeValues}">
                             <div class="radio">
                                 <input type="radio"
-                                       th:field="*{selectedTypeValue}"
+                                       th:id="'selectedTypeValue' + ${itter.count}"
                                        th:value="${typeValue.getName()}"
-                                       th:name="expTypeRadio"/>
+                                       name="selectedTypeValue"
+                                       th:checked="${itter.count} == 1"/>
                                 <label
-                                        th:for="${#ids.prev('selectedTypeValue')}"
+                                        th:for="'selectedTypeValue' + ${itter.count}"
                                         th:text="${typeValue.getName()}"></label>
                             </div>
                         </th:block>
@@ -98,14 +100,15 @@
                 <div class="form-group">
                     <label for="experimentStorageRadio">Storage type</label>
                     <div id="experimentStorageRadio">
-                        <th:block th:each="storageValue: ${storageValues}">
+                        <th:block th:each="storageValue, itter: ${storageValues}">
                             <div class="radio">
                                 <input type="radio"
-                                       th:field="*{selectedStorageValue}"
+                                       th:id="'selectedStorageValue' + ${itter.count}"
                                        th:value="${storageValue}"
-                                       th:name="storageRadio"/>
+                                       name="selectedStorageValue"
+                                       th:checked="${itter.count} == 1"/>
                                 <label
-                                        th:for="${#ids.prev('selectedStorageValue')}"
+                                        th:for="'selectedStoragevalue' + ${itter.count}"
                                         th:text="${storageValue}"></label>
                             </div>
                         </th:block>
@@ -137,7 +140,6 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <th:block th:each="dataSource : ${project.dataSources}">
-                                <!--<a class="dropdown-item" href="#" th:text="${dataSource.name}" th:value="${dataSource.id}"></a>-->
                                 <a class="dropdown-item" href="#" th:text="${dataSource}"></a>
                             </th:block>
                         </div>
@@ -163,7 +165,7 @@
 
                 <div class="form-group">
                     <label for="experimentOutputInput">Experiment output <span class="text-danger">*</span> (give a pattern to select files to save)</label>
-                    <input id="experimentOutputInput" th:field="*{outputPattern}" type="text" class="form-control" placeholder="outputs/*.csv" required="required">
+                    <input id="experimentOutputInput" name="outputPattern" type="text" class="form-control" value="*.csv, *.png" required="required">
                 </div>
 
             </section>
