@@ -78,6 +78,12 @@ public class ExperimentRepository {
     }
 
     @Transactional
+    public void removeExperiment(Experiment experiment) {
+        Session session = getSession();
+        session.delete(experiment);
+    }
+
+    @Transactional
     public void update(Experiment experiment) {
         Session session = getSession();
         session.update(experiment);

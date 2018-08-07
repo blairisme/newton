@@ -53,7 +53,7 @@ public class ExperimentServiceTest
         Collection<Experiment> experimentList = new ArrayList<>();
         experimentList.add(expectedExperiment);
         Mockito.when(repository.getExperimentsForProject(parentProjectName)).thenReturn(experimentList);
-        Assert.assertEquals(experimentList, service.getExperimentsByParentProjectName(parentProjectName));
+        Assert.assertEquals(experimentList, service.getExperimentsByProject(parentProjectName));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ExperimentServiceTest
         builder.setProject(createProject());
         builder.setCreator(createUser());
         builder.setConfiguration(new ExperimentConfiguration());
-        return null;
+        return builder.build();
     }
 
     private Project createProject() {

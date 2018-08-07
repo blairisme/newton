@@ -4,15 +4,15 @@ Feature: Login
 
 Background:
   Given the system has the following users:
-    | id        | username      | password      |
-    | 1         | blair         | abc123        |
-    | 2         | xiaolong      | isalegend     |
-    | 3         | ziad          | pokerlife     |
-    | 4         | john          | wilkie4pres   |
+    | email                             | password      | fullName          |
+    | blair.butterworth.17@ucl.ac.uk    | abc123        | Blair Butterworth |
+    | xiaolong.chen@ucl.ac.uk           | isalegend     | Xiaolong Chen     |
+    | ziad.halabi.17@ucl.ac.uk          | pokerlife     | Ziad Halabi       |
+    | john.wilkie.17@ucl.ac.uk          | wilkie4pres   | John Wiklie       |
 
 Scenario: Correct authentication details
    When the user is shown the login page
-   And the user enters "admin@ucl.ac.uk" as their username and "password" as their password
+   And the user enters "blair.butterworth.17@ucl.ac.uk" as their username and "abc123" as their password
    And the user selects the signin option
    Then the user should be shown the project list
 
@@ -21,7 +21,6 @@ Scenario: Incorrect user
    And the user enters "batman" as their username and "isalegend" as their password
    And the user selects the signin option
    Then the user should be shown an authentication error
-
 
 Scenario: Incorrect password
   When the user is shown the login page

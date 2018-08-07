@@ -16,14 +16,13 @@ public class UserDto {
     @NotEmpty
     private String password;
 
-    @NotEmpty
-    private String confirmPassword;
-
     @Email
     @NotEmpty
     private String email;
 
-    public void setFullName(String name) { fullName = name; }
+    public void setFullName(String name) {
+        fullName = name;
+    }
 
     public String getFullName() {
         return fullName;
@@ -37,14 +36,6 @@ public class UserDto {
         this.password = password;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -52,5 +43,4 @@ public class UserDto {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }

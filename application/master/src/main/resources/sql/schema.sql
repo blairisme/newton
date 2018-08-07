@@ -29,8 +29,7 @@ CREATE TABLE IF NOT EXISTS credentials (
     password VARCHAR(80) NOT NULL,
     role VARCHAR(20) NOT NULL,
     PRIMARY KEY (id),
-    CONSTRAINT fk_credentials_user FOREIGN KEY (user_id)
-    REFERENCES users(id)
+    CONSTRAINT fk_credentials_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 
@@ -46,7 +45,7 @@ CREATE TABLE IF NOT EXISTS projects (
     image VARCHAR(45) NOT NULL,
     updated DATETIME NOT NULL,
     PRIMARY KEY (id),
-    CONSTRAINT fk_project_owner FOREIGN KEY (owner_id) REFERENCES users(id)
+    CONSTRAINT fk_project_owner FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 /* Create join table to connect users to a project as members */
@@ -54,8 +53,8 @@ CREATE TABLE IF NOT EXISTS project_membership (
     project_id INT NOT NULL,
     user_id INT NOT NULL,
     PRIMARY KEY (project_id, user_id),
-    CONSTRAINT fk_membership_project FOREIGN KEY (project_id) REFERENCES projects(id),
-    CONSTRAINT fk_membership_user FOREIGN KEY (user_id) REFERENCES users(id)
+    CONSTRAINT fk_membership_project FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+    CONSTRAINT fk_membership_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 /* Create join table to connect users that have stare a project */
@@ -63,8 +62,8 @@ CREATE TABLE IF NOT EXISTS project_starred (
     project_id INT NOT NULL,
     user_id INT NOT NULL,
     PRIMARY KEY (project_id, user_id),
-    CONSTRAINT fk_starred_project FOREIGN KEY (project_id) REFERENCES projects(id),
-    CONSTRAINT fk_starred_user FOREIGN KEY (user_id) REFERENCES users(id)
+    CONSTRAINT fk_starred_project FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+    CONSTRAINT fk_starred_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 /* Create join table to connect selected data sources to a project */
@@ -73,7 +72,7 @@ CREATE TABLE IF NOT EXISTS project_datasources (
     pds_project INT NOT NULL,
     pds_datasource VARCHAR(100) NOT NULL,
     PRIMARY KEY (pds_id),
-    CONSTRAINT fk_projds_project FOREIGN KEY (pds_project) REFERENCES projects(id)
+    CONSTRAINT fk_projds_project FOREIGN KEY (pds_project) REFERENCES projects(id) ON DELETE CASCADE
 );
 
 
@@ -96,7 +95,7 @@ CREATE TABLE IF NOT EXISTS experiment_config (
     exp_display_pattern VARCHAR(100) NOT NULL,
     exp_trigger VARCHAR(20) NOT NULL,
     PRIMARY KEY (exp_config_id),
-    CONSTRAINT fk_experiment_storage FOREIGN KEY (storage_config_id) REFERENCES storage_configuration(sc_id)
+    CONSTRAINT fk_experiment_storage FOREIGN KEY (storage_config_id) REFERENCES storage_configuration(sc_id) ON DELETE CASCADE
 );
 
 /* Create experiment table to store data relating to experiments */
@@ -109,9 +108,9 @@ CREATE TABLE IF NOT EXISTS experiments (
     creator_id INT NOT NULL,
     exp_config_id INT NOT NULL,
     PRIMARY KEY (exp_id),
-    CONSTRAINT fk_experiment_project FOREIGN KEY (project_id) REFERENCES projects(id),
-    CONSTRAINT fk_experiment_creator FOREIGN KEY (creator_id) REFERENCES users(id),
-    CONSTRAINT fk_experiment_config FOREIGN KEY (exp_config_id) REFERENCES experiment_config(exp_config_id)
+    CONSTRAINT fk_experiment_project FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+    CONSTRAINT fk_experiment_creator FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_experiment_config FOREIGN KEY (exp_config_id) REFERENCES experiment_config(exp_config_id) ON DELETE CASCADE
 );
 
 /* Creates table for experiment data sources */
@@ -127,8 +126,8 @@ CREATE TABLE IF NOT EXISTS experiment_eds_link (
     exp_config_id INT NOT NULL,
     eds_id INT NOT NULL,
     PRIMARY KEY (exp_config_id, eds_id),
-    CONSTRAINT fk_experiementconfig FOREIGN KEY (exp_config_id) REFERENCES experiment_config(exp_config_id),
-    CONSTRAINT fk_datasource FOREIGN KEY (eds_id) REFERENCES eds(eds_id)
+    CONSTRAINT fk_experiementconfig FOREIGN KEY (exp_config_id) REFERENCES experiment_config(exp_config_id) ON DELETE CASCADE,
+    CONSTRAINT fk_datasource FOREIGN KEY (eds_id) REFERENCES eds(eds_id) ON DELETE CASCADE
 );
 
 /* Create table to store experiment versions */
@@ -145,8 +144,8 @@ CREATE TABLE IF NOT EXISTS experiment_versions (
     experiment_id INT NOT NULL,
     version_id INT NOT NULL,
     PRIMARY KEY (experiment_id, version_id),
-    CONSTRAINT fk_experiment_versions_exp FOREIGN KEY (experiment_id) REFERENCES experiments(exp_id),
-    CONSTRAINT fk_experiment_versions_ver FOREIGN KEY (version_id) REFERENCES versions(ver_id)
+    CONSTRAINT fk_experiment_versions_exp FOREIGN KEY (experiment_id) REFERENCES experiments(exp_id) ON DELETE CASCADE,
+    CONSTRAINT fk_experiment_versions_ver FOREIGN KEY (version_id) REFERENCES versions(ver_id) ON DELETE CASCADE
 );
 
 /* Create table for experiment outcomes */
@@ -163,8 +162,8 @@ CREATE TABLE IF NOT EXISTS version_outcomes (
     ver_id INT NOT NULL,
     out_id INT NOT NULL,
     PRIMARY KEY (ver_id, out_id),
-    CONSTRAINT fk_vo_ver FOREIGN KEY (ver_id) REFERENCES versions(ver_id),
-    CONSTRAINT fk_vo_out FOREIGN KEY (out_id) REFERENCES outcomes(outcome_id)
+    CONSTRAINT fk_vo_ver FOREIGN KEY (ver_id) REFERENCES versions(ver_id) ON DELETE CASCADE,
+    CONSTRAINT fk_vo_out FOREIGN KEY (out_id) REFERENCES outcomes(outcome_id) ON DELETE CASCADE
 );
 
 /* Create table to contain data source provider details */

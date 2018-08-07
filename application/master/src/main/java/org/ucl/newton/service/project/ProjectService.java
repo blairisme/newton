@@ -9,8 +9,11 @@
 
 package org.ucl.newton.service.project;
 
+import org.apache.commons.lang3.Validate;
+import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
+import org.ucl.newton.service.experiment.ExperimentService;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -20,28 +23,52 @@ import java.util.Collection;
  * Instances of this interface provide access to project data.
  *
  * @author Blair Butterworth
+ * @author John Wilkie
  */
 @Named
 public class ProjectService
 {
     private ProjectRepository repository;
+    private ExperimentService experimentService;
 
     @Inject
-    public ProjectService(ProjectRepository repository) {
+    public ProjectService(ProjectRepository repository, ExperimentService experimentService) {
         this.repository = repository;
+        this.experimentService = experimentService;
     }
 
     public Project addProject(Project project) {
+        Validate.notNull(project);
         return repository.addProject(project);
     }
 
-    public void mergeProject(Project project) { repository.mergeProject(project); }
+    public void addStar(String projectIdentifier, User user) {
+        Validate.notNull(projectIdentifier);
+        Validate.notNull(user);
+
+        Project project = getProjectByIdentifier(projectIdentifier, true);
+        project.getMembersThatStar().add(user);
+        repository.updateProject(project);
+    }
+
+    public void addMemberToProject(String projectIdentifier, User user) {
+        Validate.notNull(projectIdentifier);
+        Validate.notNull(user);
+
+        Project project = getProjectByIdentifier(projectIdentifier, true);
+        project.getMembers().add(user);
+        repository.updateProject(project);
+    }
 
     public Collection<Project> getProjects(User user) {
+        Validate.notNull(user);
         return repository.getProjects(user);
     }
 
-    public Collection<Project> getStarredProjects(User user) { return repository.getProjectsStarredByUser(user); }
+    public Collection<Project> getStarredProjects(User user) {
+        Validate.notNull(user);
+        return repository.getProjectsStarredByUser(user);
+    }
 
     public Project getProjectById(int id) {
         Project project = repository.getProjectById(id);
@@ -53,39 +80,51 @@ public class ProjectService
 
     public Project getProjectByIdentifier(String identifier, boolean eagerly) {
         Project project;
-        if(eagerly) {
+        if (eagerly) {
             project = repository.getProjectEagerlyByIdentifier(identifier);
-        } else {
+        }
+        else {
             project = repository.getProjectByIdentifier(identifier);
         }
-
         if (project == null) {
             throw new UnknownProjectException(identifier);
         }
         return project;
     }
 
-    public void persistUnstar(String projectIdentifier, User user) {
+    public void removeStar(String projectIdentifier, User user) {
+        Validate.notNull(projectIdentifier);
+        Validate.notNull(user);
+
         Project project = getProjectByIdentifier(projectIdentifier, true);
         project.getMembersThatStar().remove(user);
         repository.updateProject(project);
     }
 
-    public void persistStar(String projectIdentifier, User user) {
-        Project project = getProjectByIdentifier(projectIdentifier, true);
-        project.getMembersThatStar().add(user);
-        repository.updateProject(project);
-    }
+    public void removeMemberFromProject(String projectIdentifier, User user) {
+        Validate.notNull(projectIdentifier);
+        Validate.notNull(user);
 
-    public void persistAddMemberToProject(String projectIdentifier, User user) {
-        Project project = getProjectByIdentifier(projectIdentifier, true);
-        project.getMembers().add(user);
-        repository.updateProject(project);
-    }
-
-    public void persistRemoveMemberFromProject(String projectIdentifier, User user) {
         Project project = getProjectByIdentifier(projectIdentifier, true);
         project.getMembers().remove(user);
         repository.updateProject(project);
+    }
+
+    public void removeProject(Project project) {
+        Validate.notNull(project);
+        removeExperiments(project);
+        repository.removeProject(project);
+    }
+
+    private void removeExperiments(Project project) {
+        Collection<Experiment> experiments = experimentService.getExperimentsByProject(project);
+        for (Experiment experiment: experiments) {
+            experimentService.removeExperiment(experiment);
+        }
+    }
+
+    public void updateProject(Project project) {
+        Validate.notNull(project);
+        repository.mergeProject(project);
     }
 }

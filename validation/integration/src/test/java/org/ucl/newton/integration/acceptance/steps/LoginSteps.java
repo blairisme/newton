@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.integration;
+package org.ucl.newton.integration.acceptance.steps;
 
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -18,24 +18,37 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.ucl.newton.common.network.RestException;
+import org.ucl.newton.integration.acceptance.newton.NewtonServer;
+import org.ucl.newton.integration.acceptance.newton.user.User;
+import org.ucl.newton.integration.acceptance.newton.user.UserService;
 
 import java.util.List;
 
-import static org.ucl.newton.integration.WebDriverUtils.elementExists;
+import static org.ucl.newton.integration.acceptance.common.WebDriverUtils.elementExists;
 
+/**
+ * Cucumber steps that drive the login user interface.
+ *
+ * @author Blair Butterworth
+ */
 @SuppressWarnings("unused")
 public class LoginSteps
 {
     private WebDriver driver;
+    private NewtonServer newton;
 
     @Before
     public void setup() {
         driver = new HtmlUnitDriver(true);
+        newton = new NewtonServer();
     }
 
     @Given("^the system has the following users:$")
-    public void initializeUsers(List<User> users) {
-
+    public void initializeUsers(List<User> users) throws RestException {
+        UserService userService = newton.getUserService();
+        userService.removeUsers();
+        userService.addUsers(users);
     }
 
     @When("^the user is shown the login page$")
@@ -59,7 +72,7 @@ public class LoginSteps
     }
 
     @Then("^the user should be shown the project list$")
-    public void assertShownProjects() { ;
+    public void assertShownProjects() {
         Assert.assertEquals("http://localhost:9090/projects", driver.getCurrentUrl());
     }
 

@@ -2,16 +2,14 @@ package org.ucl.newton.integration.api;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.ucl.newton.common.file.SystemPaths;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
 
+@Ignore //need test to add experiments before querying for them
 public class ExperimentApiTest
 {
     private Path tempDirectory;

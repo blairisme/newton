@@ -9,6 +9,7 @@
 
 package org.ucl.newton.service.authentication;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -76,5 +77,15 @@ public class AuthenticationService implements UserDetailsService
             throw new UsernameNotFoundException(userName);
         }
         return newRole;
+    }
+
+    public Credential getCredentials(User user) {
+        Validate.notNull(user);
+        return repository.getCredentialByName(user.getEmail());
+    }
+
+    public void removeCredentials(Credential credential) {
+        Validate.notNull(credential);
+        repository.removeCredential(credential);
     }
 }

@@ -9,12 +9,10 @@
 
 package org.ucl.newton.api;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.ucl.newton.framework.Credential;
 import org.ucl.newton.framework.User;
+import org.ucl.newton.framework.UserDto;
 import org.ucl.newton.framework.UserRole;
 import org.ucl.newton.service.authentication.AuthenticationService;
 import org.ucl.newton.service.authentication.UnknownRoleException;
@@ -41,14 +39,29 @@ public class UserApi
         this.authService = authService;
     }
 
-    @RequestMapping(value = "/api/user", method = RequestMethod.GET)
-    public Collection<User> findUsers(@RequestParam(value="matching")String matching) {
-        return userService.findUsers(matching);
+    @RequestMapping(value = "/api/user", method = RequestMethod.POST)
+    public void addUser(@RequestBody UserDto userDetails) {
+        User user = userService.addUser(userDetails);
+        authService.save(userDetails, user);
+    }
+
+    @RequestMapping(value = "/api/users", method = RequestMethod.GET)
+    public Collection<User> getUsers(@RequestParam(value="matching")String matching) {
+        return userService.getUsers(matching);
+    }
+
+    @RequestMapping(value = "/api/users", method = RequestMethod.DELETE)
+    public Collection<User> removeUsers(@RequestParam(value="matching", defaultValue="") String matching) {
+        Collection<User> users = matching.isEmpty() ? userService.getUsers() : userService.getUsers(matching);
+        for (User user: users) {
+            userService.removeUser(user);
+        }
+        return users;
     }
 
     @RequestMapping(value = "/api/userrole", method = RequestMethod.GET)
     public UserRole getUserRole(@RequestParam(value="username") String userName) {
-        Credential creds = (Credential) authService.loadUserByUsername(userName); // fix this to not use cast
+        Credential creds = (Credential)authService.loadUserByUsername(userName);
         return creds.getRole();
     }
 
@@ -57,7 +70,8 @@ public class UserApi
                                 @RequestParam(value="role") String role) {
         try {
             return authService.changeRole(userName, role);
-        } catch (UnknownRoleException e) {
+        }
+        catch (UnknownRoleException e) {
             return null; // Temporary (fix to handle properly)
         }
     }

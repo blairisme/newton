@@ -116,6 +116,6 @@ public class ExecutionPersistenceHandler
         versionBuilder.setDuration(executionResult.getDuration());
 
         experiment.addVersion(versionBuilder.build());
-        experimentService.update(experiment);
+        experimentService.updateExperiment(experiment);
     }
 }

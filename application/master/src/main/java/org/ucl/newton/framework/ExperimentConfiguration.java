@@ -36,14 +36,14 @@ public class ExperimentConfiguration implements Serializable {
     @GeneratedValue(generator = "increment")
     private int id;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.ALL}, orphanRemoval=true)
     @JoinColumn(name = "storage_config_id")
     private StorageConfiguration storageConfig;
 
     @Column(name = "exp_proc_engine")
     private String processorPluginId;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval=true)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "experiment_eds_link",
             joinColumns = @JoinColumn(name = "exp_config_id", referencedColumnName = "exp_config_id"),

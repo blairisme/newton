@@ -81,7 +81,7 @@ public class ProjectController
     public String details(@PathVariable("name")String name, ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
         model.addAttribute("project", projectService.getProjectByIdentifier(name, true));
-        model.addAttribute("experiments", experimentService.getExperimentsByParentProjectName(name));
+        model.addAttribute("experiments", experimentService.getExperimentsByProject(name));
         return "project/details";
     }
 
@@ -93,9 +93,9 @@ public class ProjectController
     {
         User user = userService.getAuthenticatedUser();
         if(Objects.equals(type, "Unstar")) {
-            projectService.persistUnstar(name, user);
+            projectService.removeStar(name, user);
         } else if(Objects.equals(type, "Star")) {
-            projectService.persistStar(name, user);
+            projectService.addStar(name, user);
         }
     }
 
@@ -162,7 +162,7 @@ public class ProjectController
             projectToUpdate.setMembers(userService.getUsers(stringToInt(ensureNotNull(members))));
             projectToUpdate.setDataSources(sources);
             projectToUpdate.setLastUpdated(new Date());
-            projectService.mergeProject(projectToUpdate);
+            projectService.updateProject(projectToUpdate);
         } catch (Throwable exception) {
             model.addAttribute("error", exception.getMessage());
             model.addAttribute("user", userService.getAuthenticatedUser());
