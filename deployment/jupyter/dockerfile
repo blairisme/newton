@@ -38,6 +38,8 @@ COPY ./config/newtonspawner.py /etc/jupyterhub/newtonspawner.py
 COPY ./config/newtonauthenticator.py /etc/jupyterhub/newtonauthenticator.py
 COPY ./config/newton.key /etc/jupyterhub/newton.key
 
+RUN mkdir -p /home/newton/experiment
+
 EXPOSE 8000
 EXPOSE 8888
 

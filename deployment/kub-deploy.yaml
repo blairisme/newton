@@ -54,6 +54,7 @@ spec:
         volumeMounts:
         - name: shared-data
           mountPath: /root/.newton/experiment
+          readOnly: false
         securityContext:
           allowPrivilegeEscalation: false
       - name: jupyter-newton
@@ -64,6 +65,7 @@ spec:
         volumeMounts:
         - name: shared-data
           mountPath: /home/newton/experiment
+          readOnly: false
         securityContext:
           allowPrivilegeEscalation: false
       imagePullSecrets:
