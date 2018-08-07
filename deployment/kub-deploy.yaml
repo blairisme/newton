@@ -39,7 +39,7 @@ spec:
     spec:
       securityContext:
         runAsUser: 0
-        fsGroup: 0
+        fsGroup: 0755
       volumes:
       - name: shared-data
         emptyDir: {}
