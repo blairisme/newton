@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.integration;
+package org.ucl.newton.integration.acceptance.common;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +15,12 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
+/**
+ * Provides utility functions for working with the
+ * {@link WebDriver Selenium WebDriver}.
+ *
+ * @author Blair Butterworth
+ */
 public class WebDriverUtils
 {
     public static boolean elementExists(WebDriver driver, By by) {
