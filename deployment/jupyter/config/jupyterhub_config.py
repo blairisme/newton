@@ -50,7 +50,7 @@ c.NewtonAuthenticator.forward_url = 'spawn'
 c.LocalAuthenticator.create_system_users = True
 
 if platform.system() == 'Linux':
-    c.LocalAuthenticator.add_user_cmd = ['adduser', '--create-home', '-g', '0755']
+    c.LocalAuthenticator.add_user_cmd = ['adduser', '--create-home']
 
 if platform.system() == 'Darwin':
     script_path = path.join(current_path, "adduser")
