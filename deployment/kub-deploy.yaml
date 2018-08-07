@@ -37,6 +37,9 @@ spec:
       labels:
         app: master-newton
     spec:
+      securityContext:
+        runAsUser: 0
+        fsGroup: 0
       volumes:
       - name: shared-data
         emptyDir: {}
@@ -50,7 +53,9 @@ spec:
         - containerPort: 9090
         volumeMounts:
         - name: shared-data
-          mountPath: ~/.newton/experiment
+          mountPath: /root/.newton/experiment
+        securityContext:
+          allowPrivilegeEscalation: false
       - name: jupyter-newton
         image: newtonregistry.azurecr.io/blairisme/newton-jupyter:latest
         ports:
@@ -58,7 +63,9 @@ spec:
         - containerPort: 8888
         volumeMounts:
         - name: shared-data
-          mountPath: /var/newton/experiment
+          mountPath: /home/newton/experiment
+        securityContext:
+          allowPrivilegeEscalation: false
       imagePullSecrets:
       - name: acr-auth
 ---
