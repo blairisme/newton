@@ -137,8 +137,22 @@
 
                     </section>
 
-                    <input type="submit" class="btn btn-primary float-right create-button" value="Update Project" th:disabled="${project.owner.id} != ${user.id}"/>
+                    <section class="form-section section-divider-thick section-button">
+                        <input type="submit" class="btn btn-primary float-right update-button" value="Update Project" th:disabled="${project.owner.id} != ${user.id}"/>
+                    </section>
+
                 </form>
+
+                <!-- Delete project -->
+                <form th:action="@{'/project/' + ${project.identifier} + '/delete'}" method="POST" >
+                    <section class="form-section section-divider section-button">
+                        <h4>Delete Project</h4>
+                        <p class="text-danger">Warning deleting a project will permanently remove that project, any experiments relating to that project!
+                            <input type="submit" class="btn btn-danger float-right delete-button" value="Delete" th:disabled="${project.owner.id} != ${user.id}"/>
+                        </p>
+                    </section>
+                </form>
+
             </div>
 
         </div>

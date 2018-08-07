@@ -140,7 +140,6 @@ public class ExperimentController
             @PathVariable("experiment") String experimentIdentifier,
             ModelMap model)
     {
-        System.out.println("Message" + model.get("message"));
         model.addAttribute("user", userService.getAuthenticatedUser());
         model.addAttribute("project", projectService.getProjectByIdentifier(projectIdentifier, true));
         model.addAttribute("experiment", experimentService.getExperimentByIdentifier(experimentIdentifier));
