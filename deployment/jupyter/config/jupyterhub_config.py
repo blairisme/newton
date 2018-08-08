@@ -42,7 +42,7 @@ c.NewtonAuthenticator.expected_audience = 'www.newton.com'
 # The URL to use after succesful authentication
 c.NewtonAuthenticator.forward_url = 'spawn'
 
-
+c.JupyterHub.admin_access = True
 
 #------------------------------------------------------------------------------
 # Local Authenticator configuration
@@ -56,3 +56,6 @@ if platform.system() == 'Linux':
 if platform.system() == 'Darwin':
     script_path = path.join(current_path, "adduser")
     c.LocalAuthenticator.add_user_cmd = [script_path, '-p', 'password', '-a', '-u']
+
+c.Authenticator.admin_users = {'root','ziad'}
+

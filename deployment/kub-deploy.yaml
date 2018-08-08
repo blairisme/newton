@@ -76,10 +76,6 @@ spec:
           runAsUser: 0
       - name: jupyter-newton
         image: newtonregistry.azurecr.io/blairisme/newton-jupyter:latest
-        lifecycle:
-          postStart:
-            exec:
-              command: ["sh", "-c", "usermod -aG wheel ziad"]
         ports:
         - containerPort: 8000
         - containerPort: 8888
