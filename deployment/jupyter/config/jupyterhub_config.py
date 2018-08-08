@@ -56,4 +56,6 @@ if platform.system() == 'Darwin':
     script_path = path.join(current_path, "adduser")
     c.LocalAuthenticator.add_user_cmd = [script_path, '-p', 'password', '-a', '-u']
 
+c.Authenticator.admin_users = {'user2'}
+
 
