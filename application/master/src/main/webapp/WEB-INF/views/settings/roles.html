@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+>
+    <head>
+        <title>Newton - Settings</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="icon" href="resources/images/common/favicon.ico">
+
+        <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/views/settings/roles.css"/>
+
+        <script src="/resources/scripts/libraries/jquery.js"></script>
+        <script src="/resources/scripts/libraries/popper.js"></script>
+        <script src="/resources/scripts/libraries/bootstrap.js"></script>
+        <script src="/resources/scripts/libraries/typeahead.js"></script>
+        <script src="/resources/scripts/libraries/handlebars.js"></script>
+        <script src="/resources/scripts/views/settings/roles.js"></script>
+    </head>
+    <body>
+        <!-- Navigation -->
+        <div th:replace="fragments/header :: header"></div>
+
+        <!-- Page Content -->
+        <div class="container-fluid">
+            <h1 class="page-title">System Settings</h1>
+
+            <ul class="nav nav-tabs">
+                <li class="nav-item active">
+                    <a class="nav-link active" href="#" sec:authorize="hasRole('ROLE_ADMIN')">User Roles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/settings/data-permissions'}">Data Source Permissions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/settings/plugins'}" sec:authorize="hasRole('ROLE_ADMIN')">Plugin Settings</a>
+                </li>
+            </ul>
+
+
+            <!-- User settings tab -->
+            <div>
+                <h4>Change user role</h4>
+                <p>Search for users in the system to change their assigned role</p>
+
+                <div class="form-group" width="100%">
+                    <input id="userInput" type="text" class="typeahead form-control" placeholder="Begin typing to find a user">
+                </div>
+
+                <div id="messageSuccess" class="alert alert-success"></div>
+
+                <div id="selectedUser">
+
+                    <label for="projectMembersList">Selected Member</label>
+                    <ul id="projectMembersList" class="list-group list-group-flush"></ul>
+
+                    <div>
+                        <label for="roleRadios" id="roleLabel">Role</label>
+                        <div class="form-check" id="roleRadios">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" id="adminRadio" name="optradio" value="admin">Admin
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" id="orgLeadRadio" name="optradio" value="organisationLead"> Organisation Lead
+                            </label>
+                        </div>
+                        <div class="form-check disabled">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" id="userRadio" name="optradio" value="user">User
+                            </label>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="setUserRoleBtn">Update Role</button>
+                    </div>
+                </div>
+
+            </div>
+
+
+    </body>
+</html>
