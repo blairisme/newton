@@ -1,7 +1,5 @@
 package org.ucl.newton.ui;
 
-import com.csvreader.CsvReader;
-import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.springframework.context.annotation.Scope;
@@ -12,17 +10,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.common.file.FileUtils;
+import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.sdk.publisher.DataPublisher;
 import org.ucl.newton.sdk.publisher.FTPConfig;
-import org.ucl.newton.service.plugin.PluginService;
+import org.ucl.newton.service.publisher.PublisherService;
 
 import javax.inject.Inject;
 import java.io.*;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -38,16 +36,16 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class PluginController {
     ApplicationStorage storage;
-    PluginService pluginService;
+    PublisherService publisherService;
     @Inject
-    public PluginController(ApplicationStorage applicationStorage, PluginService pluginService){
+    public PluginController(ApplicationStorage applicationStorage, PublisherService publisherService){
         this.storage = applicationStorage;
-        this.pluginService = pluginService;
+        this.publisherService = publisherService;
     }
 
     @RequestMapping(value = "/publisherSetting", method = RequestMethod.GET)
     public String getPublisher(@RequestParam(required=false) String id, ModelMap model){
-        Collection<DataPublisher> publishers = pluginService.getDataPublishers();
+        Collection<DataPublisher> publishers = publisherService.getPublishers();
         if (id == null || id ==""){
             List<String> ids = new ArrayList<>();
             for(DataPublisher publisher : publishers){
@@ -71,16 +69,20 @@ public class PluginController {
                             @RequestParam String userName,
                             @RequestParam String userPassword,
                             ModelMap model){
+
         DataPublisher publisher = getPublisherByIdentifier(identifier);
+
         if(publisher != null){
-            URL resources = getClass().getResource("/plugins/config");
-            File file= new File(resources.getFile());
-            Path path = file.toPath().resolve(publisher.getConfigName());
             FTPConfig config = new FTPConfig(hostName,userName,userPassword,Integer.parseInt(port));
-            FileUtils.writeToFile(path,config,FTPConfig.class);
+            try {
+                OutputStream output = storage.getOutputStream("publisher", publisher.getConfigName());
+                FileUtils.writeToFile(output,config,FTPConfig.class);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
             publisher.setConfig(config);
         }
-        return "plugin/publisherSetting";
+        return "redirect:/publisherSetting";
     }
 
 
@@ -111,17 +113,8 @@ public class PluginController {
     public String list(ModelMap model) {
         Path path = Paths.get(storage.getRootPath());
         path = path.resolve("weather").resolve("setting");
-        List<String[]> properties = new ArrayList<>();
-        try {
-            CsvReader reader = new CsvReader(path.toString(),',');
-            reader.readHeaders();
-            while(reader.readRecord()) {
-                properties.add(reader.getValues());
-            }
-            reader.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
+        List<String[]> properties = FileUtils.readCSV(path.toString());
 
         model.addAttribute("properties",properties);
 
@@ -134,16 +127,12 @@ public class PluginController {
         @RequestParam(required = false) Collection<String> items,
         ModelMap model)
     {
-        List<String[]> properties = new ArrayList<>();
+        List<List<String>> properties = new ArrayList<>();
         properties.add(getHeader());
         properties.addAll(getProperties(key,items));
         try {
             OutputStream output = storage.getOutputStream("weather","setting");
-            CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("utf-8"));
-            for (String[] property : properties) {
-                csvWriter.writeRecord(property);
-            }
-            csvWriter.close();
+            FileUtils.writeCSV(output,properties);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -152,21 +141,23 @@ public class PluginController {
 
     private void setModel(DataPublisher publisher, ModelMap model) {
         String configFileName = publisher.getConfigName();
-        URL configFile = getClass().getResource("/plugins/config/"+configFileName);
-        if(configFile != null) {
-            File file = new File(configFile.getFile());
-            String configStr = FileUtils.readFile(file);
-            Gson gson = new Gson();
-            JsonObject json = gson.fromJson(configStr,JsonObject.class);
-            model.addAttribute("userName",json.get("userName").getAsString());
-            model.addAttribute("userPassword",json.get("userPassword").getAsString());
-            model.addAttribute("hostName",json.get("hostName").getAsString());
-            model.addAttribute("port",json.get("port").getAsInt());
-        }
+        Path path = Paths.get(storage.getRootPath()).resolve("publisher").resolve(configFileName);
+        File configFile = path.toFile();
+        if (!configFile.exists())
+            configFile = PathUtils.getConfigurationPath().resolve(configFileName).toFile();
+
+        String configStr = FileUtils.readFile(configFile);
+        Gson gson = new Gson();
+        JsonObject json = gson.fromJson(configStr,JsonObject.class);
+        model.addAttribute("userName",json.get("userName").getAsString());
+        model.addAttribute("userPassword",json.get("userPassword").getAsString());
+        model.addAttribute("hostName",json.get("hostName").getAsString());
+        model.addAttribute("port",json.get("port").getAsInt());
+
     }
 
     private DataPublisher getPublisherByIdentifier(String identifier) {
-        Collection<DataPublisher> publishers = pluginService.getDataPublishers();
+        Collection<DataPublisher> publishers = publisherService.getPublishers();
         for(DataPublisher publisher : publishers){
             if (identifier.equals(publisher.getIdentifier()))
                 return publisher;
@@ -174,24 +165,24 @@ public class PluginController {
         return null;
     }
 
-    private String[] getHeader() {
+    private List<String> getHeader() {
         String[] header = new String[4];
         header[0] = "city";
         header[1] = "country";
         header[2] = "date";
         header[3] = "key";
-        return header;
+        return Arrays.asList(header);
     }
 
-    private List<String[]> getProperties(String key, Collection<String> items) {
-        List<String[]> properties= new ArrayList<>();
+    private List<List<String>> getProperties(String key, Collection<String> items) {
+        List<List<String>> properties= new ArrayList<>();
         for(String item : items){
             String[] i = item.split("_");
             i[1] = i[1].replace("-"," ");
             String[] property = new String[4];
             System.arraycopy(i,0,property,0,i.length);
             property[3] = key;
-            properties.add(property);
+            properties.add(Arrays.asList(property));
         }
         return properties;
     }

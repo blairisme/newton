@@ -9,6 +9,7 @@
 
 package org.ucl.newton.common.file;
 
+import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
@@ -16,11 +17,7 @@ import org.apache.commons.lang3.Validate;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Utility functions for working with {@link File Files}.
@@ -84,16 +81,30 @@ public class FileUtils
         }
     }
 
-    public static <T> void writeToFile(Path path,T config,Class<T> type) {
+    public static List<String[]> readCSV(String path){
+        List<String[]> list = new ArrayList<>();
+        try {
+            CsvReader reader = new CsvReader(path,',');
+            reader.readHeaders();
+            while(reader.readRecord()) {
+                list.add(reader.getValues());
+            }
+            reader.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return list;
+
+    }
+
+    public static <T> void writeToFile(OutputStream output,T config,Class<T> type) {
         Gson gson = new Gson();
         String str = gson.toJson(config,type);
         try {
-            OutputStream output = new FileOutputStream(path.toFile());
             output.write(str.getBytes("utf-8"));
             output.close();
         }catch (IOException e){
             e.printStackTrace();
         }
-
     }
 }
