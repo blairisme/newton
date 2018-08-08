@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -112,5 +113,8 @@ public class PathUtils
         catch (MalformedURLException error) {
             throw new IllegalArgumentException(error);
         }
+    }
+    public static Path getConfigurationPath(){
+        return Paths.get("configuration");
     }
 }

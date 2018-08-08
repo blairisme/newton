@@ -117,6 +117,15 @@ public class ProjectController
         return "project/new";
     }
 
+    @PostMapping(value = "/project/{name}/delete")
+    public String deleteProject(
+            @PathVariable("name") String projectIdentifier)
+    {
+        Project toDelete = projectService.getProjectByIdentifier(projectIdentifier, true);
+        projectService.removeProject(toDelete);
+        return "redirect:/projects";
+    }
+
     @PostMapping("/project/new")
     public String persistNewProject(
         @RequestParam String name,

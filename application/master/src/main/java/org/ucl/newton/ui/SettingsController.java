@@ -34,10 +34,22 @@ public class SettingsController
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/settings", method = RequestMethod.GET)
-    public String settings(ModelMap model) {
+    @RequestMapping(value = "/settings/roles", method = RequestMethod.GET)
+    public String roles(ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
-        return "settings/system";
+        return "settings/roles";
+    }
+
+    @RequestMapping(value = "/settings/data-permissions", method = RequestMethod.GET)
+    public String dataPermissions(ModelMap model) {
+        model.addAttribute("user", userService.getAuthenticatedUser());
+        return "settings/data-permissions";
+    }
+
+    @RequestMapping(value = "/settings/plugins", method = RequestMethod.GET)
+    public String plugins(ModelMap model) {
+        model.addAttribute("user", userService.getAuthenticatedUser());
+        return "settings/plugins";
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
