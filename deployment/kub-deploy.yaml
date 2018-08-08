@@ -67,6 +67,10 @@ spec:
         - configMapRef:
             name: my-env-var
         image: newtonregistry.azurecr.io/blairisme/newton:latest
+        lifecycle:
+          postStart:
+            exec:
+              command: ["sh", "-c", "chmod -R a+rwx /root/.newton/experiment"]
         ports:
         - containerPort: 9090
         volumeMounts:
@@ -76,6 +80,10 @@ spec:
           runAsUser: 0
       - name: jupyter-newton
         image: newtonregistry.azurecr.io/blairisme/newton-jupyter:latest
+        lifecycle:
+          postStart:
+            exec:
+              command: ["sh", "-c", "chmod -R a+rwx /home/newton/experiment"]
         ports:
         - containerPort: 8000
         - containerPort: 8888
