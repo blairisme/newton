@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+>
+<head>
+    <title>Newton - Data Permissions</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="icon" href="resources/images/common/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
+
+    <script src="/resources/scripts/libraries/jquery.js"></script>
+    <script src="/resources/scripts/libraries/popper.js"></script>
+    <script src="/resources/scripts/libraries/bootstrap.js"></script>
+</head>
+<body>
+<!-- Navigation -->
+<div th:replace="fragments/header :: header"></div>
+
+<!-- Page Content -->
+<div class="container-fluid">
+    <h1 class="page-title">System Settings</h1>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{'/settings/roles'}" sec:authorize="hasRole('ROLE_ADMIN')">User Roles</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link active" href="#">Data Source Permissions</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{'/settings/plugins'}" sec:authorize="hasRole('ROLE_ADMIN')">Plugin Settings</a>
+        </li>
+    </ul>
+
+    <div>
+        <h4>Data Permission Settings</h4>
+    </div>
+</div>
+
+</body>
+</html>

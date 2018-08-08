@@ -18,10 +18,24 @@ import org.ucl.newton.service.user.UserService;
 public class SettingsControllerTest
 {
     @Test
-    public void systemSettingsTest(){
+    public void systemSettingsRolesTest(){
         UserService userService = Mockito.mock(UserService.class);
         SettingsController controller = new SettingsController(userService);
-        Assert.assertEquals("settings/system", controller.settings(new ModelMap()));
+        Assert.assertEquals("settings/roles", controller.roles(new ModelMap()));
+    }
+
+    @Test
+    public void systemSettingsDataPermissionsTest(){
+        UserService userService = Mockito.mock(UserService.class);
+        SettingsController controller = new SettingsController(userService);
+        Assert.assertEquals("settings/data-permissions", controller.dataPermissions(new ModelMap()));
+    }
+
+    @Test
+    public void systemSettingsPluginsTest(){
+        UserService userService = Mockito.mock(UserService.class);
+        SettingsController controller = new SettingsController(userService);
+        Assert.assertEquals("settings/plugins", controller.plugins(new ModelMap()));
     }
 
     @Test
