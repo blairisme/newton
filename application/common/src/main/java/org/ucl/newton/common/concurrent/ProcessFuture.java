@@ -28,9 +28,12 @@ public class ProcessFuture implements Future<Void>
 
     @Override
     public boolean cancel(boolean mayInterruptIfRunning) {
-        cancelled = process.isAlive();
-        process.destroy();
-        return cancelled;
+        if (process.isAlive()) {
+            process.destroy();
+            cancelled = true;
+            return true;
+        }
+        return false;
     }
 
     @Override

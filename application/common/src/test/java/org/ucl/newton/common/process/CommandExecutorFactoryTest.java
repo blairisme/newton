@@ -12,6 +12,11 @@ package org.ucl.newton.common.process;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Unit tests for the {@link CommandExecutorFactory} class.
+ *
+ * @author Blair Butterworth
+ */
 public class CommandExecutorFactoryTest
 {
     @Test

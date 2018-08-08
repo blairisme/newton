@@ -20,6 +20,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Arrays;
 
+/**
+ * Unit tests for the {@link UnixCommandExecutor} class.
+ *
+ * @author Blair Butterworth
+ */
 public class UnixCommandExecutorTest
 {
     private Path tempDirectory;
@@ -36,7 +41,7 @@ public class UnixCommandExecutorTest
 
     @Test
     public void executeTest() throws IOException {
-        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
+        Assume.assumeFalse("Only applies when run on Unix based systems", SystemUtils.IS_OS_WINDOWS);
 
         Path logFile = tempDirectory.resolve("log.txt");
         PathUtils.createNew(logFile);

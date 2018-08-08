@@ -72,6 +72,7 @@ public class FileUtils
         }
         return ret;
     }
+
     public static void writeCSV(OutputStream output,List<List<String>> listOfRecords) throws IOException {
         if (output != null) {
             CsvWriter csvWriter = new CsvWriter(output, ',', Charset.forName("utf-8"));
@@ -81,5 +82,4 @@ public class FileUtils
             csvWriter.close();
         }
     }
-
 }

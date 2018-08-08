@@ -23,6 +23,11 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * Unit tests for the {@link ZipUtils} class.
+ *
+ * @author Blair Butterworth
+ */
 public class ZipUtilsTest
 {
     private Path tempDirectory;
