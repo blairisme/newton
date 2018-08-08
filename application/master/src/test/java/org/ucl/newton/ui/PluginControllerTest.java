@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
 import org.ucl.newton.application.system.ApplicationStorage;
+import org.ucl.newton.service.plugin.PluginService;
 
 import java.nio.file.Paths;
 
@@ -14,10 +15,12 @@ import static org.mockito.Mockito.when;
 public class PluginControllerTest {
     private ApplicationStorage applicationStorage;
     private PluginController controller;
+    private PluginService service;
     @Before
     public void setUp()throws Exception{
         applicationStorage = mock(ApplicationStorage.class);
-        controller = new PluginController(applicationStorage);
+        service = mock(PluginService.class);
+        controller = new PluginController(applicationStorage,service);
         when(applicationStorage.getRootPath()).thenReturn(Paths.get(System.getProperty("user.home")).resolve(".newton").toString());
 
     }
