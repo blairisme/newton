@@ -10,11 +10,13 @@
 package org.ucl.newton.common.file;
 
 import com.csvreader.CsvWriter;
+import com.google.gson.Gson;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang3.Validate;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -82,4 +84,16 @@ public class FileUtils
         }
     }
 
+    public static <T> void writeToFile(Path path,T config,Class<T> type) {
+        Gson gson = new Gson();
+        String str = gson.toJson(config,type);
+        try {
+            OutputStream output = new FileOutputStream(path.toFile());
+            output.write(str.getBytes("utf-8"));
+            output.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
 }
