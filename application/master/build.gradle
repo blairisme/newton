@@ -66,34 +66,35 @@ task updatePythonPlugin(type: Copy, dependsOn: ':application:plugins:python:jar'
     into project.file('src/main/resources/plugins/processor')
     rename '(.*)-(.*).jar', '$1.jar'
 }
-project.tasks.war.dependsOn updatePythonPlugin
 
 task updateJupyterPlugin(type: Copy, dependsOn: ':application:plugins:jupyter:jar') {
     from project(':application:plugins:jupyter').collect{it.tasks.withType(Jar)}
     into project.file('src/main/resources/plugins/processor')
     rename '(.*)-(.*).jar', '$1.jar'
 }
-project.tasks.war.dependsOn updateJupyterPlugin
 
 task updateFizzyoDataProviderJar(type: Copy, dependsOn: ':application:plugins:FizzyoDataProvider:jar'){
     from project(':application:plugins:FizzyoDataProvider').collect{it.tasks.withType(Jar)}
     into project.file('src/main/resources/plugins/data')
     rename '(.*)-(.*).jar', '$1.jar'
 }
-project.tasks.war.dependsOn updateFizzyoDataProviderJar
 
 task updateWeatherDataProviderJar(type: Copy, dependsOn: ':application:plugins:WeatherDataProvider:jar'){
     from project(':application:plugins:WeatherDataProvider').collect{it.tasks.withType(Jar)}
     into project.file('src/main/resources/plugins/data')
     rename '(.*)-(.*).jar', '$1.jar'
 }
-project.tasks.war.dependsOn updateWeatherDataProviderJar
 
 task updateDREDataPublisherJar(type: Copy, dependsOn: ':application:plugins:DREDataPublisher:jar'){
     from project(':application:plugins:DREDataPublisher').collect{it.tasks.withType(Jar)}
     into project.file('src/main/resources/plugins/publisher')
     rename '(.*)-(.*).jar', '$1.jar'
 }
+
+project.tasks.war.dependsOn updatePythonPlugin
+project.tasks.war.dependsOn updateJupyterPlugin
+project.tasks.war.dependsOn updateFizzyoDataProviderJar
+project.tasks.war.dependsOn updateWeatherDataProviderJar
 project.tasks.war.dependsOn updateDREDataPublisherJar
 
 gretty {
@@ -101,35 +102,10 @@ gretty {
     contextPath = '/'
     httpPort = 9090
     jvmArgs = ['-Dnewton.profile=' + getProperty('run.profile')]
-    jacocoEnabled = false
 }
-
-jacocoTestReport {
-  reports {
-    xml.enabled true
-    html.enabled = true
-  }
-}
-
-task report(dependsOn: ['jacocoTestReport']){
-}
-
-//project.tasks.check.dependsOn jacocoTestCoverageVerification
 
 task appStartDaemon(dependsOn: 'appBeforeIntegrationTest'){
 }
 
 task appStopDaemon(dependsOn: 'appAfterIntegrationTest'){
 }
-
-/*
-jacocoTestCoverageVerification {
-  violationRules {
-    rule {
-      limit {
-        minimum = 0.5
-      }
-    }
-  }
-}
-*/
