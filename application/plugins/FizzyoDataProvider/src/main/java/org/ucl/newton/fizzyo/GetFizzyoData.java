@@ -36,6 +36,7 @@ public class GetFizzyoData implements Runnable {
         fizzyoToken = new FizzyoToken();
         String accessToken = "9w3Bk61YQdJ6VrXR5vJN592dOGpJZn4W";
         fizzyoToken.setAccessToken(accessToken);
+
         Records records = getPacientRecords();
         if(records == null)
             return;
