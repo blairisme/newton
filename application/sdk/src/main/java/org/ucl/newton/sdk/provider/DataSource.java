@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.sdk.data;
+package org.ucl.newton.sdk.provider;
 
 /**
  * Represents a data set containing information of use to users of the Newton

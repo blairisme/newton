@@ -3,8 +3,9 @@ package org.ucl.newton.fizzyo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.ucl.newton.sdk.data.BasicDataSource;
-import org.ucl.newton.sdk.data.DataSource;
+import org.ucl.newton.sdk.plugin.PluginVisualization;
+import org.ucl.newton.sdk.provider.BasicDataSource;
+import org.ucl.newton.sdk.provider.DataSource;
 
 public class FizzyoDataProviderTest {
     private FizzyoDataProvider provider;
@@ -21,12 +22,14 @@ public class FizzyoDataProviderTest {
 
     @Test
     public void getDescriptionTest() {
-        Assert.assertEquals("Obtains data from the Fizzyo cloud.", provider.getDescription());
+        PluginVisualization visualization = provider.getVisualization();
+        Assert.assertEquals("Obtains data from the Fizzyo cloud.", visualization.getDescription());
     }
 
     @Test
     public void getNameTest() {
-        Assert.assertEquals("Fizzyo Data Provider", provider.getName());
+        PluginVisualization visualization = provider.getVisualization();
+        Assert.assertEquals("Fizzyo Data Provider", visualization.getName());
     }
 
     @Test

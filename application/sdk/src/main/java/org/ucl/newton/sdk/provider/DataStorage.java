@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.sdk.data;
+package org.ucl.newton.sdk.provider;
 
 import java.io.IOException;
 import java.io.InputStream;

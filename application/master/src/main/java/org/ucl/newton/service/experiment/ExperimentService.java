@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.ExperimentDataSource;
 import org.ucl.newton.framework.Project;
-import org.ucl.newton.sdk.data.DataSource;
+import org.ucl.newton.sdk.provider.DataSource;
 
 import javax.inject.Inject;
 import java.util.ArrayList;

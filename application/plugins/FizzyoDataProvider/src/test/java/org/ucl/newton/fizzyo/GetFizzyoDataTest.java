@@ -3,9 +3,9 @@ package org.ucl.newton.fizzyo;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.ucl.newton.sdk.data.DataProviderObserver;
-import org.ucl.newton.sdk.data.DataSource;
-import org.ucl.newton.sdk.data.DataStorage;
+import org.ucl.newton.sdk.provider.DataProviderObserver;
+import org.ucl.newton.sdk.provider.DataSource;
+import org.ucl.newton.sdk.provider.DataStorage;
 
 import java.io.IOException;
 import java.io.OutputStream;

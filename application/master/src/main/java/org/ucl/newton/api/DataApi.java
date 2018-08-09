@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.ucl.newton.sdk.data.DataSource;
+import org.ucl.newton.sdk.provider.DataSource;
 import org.ucl.newton.service.data.DataService;
 import org.ucl.newton.service.data.DataStorageProvider;
 

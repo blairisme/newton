@@ -1,5 +1,9 @@
 package org.ucl.newton.drepublisher;
 
+import org.ucl.newton.sdk.plugin.BasicConfiguration;
+import org.ucl.newton.sdk.plugin.BasicVisualization;
+import org.ucl.newton.sdk.plugin.PluginConfiguration;
+import org.ucl.newton.sdk.plugin.PluginVisualization;
 import org.ucl.newton.sdk.publisher.DataPublisher;
 import org.ucl.newton.sdk.publisher.FTPConfig;
 
@@ -21,6 +25,21 @@ public class DREDataPublisher implements DataPublisher {
     }
 
     @Override
+    public String getIdentifier() {
+        return "newton-DRE";
+    }
+
+    @Override
+    public PluginConfiguration getConfiguration() {
+        return new BasicConfiguration("dre.html");
+    }
+
+    @Override
+    public PluginVisualization getVisualization() {
+        return new BasicVisualization("DRE Data publisher", "Publish data into DRE via FTP");
+    }
+
+    @Override
     public String getConfigName() {
         return "DREFTPConfig.json";
     }
@@ -34,21 +53,4 @@ public class DREDataPublisher implements DataPublisher {
     public <T> void setConfig(T config) {
         this.config = (FTPConfig) config;
     }
-
-    @Override
-    public String getIdentifier() {
-        return "newton-DRE";
-    }
-
-    @Override
-    public String getName() {
-        return "DRE Data publisher";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Publish data into DRE via FTP";
-    }
-
-
 }

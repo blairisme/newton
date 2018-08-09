@@ -3,6 +3,7 @@ package org.ucl.newton.drepublisher;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.ucl.newton.sdk.plugin.PluginVisualization;
 import org.ucl.newton.sdk.publisher.FTPConfig;
 
 public class DREDataPublisherTest {
@@ -27,11 +28,13 @@ public class DREDataPublisherTest {
     }
     @Test
     public void getNameTest() {
-        Assert.assertEquals("DRE Data publisher",publisher.getName());
+        PluginVisualization visualization = publisher.getVisualization();
+        Assert.assertEquals("DRE Data publisher",visualization.getName());
     }
     @Test
     public void getDescriptionTest() {
-        Assert.assertEquals("Publish data into DRE via FTP",publisher.getDescription());
+        PluginVisualization visualization = publisher.getVisualization();
+        Assert.assertEquals("Publish data into DRE via FTP",visualization.getDescription());
     }
     @Test
     public void startTest(){

@@ -12,8 +12,8 @@ package org.ucl.newton.engine;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.ExperimentConfiguration;
 import org.ucl.newton.framework.ExperimentTriggerType;
-import org.ucl.newton.sdk.data.DataProviderObserver;
-import org.ucl.newton.sdk.data.DataSource;
+import org.ucl.newton.sdk.provider.DataProviderObserver;
+import org.ucl.newton.sdk.provider.DataSource;
 import org.ucl.newton.service.data.DataService;
 import org.ucl.newton.service.experiment.ExperimentService;
 

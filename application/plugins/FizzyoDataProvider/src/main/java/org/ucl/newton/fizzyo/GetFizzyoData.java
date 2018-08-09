@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import org.ucl.newton.common.file.FileUtils;
 import org.ucl.newton.common.network.HttpUtils;
 import org.ucl.newton.fizzyo.model.*;
-import org.ucl.newton.sdk.data.DataSource;
-import org.ucl.newton.sdk.data.DataStorage;
+import org.ucl.newton.sdk.provider.DataSource;
+import org.ucl.newton.sdk.provider.DataStorage;
 
 import java.io.IOException;
 import java.io.OutputStream;

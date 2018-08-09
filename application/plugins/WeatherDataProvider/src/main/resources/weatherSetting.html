@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>Newton</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/front.css"/>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            <img src="/resources/images/logo-white.png" width="30" height="30" alt="">
+            Newton
+        </a>
+
+        <!-- Button for menu containing nav items that cannot be displayed due to available window width -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navigation Entries -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="container-fluid">
+        <h1 class="page-title">Weather Plugin Setting</h1>
+        <form id="weatherSettings" th:action="@{/weatherSetting}" method="POST">
+            <div class="form-group col-lg-5">
+                <table class="table" name="entryTable">
+                    <thead>
+                        <tr>
+                            <th>City</th>
+                            <th>Country</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="entries">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="city">City<span class="text-danger">*</span></label>
+                <input id="city" class="form-control" type="text"/>
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="country">Country(Optional)</label>
+                <input id="country" class="form-control" type="text"/>
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="date">Date<span class="text-danger">*</span></label>
+                <input id="date" class="form-control" type="date"/>
+                <input type="button" class="btn" value="add" onclick="addNewEntry()"/>
+            </div>
+            <div id="items" class="form-control" hidden="hidden">
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="key">Key<span class="text-danger">*</span></label>
+                <input id="key" name="key" class="form-control" type="text" required="required"/>
+            </div>
+            <p><input type="submit" class="btn btn-primary btn-lg" value="Confirm" /> <a type="button" class="btn btn-lg"  href="javascript:location.reload();">Cancel</a></p>
+        </form>
+    </div>
+</body>
+<script th:inline="javascript">
+    $(document).ready(function(){
+        var properties = [[${properties}]];
+        var key = null;
+        for(var i in properties){
+            var property = properties[i];
+            var city = property[0];
+            var country = property[1];
+            var date = property[2];
+            key = property[3];
+            var id = buildId(city,country,date);
+            addEntry(id,city,country,date);
+        }
+        $("#key").val(key);
+    });
+
+    function addNewEntry() {
+        var city = $("#city").val();
+        var country = $("#country").val();
+        var date = $("#date").val();
+        if(city == null || city == ""){
+            alert("Please input city");
+            return;
+        }
+        if(date == null || date == ""){
+            alert("Please select a date");
+            return;
+        }
+        var id = buildId(city,country,date);
+        clearContent();
+        addEntry(id,city,country,date);
+
+    }
+    function addEntry(id,city,country,date) {
+
+        $("#entries").append(
+            `<tr id="tableItem${id}">
+                    <th>${city}</th>
+                    <th>${country}</th>
+                    <th>${date} <button class="btn btn-outline-primary" onclick="removeEntry('${id}')"> remove</button></th>
+                </tr>`
+        );
+        $("#items").append(
+            `<input id="item${id}" name="items" value="${id}"/>`
+        )
+
+    }
+    function buildId(city,country,date) {
+        var id = city + "_" + country.replace(' ','-') + "_" + date;
+        country.replace('-',' ');
+        return id;
+    }
+    function clearContent() {
+        $("#city").val("");
+        $("#country").val("");
+        $("#date").val("");
+    }
+    function removeEntry(id) {
+
+        $(`#tableItem${id}`).remove();
+        $(`#item${id}`).remove();
+    }
+</script>
+</html>

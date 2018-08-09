@@ -5,8 +5,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.ucl.newton.application.system.ApplicationStorage;
-import org.ucl.newton.sdk.data.DataProvider;
-import org.ucl.newton.sdk.data.DataStorage;
+import org.ucl.newton.sdk.provider.DataProvider;
+import org.ucl.newton.sdk.provider.DataStorage;
 import org.ucl.newton.service.plugin.PluginService;
 
 import java.util.Arrays;

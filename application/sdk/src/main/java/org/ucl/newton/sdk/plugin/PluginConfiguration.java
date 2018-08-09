@@ -10,15 +10,12 @@
 package org.ucl.newton.sdk.plugin;
 
 /**
- * Implementors of this interface extend the behaviour of the Newton system.
+ * Defines methods through which the Newton system can allow users to see the
+ * plugins configuration as well as being able to alter it.
  *
  * @author Blair Butterworth
  */
-public interface NewtonPlugin
+public interface PluginConfiguration
 {
-    String getIdentifier();
-
-    PluginConfiguration getConfiguration();
-
-    PluginVisualization getVisualization();
+    String getViewFragment();
 }

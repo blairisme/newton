@@ -35,7 +35,7 @@ public class ExperimentConfigurationBuilder {
 
     public ExperimentConfigurationBuilder setProcessorPluginId(String processorPluginName, Collection<DataProcessor> processors) {
         for(DataProcessor processor: processors) {
-            if(processor.getName().equals(processorPluginName)) {
+            if (processor.getVisualization().getName().equals(processorPluginName)) {
                 processorPluginId = processor.getIdentifier();
                 System.out.println(processorPluginId);
             }

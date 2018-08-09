@@ -3,10 +3,12 @@ package org.ucl.newton.weather;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.ucl.newton.sdk.data.BasicDataSource;
-import org.ucl.newton.sdk.data.DataSource;
+import org.ucl.newton.sdk.plugin.PluginVisualization;
+import org.ucl.newton.sdk.provider.BasicDataSource;
+import org.ucl.newton.sdk.provider.DataSource;
 
-public class WeatherDataProviderTest {
+public class WeatherDataProviderTest
+{
     private WeatherDataProvider provider;
 
     @Before
@@ -21,12 +23,14 @@ public class WeatherDataProviderTest {
 
     @Test
     public void getDescriptionTest() {
-        Assert.assertEquals("Gathers weather data from World Weather Online weather data service.", provider.getDescription());
+        PluginVisualization visualization = provider.getVisualization();
+        Assert.assertEquals("Gathers weather data from World Weather Online weather data service.", visualization.getDescription());
     }
 
     @Test
     public void getNameTest() {
-        Assert.assertEquals("Weather Data Plugin", provider.getName());
+        PluginVisualization visualization = provider.getVisualization();
+        Assert.assertEquals("Weather Data Plugin", visualization.getName());
     }
 
     @Test

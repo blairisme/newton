@@ -11,8 +11,8 @@ package org.ucl.newton.service.data;
 
 
 import org.ucl.newton.application.system.ApplicationStorage;
-import org.ucl.newton.sdk.data.DataSource;
-import org.ucl.newton.sdk.data.DataStorage;
+import org.ucl.newton.sdk.provider.DataSource;
+import org.ucl.newton.sdk.provider.DataStorage;
 
 import javax.inject.Inject;
 import javax.inject.Named;
