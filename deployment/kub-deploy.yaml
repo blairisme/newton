@@ -41,8 +41,17 @@ spec:
       - name: shared-data
         emptyDir: {}
       securityContext:
-        fsGroup: 1234
+        fsGroup: 0
         runAsUser: 0
+      initContainers:
+      - name: config-perm
+        image: newtonregistry.azurecr.io/blairisme/newton:latest
+        command: ["sh", "-c", "chown -R 500:500 /root/.newton/experiment"]
+        volumeMounts:
+        - name: shared-data
+          mountPath: /root/.newton/experiment
+        securityContext:
+          runAsUser: 0
       containers:
       - name: master-newton
         envFrom:
@@ -63,7 +72,7 @@ spec:
         - containerPort: 8888
         volumeMounts:
         - name: shared-data
-          mountPath: /home/newton/experiment
+          mountPath: /tmp/newton/experiment
         securityContext:
           runAsUser: 0
       imagePullSecrets:

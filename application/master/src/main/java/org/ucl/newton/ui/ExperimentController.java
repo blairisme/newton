@@ -29,8 +29,11 @@ import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
 
 /**
@@ -236,7 +239,27 @@ public class ExperimentController
         try {
             Resource template = new ClassPathResource("/templates");
             Resource repository = experiment.getConfiguration().getStorageConfiguration().getStorageLocation();
+
             FileUtils.copyDirectory(template.getFile(), repository.getFile());
+
+            System.out.println("\n\n\n\n\n\n***");
+            File[] files = repository.getFile().listFiles();
+            if(files!=null){
+                System.out.println("files not null");
+                for(int i=0; i<files.length; i++){
+                    System.out.println("file= "+files[i].getName()+" path"+files[i].getAbsolutePath());
+                 //   Files.setPosixFilePermissions(files[i].toPath(), PosixFilePermissions.fromString("rwxrwxrwx"));
+                }
+
+                for(int i=0; i<files.length; i++){
+                    System.out.println("\n\n\nfile= "+files[i].getName()+" path"+Files.getPosixFilePermissions(files[i].toPath()));
+                }
+            }else{
+                System.out.println("files are empty");
+            }
+
+
+            System.out.println("\n\n\n\n\n\n***");
         } catch (IOException exception) {
             exception.printStackTrace(); //log this
         }
