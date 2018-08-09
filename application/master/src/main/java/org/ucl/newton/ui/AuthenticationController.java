@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.ucl.newton.api.user.UserDto;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.framework.UserDto;
 import org.ucl.newton.service.authentication.AuthenticationService;
 import org.ucl.newton.service.user.UserService;
 
@@ -65,7 +65,7 @@ public class AuthenticationController
     public String registerUser(@ModelAttribute("user") @Valid UserDto userDto,
                                BindingResult result) {
         try {
-            User existing = userService.findUserByEmail(userDto.getEmail());
+            User existing = userService.getUserByEmail(userDto.getEmail());
             result.rejectValue("email", null, "This email address has already been used to register an account");
         } catch(NoResultException e) {
             // user with email is not in db so carry on
@@ -75,8 +75,8 @@ public class AuthenticationController
             return "auth/signup";
         }
 
-        userService.saveUser(userDto);
-        User newlyCreatedUser = userService.findUserByEmail(userDto.getEmail());
+        userService.addUser(userDto);
+        User newlyCreatedUser = userService.getUserByEmail(userDto.getEmail());
         authService.save(userDto, newlyCreatedUser);
         return "redirect:/projects";
     }

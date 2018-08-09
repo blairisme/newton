@@ -1,10 +1,19 @@
-package org.ucl.newton.framework;
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
+package org.ucl.newton.api.user;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 /**
- * Data transfer object for user
+ * Data transfer object for user.
  *
  * @author John Wilkie
  */
@@ -16,14 +25,13 @@ public class UserDto {
     @NotEmpty
     private String password;
 
-    @NotEmpty
-    private String confirmPassword;
-
     @Email
     @NotEmpty
     private String email;
 
-    public void setFullName(String name) { fullName = name; }
+    public void setFullName(String name) {
+        fullName = name;
+    }
 
     public String getFullName() {
         return fullName;
@@ -37,14 +45,6 @@ public class UserDto {
         this.password = password;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -52,5 +52,4 @@ public class UserDto {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }

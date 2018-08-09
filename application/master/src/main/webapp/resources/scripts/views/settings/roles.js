@@ -7,7 +7,7 @@ $(document).ready(function() {
         queryTokenizer: Bloodhound.tokenizers.whitespace,
 
         remote: {
-            url: "/api/user?matching=%QUERY",
+            url: "/api/users?matching=%QUERY",
             wildcard: "%QUERY"
         }
     });

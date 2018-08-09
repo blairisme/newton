@@ -36,6 +36,7 @@ public class GetFizzyoData implements Runnable {
         fizzyoToken = new FizzyoToken();
         String accessToken = "9w3Bk61YQdJ6VrXR5vJN592dOGpJZn4W";
         fizzyoToken.setAccessToken(accessToken);
+
         Records records = getPacientRecords();
         if(records == null)
             return;
@@ -60,7 +61,7 @@ public class GetFizzyoData implements Runnable {
     private PressureRaw getPressureRaw(String pressureRawId) {
         String url = "https://api-staging.fizzyo-ucl.co.uk/api/v1/pressure/" + pressureRawId + "/raw";
         Map<String,String> header = new HashMap<>();
-        Map<String,String> params = new HashMap<>();
+        Map<String,Object> params = new HashMap<>();
         header.put("Authorization", "Bearer "+ getFizzyoToken().getAccessToken());
         String data = HttpUtils.doGet(url,header,params);
         Gson gson = new Gson();
@@ -71,7 +72,7 @@ public class GetFizzyoData implements Runnable {
     private Pressures getPressures(String patientRecordId) {
         String url = "https://api-staging.fizzyo-ucl.co.uk/api/v1/pressure/" + patientRecordId;
         Map<String,String> header = new HashMap<>();
-        Map<String,String> params = new HashMap<>();
+        Map<String,Object> params = new HashMap<>();
         header.put("Authorization", "Bearer "+ getFizzyoToken().getAccessToken());
         String data = HttpUtils.doGet(url,header,params);
         Gson gson = new Gson();
@@ -83,7 +84,7 @@ public class GetFizzyoData implements Runnable {
     private Records getPacientRecords() {
         String url = "https://api-staging.fizzyo-ucl.co.uk/api/v1/patient-records";
         Map<String,String> header = new HashMap<>();
-        Map<String,String> params = new HashMap<>();
+        Map<String,Object> params = new HashMap<>();
         header.put("Authorization","Bearer "+ getFizzyoToken().getAccessToken());
         String data = HttpUtils.doGet(url,header,params);
         Gson gson = new Gson();
@@ -102,7 +103,7 @@ public class GetFizzyoData implements Runnable {
         }
         String url = "https://api-staging.fizzyo-ucl.co.uk/api/v1/auth/token";
         Map<String,String> header = new HashMap<>();
-        Map<String,String> params = new HashMap<>();
+        Map<String,Object> params = new HashMap<>();
         params.put("redirectUri","https://staging.fizzyo-ucl.co.uk/login");
         params.put("authCode",authCode);
         String data = HttpUtils.doPost(url, header, params);

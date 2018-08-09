@@ -45,7 +45,7 @@ dependencies {
 }
 
 bootRun {
-    main = 'org.ucl.newton.slave.application.Application'
+    main = 'org.ucl.newton.slave.application.ApplicationLauncher'
 }
 
 task slaveStart(dependsOn: ['assemble', 'bootRun']) {

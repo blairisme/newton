@@ -37,7 +37,7 @@ public class RestServer
     @Inject
     @SuppressWarnings("unused")
     public RestServer() {
-        this.address = "http://localhost:9090";
+        this.address = "http://localhost:9090/api";
         this.serializer = new JsonSerializer();
         this.headers = new HashMap<>();
     }
@@ -69,6 +69,14 @@ public class RestServer
     }
 
     public void addHeader(Object key, Object value) {
+        this.headers.put(convert(key), convert(value));
+    }
+
+    public void removeHeader(Object key) {
+        this.headers.remove(convert(key));
+    }
+
+    public void setHeader(Object key, Object value) {
         this.headers.put(convert(key), convert(value));
     }
 

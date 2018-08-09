@@ -7,12 +7,9 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.api;
+package org.ucl.newton.api.user;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.ucl.newton.framework.Credential;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.framework.UserRole;
@@ -41,14 +38,26 @@ public class UserApi
         this.authService = authService;
     }
 
-    @RequestMapping(value = "/api/user", method = RequestMethod.GET)
-    public Collection<User> findUsers(@RequestParam(value="matching")String matching) {
-        return userService.findUsers(matching);
+    @RequestMapping(value = "/api/user", method = RequestMethod.POST)
+    public void addUser(@RequestBody UserDto userDto) {
+        User user = userService.addUser(userDto);
+        authService.save(userDto, user);
+    }
+
+    @RequestMapping(value = "/api/users", method = RequestMethod.GET)
+    public Collection<User> getUsers(@RequestParam(value="matching")String matching) {
+        return userService.getUsers(matching);
+    }
+
+    @RequestMapping(value = "/api/user", method = RequestMethod.DELETE)
+    public void removeUser(@RequestBody UserDto userDto) {
+        User user = userService.getUserByEmail(userDto.getEmail());
+        userService.removeUser(user);
     }
 
     @RequestMapping(value = "/api/userrole", method = RequestMethod.GET)
     public UserRole getUserRole(@RequestParam(value="username") String userName) {
-        Credential creds = (Credential) authService.loadUserByUsername(userName); // fix this to not use cast
+        Credential creds = (Credential)authService.loadUserByUsername(userName);
         return creds.getRole();
     }
 
@@ -57,7 +66,8 @@ public class UserApi
                                 @RequestParam(value="role") String role) {
         try {
             return authService.changeRole(userName, role);
-        } catch (UnknownRoleException e) {
+        }
+        catch (UnknownRoleException e) {
             return null; // Temporary (fix to handle properly)
         }
     }

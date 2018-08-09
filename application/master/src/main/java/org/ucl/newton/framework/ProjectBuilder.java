@@ -10,9 +10,9 @@
 package org.ucl.newton.framework;
 
 import org.apache.commons.lang3.Validate;
+import org.ucl.newton.api.project.ProjectDto;
+import org.ucl.newton.common.identifier.Identifier;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -41,13 +41,11 @@ public class ProjectBuilder
         this.dataSources = new ArrayList<>();
     }
 
-    public void generateIdentifier(String text) {
-        try {
-            this.identifier = URLEncoder.encode(text, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException(e);
-        }
+    public void fromProjectDto(ProjectDto projectDto) {
+        setName(projectDto.getName());
+        setIdentifier(Identifier.create(projectDto.getIdentifier()));
+        setDescription(projectDto.getDescription());
+        setDataSources(projectDto.getDataSources());
     }
 
     public void setIdentifier(String identifier) {

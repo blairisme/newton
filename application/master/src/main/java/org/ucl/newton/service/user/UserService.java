@@ -9,12 +9,13 @@
 
 package org.ucl.newton.service.user;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.ucl.newton.api.user.UserDto;
 import org.ucl.newton.framework.Credential;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.framework.UserDto;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,8 +33,19 @@ public class UserService
     private UserRepository repository;
 
     @Inject
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository)
+    {
         this.repository = repository;
+    }
+
+    public User addUser(UserDto user){
+        Validate.notNull(user);
+        return addUser(new User(user.getFullName(), user.getEmail(), "default.jpg"));
+    }
+
+    public User addUser(User user) {
+        Validate.notNull(user);
+        return repository.addUser(user);
     }
 
     public User getAuthenticatedUser() {
@@ -48,15 +60,35 @@ public class UserService
         return new User("Anonymous", "anonymous@ucl.ac.uk", "default.jpg");
     }
 
-    public Collection<User> findUsers(String matching) {
-        return repository.findUsers(matching);
-    }
-
     public User getUser(int identifier) {
         return repository.getUser(identifier);
     }
 
+    public User getUserByEmail(String emailAddress){
+        Validate.notNull(emailAddress);
+        return repository.getUserByEmail(emailAddress);
+    }
+
+    public Collection<User> getUsersByEmail(Collection<String> emailAddresses) {
+        Validate.notNull(emailAddresses);
+        Collection<User> users = new ArrayList<>();
+        for (String emailAddress: emailAddresses) {
+            users.add(getUserByEmail(emailAddress));
+        }
+        return users;
+    }
+
+    public Collection<User> getUsers() {
+        return repository.getUsers();
+    }
+
+    public Collection<User> getUsers(String matching) {
+        Validate.notNull(matching);
+        return repository.getUsers(matching);
+    }
+
     public Collection<User> getUsers(Collection<Integer> identifiers) {
+        Validate.notNull(identifiers);
         Collection<User> result = new ArrayList<>();
         for (Integer identifier: identifiers) {
             result.add(getUser(identifier));
@@ -64,13 +96,8 @@ public class UserService
         return result;
     }
 
-    public User findUserByEmail(String emailAddress){
-        return repository.findUserByEmail(emailAddress);
-    }
-
-    public void saveUser(UserDto userDto){
-        User user = new User(userDto.getFullName(),
-                userDto.getEmail(), "default.jpg");
-        repository.addUser(user);
+    public void removeUser(User user) {
+        Validate.notNull(user);
+        repository.removeUser(user);
     }
 }

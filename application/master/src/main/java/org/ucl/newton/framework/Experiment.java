@@ -52,14 +52,14 @@ public class Experiment
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval=true)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "experiment_versions",
         joinColumns = @JoinColumn(name = "experiment_id", referencedColumnName = "exp_id"),
         inverseJoinColumns = @JoinColumn(name = "version_id", referencedColumnName = "ver_id"))
     private List<ExperimentVersion> versions;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.ALL}, orphanRemoval=true)
     @JoinColumn(name = "exp_config_id")
     private ExperimentConfiguration configuration;
 
@@ -105,6 +105,10 @@ public class Experiment
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public User getCreator() {

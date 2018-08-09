@@ -43,7 +43,7 @@ services:
         - database_port=3306
         - database_user=root
         - database_password=Newton*123
-        - jupyter_host=jupyter
+        - jupyter_host=localhost
         - jupyter_port=8000
         - slave_host=slave
         - slave_port=8080
@@ -60,7 +60,7 @@ services:
     # Configuration for the Slave service.
   slave:
     image: newton-slave
-    build: 
+    build:
       context: ./slave
       args:
         - master_host=master

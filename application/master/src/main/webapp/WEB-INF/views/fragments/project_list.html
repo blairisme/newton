@@ -16,7 +16,9 @@
                 <tr th:each="project, iteration : ${projects}" class="project-row project-row-underline">
                     <td class="project-column project-icon-container">
                         <a href="/projects" th:href="@{'/project/' + ${project.identifier}}">
-                            <span th:if="${project.image} != 'default.png'"><img th:src="@{'/resources/images/project/' + ${project.image}}" class="rounded" alt="Project image" width="48" height="48"></span>
+                            <span th:if="${project.image} != 'default.png'">
+                                <img th:src="@{'/resources/images/project/' + ${project.image}}" class="rounded" alt="Project image" width="48" height="48">
+                            </span>
                             <div th:if="${project.image} == 'default.png'" class="default-icon">
                                 <div th:text="${#strings.substring(#strings.capitalize(project.name), 0, 1)}" class="rounded default-icon-text"></div>
                             </div>
@@ -24,7 +26,7 @@
                     </td>
                     <td class="project-column project-column-expand project-name-container">
                         <a href="/projects" th:href="@{'/project/' + ${project.identifier}}">
-                            <span th:text="${project.name}">project name</span>
+                            <span th:text="${project.name}" class="project-name">project name</span>
                         </a>
                     </td>
                     <td class="project-column project-state-container" th:attr="data-order=${project.getLastUpdatedAsEpoch()}">

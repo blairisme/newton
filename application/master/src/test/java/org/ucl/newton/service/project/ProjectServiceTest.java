@@ -16,15 +16,12 @@ import org.mockito.Mockito;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ProjectServiceTest
 {
-
-    @Inject
     private ProjectRepository repository;
     private ProjectService service;
     private String goshJiroIdentifier = "gosh-jiro";
@@ -117,7 +114,7 @@ public class ProjectServiceTest
         goshJiro.setMembers(jiroMembers);
         Mockito.when(repository.getProjectEagerlyByIdentifier(goshJiroIdentifier)).thenReturn(goshJiro);
         Assert.assertFalse(service.getProjectByIdentifier(goshJiroIdentifier, true).getMembers().contains(userBlair));
-        service.persistAddMemberToProject("gosh-jiro", userBlair);
+        service.addMemberToProject("gosh-jiro", userBlair);
         jiroMembers.add(userBlair);
         Assert.assertTrue(service.getProjectByIdentifier(goshJiroIdentifier, true).getMembers().contains(userBlair));
     }
@@ -129,7 +126,7 @@ public class ProjectServiceTest
         goshJiro.setMembers(jiroMembers);
         Mockito.when(repository.getProjectEagerlyByIdentifier(goshJiroIdentifier)).thenReturn(goshJiro);
         Assert.assertTrue(service.getProjectByIdentifier(goshJiroIdentifier, true).getMembers().contains(userZiad));
-        service.persistRemoveMemberFromProject("gosh-jiro", userZiad);
+        service.removeMemberFromProject("gosh-jiro", userZiad);
         jiroMembers.remove(userZiad);
         Assert.assertFalse(service.getProjectByIdentifier(goshJiroIdentifier, true).getMembers().contains(userZiad));
     }
@@ -157,7 +154,7 @@ public class ProjectServiceTest
         Mockito.when(repository.getProjectEagerlyByIdentifier(goshJiroIdentifier)).thenReturn(goshJiro);
         Assert.assertFalse(service.getProjectByIdentifier(goshJiroIdentifier, true).getMembersThatStar().contains(userBlair));
         membersThatStar.add(userBlair);
-        service.persistStar("gosh-jiro", userBlair);
+        service.addStar("gosh-jiro", userBlair);
         Assert.assertTrue(service.getProjectByIdentifier(goshJiroIdentifier, true).getMembersThatStar().contains(userBlair));
     }
 
@@ -168,7 +165,7 @@ public class ProjectServiceTest
         goshJiro.setMembersThatStar(membersThatStar);
         Mockito.when(repository.getProjectEagerlyByIdentifier(goshJiroIdentifier)).thenReturn(goshJiro);
         Assert.assertTrue(service.getProjectByIdentifier(goshJiroIdentifier, true).getMembersThatStar().contains(userZiad));
-        service.persistUnstar("gosh-jiro", userZiad);
+        service.removeStar("gosh-jiro", userZiad);
         membersThatStar.remove(userZiad);
         goshJiro = service.getProjectByIdentifier(goshJiroIdentifier, true);
         Assert.assertFalse(service.getProjectByIdentifier(goshJiroIdentifier, true).getMembersThatStar().contains(userZiad));

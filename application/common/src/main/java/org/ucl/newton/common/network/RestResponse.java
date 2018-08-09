@@ -7,9 +7,9 @@
  *      https://opensource.org/licenses/MIT
  */
 
-
 package org.ucl.newton.common.network;
 
+import com.mashape.unirest.http.Headers;
 import com.mashape.unirest.http.HttpResponse;
 import org.ucl.newton.common.serialization.Serializer;
 
@@ -35,6 +35,11 @@ public class RestResponse
 
     public int getStatusCode() {
         return response.getStatus();
+    }
+
+    public String getHeader(String key) {
+        Headers headers = response.getHeaders();
+        return headers.getFirst(key);
     }
 
     public boolean hasStatusCode(Integer ... codes) {

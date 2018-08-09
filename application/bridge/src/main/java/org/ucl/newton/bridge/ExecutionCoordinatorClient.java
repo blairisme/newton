@@ -13,16 +13,12 @@ import org.apache.http.HttpHeaders;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.ucl.newton.common.network.MimeTypes;
-import org.ucl.newton.common.network.RestRequest;
-import org.ucl.newton.common.network.RestServer;
-import org.ucl.newton.common.network.UriSchemes;
+import org.ucl.newton.common.network.*;
 import org.ucl.newton.common.serialization.JsonSerializer;
 
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 /**
  * Instances of this class make requests to the remote system controlling
@@ -60,8 +56,8 @@ public class ExecutionCoordinatorClient implements ExecutionCoordinator
             request.setBody(result, ExecutionResult.class);
             request.make();
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (Exception error) {
+            throw new ExecutionException(error);
         }
     }
 
@@ -73,17 +69,17 @@ public class ExecutionCoordinatorClient implements ExecutionCoordinator
             request.setBody(failure, ExecutionFailure.class);
             request.make();
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (Exception error) {
+            throw new ExecutionException(error);
         }
     }
 
     @Override
     public InputStream getExperimentRepository(String experimentId) {
         try {
-            URI uri = getServerAddress("api/experiment/" + experimentId + "/repository");
-            URL url = uri.toURL();
-            return url.openStream();
+            URI address = getServerAddress("api/experiment/" + experimentId + "/repository");
+            BasicHttpConnection connection = getConnection(address);
+            return connection.getInputStream();
         }
         catch (Exception cause) {
             throw new ExecutionException(cause);
@@ -93,9 +89,9 @@ public class ExecutionCoordinatorClient implements ExecutionCoordinator
     @Override
     public InputStream getDataSource(String dataSourceId) {
         try {
-            URI uri = getServerAddress("api/data/" + dataSourceId);
-            URL url = uri.toURL();
-            return url.openStream();
+            URI address = getServerAddress("api/data/" + dataSourceId);
+            BasicHttpConnection connection = getConnection(address);
+            return connection.getInputStream();
         }
         catch (Exception cause) {
             throw new ExecutionException(cause);
@@ -105,9 +101,9 @@ public class ExecutionCoordinatorClient implements ExecutionCoordinator
     @Override
     public InputStream getDataProcessor(String dataProcessorId) {
         try {
-            URI uri = getServerAddress("api/plugin/processor/" + dataProcessorId);
-            URL url = uri.toURL();
-            return url.openStream();
+            URI address = getServerAddress("api/plugin/processor/" + dataProcessorId);
+            BasicHttpConnection connection = getConnection(address);
+            return connection.getInputStream();
         }
         catch (Exception cause) {
             throw new ExecutionException(cause);
@@ -133,11 +129,18 @@ public class ExecutionCoordinatorClient implements ExecutionCoordinator
     }
 
     private RestServer getServer() {
-        RestServer restServer = new RestServer();
+        AuthenticatedRestServer restServer = new AuthenticatedRestServer();
         restServer.setAddress(getServerAddress());
         restServer.setSerializer(new JsonSerializer());
         restServer.addHeader(HttpHeaders.CONTENT_TYPE, MimeTypes.JSON);
         restServer.addHeader(HttpHeaders.ACCEPT, MimeTypes.JSON);
+        restServer.setAuthenticationStrategy(new BasicAuthentication("api@newton.com", "password"));
         return restServer;
+    }
+
+    private BasicHttpConnection getConnection(URI address) {
+        BasicHttpConnection connection = new BasicHttpConnection(address);
+        connection.setBasicAuthorization("api@newton.com", "password");
+        return connection;
     }
 }

@@ -51,7 +51,7 @@ public class UserRepositoryTest
         repository.addUser(user4);
 
         Collection<User> expected = Arrays.asList(user1, user2);
-        Collection<User> actual = repository.findUsers("Foo");
+        Collection<User> actual = repository.getUsers("Foo");
 
         Assert.assertEquals(expected, actual);
     }
@@ -80,14 +80,14 @@ public class UserRepositoryTest
 
     @Test
     public void getUserByEmailInDb() {
-        User adminUser = repository.findUserByEmail("admin@ucl.ac.uk");
+        User adminUser = repository.getUserByEmail("admin@ucl.ac.uk");
         Assert.assertNotNull(adminUser);
     }
 
     @Test
     public void getUserByEmailNotInDb() {
         try {
-            User userNotInDb = repository.findUserByEmail("someEmail@ucl.ac.uk");
+            User userNotInDb = repository.getUserByEmail("someEmail@ucl.ac.uk");
         } catch(NoResultException e) {
             Assert.assertTrue(true);
         }

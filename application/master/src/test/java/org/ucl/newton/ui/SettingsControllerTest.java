@@ -10,24 +10,47 @@
 package org.ucl.newton.ui;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.ui.ModelMap;
+import org.ucl.newton.service.permission.PermissionService;
 import org.ucl.newton.service.user.UserService;
 
 public class SettingsControllerTest
 {
+
+    private UserService userService;
+    private PermissionService permissionService;
+
+    @Before
+    public void setUp() {
+        userService = Mockito.mock(UserService.class);
+        permissionService = Mockito.mock(PermissionService.class);
+    }
+
+
     @Test
-    public void systemSettingsTest(){
-        UserService userService = Mockito.mock(UserService.class);
-        SettingsController controller = new SettingsController(userService);
-        Assert.assertEquals("settings/system", controller.settings(new ModelMap()));
+    public void systemSettingsRolesTest(){
+        SettingsController controller = new SettingsController(userService, permissionService);
+        Assert.assertEquals("settings/roles", controller.roles(new ModelMap()));
+    }
+
+    @Test
+    public void systemSettingsDataPermissionsTest(){
+        SettingsController controller = new SettingsController(userService, permissionService);
+        Assert.assertEquals("settings/data-permissions", controller.dataPermissions(new ModelMap()));
+    }
+
+    @Test
+    public void systemSettingsPluginsTest(){
+        SettingsController controller = new SettingsController(userService, permissionService);
+        Assert.assertEquals("settings/plugins", controller.plugins(new ModelMap()));
     }
 
     @Test
     public void profileTest(){
-        UserService userService = Mockito.mock(UserService.class);
-        SettingsController controller = new SettingsController(userService);
+        SettingsController controller = new SettingsController(userService, permissionService);
         Assert.assertEquals("settings/profile", controller.profile(new ModelMap()));
     }
 }

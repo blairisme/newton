@@ -20,6 +20,7 @@ import org.hibernate.search.query.dsl.QueryContextBuilder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.User;
+import org.ucl.newton.service.authentication.HibernateUtils;
 
 import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -56,7 +57,32 @@ public class UserRepository
     }
 
     @Transactional(readOnly=true)
-    public Collection<User> findUsers(String matching) {
+    public User getUserByEmail(String email) {
+        Session session = getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> criteria = builder.createQuery(User.class);
+        Root<User> users = criteria.from(User.class);
+
+        criteria.select(users);
+        criteria.where(builder.equal(users.get("email"), email));
+
+        return HibernateUtils.getSingleResultOrNull(session.createQuery(criteria));
+    }
+
+    @Transactional(readOnly=true)
+    public Collection<User> getUsers() {
+        Session session = getSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> criteria = builder.createQuery(User.class);
+        Root<User> users = criteria.from(User.class);
+        criteria.select(users);
+
+        return session.createQuery(criteria).getResultList();
+    }
+
+    @Transactional(readOnly=true)
+    public Collection<User> getUsers(String matching) {
         Session session = getSession();
         FullTextSession searchSession = Search.getFullTextSession(session);
 
@@ -79,19 +105,6 @@ public class UserRepository
     public void removeUser(User user) {
         Session session = getSession();
         session.delete(user);
-    }
-
-    @Transactional(readOnly=true)
-    public User findUserByEmail(String email) {
-        Session session = getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<User> criteria = builder.createQuery(User.class);
-        Root<User> users = criteria.from(User.class);
-
-        criteria.select(users);
-        criteria.where(builder.equal(users.get("email"), email));
-
-        return session.createQuery(criteria).getSingleResult();
     }
 
     private Session getSession() {

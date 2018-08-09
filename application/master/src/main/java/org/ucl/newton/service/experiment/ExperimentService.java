@@ -9,9 +9,11 @@
 
 package org.ucl.newton.service.experiment;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.ExperimentDataSource;
+import org.ucl.newton.framework.Project;
 import org.ucl.newton.sdk.data.DataSource;
 
 import javax.inject.Inject;
@@ -36,6 +38,7 @@ public class ExperimentService
     }
 
     public Experiment addExperiment(Experiment experiment) {
+        Validate.notNull(experiment);
         return repository.addExperiment(experiment);
     }
 
@@ -44,14 +47,22 @@ public class ExperimentService
     }
 
     public Experiment getExperimentByIdentifier(String identifier) {
+        Validate.notNull(identifier);
         return repository.getExperimentByIdentifier(identifier);
     }
 
-    public Collection<Experiment> getExperimentsByParentProjectName(String projectName) {
-        return repository.getExperimentsForProject(projectName);
+    public Collection<Experiment> getExperimentsByProject(Project project) {
+        Validate.notNull(project);
+        return getExperimentsByProject(project.getIdentifier());
+    }
+
+    public Collection<Experiment> getExperimentsByProject(String identifier) {
+        Validate.notNull(identifier);
+        return repository.getExperimentsForProject(identifier);
     }
 
     public Collection<Experiment> getExperimentsByDataSource(DataSource dataSource) {
+        Validate.notNull(dataSource);
         Collection<Experiment> result = new ArrayList<>();
         for (Experiment experiment: repository.getExperiments()) {
             for (ExperimentDataSource experimentDataSource: experiment.getConfiguration().getExperimentDataSources()) {
@@ -63,7 +74,13 @@ public class ExperimentService
         return result;
     }
 
-    public void update(Experiment experiment) {
+    public void removeExperiment(Experiment experiment) {
+        Validate.notNull(experiment);
+        repository.removeExperiment(experiment);
+    }
+
+    public void updateExperiment(Experiment experiment) {
+        Validate.notNull(experiment);
         repository.update(experiment);
     }
 }

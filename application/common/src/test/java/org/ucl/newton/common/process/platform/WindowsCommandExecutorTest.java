@@ -20,6 +20,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Arrays;
 
+/**
+ * Unit tests for the {@link WindowsCommandExecutor} class.
+ *
+ * @author Blair Butterworth
+ */
 public class WindowsCommandExecutorTest
 {
     private Path tempDirectory;
@@ -36,7 +41,7 @@ public class WindowsCommandExecutorTest
 
     @Test
     public void executeTest() throws IOException {
-        Assume.assumeTrue(SystemUtils.IS_OS_WINDOWS);
+        Assume.assumeTrue("Only applies when run on Windows", SystemUtils.IS_OS_WINDOWS);
 
         Path logFile = tempDirectory.resolve("log.txt");
         PathUtils.createNew(logFile);

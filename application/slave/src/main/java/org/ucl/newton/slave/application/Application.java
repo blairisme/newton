@@ -9,11 +9,10 @@
 
 package org.ucl.newton.slave.application;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Entry point for the slave web application.
+ * Slave web application.
  *
  * @author Ziad Halabi
  * @author Blair Butterworth
@@ -21,11 +20,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Application
 {
-   // private Application() {
-   //     throw new UnsupportedOperationException();
-   // }
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
 }

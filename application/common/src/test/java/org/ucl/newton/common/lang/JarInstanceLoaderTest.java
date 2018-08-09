@@ -16,6 +16,11 @@ import org.junit.Test;
 import java.net.URL;
 import java.util.Set;
 
+/**
+ * Unit tests for the {@link JarInstanceLoader} class.
+ *
+ * @author Blair Butterworth
+ */
 public class JarInstanceLoaderTest
 {
     @Test

@@ -13,6 +13,7 @@ import com.csvreader.CsvReader;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.weather.model.WeatherData;
 import org.ucl.newton.weather.model.WeatherProperty;
 import org.ucl.newton.common.file.FileUtils;
@@ -68,6 +69,8 @@ public class GetWeatherData implements Runnable {
         List<WeatherProperty> weatherList = new ArrayList<>();
         Path path = Paths.get(System.getProperty("user.home")).resolve(".newton");
         path = path.resolve("weather").resolve("setting");
+        if(!path.toFile().exists())
+            path = getDefaultConfig();
         if(path.toFile().exists()) {
             try {
                 CsvReader reader = new CsvReader(path.toString(), ',');
@@ -81,17 +84,18 @@ public class GetWeatherData implements Runnable {
                 e.printStackTrace();
             }
         }
-        if (weatherList.isEmpty()){
-            WeatherProperty property = new WeatherProperty("london","united kingdom", "2018-07-04","0252e94bd710446c908123539182906");
-            weatherList.add(property);
-        }
         return  weatherList;
+    }
+
+    private Path getDefaultConfig() {
+        Path path = PathUtils.getConfigurationPath().resolve("weatherList");
+        return path;
     }
 
     private String getDataFromWWO(WeatherProperty property) {
         String url = "https://api.worldweatheronline.com/premium/v1/past-weather.ashx";
         Map<String,String> header = new HashMap<>();
-        Map<String,String> params = new HashMap<>();
+        Map<String,Object> params = new HashMap<>();
         params.put("key", property.getKey());
         params.put("format","json");
 

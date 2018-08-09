@@ -18,12 +18,7 @@ public class WeatherProperty{
         this.date = property[2];
         this.key = property[3];
     }
-    public WeatherProperty(String city, String country, String date, String key){
-        this.city = city;
-        this.country = country;
-        this.date = date;
-        this.key = key;
-    }
+
     public String getCity() { return city; }
     public String getCountry() { return country; }
     public String getDate() { return date; }

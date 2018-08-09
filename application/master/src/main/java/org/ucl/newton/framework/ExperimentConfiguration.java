@@ -36,14 +36,14 @@ public class ExperimentConfiguration implements Serializable {
     @GeneratedValue(generator = "increment")
     private int id;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.ALL}, orphanRemoval=true)
     @JoinColumn(name = "storage_config_id")
     private StorageConfiguration storageConfig;
 
     @Column(name = "exp_proc_engine")
     private String processorPluginId;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval=true)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "experiment_eds_link",
             joinColumns = @JoinColumn(name = "exp_config_id", referencedColumnName = "exp_config_id"),
@@ -96,8 +96,16 @@ public class ExperimentConfiguration implements Serializable {
         return dataSources;
     }
 
+    public void setExperimentDataSources(Collection<ExperimentDataSource> dataSources) {
+        this.dataSources = dataSources;
+    }
+
     public String getOutputPattern() {
         return outputPattern;
+    }
+
+    public void setOutputPattern(String outputPattern) {
+        this.outputPattern = outputPattern;
     }
 
     public String getDisplayPattern() {
@@ -106,6 +114,10 @@ public class ExperimentConfiguration implements Serializable {
 
     public ExperimentTriggerType getTrigger() {
         return trigger;
+    }
+
+    public void setTrigger( ExperimentTriggerType trigger) {
+        this.trigger = trigger;
     }
 
     @Override

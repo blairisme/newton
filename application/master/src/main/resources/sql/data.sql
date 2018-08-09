@@ -17,6 +17,7 @@ INSERT INTO users (id, name, email, image) VALUES (3, 'Blair Butterworth', 'blai
 INSERT INTO users (id, name, email, image) VALUES (4, 'Xiaolong Chen', 'xiaolong.chen@ucl.ac.uk', 'pp_2.jpg');
 INSERT INTO users (id, name, email, image) VALUES (5, 'Ziad Al Halabi', 'ziad.halabi.17@ucl.ac.uk', 'pp_3.jpg');
 INSERT INTO users (id, name, email, image) VALUES (6, 'John Wilkie', 'john.wilkie.17@ucl.ac.uk', 'pp_1.jpg');
+INSERT INTO users (id, name, email, image) VALUES (7, 'System API', 'api@newton.com', 'default.jpg');
 
 INSERT INTO credentials (id, user_id, username, password, role) VALUES (1, 1, 'user@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'USER');
 INSERT INTO credentials (id, user_id, username, password, role) VALUES (2, 2, 'admin@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'ADMIN');
@@ -24,6 +25,7 @@ INSERT INTO credentials (id, user_id, username, password, role) VALUES (3, 3, 'b
 INSERT INTO credentials (id, user_id, username, password, role) VALUES (4, 4, 'xiaolong.chen@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'ADMIN');
 INSERT INTO credentials (id, user_id, username, password, role) VALUES (5, 5, 'ziad.halabi.17@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'ADMIN');
 INSERT INTO credentials (id, user_id, username, password, role) VALUES (6, 6, 'john.wilkie.17@ucl.ac.uk', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'ADMIN');
+INSERT INTO credentials (id, user_id, username, password, role) VALUES (7, 7, 'api@newton.com', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'API');
 
 /* Projects */
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (1, 2, 'project-fizzyo', 'Project Fizzyo', 'project Fizzyo Description', 'fizzyo.png', '2018-06-20 12:34:56');
@@ -153,3 +155,14 @@ INSERT INTO plugin (id, identifier, location) VALUES (3, 'newton-weather', 'clas
 INSERT INTO plugin (id, identifier, location) VALUES (4, 'newton-fizzyo', 'classpath:/plugins/data/FizzyoDataProvider.jar');
 INSERT INTO plugin (id, identifier, location) VALUES (5, 'newton-DRE', 'classpath:/plugins/publisher/DREDataPublisher.jar');
 
+
+/*** Data Permissions ***/
+INSERT INTO permissions (permission_id, permission_owner, permission_ds_ident) VALUES (1, 2, 'newton-weather');
+INSERT INTO permissions (permission_id, permission_owner, permission_ds_ident) VALUES (2, 2, 'newton-fizzyo');
+
+INSERT INTO Permission_granted (permission_id, user_id) VALUES (1, 1);
+INSERT INTO Permission_granted (permission_id, user_id) VALUES (1, 3);
+INSERT INTO Permission_granted (permission_id, user_id) VALUES (1, 4);
+INSERT INTO Permission_granted (permission_id, user_id) VALUES (1, 5);
+INSERT INTO Permission_granted (permission_id, user_id) VALUES (2, 1);
+INSERT INTO Permission_granted (permission_id, user_id) VALUES (2, 3);
