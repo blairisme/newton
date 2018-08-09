@@ -1,3 +1,12 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.integration.acceptance.gherkin;
 
 import org.ucl.newton.common.lang.Strings;
@@ -6,6 +15,11 @@ import org.ucl.newton.integration.acceptance.newton.project.ProjectDto;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Contains information about a project in the Newton system.
+ *
+ * @author Blair Butterworth
+ */
 public class Project
 {
     private String identifier;

@@ -14,16 +14,16 @@ package org.ucl.newton.integration.acceptance.newton.user;
  *
  * @author Blair Butterworth
  */
-public class User
+public class UserDto
 {
     private String email;
     private String password;
     private String fullName;
 
-    public User() {
+    public UserDto() {
     }
 
-    public User(String email, String password, String fullName) {
+    public UserDto(String email, String password, String fullName) {
         this.email = email;
         this.password = password;
         this.fullName = fullName;

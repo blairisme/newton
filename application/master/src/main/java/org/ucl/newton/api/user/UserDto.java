@@ -1,10 +1,19 @@
-package org.ucl.newton.framework;
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
+package org.ucl.newton.api.user;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 /**
- * Data transfer object for user
+ * Data transfer object for user.
  *
  * @author John Wilkie
  */

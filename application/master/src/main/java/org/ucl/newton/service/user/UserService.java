@@ -13,9 +13,9 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.ucl.newton.api.user.UserDto;
 import org.ucl.newton.framework.Credential;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.framework.UserDto;
 
 import javax.inject.Inject;
 import javax.inject.Named;

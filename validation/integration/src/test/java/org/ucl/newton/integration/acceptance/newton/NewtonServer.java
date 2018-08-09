@@ -10,6 +10,8 @@
 package org.ucl.newton.integration.acceptance.newton;
 
 import org.apache.http.HttpHeaders;
+import org.ucl.newton.common.network.AuthenticatedRestServer;
+import org.ucl.newton.common.network.BasicAuthentication;
 import org.ucl.newton.common.network.MimeTypes;
 import org.ucl.newton.common.network.RestServer;
 import org.ucl.newton.common.serialization.JsonSerializer;
@@ -42,11 +44,12 @@ public class NewtonServer
     }
 
     private RestServer getRestServer() {
-        RestServer restServer = new RestServer();
+        AuthenticatedRestServer restServer = new AuthenticatedRestServer();
         restServer.setAddress("http://localhost:9090/api/");
         restServer.setSerializer(new JsonSerializer());
         restServer.addHeader(HttpHeaders.CONTENT_TYPE, MimeTypes.JSON);
         restServer.addHeader(HttpHeaders.ACCEPT, MimeTypes.JSON);
+        restServer.setAuthenticationStrategy(new BasicAuthentication("api@newton.com", "password"));
         return restServer;
     }
 }

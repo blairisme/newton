@@ -20,6 +20,7 @@ import org.hibernate.search.query.dsl.QueryContextBuilder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.User;
+import org.ucl.newton.service.authentication.HibernateUtils;
 
 import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -65,7 +66,7 @@ public class UserRepository
         criteria.select(users);
         criteria.where(builder.equal(users.get("email"), email));
 
-        return session.createQuery(criteria).getSingleResult();
+        return HibernateUtils.getSingleResultOrNull(session.createQuery(criteria));
     }
 
     @Transactional(readOnly=true)

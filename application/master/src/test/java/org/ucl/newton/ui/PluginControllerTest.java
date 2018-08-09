@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
 import org.ucl.newton.application.system.ApplicationStorage;
-import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.publisher.PublisherService;
 
 import java.nio.file.Paths;

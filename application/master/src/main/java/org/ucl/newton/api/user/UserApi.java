@@ -7,12 +7,11 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.api;
+package org.ucl.newton.api.user;
 
 import org.springframework.web.bind.annotation.*;
 import org.ucl.newton.framework.Credential;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.framework.UserDto;
 import org.ucl.newton.framework.UserRole;
 import org.ucl.newton.service.authentication.AuthenticationService;
 import org.ucl.newton.service.authentication.UnknownRoleException;
@@ -40,9 +39,9 @@ public class UserApi
     }
 
     @RequestMapping(value = "/api/user", method = RequestMethod.POST)
-    public void addUser(@RequestBody UserDto userDetails) {
-        User user = userService.addUser(userDetails);
-        authService.save(userDetails, user);
+    public void addUser(@RequestBody UserDto userDto) {
+        User user = userService.addUser(userDto);
+        authService.save(userDto, user);
     }
 
     @RequestMapping(value = "/api/users", method = RequestMethod.GET)
@@ -50,13 +49,10 @@ public class UserApi
         return userService.getUsers(matching);
     }
 
-    @RequestMapping(value = "/api/users", method = RequestMethod.DELETE)
-    public Collection<User> removeUsers(@RequestParam(value="matching", defaultValue="") String matching) {
-        Collection<User> users = matching.isEmpty() ? userService.getUsers() : userService.getUsers(matching);
-        for (User user: users) {
-            userService.removeUser(user);
-        }
-        return users;
+    @RequestMapping(value = "/api/user", method = RequestMethod.DELETE)
+    public void removeUser(@RequestBody UserDto userDto) {
+        User user = userService.getUserByEmail(userDto.getEmail());
+        userService.removeUser(user);
     }
 
     @RequestMapping(value = "/api/userrole", method = RequestMethod.GET)

@@ -9,12 +9,11 @@
 
 package org.ucl.newton.bridge;
 
+import org.apache.http.HttpHeaders;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.ucl.newton.common.network.RestRequest;
-import org.ucl.newton.common.network.RestServer;
-import org.ucl.newton.common.network.UriSchemes;
+import org.ucl.newton.common.network.*;
 import org.ucl.newton.common.serialization.JsonSerializer;
 
 import java.io.InputStream;
@@ -78,8 +77,9 @@ public class ExecutionNodeClient implements ExecutionNode
     @Override
     public InputStream getOutput(ExecutionResult executionResult) throws ExecutionException {
         try {
-            URL outputUrl = executionResult.getOutputs();
-            return outputUrl.openStream();
+            URL url = executionResult.getOutputs();
+            BasicHttpConnection connection = getConnection(url.toURI());
+            return connection.getInputStream();
         }
         catch (Exception cause) {
             throw new ExecutionException(cause);
@@ -105,11 +105,18 @@ public class ExecutionNodeClient implements ExecutionNode
     }
 
     private RestServer getServer() {
-        RestServer restServer = new RestServer();
+        AuthenticatedRestServer restServer = new AuthenticatedRestServer();
         restServer.setAddress(getServerAddress());
         restServer.setSerializer(new JsonSerializer());
-        restServer.addHeader("Content-Type", "application/json");
-        restServer.addHeader("Accept", "application/json");
+        restServer.addHeader(HttpHeaders.CONTENT_TYPE, MimeTypes.JSON);
+        restServer.addHeader(HttpHeaders.ACCEPT, MimeTypes.JSON);
+        restServer.setAuthenticationStrategy(new BasicAuthentication("api@newton.com", "password"));
         return restServer;
+    }
+
+    private BasicHttpConnection getConnection(URI address) {
+        BasicHttpConnection connection = new BasicHttpConnection(address);
+        connection.setBasicAuthorization("api@newton.com", "password");
+        return connection;
     }
 }

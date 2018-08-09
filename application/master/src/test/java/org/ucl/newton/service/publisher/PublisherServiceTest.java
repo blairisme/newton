@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.sdk.publisher.DataPublisher;
-import org.ucl.newton.sdk.publisher.FTPConfig;
 import org.ucl.newton.service.plugin.PluginService;
 
 import java.util.Arrays;

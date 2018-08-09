@@ -72,6 +72,14 @@ public class RestServer
         this.headers.put(convert(key), convert(value));
     }
 
+    public void removeHeader(Object key) {
+        this.headers.remove(convert(key));
+    }
+
+    public void setHeader(Object key, Object value) {
+        this.headers.put(convert(key), convert(value));
+    }
+
     public void setHeaders(Map<Object, Object> values) {
         this.headers.clear();
         this.headers.putAll(convertHeaders(values));

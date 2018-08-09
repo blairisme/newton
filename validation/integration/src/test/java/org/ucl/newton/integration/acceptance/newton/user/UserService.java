@@ -28,16 +28,27 @@ public class UserService
         this.server = server;
     }
 
-    public void addUsers(Collection<User> users) throws RestException {
-        for (User user: users) {
-            RestRequest request = server.post(UserResource.User);
-            request.setBody(user, User.class);
-            request.make();
+    public void addUser(UserDto user) throws RestException {
+        RestRequest request = server.post(UserResource.User);
+        request.setBody(user, UserDto.class);
+        request.make();
+    }
+
+    public void addUsers(Collection<UserDto> users) throws RestException {
+        for (UserDto user: users) {
+            addUser(user);
         }
     }
 
-    public void removeUsers() throws RestException {
-        RestRequest request = server.delete(UserResource.Users);
+    public void removeUser(UserDto user) throws RestException {
+        RestRequest request = server.delete(UserResource.User);
+        request.setBody(user, UserDto.class);
         request.make();
+    }
+
+    public void removeUsers(Collection<UserDto> users) throws RestException {
+        for (UserDto user: users) {
+            removeUser(user);
+        }
     }
 }

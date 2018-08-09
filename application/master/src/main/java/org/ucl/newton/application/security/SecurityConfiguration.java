@@ -11,6 +11,7 @@ package org.ucl.newton.application.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,12 +39,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        setAuthorizedPaths(http);
+        setAuthenticationMethods(http);
+        setCrossOrigin(http);
+        setHeaderPolicy(http);
+    }
+
+    private void setAuthorizedPaths(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/signup", "/resources/**", "/api/experiment/complete").permitAll()
-                .antMatchers("/settings").hasAnyRole("ADMIN")
-                //.antMatchers(POST, "/api").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/api/**").permitAll() //need to pass creds from slave
-                .anyRequest().authenticated()
+                .antMatchers("/", "/signup", "/resources/**").permitAll()
+                .antMatchers("/settings/**").hasAnyRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/**").hasAnyRole("API", "ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/**").hasAnyRole("API", "ADMIN")
+                .anyRequest().authenticated();
+    }
+
+    private void setAuthenticationMethods(HttpSecurity http) throws Exception {
+        http.httpBasic()
                 .and()
             .formLogin()
                 .loginPage("/login")
@@ -56,17 +68,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 .logoutSuccessUrl("/")
                 .permitAll()
                 .and()
-            .csrf()
-                .disable()
             .exceptionHandling()
                 .accessDeniedPage("/access_denied");
-        setHeaders(http);
     }
 
-    private void setHeaders(HttpSecurity http) throws Exception {
+    private void setCrossOrigin(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+    }
+
+    private void setHeaderPolicy(HttpSecurity http) throws Exception {
         http.headers()
-            .frameOptions().sameOrigin()
-            .httpStrictTransportSecurity().disable();
+            .frameOptions()
+                .sameOrigin()
+            .httpStrictTransportSecurity()
+                .disable();
     }
 
     @Bean

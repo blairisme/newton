@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.ucl.newton.api.user.UserDto;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.framework.UserDto;
 import org.ucl.newton.service.authentication.AuthenticationService;
 import org.ucl.newton.service.user.UserService;
 

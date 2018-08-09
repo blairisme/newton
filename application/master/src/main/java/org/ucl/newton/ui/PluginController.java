@@ -16,7 +16,9 @@ import org.ucl.newton.sdk.publisher.FTPConfig;
 import org.ucl.newton.service.publisher.PublisherService;
 
 import javax.inject.Inject;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;

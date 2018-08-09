@@ -17,11 +17,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.ucl.newton.common.network.RestException;
+import org.ucl.newton.integration.acceptance.gherkin.Project;
+import org.ucl.newton.integration.acceptance.gherkin.User;
 import org.ucl.newton.integration.acceptance.newton.NewtonServer;
-import org.ucl.newton.integration.acceptance.newton.user.User;
+import org.ucl.newton.integration.acceptance.newton.user.UserDto;
 import org.ucl.newton.integration.acceptance.newton.user.UserService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.ucl.newton.integration.acceptance.common.WebDriverUtils.elementExists;
 
@@ -42,9 +45,10 @@ public class LoginSteps
     }
 
     @Given("^the system has the following users:$")
-    public void initializeUsers(List<User> users) throws RestException {
+    public void initializeUsers(List<User> userDetails) throws RestException {
+        List<UserDto> users = userDetails.stream().map(User::asUserDto).collect(Collectors.toList());
         UserService userService = newton.getUserService();
-        userService.removeUsers();
+        userService.removeUsers(users);
         userService.addUsers(users);
     }
 
