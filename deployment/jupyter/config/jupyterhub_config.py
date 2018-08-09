@@ -20,7 +20,7 @@ c.JupyterHub.spawner_class = NewtonSpawner
 c.Spawner.default_url = '/lab'
 c.Spawner.ip = '0.0.0.0'
 c.Spawner.args = ['--allow-root']
-c.Spawner.notebook_dir = '/tmp/newton/experiment/{experiment_id}/repository'
+c.Spawner.notebook_dir = '/home/newton/experiment/{experiment_id}/repository'
 c.Spawner.disable_user_config = True
 
 
@@ -50,7 +50,7 @@ c.NewtonAuthenticator.forward_url = 'spawn'
 c.LocalAuthenticator.create_system_users = True
 
 if platform.system() == 'Linux':
-    c.LocalAuthenticator.add_user_cmd = ['adduser', '--create-home']
+    c.LocalAuthenticator.add_user_cmd = ['adduser', '-g', 'root', '--create-home']
 
 if platform.system() == 'Darwin':
     script_path = path.join(current_path, "adduser")

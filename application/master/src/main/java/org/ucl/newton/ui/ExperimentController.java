@@ -249,10 +249,15 @@ public class ExperimentController
                 for(int i=0; i<files.length; i++){
                     System.out.println("file= "+files[i].getName()+" path"+files[i].getAbsolutePath());
                     Files.setPosixFilePermissions(files[i].toPath(), PosixFilePermissions.fromString("rwxrwxrwx"));
+                    Files.setPosixFilePermissions(files[i].getParentFile().toPath(), PosixFilePermissions.fromString("rwxrwxrwx"));
+                    Files.setPosixFilePermissions(files[i].getParentFile().getParentFile().toPath(), PosixFilePermissions.fromString("rwxrwxrwx"));
+
                 }
 
                 for(int i=0; i<files.length; i++){
                     System.out.println("\n\n\nfile= "+files[i].getName()+" path"+Files.getPosixFilePermissions(files[i].toPath()));
+                    System.out.println("\n\n\nfile= "+files[i].getParentFile().getName()+" path"+Files.getPosixFilePermissions(files[i].getParentFile().toPath()));
+                    System.out.println("\n\n\nfile= "+files[i].getParentFile().getParentFile().getName()+" path"+Files.getPosixFilePermissions(files[i].getParentFile().getParentFile().toPath()));
                 }
             }else{
                 System.out.println("files are empty");

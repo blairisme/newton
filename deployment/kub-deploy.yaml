@@ -63,7 +63,7 @@ spec:
         - containerPort: 8888
         volumeMounts:
         - name: shared-data
-          mountPath: /tmp/newton/experiment
+          mountPath: /home/newton/experiment
         securityContext:
           runAsUser: 0
       imagePullSecrets:
