@@ -40,6 +40,7 @@ COPY ./config/newtonauthenticator.py /etc/jupyterhub/newtonauthenticator.py
 COPY ./config/newton.key /etc/jupyterhub/newton.key
 
 RUN mkdir -p /home/newton/experiment
+RUN chmod -R a+rwx /home/newton/experiment
 
 EXPOSE 8000
 EXPOSE 8888
