@@ -193,4 +193,21 @@ CREATE TABLE IF NOT EXISTS plugin (
   PRIMARY KEY (id)
 );
 
+/*** Data Permissions ***/
 
+/* Create table to contain permissions data */
+CREATE TABLE IF NOT EXISTS permissions (
+  permission_id INT NOT NULL AUTO_INCREMENT,
+  permission_owner INT NOT NULL,
+  permission_ds_ident VARCHAR(100) NOT NULL,
+  PRIMARY KEY (permission_id),
+  CONSTRAINT fk_permissions_owner FOREIGN KEY (permission_owner) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS permission_granted (
+  permission_id INT NOT NULL,
+  user_id INT NOT NULL,
+  PRIMARY KEY (permission_id, user_id),
+  CONSTRAINT fk_permission_granted_permission_id FOREIGN KEY (permission_id) REFERENCES permissions(permission_id) ON DELETE CASCADE,
+  CONSTRAINT fk_permission_granted_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);

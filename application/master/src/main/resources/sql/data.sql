@@ -155,3 +155,14 @@ INSERT INTO plugin (id, identifier, location) VALUES (3, 'newton-weather', 'clas
 INSERT INTO plugin (id, identifier, location) VALUES (4, 'newton-fizzyo', 'classpath:/plugins/data/FizzyoDataProvider.jar');
 INSERT INTO plugin (id, identifier, location) VALUES (5, 'newton-DRE', 'classpath:/plugins/publisher/DREDataPublisher.jar');
 
+
+/*** Data Permissions ***/
+INSERT INTO permissions (permission_id, permission_owner, permission_ds_ident) VALUES (1, 2, 'newton-weather');
+INSERT INTO permissions (permission_id, permission_owner, permission_ds_ident) VALUES (2, 2, 'newton-fizzyo');
+
+INSERT INTO Permission_granted (permission_id, user_id) VALUES (1, 1);
+INSERT INTO Permission_granted (permission_id, user_id) VALUES (1, 3);
+INSERT INTO Permission_granted (permission_id, user_id) VALUES (1, 4);
+INSERT INTO Permission_granted (permission_id, user_id) VALUES (1, 5);
+INSERT INTO Permission_granted (permission_id, user_id) VALUES (2, 1);
+INSERT INTO Permission_granted (permission_id, user_id) VALUES (2, 3);

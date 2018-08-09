@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.ucl.newton.framework.User;
+import org.ucl.newton.service.permission.PermissionService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
@@ -22,16 +24,22 @@ import javax.inject.Inject;
  * display settings, both for the system and for the users profile.
  *
  * @author Blair Butterworth
+ * @author John Wilkie
  */
 @Controller
 @SuppressWarnings("unused")
 public class SettingsController
 {
     private UserService userService;
+    private PermissionService permissionService;
 
     @Inject
-    public SettingsController(UserService userService){
+    public SettingsController(
+        UserService userService,
+        PermissionService permissionService)
+    {
         this.userService = userService;
+        this.permissionService = permissionService;
     }
 
     @RequestMapping(value = "/settings/roles", method = RequestMethod.GET)
@@ -42,7 +50,10 @@ public class SettingsController
 
     @RequestMapping(value = "/settings/data-permissions", method = RequestMethod.GET)
     public String dataPermissions(ModelMap model) {
-        model.addAttribute("user", userService.getAuthenticatedUser());
+        User user = userService.getAuthenticatedUser();
+        model.addAttribute("user", user);
+        model.addAttribute("ownedDs", permissionService.getPermissionsOwnedByUser(user));
+        model.addAttribute("grantedDs", permissionService.getPermissionsGrantedToUser(user));
         return "settings/data-permissions";
     }
 
