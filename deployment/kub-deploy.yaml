@@ -42,6 +42,7 @@ spec:
         emptyDir: {}
       securityContext:
         fsGroup: 1234
+        runAsUser: 0
       containers:
       - name: master-newton
         envFrom:

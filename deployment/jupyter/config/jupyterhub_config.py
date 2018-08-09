@@ -20,7 +20,7 @@ c.JupyterHub.spawner_class = NewtonSpawner
 c.Spawner.default_url = '/lab'
 c.Spawner.ip = '0.0.0.0'
 c.Spawner.args = ['--allow-root']
-c.Spawner.notebook_dir = '/bin/newton/experiment/{experiment_id}/repository'
+c.Spawner.notebook_dir = '/home/newton/experiment/{experiment_id}/repository'
 c.Spawner.disable_user_config = True
 
 
