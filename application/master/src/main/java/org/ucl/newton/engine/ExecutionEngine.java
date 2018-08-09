@@ -70,5 +70,9 @@ public class ExecutionEngine implements ExecutionController, ExecutionPipelineOb
     @Override
     public void executionComplete(ExecutionTask task) {
         tasks.remove(task.getExperiment().getIdentifier());
+
+        if (task.hasError()) {
+            System.out.println(task.getError()); //log
+        }
     }
 }
