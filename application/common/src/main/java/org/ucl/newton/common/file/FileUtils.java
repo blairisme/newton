@@ -14,6 +14,8 @@ import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -26,6 +28,8 @@ import java.util.*;
  */
 public class FileUtils
 {
+    private static Logger logger = LoggerFactory.getLogger(FileUtils.class);
+
     private FileUtils() {
         throw new UnsupportedOperationException();
     }
@@ -67,7 +71,7 @@ public class FileUtils
             input.close();
             ret = new String(content);
         }catch (Exception e){
-            e.printStackTrace();
+            logger.error("Failed to read file", e);
         }
         return ret;
     }
@@ -82,7 +86,7 @@ public class FileUtils
         }
     }
 
-    public static List<String[]> readCSV(String path){
+    public static List<String[]> readCSV(String path) {
         List<String[]> list = new ArrayList<>();
         try {
             CsvReader reader = new CsvReader(path,',');
@@ -92,7 +96,7 @@ public class FileUtils
             }
             reader.close();
         }catch (Exception e){
-            e.printStackTrace();
+            logger.error("Failed to read file", e);
         }
         return list;
 
@@ -105,7 +109,7 @@ public class FileUtils
             output.write(str.getBytes("utf-8"));
             output.close();
         }catch (IOException e){
-            e.printStackTrace();
+            logger.error("Failed writing to file", e);
         }
     }
 }

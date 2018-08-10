@@ -87,8 +87,6 @@ public class PluginController {
         return "redirect:/publisherSetting";
     }
 
-
-
     @RequestMapping(value = "/FizzyoData", method = RequestMethod.GET)
     public String getData(ModelMap model){
         Path path = Paths.get(storage.getRootPath());
