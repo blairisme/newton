@@ -44,7 +44,7 @@ public class ApplicationInitializer implements WebApplicationInitializer
         ServletRegistration.Dynamic servlet = container.addServlet("dispatcher", new DispatcherServlet(context));
         servlet.setLoadOnStartup(1);
         servlet.addMapping("/");
-        servlet.setInitParameter("spring.profiles.active", "production");
+        servlet.setInitParameter("spring.profiles.active", applicationPreferences.getProfile());
         servlet.setMultipartConfig(multipartConfig);
     }
 }
