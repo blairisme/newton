@@ -95,7 +95,7 @@
                     <ul>
                         <li th:each="provider : ${dataProviders}">
                             <input type="checkbox" class="form-check-input" name="sources" th:value="${provider.getIdentifier()}" />
-                            <label th:text="${provider.getName()}"></label>
+                            <label th:text="${provider.getVisualization().getName()}"></label>
                         </li>
                     </ul>
 
