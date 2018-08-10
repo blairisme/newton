@@ -1,6 +1,17 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.fizzyo;
 
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.ucl.newton.common.file.FileUtils;
 import org.ucl.newton.common.network.HttpUtils;
 import org.ucl.newton.fizzyo.model.*;
@@ -21,7 +32,10 @@ import java.util.Map;
  *
  * @author Xiaolong Chen
  */
-public class GetFizzyoData implements Runnable {
+public class GetFizzyoData implements Runnable
+{
+    private static Logger logger = LoggerFactory.getLogger(GetFizzyoData.class);
+
     private FizzyoToken fizzyoToken;
     private FizzyoDataProvider provider;
 
@@ -109,7 +123,7 @@ public class GetFizzyoData implements Runnable {
         String data = HttpUtils.doPost(url, header, params);
         if(data == null)
             return null;
-        System.out.println(data);
+        logger.debug(data);
         Gson gson = new Gson();
         fizzyoToken = gson.fromJson(data,FizzyoToken.class);
         return fizzyoToken;

@@ -16,6 +16,8 @@ import com.mashape.unirest.request.HttpRequestWithBody;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -31,6 +33,8 @@ import java.util.Map;
  */
 public class HttpUtils
 {
+    private static Logger logger = LoggerFactory.getLogger(HttpUtils.class);
+
     private HttpUtils() {
         throw new UnsupportedOperationException();
     }
@@ -75,7 +79,7 @@ public class HttpUtils
                 return response.getBody();
             }
             else {
-                System.out.println("status code:" + status);
+                logger.info("status code:" + status);
                 return response.getBody();
             }
         }catch (Exception e){
@@ -94,7 +98,7 @@ public class HttpUtils
                 return response.getBody();
             }
             else {
-                System.out.println("status code:" + status);
+                logger.info("status code:" + status);
             }
         }catch (Exception e){
             e.printStackTrace();

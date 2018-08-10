@@ -1,3 +1,12 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.framework;
 
 import org.apache.commons.lang3.Validate;
@@ -37,7 +46,6 @@ public class ExperimentConfigurationBuilder {
         for(DataProcessor processor: processors) {
             if (processor.getVisualization().getName().equals(processorPluginName)) {
                 processorPluginId = processor.getIdentifier();
-                System.out.println(processorPluginId);
             }
         }
         return this;

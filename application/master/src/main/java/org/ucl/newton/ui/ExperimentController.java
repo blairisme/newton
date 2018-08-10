@@ -10,6 +10,8 @@
 package org.ucl.newton.ui;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -45,6 +47,8 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class ExperimentController
 {
+    private static Logger logger = LoggerFactory.getLogger(ExperimentController.class);
+
     private UserService userService;
     private ExperimentService experimentService;
     private ExperimentStorage experimentStorage;
@@ -52,7 +56,6 @@ public class ExperimentController
     private JupyterServer jupyterServer;
     private ProjectService projectService;
     private PluginService pluginService;
-
 
     @Inject
     public ExperimentController(
@@ -237,8 +240,8 @@ public class ExperimentController
             Resource template = new ClassPathResource("/templates");
             Resource repository = experiment.getConfiguration().getStorageConfiguration().getStorageLocation();
             FileUtils.copyDirectory(template.getFile(), repository.getFile());
-        } catch (IOException exception) {
-            exception.printStackTrace(); //log this
+        } catch (IOException error) {
+            logger.error("Failed to populate repository", error);
         }
     }
 }

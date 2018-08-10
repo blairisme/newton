@@ -9,6 +9,8 @@
 
 package org.ucl.newton.engine;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.ucl.newton.framework.Experiment;
 
 import javax.inject.Inject;
@@ -26,6 +28,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Singleton
 public class ExecutionEngine implements ExecutionController, ExecutionPipelineObserver
 {
+    private static Logger logger = LoggerFactory.getLogger(ExecutionEngine.class);
+
     private ExecutionPipeline pipeline;
     private ExecutionTrigger trigger;
     private Map<String, ExecutionTask> tasks;
@@ -72,7 +76,7 @@ public class ExecutionEngine implements ExecutionController, ExecutionPipelineOb
         tasks.remove(task.getExperiment().getIdentifier());
 
         if (task.hasError()) {
-            System.out.println(task.getError()); //log
+            logger.error(task.getError());
         }
     }
 }
