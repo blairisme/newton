@@ -48,6 +48,7 @@ public class JupyterServer
     @Inject
     public JupyterServer(ApplicationPreferences applicationPreferences) {
         host = applicationPreferences.getJupyterHost();
+        host = "65.52.76.99";
         port = applicationPreferences.getJupyterPort();
     }
 
