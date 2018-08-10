@@ -53,6 +53,7 @@ public class ExecutionEngine implements ExecutionController, ExecutionPipelineOb
 
     @Override
     public void startExecution(Experiment experiment) {
+        logger.info("Experiment started", experiment);
         ExecutionTask task = new ExecutionTask(experiment);
         tasks.put(experiment.getIdentifier(), task);
         pipeline.process(task);
@@ -60,6 +61,7 @@ public class ExecutionEngine implements ExecutionController, ExecutionPipelineOb
 
     @Override
     public void stopExecution(Experiment experiment) {
+        logger.info("Experiment stopped", experiment);
         ExecutionTask task = tasks.get(experiment.getIdentifier());
         if (task != null) {
             pipeline.cancel(task);
@@ -73,6 +75,7 @@ public class ExecutionEngine implements ExecutionController, ExecutionPipelineOb
 
     @Override
     public void executionComplete(ExecutionTask task) {
+        logger.info("Experiment complete", task);
         tasks.remove(task.getExperiment().getIdentifier());
 
         if (task.hasError()) {

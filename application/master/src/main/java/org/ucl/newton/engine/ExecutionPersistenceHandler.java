@@ -11,6 +11,8 @@ package org.ucl.newton.engine;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.concurrent.ListenableFuture;
@@ -41,6 +43,8 @@ import java.util.Collection;
 @Named
 public class ExecutionPersistenceHandler
 {
+    private static Logger logger = LoggerFactory.getLogger(ExecutionPersistenceHandler.class);
+
     private static final String VERSIONS_DIRECTORY = "versions";
     private static final String OUTPUT_FILE_NAME = "output.zip";
 
@@ -72,6 +76,7 @@ public class ExecutionPersistenceHandler
             persistExperiment(executionResult, outputs);
         }
         catch (Throwable error) {
+            logger.error("Persistence failed", error);
             task.setError(error);
         }
         return new AsyncResult<>(task);
@@ -93,6 +98,7 @@ public class ExecutionPersistenceHandler
             IOUtils.copy(inputStream, outputStream);
         }
         catch (Exception cause){
+
             throw new ConnectionException(cause);
         }
         return logPath;
