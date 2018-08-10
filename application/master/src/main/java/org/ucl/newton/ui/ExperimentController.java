@@ -242,35 +242,23 @@ public class ExperimentController
         try {
             Resource template = new ClassPathResource("/templates");
             Resource repository = experiment.getConfiguration().getStorageConfiguration().getStorageLocation();
-
             FileUtils.copyDirectory(template.getFile(), repository.getFile());
-            
-            System.out.println("\n\n\n\n\n\n***");
-            File[] files = repository.getFile().listFiles();
-            if(files!=null){
-                System.out.println("files not null");
-                for(int i=0; i<files.length; i++){
-                    System.out.println("file= "+files[i].getName()+" path"+files[i].getAbsolutePath());
-                    Files.setPosixFilePermissions(files[i].toPath(), PosixFilePermissions.fromString("rwxrwxrwx"));
-                    Files.setPosixFilePermissions(files[i].getParentFile().toPath(), PosixFilePermissions.fromString("rwxrwxrwx"));
-                    Files.setPosixFilePermissions(files[i].getParentFile().getParentFile().toPath(), PosixFilePermissions.fromString("rwxrwxrwx"));
-
-                }
-
-                for(int i=0; i<files.length; i++){
-                    System.out.println("\n\n\nfile= "+files[i].getName()+" path"+Files.getPosixFilePermissions(files[i].toPath()));
-                    System.out.println("\n\n\nfile= "+files[i].getParentFile().getName()+" path"+Files.getPosixFilePermissions(files[i].getParentFile().toPath()));
-                    System.out.println("\n\n\nfile= "+files[i].getParentFile().getParentFile().getName()+" path"+Files.getPosixFilePermissions(files[i].getParentFile().getParentFile().toPath()));
-                }
-            }else{
-                System.out.println("files are empty");
-            }
-
-
-            System.out.println("\n\n\n\n\n\n***");
-
+            relaxRepositoryPermissions(repository);
         } catch (IOException error) {
             logger.error("Failed to populate repository", error);
+        }
+    }
+
+    //Needs rewrite 
+    private void relaxRepositoryPermissions(Resource repository) throws IOException {
+        File[] files = repository.getFile().listFiles();
+        if(files!=null){
+            String permissions = "rwxrwxrwx";
+            for(int i=0; i<files.length; i++){
+                Files.setPosixFilePermissions(files[i].toPath(), PosixFilePermissions.fromString(permissions));
+                Files.setPosixFilePermissions(files[i].getParentFile().toPath(), PosixFilePermissions.fromString(permissions));
+                Files.setPosixFilePermissions(files[i].getParentFile().getParentFile().toPath(), PosixFilePermissions.fromString(permissions));
+            }
         }
     }
 }
