@@ -1,0 +1,37 @@
+# Newton (c)
+#
+# This work is licensed under the MIT License. To view a copy of this
+# license, visit
+#
+#      https://opensource.org/licenses/MIT
+#
+# Author: Blair Butterworth
+#
+
+FROM centos:7
+
+LABEL version="1.0"
+LABEL description="Lets Encrypt certificate server"
+LABEL maintainer="blair.butterworth.17@ucl.ac.uk"
+MAINTAINER blair.butterworth.17@ucl.ac.uk
+
+#ENTRYPOINT [ "certbot" ]
+EXPOSE 80 443
+VOLUME /etc/letsencrypt /var/lib/letsencrypt
+
+## Update Yum
+RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
+RUN yum update -y
+
+## Download Certbot
+RUN yum install git -y
+RUN git clone https://github.com/certbot/certbot /opt/certbot
+
+## Install Certbot
+WORKDIR /opt/certbot
+RUN ./certbot-auto --debug --os-packages-only --non-interactive
+RUN yum install httpd -y
+RUN tools/venv.sh
+RUN ./certbot-auto --help
+
+#./certbot-auto certonly --manual -d blairbutterworth.com -d www.blairbutterworth.com --agree-tos --email "blair.butterworth.17@ucl.ac.uk"
