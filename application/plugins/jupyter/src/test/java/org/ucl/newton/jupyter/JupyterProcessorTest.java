@@ -17,6 +17,7 @@ import org.ucl.newton.common.lang.JarClassLoader;
 import org.ucl.newton.common.lang.JarInstanceLoader;
 import org.ucl.newton.common.process.CommandExecutor;
 import org.ucl.newton.common.process.CommandExecutorFactory;
+import org.ucl.newton.sdk.plugin.PluginVisualization;
 import org.ucl.newton.sdk.processor.DataProcessor;
 
 import java.io.File;
@@ -73,8 +74,9 @@ public class JupyterProcessorTest
     @Test
     public void visualizationTest() {
         JupyterProcessor processor = new JupyterProcessor();
-        Assert.assertTrue(! processor.getName().isEmpty());
-        Assert.assertTrue(! processor.getDescription().isEmpty());
+        PluginVisualization visualization = processor.getVisualization();
+        Assert.assertTrue(! visualization.getName().isEmpty());
+        Assert.assertTrue(! visualization.getDescription().isEmpty());
     }
 
     @Test

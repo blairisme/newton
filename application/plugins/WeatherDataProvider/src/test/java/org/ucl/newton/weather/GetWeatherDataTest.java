@@ -11,11 +11,9 @@ package org.ucl.newton.weather;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.ucl.newton.weather.GetWeatherData;
-import org.ucl.newton.weather.WeatherDataProvider;
-import org.ucl.newton.sdk.data.DataProviderObserver;
-import org.ucl.newton.sdk.data.DataSource;
-import org.ucl.newton.sdk.data.DataStorage;
+import org.ucl.newton.sdk.provider.DataProviderObserver;
+import org.ucl.newton.sdk.provider.DataSource;
+import org.ucl.newton.sdk.provider.DataStorage;
 
 import java.io.IOException;
 import java.io.OutputStream;

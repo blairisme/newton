@@ -26,8 +26,10 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.ucl.newton.application.system.ApplicationStorage;
+import org.ucl.newton.common.lang.JarClassLoader;
 
 import javax.inject.Inject;
 
@@ -75,17 +77,30 @@ public class ApplicationConfiguration implements WebMvcConfigurer, ApplicationCo
     public ISpringTemplateEngine templateEngine() {
         SpringTemplateEngine engine = new SpringTemplateEngine();
         engine.setEnableSpringELCompiler(true);
-        engine.setTemplateResolver(templateResolver());
+        engine.addTemplateResolver(viewTemplateResolver());
+        engine.addTemplateResolver(pluginTemplateResolver());
         engine.addDialect(new SpringSecurityDialect());
         return engine;
     }
 
-    private ITemplateResolver templateResolver() {
+    private ITemplateResolver viewTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(applicationContext);
+        resolver.setTemplateMode(TemplateMode.HTML);
         resolver.setPrefix("/WEB-INF/views/");
         resolver.setSuffix(".html");
+        resolver.setOrder(1);
+        resolver.setCheckExistence(true);
+        return resolver;
+    }
+
+    private ITemplateResolver pluginTemplateResolver() {
+        JarClassLoader classLoader = JarClassLoader.getSystemClassLoader();
+        ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver(classLoader);
         resolver.setTemplateMode(TemplateMode.HTML);
+        resolver.setPrefix("/");
+        resolver.setSuffix(".html");
+        resolver.setOrder(2);
         return resolver;
     }
 

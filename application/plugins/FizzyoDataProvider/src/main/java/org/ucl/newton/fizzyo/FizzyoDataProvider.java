@@ -6,12 +6,17 @@
  *
  *      https://opensource.org/licenses/MIT
  */
+
 package org.ucl.newton.fizzyo;
 
 import org.ucl.newton.common.concurrent.DaemonThreadFactory;
-import org.ucl.newton.sdk.data.BasicDataProvider;
-import org.ucl.newton.sdk.data.BasicDataSource;
-import org.ucl.newton.sdk.data.DataSource;
+import org.ucl.newton.sdk.plugin.BasicConfiguration;
+import org.ucl.newton.sdk.plugin.BasicVisualization;
+import org.ucl.newton.sdk.plugin.PluginConfiguration;
+import org.ucl.newton.sdk.plugin.PluginVisualization;
+import org.ucl.newton.sdk.provider.BasicDataProvider;
+import org.ucl.newton.sdk.provider.BasicDataSource;
+import org.ucl.newton.sdk.provider.DataSource;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,13 +45,13 @@ public class FizzyoDataProvider extends BasicDataProvider
     }
 
     @Override
-    public String getName() {
-        return "Fizzyo Data Provider";
+    public PluginConfiguration getConfiguration() {
+        return new BasicConfiguration("fizzyo.html");
     }
 
     @Override
-    public String getDescription() {
-        return "Obtains data from the Fizzyo cloud.";
+    public PluginVisualization getVisualization() {
+        return new BasicVisualization("Fizzyo Data Provider", "Obtains data from the Fizzyo cloud.");
     }
 
     public DataSource getFizzyoDataSource() {

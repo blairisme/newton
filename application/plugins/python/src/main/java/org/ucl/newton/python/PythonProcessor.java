@@ -10,6 +10,10 @@
 package org.ucl.newton.python;
 
 import org.ucl.newton.common.process.CommandExecutor;
+import org.ucl.newton.sdk.plugin.BasicConfiguration;
+import org.ucl.newton.sdk.plugin.BasicVisualization;
+import org.ucl.newton.sdk.plugin.PluginConfiguration;
+import org.ucl.newton.sdk.plugin.PluginVisualization;
 import org.ucl.newton.sdk.processor.DataProcessor;
 import org.ucl.newton.sdk.processor.DataProcessorException;
 
@@ -32,13 +36,15 @@ public class PythonProcessor implements DataProcessor
     }
 
     @Override
-    public String getName() {
-        return "Newton Python Plugin";
+    public PluginConfiguration getConfiguration() {
+        return new BasicConfiguration("python.html");
     }
 
     @Override
-    public String getDescription() {
-        return "Provides the ability to use Python scripts to perform data analysis.";
+    public PluginVisualization getVisualization() {
+        return new BasicVisualization(
+            "Newton Python Plugin",
+            "Provides the ability to use Python scripts to perform data analysis.");
     }
 
     @Override

@@ -7,13 +7,13 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.sdk.data;
+package org.ucl.newton.sdk.provider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Provides common {@link DataProvider} implementation.
+ * A general purpose {@link DataProvider} implementation.
  *
  * @author Blair Butterworth
  */

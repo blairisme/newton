@@ -16,29 +16,48 @@
     <script src="/resources/scripts/libraries/bootstrap.js"></script>
 </head>
 <body>
-<!-- Navigation -->
-<div th:replace="fragments/header :: header"></div>
+    <!-- Navigation -->
+    <div th:replace="fragments/header :: header"></div>
 
-<!-- Page Content -->
-<div class="container-fluid">
-    <h1 class="page-title">System Settings</h1>
+    <!-- Page Content -->
+    <div class="container-fluid">
+        <h1 class="page-title">System Settings</h1>
 
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{'settings/roles'}" sec:authorize="hasRole('ROLE_ADMIN')">User Roles</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{'/settings/data-permissions'}">Data Source Permissions</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link active" href="#" sec:authorize="hasRole('ROLE_ADMIN')">Plugin Settings</a>
-        </li>
-    </ul>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{'settings/roles'}" sec:authorize="hasRole('ROLE_ADMIN')">User Roles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{'/settings/data-permissions'}">Data Source Permissions</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link active" href="#" sec:authorize="hasRole('ROLE_ADMIN')">Plugin Settings</a>
+            </li>
+        </ul>
 
-    <div>
-        <h4>Plugin Settings</h4>
+        <div>
+            <h4>Plugin Settings</h4>
+
+            <section class="form-section section-divider">
+                <h4>Data Provider</h4>
+
+                <div th:each="provider :${providers}">
+                    <span th:text="${provider.visualization.name}">Provider name</span>
+                    <div th:replace="${provider.configuration.viewFragment}"></div>
+                </div>
+            </section>
+
+            <!--<section class="form-section section-divider">-->
+                <!--<h4>Data Processors</h4>-->
+
+                <!--<div th:each="processor :${processors}">-->
+                    <!--<span th:text="${processor.visualization.name}">Processor name</span>-->
+                    <!--<div th:replace="${processor.configuration.viewFragment}"></div>-->
+                <!--</div>-->
+            <!--</section>-->
+
+        </div>
     </div>
-</div>
 
 </body>
 </html>

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.service.permission.PermissionService;
+import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
@@ -32,14 +33,17 @@ public class SettingsController
 {
     private UserService userService;
     private PermissionService permissionService;
+    private PluginService pluginService;
 
     @Inject
     public SettingsController(
         UserService userService,
-        PermissionService permissionService)
+        PermissionService permissionService,
+        PluginService pluginService)
     {
         this.userService = userService;
         this.permissionService = permissionService;
+        this.pluginService = pluginService;
     }
 
     @RequestMapping(value = "/settings/roles", method = RequestMethod.GET)
@@ -60,6 +64,9 @@ public class SettingsController
     @RequestMapping(value = "/settings/plugins", method = RequestMethod.GET)
     public String plugins(ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("providers", pluginService.getDataProviders());
+        model.addAttribute("processors", pluginService.getDataProcessors());
+        model.addAttribute("publishers", pluginService.getDataPublishers());
         return "settings/plugins";
     }
 

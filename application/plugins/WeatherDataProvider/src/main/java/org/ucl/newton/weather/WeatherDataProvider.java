@@ -10,9 +10,13 @@
 package org.ucl.newton.weather;
 
 import org.ucl.newton.common.concurrent.DaemonThreadFactory;
-import org.ucl.newton.sdk.data.BasicDataProvider;
-import org.ucl.newton.sdk.data.BasicDataSource;
-import org.ucl.newton.sdk.data.DataSource;
+import org.ucl.newton.sdk.plugin.BasicConfiguration;
+import org.ucl.newton.sdk.plugin.BasicVisualization;
+import org.ucl.newton.sdk.plugin.PluginConfiguration;
+import org.ucl.newton.sdk.plugin.PluginVisualization;
+import org.ucl.newton.sdk.provider.BasicDataProvider;
+import org.ucl.newton.sdk.provider.BasicDataSource;
+import org.ucl.newton.sdk.provider.DataSource;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,13 +48,15 @@ public class WeatherDataProvider extends BasicDataProvider
     }
 
     @Override
-    public String getName() {
-        return "Weather Data Plugin";
+    public PluginConfiguration getConfiguration() {
+        return new BasicConfiguration("weather.html");
     }
 
     @Override
-    public String getDescription() {
-        return "Gathers weather data from World Weather Online weather data service.";
+    public PluginVisualization getVisualization() {
+        return new BasicVisualization(
+            "Weather Data Plugin",
+            "Gathers weather data from World Weather Online weather data service.");
     }
 
     public DataSource getWeatherDataSource() {

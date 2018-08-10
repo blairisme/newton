@@ -11,17 +11,13 @@ package org.ucl.newton.common.lang;
 
 import org.apache.commons.lang3.Validate;
 import org.reflections.Reflections;
+import org.ucl.newton.common.file.IoUtils;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Set;
-
-import static org.ucl.newton.common.file.PathUtils.toUrl;
+import java.util.*;
 
 /**
  * Instances of this class loader are used to load classes and resources from a
@@ -29,12 +25,22 @@ import static org.ucl.newton.common.file.PathUtils.toUrl;
  *
  * @author Blair Butterworth
  */
-public class JarClassLoader implements Closeable
+public class JarClassLoader extends DelegateClassLoader implements Closeable
 {
-    private URLClassLoader delegate;
+    private static JarClassLoader instance;
 
-    public JarClassLoader(Path jar) {
-        this(toUrl(jar));
+    public static JarClassLoader getSystemClassLoader() {
+        if (instance == null) {
+            instance = new JarClassLoader();
+        }
+        return instance;
+    }
+
+    private Collection<URL> jars;
+    private ClassLoader parent;
+
+    public JarClassLoader() {
+        this(Collections.emptyList());
     }
 
     public JarClassLoader(URL jar) {
@@ -43,22 +49,41 @@ public class JarClassLoader implements Closeable
 
     public JarClassLoader(Collection<URL> jars) {
         Validate.notNull(jars);
-        ClassLoader parent = getClass().getClassLoader();
-        delegate = new URLClassLoader(jars.toArray(new URL[0]), parent);
+        this.jars = new ArrayList<>();
+        this.jars.addAll(jars);
+        this.parent = getClass().getClassLoader();
+        updateDelegate();
+    }
+
+    public void load(URL jar) {
+        this.jars.add(jar);
+        updateDelegate();
+    }
+
+    public void load(Collection<URL> jars) {
+        this.jars.clear();
+        this.jars.addAll(jars);
+        updateDelegate();
     }
 
     public <T> Set<Class<? extends T>> findSubTypes(Class<T> type) {
-        Reflections reflections = new Reflections(delegate);
+        Reflections reflections = new Reflections(getDelegate());
         return reflections.getSubTypesOf(type);
     }
 
     public <T> Set<Class<? extends T>> findSubTypes(Class<T> type, String packageRestriction) {
-        Reflections reflections = new Reflections(packageRestriction, delegate);
+        Reflections reflections = new Reflections(packageRestriction, getDelegate());
         return reflections.getSubTypesOf(type);
     }
 
     @Override
     public void close() throws IOException {
-        delegate.close();
+        URLClassLoader classLoader = (URLClassLoader)getDelegate();
+        classLoader.close();
+    }
+
+    private void updateDelegate() {
+        IoUtils.closeQuitely((URLClassLoader)getDelegate());
+        setDelegate(new URLClassLoader(jars.toArray(new URL[0]), parent));
     }
 }

@@ -30,4 +30,14 @@ public class JarClassLoaderTest
         Set<Class<? extends JSONTokener>> result = jarClassLoader.findSubTypes(JSONTokener.class, "org.json");
         Assert.assertEquals(2, result.size());
     }
+
+    @Test
+    public void loadTwiceTest() {
+        URL jarUrl = getClass().getResource("/json.jar");
+        JarClassLoader jarClassLoader = new JarClassLoader(jarUrl);
+        jarClassLoader.load(jarUrl);
+
+        Set<Class<? extends JSONTokener>> result = jarClassLoader.findSubTypes(JSONTokener.class, "org.json");
+        Assert.assertEquals(2, result.size());
+    }
 }

@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import static java.util.stream.Collectors.toSet;
+import static org.ucl.newton.common.file.PathUtils.toUrl;
 
 /**
  * Instances of this class manage a local cache of {@link DataProcessor
@@ -120,7 +121,7 @@ public class DataProcessorService
         throws InvalidPluginException
     {
         try {
-            JarClassLoader classLoader = new JarClassLoader(processorPlugin);
+            JarClassLoader classLoader = new JarClassLoader(toUrl(processorPlugin));
             JarInstanceLoader instanceLoader = new JarInstanceLoader(classLoader);
             Set<DataProcessor> processors = instanceLoader.getImplementors(DataProcessor.class, "org.ucl.newton");
             return findProcessor(processors, processorId);

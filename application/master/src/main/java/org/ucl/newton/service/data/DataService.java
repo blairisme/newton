@@ -14,10 +14,10 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.common.exception.UnknownEntityException;
-import org.ucl.newton.sdk.data.DataProvider;
-import org.ucl.newton.sdk.data.DataProviderObserver;
-import org.ucl.newton.sdk.data.DataSource;
-import org.ucl.newton.sdk.data.DataStorage;
+import org.ucl.newton.sdk.provider.DataProvider;
+import org.ucl.newton.sdk.provider.DataProviderObserver;
+import org.ucl.newton.sdk.provider.DataSource;
+import org.ucl.newton.sdk.provider.DataStorage;
 import org.ucl.newton.service.plugin.PluginService;
 
 import javax.inject.Inject;

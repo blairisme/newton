@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 import org.ucl.newton.common.exception.InvalidPluginException;
 import org.ucl.newton.common.lang.JarClassLoader;
 import org.ucl.newton.common.lang.JarInstanceLoader;
-import org.ucl.newton.sdk.data.DataProvider;
 import org.ucl.newton.sdk.processor.DataProcessor;
+import org.ucl.newton.sdk.provider.DataProvider;
 import org.ucl.newton.sdk.publisher.DataPublisher;
 
 import javax.inject.Inject;
@@ -33,6 +33,9 @@ import java.util.Collection;
 public class PluginService
 {
     private PluginRepository pluginRepository;
+    private Collection<DataProvider> providers;
+    private Collection<DataProcessor> processors;
+    private Collection<DataPublisher> publishers;
 
     @Inject
     public PluginService(PluginRepository pluginRepository) {
@@ -44,18 +47,30 @@ public class PluginService
     }
 
     public Collection<DataProvider> getDataProviders() {
-        return getPlugins(DataProvider.class);
+        if (providers == null) {
+            providers = getPlugins(DataProvider.class);
+        }
+        return providers;
     }
 
     public Collection<DataProcessor> getDataProcessors() {
-        return getPlugins(DataProcessor.class);
+        if (processors == null) {
+            processors = getPlugins(DataProcessor.class);
+        }
+        return processors;
     }
-    public Collection<DataPublisher> getDataPublishers() { return getPlugins(DataPublisher.class); }
+
+    public Collection<DataPublisher> getDataPublishers() {
+        if (publishers == null) {
+            publishers = getPlugins(DataPublisher.class);
+        }
+        return publishers;
+    }
 
     private <T> Collection<T> getPlugins(Class<T> type) {
         try {
-            Collection<URL> plugins = getPluginLocations();
-            JarClassLoader classLoader = new JarClassLoader(plugins);
+            JarClassLoader classLoader = JarClassLoader.getSystemClassLoader();
+            classLoader.load(getPluginLocations());
             JarInstanceLoader instanceLoader = new JarInstanceLoader(classLoader);
             return instanceLoader.getImplementors(type, "org.ucl");
         }
