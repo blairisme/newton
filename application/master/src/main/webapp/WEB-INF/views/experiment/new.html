@@ -79,12 +79,12 @@
                             <div class="radio">
                                 <input type="radio"
                                        th:id="'selectedTypeValue' + ${itter.count}"
-                                       th:value="${typeValue.getName()}"
+                                       th:value="${typeValue.getVisualization().getName()}"
                                        name="selectedTypeValue"
                                        th:checked="${itter.count} == 1"/>
                                 <label
                                         th:for="'selectedTypeValue' + ${itter.count}"
-                                        th:text="${typeValue.getName()}"></label>
+                                        th:text="${typeValue.getVisualization().getName()}"></label>
                             </div>
                         </th:block>
                     </div>
