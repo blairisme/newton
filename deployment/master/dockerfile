@@ -40,7 +40,6 @@ ENV newton_slave_host $slave_host
 ENV newton_slave_port $slave_port
 ENV newton_master_host $master_host
 ENV newton_master_port $master_port
-ENV newton_profile development
 
 
 COPY ./libs/master.war /var/lib/jetty/webapps/ROOT.war
