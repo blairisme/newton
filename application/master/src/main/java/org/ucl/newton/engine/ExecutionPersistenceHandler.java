@@ -21,6 +21,7 @@ import org.ucl.newton.bridge.ExecutionNode;
 import org.ucl.newton.bridge.ExecutionResult;
 import org.ucl.newton.common.archive.ZipUtils;
 import org.ucl.newton.common.exception.ConnectionException;
+import org.ucl.newton.common.file.IoFunction;
 import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.ExperimentVersionBuilder;
@@ -98,7 +99,6 @@ public class ExecutionPersistenceHandler
             IOUtils.copy(inputStream, outputStream);
         }
         catch (Exception cause){
-
             throw new ConnectionException(cause);
         }
         return logPath;
@@ -106,10 +106,14 @@ public class ExecutionPersistenceHandler
 
     private Collection<Path> uncompressOutput(Path archive, Path destination) throws IOException  {
         try(InputStream inputStream = applicationStorage.getInputStream(archive)) {
-            Collection<Path> contents = ZipUtils.unzip(inputStream, applicationStorage.getOutputStreamFactory(destination));
+            Collection<Path> contents = ZipUtils.unzip(inputStream, getOutputStreamFactory(destination));
             Path resourcePath = applicationStorage.getApplicationDirectory().relativize(destination);
             return PathUtils.resolve(resourcePath, contents);
         }
+    }
+
+    public IoFunction<Path, OutputStream> getOutputStreamFactory(Path relativePath) {
+        return (path) -> applicationStorage.getOutputStream(relativePath.resolve(path));
     }
 
     private void persistExperiment(ExecutionResult executionResult, Collection<Path> outputs) {

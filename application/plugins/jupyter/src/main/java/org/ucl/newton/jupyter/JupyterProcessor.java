@@ -11,10 +11,7 @@ package org.ucl.newton.jupyter;
 
 import org.ucl.newton.common.collection.CollectionUtils;
 import org.ucl.newton.common.process.CommandExecutor;
-import org.ucl.newton.sdk.plugin.BasicConfiguration;
-import org.ucl.newton.sdk.plugin.BasicVisualization;
-import org.ucl.newton.sdk.plugin.PluginConfiguration;
-import org.ucl.newton.sdk.plugin.PluginVisualization;
+import org.ucl.newton.sdk.plugin.*;
 import org.ucl.newton.sdk.processor.DataProcessor;
 import org.ucl.newton.sdk.processor.DataProcessorException;
 
@@ -52,6 +49,10 @@ public class JupyterProcessor implements DataProcessor
         return new BasicVisualization(
             "Newton Jupyter Plugin",
             "Provides the ability to use Jupyter notebooks to perform data analysis.");
+    }
+
+    @Override
+    public void setContext(PluginHostContext context) {
     }
 
     @Override

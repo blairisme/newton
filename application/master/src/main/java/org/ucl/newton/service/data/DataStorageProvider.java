@@ -9,8 +9,8 @@
 
 package org.ucl.newton.service.data;
 
-
 import org.ucl.newton.application.system.ApplicationStorage;
+import org.ucl.newton.common.file.NamedSteamProvider;
 import org.ucl.newton.sdk.provider.DataSource;
 import org.ucl.newton.sdk.provider.DataStorage;
 
@@ -30,6 +30,7 @@ import java.nio.file.Path;
 public class DataStorageProvider implements DataStorage
 {
     private String providerId;
+    private NamedSteamProvider storageProvider;
     private ApplicationStorage applicationStorage;
 
     @Inject
@@ -39,16 +40,17 @@ public class DataStorageProvider implements DataStorage
 
     public void setProviderId(String providerId) {
         this.providerId = providerId;
+        this.storageProvider = new NamedSteamProvider(applicationStorage.getDataDirectory(providerId));
     }
 
     @Override
     public InputStream getInputStream(DataSource dataSource) throws IOException {
-        throw new UnsupportedOperationException();
+        return storageProvider.getInputStream(dataSource.getIdentifier());
     }
 
     @Override
     public OutputStream getOutputStream(DataSource dataSource) throws IOException {
-        return applicationStorage.getOutputStream("data/" + providerId, dataSource.getIdentifier());
+        return storageProvider.getOutputStream(dataSource.getIdentifier());
     }
 
     public Path getPath(DataSource dataSource) {

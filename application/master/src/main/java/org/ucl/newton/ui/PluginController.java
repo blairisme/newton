@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-
 /**
  * Instances of this class provide an MVC controller for web pages used to
  * list and manage plugin.
@@ -77,7 +76,7 @@ public class PluginController {
         if(publisher != null){
             FTPConfig config = new FTPConfig(hostName,userName,userPassword,Integer.parseInt(port));
             try {
-                OutputStream output = storage.getOutputStream("publisher", publisher.getConfigName());
+                OutputStream output = storage.getOutputStream(Paths.get("publisher", publisher.getConfigName()));
                 FileUtils.writeToFile(output,config,FTPConfig.class);
             }catch (IOException e){
                 e.printStackTrace();
@@ -100,7 +99,7 @@ public class PluginController {
     @RequestMapping(value = "/SetAuthCode", method = RequestMethod.POST)
     public String setAuthCode(@RequestParam String authCode, ModelMap model){
         try{
-            OutputStream output = storage.getOutputStream("Fizzyo","authCode");
+            OutputStream output = storage.getOutputStream(Paths.get("Fizzyo","authCode"));
             output.write(authCode.getBytes("utf-8"));
             output.close();
         }catch (Exception e){
@@ -130,10 +129,12 @@ public class PluginController {
         List<List<String>> properties = new ArrayList<>();
         properties.add(getHeader());
         properties.addAll(getProperties(key,items));
+
         try {
-            OutputStream output = storage.getOutputStream("weather","setting");
+            OutputStream output = storage.getOutputStream(Paths.get("weather","setting"));
             FileUtils.writeCSV(output,properties);
-        }catch (IOException e){
+        }
+        catch (IOException e){
             e.printStackTrace();
         }
         return "redirect:/weatherSetting";

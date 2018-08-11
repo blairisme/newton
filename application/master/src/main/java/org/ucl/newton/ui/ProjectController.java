@@ -10,6 +10,7 @@
 package org.ucl.newton.ui;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,8 @@ import org.ucl.newton.service.user.UserService;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
@@ -190,11 +193,17 @@ public class ProjectController
         if (image != null && ! image.isEmpty()) {
             try (InputStream stream = image.getInputStream()) {
                 String identifier = generateImageName(image);
-                applicationStorage.write("images/project", identifier, stream);
+                write("images/project", identifier, stream);
                 return identifier;
             }
         }
         return "default.png";
+    }
+
+    private void write(String group, String identifier, InputStream inputStream) throws IOException {
+        try (OutputStream outputStream = applicationStorage.getOutputStream(Paths.get(group, identifier))) {
+            IOUtils.copy(inputStream, outputStream);
+        }
     }
 
     private String generateImageName(MultipartFile image) {

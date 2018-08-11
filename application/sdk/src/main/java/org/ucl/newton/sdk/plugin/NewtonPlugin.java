@@ -21,4 +21,6 @@ public interface NewtonPlugin
     PluginConfiguration getConfiguration();
 
     PluginVisualization getVisualization();
+
+    void setContext(PluginHostContext context);
 }

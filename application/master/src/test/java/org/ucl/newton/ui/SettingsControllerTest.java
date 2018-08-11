@@ -46,7 +46,7 @@ public class SettingsControllerTest
     @Test
     public void systemSettingsPluginsTest(){
         SettingsController controller = new SettingsController(userService, permissionService, pluginService);
-        Assert.assertEquals("settings/plugins", controller.plugins(new ModelMap()));
+        Assert.assertEquals("settings/plugins", controller.viewPlugins(new ModelMap()));
     }
 
     @Test

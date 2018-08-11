@@ -38,14 +38,19 @@
         <div>
             <h4>Plugin Settings</h4>
 
-            <section class="form-section section-divider">
-                <h4>Data Provider</h4>
+            <form id="projectDetails" action="/settings/plugins/update" method="POST">
+                <section class="form-section section-divider">
+                    <h4>Data Provider</h4>
 
-                <div th:each="provider :${providers}">
-                    <span th:text="${provider.visualization.name}">Provider name</span>
-                    <div th:replace="${provider.configuration.viewFragment}"></div>
-                </div>
-            </section>
+                    <div th:each="provider :${providers}">
+                        <span th:text="${provider.visualization.name}">Provider name</span>
+                        <div th:replace="${provider.configuration.viewFragment}"></div>
+                    </div>
+                </section>
+
+                <input type="submit" class="btn btn-primary" value="Save"/>
+            </form>
+
 
             <!--<section class="form-section section-divider">-->
                 <!--<h4>Data Processors</h4>-->

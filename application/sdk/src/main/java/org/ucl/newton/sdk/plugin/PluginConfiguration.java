@@ -9,6 +9,9 @@
 
 package org.ucl.newton.sdk.plugin;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Defines methods through which the Newton system can allow users to see the
  * plugins configuration as well as being able to alter it.
@@ -18,4 +21,6 @@ package org.ucl.newton.sdk.plugin;
 public interface PluginConfiguration
 {
     String getViewFragment();
+
+    void update(Map<String, List<String>> values);
 }

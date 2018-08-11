@@ -9,6 +9,9 @@
 
 package org.ucl.newton.sdk.plugin;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * A general purpose {@link PluginConfiguration} implementation.
  *
@@ -25,5 +28,9 @@ public class BasicConfiguration implements PluginConfiguration
     @Override
     public String getViewFragment() {
         return viewFragment;
+    }
+
+    @Override
+    public void update(Map<String, List<String>> values) {
     }
 }

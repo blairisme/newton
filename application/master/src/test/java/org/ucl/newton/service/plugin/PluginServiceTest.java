@@ -16,6 +16,7 @@ import static org.mockito.Mockito.when;
 
 public class PluginServiceTest {
 
+    private PluginContext context;
     private PluginService service;
     private PluginRepository repository;
     private Plugin plugin;
@@ -29,8 +30,9 @@ public class PluginServiceTest {
         plugins.add(plugin);
         plugins.add(plugin2);
         repository = mock(PluginRepository.class);
+        context = mock(PluginContext.class);
         when(repository.getPlugins()).thenReturn(plugins);
-        service = new PluginService(repository);
+        service = new PluginService(context, repository);
     }
 
     @Test
