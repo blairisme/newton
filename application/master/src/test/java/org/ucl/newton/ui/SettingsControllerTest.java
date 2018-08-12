@@ -14,44 +14,44 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.ui.ModelMap;
-import org.ucl.newton.service.permission.PermissionService;
+import org.ucl.newton.service.data.DataPermissionService;
 import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.user.UserService;
 
 public class SettingsControllerTest
 {
     private UserService userService;
-    private PermissionService permissionService;
+    private DataPermissionService dataPermissionService;
     private PluginService pluginService;
 
     @Before
     public void setUp() {
         userService = Mockito.mock(UserService.class);
-        permissionService = Mockito.mock(PermissionService.class);
+        dataPermissionService = Mockito.mock(DataPermissionService.class);
         pluginService = Mockito.mock(PluginService.class);
     }
 
     @Test
     public void systemSettingsRolesTest(){
-        SettingsController controller = new SettingsController(userService, permissionService, pluginService);
+        SettingsController controller = new SettingsController(userService, dataPermissionService, pluginService);
         Assert.assertEquals("settings/roles", controller.roles(new ModelMap()));
     }
 
     @Test
     public void systemSettingsDataPermissionsTest(){
-        SettingsController controller = new SettingsController(userService, permissionService, pluginService);
+        SettingsController controller = new SettingsController(userService, dataPermissionService, pluginService);
         Assert.assertEquals("settings/data-permissions", controller.dataPermissions(new ModelMap()));
     }
 
     @Test
     public void systemSettingsPluginsTest(){
-        SettingsController controller = new SettingsController(userService, permissionService, pluginService);
+        SettingsController controller = new SettingsController(userService, dataPermissionService, pluginService);
         Assert.assertEquals("settings/plugins", controller.viewPlugins(new ModelMap()));
     }
 
     @Test
     public void profileTest(){
-        SettingsController controller = new SettingsController(userService, permissionService, pluginService);
+        SettingsController controller = new SettingsController(userService, dataPermissionService, pluginService);
         Assert.assertEquals("settings/profile", controller.profile(new ModelMap()));
     }
 }

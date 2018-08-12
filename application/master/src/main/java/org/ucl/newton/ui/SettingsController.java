@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.sdk.plugin.NewtonPlugin;
-import org.ucl.newton.service.permission.PermissionService;
+import org.ucl.newton.service.data.DataPermissionService;
 import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.user.UserService;
 
@@ -38,17 +38,17 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class SettingsController
 {
     private UserService userService;
-    private PermissionService permissionService;
+    private DataPermissionService dataPermissionService;
     private PluginService pluginService;
 
     @Inject
     public SettingsController(
-        UserService userService,
-        PermissionService permissionService,
-        PluginService pluginService)
+            UserService userService,
+            DataPermissionService dataPermissionService,
+            PluginService pluginService)
     {
         this.userService = userService;
-        this.permissionService = permissionService;
+        this.dataPermissionService = dataPermissionService;
         this.pluginService = pluginService;
     }
 
@@ -62,8 +62,8 @@ public class SettingsController
     public String dataPermissions(ModelMap model) {
         User user = userService.getAuthenticatedUser();
         model.addAttribute("user", user);
-        model.addAttribute("ownedDs", permissionService.getPermissionsOwnedByUser(user));
-        model.addAttribute("grantedDs", permissionService.getPermissionsGrantedToUser(user));
+        model.addAttribute("ownedPermission", dataPermissionService.getPermissionsOwnedByUser(user));
+        model.addAttribute("grantedPermission", dataPermissionService.getPermissionsGrantedToUser(user));
         return "settings/data-permissions";
     }
 

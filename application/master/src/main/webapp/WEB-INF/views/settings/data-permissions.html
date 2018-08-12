@@ -9,11 +9,16 @@
     <link rel="icon" href="resources/images/common/favicon.ico">
 
     <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/typeahead.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/views/settings/data-permissions.css"/>
 
     <script src="/resources/scripts/libraries/jquery.js"></script>
     <script src="/resources/scripts/libraries/popper.js"></script>
     <script src="/resources/scripts/libraries/bootstrap.js"></script>
+    <script src="/resources/scripts/libraries/typeahead.js"></script>
+    <script src="/resources/scripts/libraries/handlebars.js"></script>
+    <script src="/resources/scripts/views/settings/data-permissions.js"></script>
 </head>
 <body>
 <!-- Navigation -->
@@ -35,8 +40,64 @@
         </li>
     </ul>
 
-    <div>
-        <h4>Data Permission Settings</h4>
+    <div class="container-fluid restricted-width-container">
+
+        <div class="section-divider">
+            <h1 class="page-title">Data Permission Settings</h1>
+            <p>Control who can access data sources that you own and view which data souces you have been granted access to.</p>
+        </div>
+
+        <!-- Owned data dataPermission settings -->
+        <div class="section-divider">
+            <h6>Owned data sources</h6>
+            <label for="permissionSelection">Data sources of which you are the owner. Select a data source to manage access to the data source.</label>
+
+            <div class="dropdown" id="permissionSelection">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownPermissionButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select a data source name
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                     <th:block th:each="dataPermission : ${ownedPermission}">
+                        <a class="dropdown-item" href="#" th:text="${dataPermission.dataSourceIdentifier}"></a>
+                    </th:block>
+                </div>
+            </div>
+
+            <!-- DataPermission data -->
+            <div id="grantedInfoDiv">
+                <div id="couldNotRemovePermissionError" class="alert alert-danger">Could not remove dataPermission</div>
+                <label for="grantedPermissionList">Users with granted dataPermission:</label>
+                <ul id="grantedPermissionList" class="list-group list-group-flush">
+                    <li class="list-group-item project-list-item empty-message" id="emptyPermissionGroup">
+                        <p>No users are granted access to this data source</p>
+                    </li>
+                </ul>
+
+                <div class="form-group" width="100%">
+                    <input id="userInput" type="text" class="typeahead form-control" placeholder="Begin typing to find a user to grant data access to">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Granted data dataPermission list -->
+        <div class="section-divider">
+            <h6>Granted data sources</h6>
+            <p>A list of data sources you have currently been granted access to.</p>
+            <ul class="list-group list-group-flush">
+                <li th:if="${#lists.size(grantedPermission)} == 0" class="list-group-item project-list-item empty-message">
+                    <p>You have not been granted access to any data sources currently, contact a data source owner to request dataPermission.</p>
+                </li>
+                <th:block th:each="dataPermission : ${grantedPermission}">
+                    <li class="list-group-item project-list-item" >
+                        <img th:src="'/resources/images/profile/' + ${dataPermission.owner.image}" class="rounded-circle avatar" alt="Profile picture">
+                        <span th:text="'Owner: ' + ${dataPermission.owner.name} + ' (' + ${dataPermission.owner.email} + ')'"></span>
+                        <span th:text="'Data source name: ' + ${dataPermission.dataSourceIdentifier}" class="float-right"></span>
+                    </li>
+                </th:block>
+            </ul>
+        </div>
+
     </div>
 </div>
 
