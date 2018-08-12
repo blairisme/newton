@@ -68,3 +68,8 @@
 .restricted-width-container {
     max-width: 62.5rem;
 }
+
+.section-divider {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
+}

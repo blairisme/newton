@@ -1,0 +1,11 @@
+.profile-pic {
+    width: 10em;
+    height: 10em;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.extra-restricted-width-container {
+    max-width: 40rem;
+}

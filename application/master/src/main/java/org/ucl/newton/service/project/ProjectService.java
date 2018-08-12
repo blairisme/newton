@@ -15,6 +15,7 @@ import org.ucl.newton.framework.User;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -63,6 +64,18 @@ public class ProjectService
     public Collection<Project> getProjects(User user) {
         Validate.notNull(user);
         return repository.getProjects(user);
+    }
+
+    public Collection<Project> getOwnedProjects(User user) {
+        Validate.notNull(user);
+        Collection<Project> projectsAMemberOf = repository.getProjects(user);
+        Collection<Project> ownedProjects = new ArrayList<>();
+        for(Project project: projectsAMemberOf) {
+            if(project.getOwner().getId() == user.getId()) {
+                ownedProjects.add(project);
+            }
+        }
+        return ownedProjects;
     }
 
     public Collection<Project> getStarredProjects(User user) {

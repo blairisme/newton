@@ -19,6 +19,7 @@ import org.ucl.newton.framework.User;
 import org.ucl.newton.sdk.plugin.NewtonPlugin;
 import org.ucl.newton.service.data.DataPermissionService;
 import org.ucl.newton.service.plugin.PluginService;
+import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
@@ -40,16 +41,19 @@ public class SettingsController
     private UserService userService;
     private DataPermissionService dataPermissionService;
     private PluginService pluginService;
+    private ProjectService projectService;
 
     @Inject
     public SettingsController(
             UserService userService,
             DataPermissionService dataPermissionService,
-            PluginService pluginService)
+            PluginService pluginService,
+            ProjectService projectService)
     {
         this.userService = userService;
         this.dataPermissionService = dataPermissionService;
         this.pluginService = pluginService;
+        this.projectService = projectService;
     }
 
     @RequestMapping(value = "/settings/roles", method = RequestMethod.GET)
@@ -87,7 +91,11 @@ public class SettingsController
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String profile(ModelMap model) {
-        model.addAttribute("user", userService.getAuthenticatedUser());
+        User currentUser = userService.getAuthenticatedUser();
+        model.addAttribute("user", currentUser);
+        model.addAttribute("numProjectsAMemberOf", projectService.getProjects(currentUser).size());
+        model.addAttribute("numOfProjectsOwned", projectService.getOwnedProjects(currentUser).size());
+        model.addAttribute("numOfProjectsStarred", projectService.getStarredProjects(currentUser).size());
         return "settings/profile";
     }
 }

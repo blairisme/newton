@@ -9,7 +9,7 @@
 
         <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
-        <link rel="stylesheet" type="text/css" href="/resources/styles/system.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/views/settings/profile.css"/>
 
         <script src="/resources/scripts/libraries/jquery.js"></script>
         <script src="/resources/scripts/libraries/popper.js"></script>
@@ -20,8 +20,33 @@
         <div th:replace="fragments/header :: header"></div>
 
         <!-- Page Content -->
-        <div class="container-fluid">
-            <h1 class="page-title">Profile</h1>
+        <div class="container-fluid extra-restricted-width-container">
+
+            <div class="section-divider">
+                <h1 class="page-title">Profile</h1>
+                <!-- Profile image -->
+                <img th:src="'/resources/images/profile/' + ${user.image}" class="rounded-circle profile-pic" alt="Profile picture">
+
+                <!-- Name -->
+                <div th:text="'Name: ' + ${user.name}" ></div>
+
+                <!-- Email -->
+                <div th:text="'Email: ' + ${user.email}"></div>
+
+                <!-- Number of projects -->
+                <div th:text="'Number of projects owned: ' + ${numOfProjectsOwned}"></div>
+                <div th:text="'Number of projects a member of: ' + ${numProjectsAMemberOf}"></div>
+                <div th:text="'Number of projects starred: ' + ${numOfProjectsStarred}"></div>
+            </div>
+
+
+            <!-- Delete user -->
+            <div class="section-divider">
+                <h1 class="page-title">Delete User</h1>
+                <div class="text-danger">Warning deleteing a user will permentatally delete this user and any data associated with them, this could include deleteing experimants and projects!</div>
+                <button type="button" class="btn btn-danger">Delete User</button>
+            </div>
+
         </div>
 
     </body>
