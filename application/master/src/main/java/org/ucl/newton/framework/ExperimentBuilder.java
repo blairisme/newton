@@ -11,6 +11,7 @@ package org.ucl.newton.framework;
 
 import org.apache.commons.lang3.Validate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +30,11 @@ public class ExperimentBuilder
     private Project project;
     private List<ExperimentVersion> versions;
     private ExperimentConfiguration configuration;
+
+    public ExperimentBuilder() {
+        versions = new ArrayList<>();
+        description = "";
+    }
 
     public ExperimentBuilder copyExperiment(Experiment experiment) {
         id = experiment.getId();
@@ -80,7 +86,6 @@ public class ExperimentBuilder
         Validate.notNull(name);
         Validate.notNull(creator);
         Validate.notNull(project);
-        Validate.notNull(versions);
         Validate.notNull(configuration);
         return new Experiment(
             id,

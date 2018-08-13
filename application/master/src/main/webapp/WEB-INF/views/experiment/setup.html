@@ -80,7 +80,7 @@
                                     <input type="radio"
                                            th:id="'selectedTriggerValue' + ${itter.count}"
                                            th:value="${triggerValue.getName()}"
-                                           name="selectedTriggerValue"
+                                           name="trigger"
                                            th:checked="${experiment.configuration.trigger} == ${triggerValue}" />
                                     <label
                                             th:for="'selectedTriggerValue' + ${itter.count}"
@@ -104,14 +104,14 @@
                                 <div class="radio">
                                     <input type="radio"
                                            th:id="'selectedTypeValue' + ${itter.count}"
-                                           th:value="${typeValue.getName()}"
-                                           name="selectedTypeValue"
+                                           th:value="${typeValue.visualization.name}"
+                                           name="processor"
                                            th:disabled="${experiment.configuration.processorPluginId} != ${typeValue.getIdentifier()}"
                                            th:checked="${experiment.configuration.processorPluginId} == ${typeValue.getIdentifier()}"
                                            />
                                     <label
                                             th:for="'selectedTypeValue' + ${itter.count}"
-                                            th:text="${typeValue.getName()}"></label>
+                                            th:text="${typeValue.visualization.name}"></label>
                                 </div>
                             </th:block>
                         </div>
@@ -132,7 +132,7 @@
                                     <input type="radio"
                                            th:id="'selectedStorageValue' + ${itter.count}"
                                            th:value="${storageValue}"
-                                           name="selectedStorageValue"
+                                           name="storage"
                                            th:checked="true" />
                                     <label
                                             th:for="'selectedStoragevalue' + ${itter.count}"
@@ -210,6 +210,10 @@
                             th:value="${experiment.configuration.outputPattern}">
                     </div>
                 </section>
+
+                <input id="experimentCreator" name="creator" type="text" th:value="${user.email}" hidden="hidden">
+                <input id="experimentProject" name="project" type="text" th:value="${project.identifier}" hidden="hidden">
+                <input id="experimentDisplayPattern" name="displayPattern" type="text" value="*.html" hidden="hidden">
 
                 <button class="btn btn-primary float-right" id="createBtn">Update Experiment</button>
             </form>

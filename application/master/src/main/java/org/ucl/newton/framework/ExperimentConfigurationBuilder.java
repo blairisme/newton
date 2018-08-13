@@ -57,9 +57,10 @@ public class ExperimentConfigurationBuilder {
     }
 
     public ExperimentConfigurationBuilder addDataSources(String[] dataSourceIds, String[] dataSourceLocs) {
-        // should check both arrays are equal length
         dataSources = new ArrayList<>();
-        if(dataSourceIds != null && dataSourceLocs != null) {
+        if (dataSourceIds != null && dataSourceLocs != null) {
+            Validate.isTrue(dataSourceIds.length == dataSourceLocs.length);
+
             for (int i = 0; i < dataSourceIds.length; i++) {
                 dataSources.add(new ExperimentDataSource(0, dataSourceIds[i], dataSourceLocs[i]));
             }
