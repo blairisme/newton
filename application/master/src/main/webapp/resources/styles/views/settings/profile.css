@@ -1,0 +1,18 @@
+.profile-pic {
+    width: 10em;
+    height: 10em;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.extra-restricted-width-container {
+    max-width: 40rem;
+}
+
+.delete-btn {
+    margin-left: auto;
+    margin-right: 1em;
+    margin-top: 0.5em;
+    display: block;
+}

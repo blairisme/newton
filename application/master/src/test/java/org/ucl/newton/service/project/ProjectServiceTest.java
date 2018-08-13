@@ -17,6 +17,7 @@ import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -35,12 +36,13 @@ public class ProjectServiceTest
     public void setUp() {
         repository = Mockito.mock(ProjectRepository.class);
         service = new ProjectService(repository);
-        goshJiro = new Project(3, "gosh-jiro", "GOSH Project Jiro", "Project description",
-                "default.png", new Date(), new User(), new ArrayList<>(), new ArrayList<>());
-        newProject = new Project(99, "new-project", "New Project", "Project description",
-                "image", new Date(), new User(), new ArrayList<>(), new ArrayList<>());
         userBlair = new User(3, "Blair Butterworth", "blair.butterworth.17@ucl.ac.uk", "profile.jpg");
         userZiad = new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk", "default.jpg");
+        goshJiro = new Project(3, "gosh-jiro", "GOSH Project Jiro", "Project description",
+                "default.png", new Date(), userZiad, new ArrayList<>(), new ArrayList<>());
+        newProject = new Project(99, "new-project", "New Project", "Project description",
+                "image", new Date(), new User(), new ArrayList<>(), new ArrayList<>());
+
     }
 
     @Test
@@ -169,6 +171,18 @@ public class ProjectServiceTest
         membersThatStar.remove(userZiad);
         goshJiro = service.getProjectByIdentifier(goshJiroIdentifier, true);
         Assert.assertFalse(service.getProjectByIdentifier(goshJiroIdentifier, true).getMembersThatStar().contains(userZiad));
+    }
+
+    @Test
+    public void testGetOwnedProjects() {
+        List<Project> memberProjects = new ArrayList<>();
+        memberProjects.add(goshJiro);
+        memberProjects.add(newProject);
+        Mockito.when(repository.getProjects(userZiad)).thenReturn(memberProjects);
+
+        Collection<Project> ownedProjects = service.getOwnedProjects(userZiad);
+        Assert.assertEquals(1, ownedProjects.size());
+        Assert.assertTrue(ownedProjects.contains(goshJiro));
     }
 
     private List<Project> getProjectList() {

@@ -14,8 +14,8 @@ import java.util.Collection;
  */
 
 @Entity
-@Table(name = "permissions")
-public class Permission {
+@Table(name = "dataPermissions")
+public class DataPermission {
 
     @Id
     @Column(name = "permission_id")
@@ -36,9 +36,9 @@ public class Permission {
     )
     private Collection<User> grantedPermissions;
 
-    public Permission() { }
+    public DataPermission() { }
 
-    public Permission(
+    public DataPermission(
         int id,
         User owner,
         String dataSourceIdentifier,
@@ -50,13 +50,21 @@ public class Permission {
         this.grantedPermissions = grantedPermissions;
     }
 
-    public Permission setId(int id) {
+    public DataPermission setId(int id) {
         this.id = id;
         return this;
     }
 
     public int getId() {
         return id;
+    }
+
+    public String getDataSourceIdentifier() {
+        return dataSourceIdentifier;
+    }
+
+    public User getOwner() {
+        return owner;
     }
 
     public Collection<User> getGrantedPermissions() {
@@ -73,7 +81,7 @@ public class Permission {
         if (obj == this) return true;
         if (obj.getClass() != getClass()) return false;
 
-        Permission that = (Permission)obj;
+        DataPermission that = (DataPermission)obj;
         return new EqualsBuilder()
             .append(this.id, that.id)
             .append(this.owner, that.owner)

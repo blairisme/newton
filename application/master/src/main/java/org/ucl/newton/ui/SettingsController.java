@@ -9,19 +9,24 @@
 
 package org.ucl.newton.ui;
 
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.sdk.plugin.NewtonPlugin;
-import org.ucl.newton.service.permission.PermissionService;
+import org.ucl.newton.service.data.DataPermissionService;
 import org.ucl.newton.service.plugin.PluginService;
+import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.util.function.Consumer;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -38,18 +43,21 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class SettingsController
 {
     private UserService userService;
-    private PermissionService permissionService;
+    private DataPermissionService dataPermissionService;
     private PluginService pluginService;
+    private ProjectService projectService;
 
     @Inject
     public SettingsController(
-        UserService userService,
-        PermissionService permissionService,
-        PluginService pluginService)
+            UserService userService,
+            DataPermissionService dataPermissionService,
+            PluginService pluginService,
+            ProjectService projectService)
     {
         this.userService = userService;
-        this.permissionService = permissionService;
+        this.dataPermissionService = dataPermissionService;
         this.pluginService = pluginService;
+        this.projectService = projectService;
     }
 
     @RequestMapping(value = "/settings/roles", method = RequestMethod.GET)
@@ -62,8 +70,8 @@ public class SettingsController
     public String dataPermissions(ModelMap model) {
         User user = userService.getAuthenticatedUser();
         model.addAttribute("user", user);
-        model.addAttribute("ownedDs", permissionService.getPermissionsOwnedByUser(user));
-        model.addAttribute("grantedDs", permissionService.getPermissionsGrantedToUser(user));
+        model.addAttribute("ownedPermission", dataPermissionService.getPermissionsOwnedByUser(user));
+        model.addAttribute("grantedPermission", dataPermissionService.getPermissionsGrantedToUser(user));
         return "settings/data-permissions";
     }
 
@@ -87,7 +95,25 @@ public class SettingsController
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String profile(ModelMap model) {
-        model.addAttribute("user", userService.getAuthenticatedUser());
+        User currentUser = userService.getAuthenticatedUser();
+        model.addAttribute("user", currentUser);
+        model.addAttribute("numProjectsAMemberOf", projectService.getProjects(currentUser).size());
+        model.addAttribute("numOfProjectsOwned", projectService.getOwnedProjects(currentUser).size());
+        model.addAttribute("numOfProjectsStarred", projectService.getStarredProjects(currentUser).size());
         return "settings/profile";
+    }
+
+    @RequestMapping(value = "/profile/delete", method = RequestMethod.POST)
+    public String deleteUser() {
+        try {
+            userService.removeUser(userService.getAuthenticatedUser());
+            HttpServletRequest request =
+                    ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                            .getRequest();
+            new SecurityContextLogoutHandler().logout(request, null, null);
+            return "main/landing";
+        } catch (Throwable e) {
+            return "redirect:/profile";
+        }
     }
 }

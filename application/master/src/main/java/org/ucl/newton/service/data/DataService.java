@@ -51,7 +51,7 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        loadProviders();
+//        loadProviders();
     }
 
     private void loadProviders() {

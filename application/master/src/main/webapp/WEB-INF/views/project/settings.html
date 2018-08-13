@@ -131,7 +131,7 @@
                                 <input type="checkbox" class="form-check-input" name="sources"
                                        th:value="${provider.getIdentifier()}" th:disabled="${project.owner.id} != ${user.id}"
                                        th:checked="${project.dataSources.contains(provider.getIdentifier())}"/>
-                                <label th:text="${provider.getName()}" class="list-unstyled"></label>
+                                <label th:text="${provider.getVisualization().getName()}" class="list-unstyled"></label>
                             </li>
                         </ul>
 

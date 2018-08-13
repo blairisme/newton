@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Instances of this class provide org.ucl.WeatherDataProvider.weather data to the Newton system.
+ * Instances of this class provide weather data to the Newton system.
  *
  * @author Xiaolong Chen
  */
@@ -42,62 +42,5 @@ public class Weather {
         values.add(uvIndex);
         return values;
     }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public List<Astronomy> getAstronomy() {
-        return astronomy;
-    }
-
-    public void setAstronomy(List<Astronomy> astronomy) {
-        this.astronomy = astronomy;
-    }
-
-    public String getMaxtempC() {
-        return maxtempC;
-    }
-
-    public void setMaxtempC(String maxtempC) {
-        this.maxtempC = maxtempC;
-    }
-
-    public String getMintempC() {
-        return mintempC;
-    }
-
-    public void setMintempC(String mintempC) {
-        this.mintempC = mintempC;
-    }
-
-    public String getTotalSnowCm() {
-        return totalSnow_cm;
-    }
-
-    public void setTotalSnowCm(String totalSnow_cm) {
-        this.totalSnow_cm = totalSnow_cm;
-    }
-
-    public String getSunHour() {
-        return sunHour;
-    }
-
-    public void setSunHour(String sunHour) {
-        this.sunHour = sunHour;
-    }
-
-    public String getUvIndex() {
-        return uvIndex;
-    }
-
-    public void setUvIndex(String uvIndex) {
-        this.uvIndex = uvIndex;
-    }
-
 
 }

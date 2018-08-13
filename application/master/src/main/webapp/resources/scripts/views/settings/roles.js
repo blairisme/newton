@@ -1,3 +1,53 @@
+
+
+function setRoleRadio(role) {
+    if(role === "ADMIN") {
+        $("#adminRadio").prop("checked", true);
+    } else if(role === "ORGANISATIONLEAD") {
+        $("#orgLeadRadio").prop("checked", true);
+    } else if(role === "USER") {
+        $("#userRadio").prop("checked", true);
+    }
+}
+
+function selectMember(id, name, image, email) {
+    $("#messageSuccess").hide();
+    $("#userInput").typeahead("close");
+    $("#userInput").typeahead("val", "");
+    $("#projectMembersList").empty();
+
+    $("#projectMembersList").append(
+        `<div>
+            <img src="/resources/images/profile/${image}" class="rounded-circle avatar" alt="Profile picture"/>
+            <span>${name} (${email})</span>
+        </div>`
+    );
+
+    $.ajax({
+        type: "GET",
+        url: "/api/userrole?username=" + email,
+        success: function(data) {
+            setRoleRadio(data, id);
+            $("#selectedUser").show();
+        }
+    });
+}
+
+function setUserRole(email, role, name) {
+    $.ajax({
+        type: "POST",
+        url: "/api/updaterole?username=" + email + "&role=" + role,
+        success: function(data) {
+            $("#setUserRoleBtn").prop("disabled", false);
+            $("#selectedUser").hide();
+            $("#projectMembersList").empty();
+            var successDiv = $("#messageSuccess");
+            successDiv.text("Set " + name + " to role: " + data.toLowerCase());
+            successDiv.css("display", "inline-block");
+        }
+    });
+}
+
 $(document).ready(function() {
     var memberEmail;
     var memberName;
@@ -18,7 +68,7 @@ $(document).ready(function() {
         minLength: 3,
         source: matchingUsers,
         templates: {
-            empty: `<span class="empty-message">No matching users</span>`,
+            empty: "<span class=\"empty-message\">No matching users</span>",
             suggestion: Handlebars.compile(
                 `<div class="suggestion">
                     <img src="/resources/images/profile/{{image}}" class="rounded-circle avatar" alt="Profile picture"/>
@@ -40,51 +90,3 @@ $(document).ready(function() {
     });
 
 });
-
-function selectMember(id, name, image, email) {
-    $("#messageSuccess").hide();
-    $("#userInput").typeahead("close");
-    $("#userInput").typeahead("val", "");
-    $("#projectMembersList").empty();
-
-    $("#projectMembersList").append(
-        `<div>
-            <img src="/resources/images/profile/${image}" class="rounded-circle avatar" alt="Profile picture"/>
-            <span>${name} (${email})</span>
-        </div>`
-    );
-
-    $.ajax({
-        type: 'GET',
-        url: "/api/userrole?username=" + email,
-        success: function(data) {
-            setRoleRadio(data, id);
-            $("#selectedUser").show();
-        }
-    });
-}
-
-function setRoleRadio(role) {
-    if(role === "ADMIN") {
-        $("#adminRadio").prop("checked", true);
-    } else if(role === "ORGANISATIONLEAD") {
-        $("#orgLeadRadio").prop("checked", true);
-    } else if(role === "USER") {
-        $("#userRadio").prop("checked", true);
-    }
-}
-
-function setUserRole(email, role, name) {
-    $.ajax({
-        type: "POST",
-        url: "/api/updaterole?username=" + email + "&role=" + role,
-        success: function(data) {
-            $("#setUserRoleBtn").prop("disabled", false);
-            $("#selectedUser").hide();
-            $("#projectMembersList").empty();
-            var successDiv = $("#messageSuccess");
-            successDiv.text("Set " + name + " to role: " + data.toLowerCase());
-            successDiv.css("display", "inline-block");
-        }
-    });
-}

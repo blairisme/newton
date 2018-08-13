@@ -11,13 +11,14 @@ package org.ucl.newton.api.system;
 
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.ucl.newton.framework.DataPermission;
+import org.ucl.newton.framework.User;
 import org.ucl.newton.sdk.provider.DataSource;
+import org.ucl.newton.service.data.DataPermissionService;
 import org.ucl.newton.service.data.DataService;
 import org.ucl.newton.service.data.DataStorageProvider;
+import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
 import java.nio.file.Path;
@@ -26,16 +27,25 @@ import java.nio.file.Path;
  * Provides an API allowing clients to access to data sources.
  *
  * @author Blair Butterworth
+ * @author John Wilkie
  */
 @Controller
 @SuppressWarnings("unused")
 public class DataApi
 {
     private DataService dataService;
+    private DataPermissionService dataPermissionService;
+    private UserService userService;
 
     @Inject
-    public DataApi(DataService dataService) {
+    public DataApi(
+        DataService dataService,
+        DataPermissionService dataPermissionService,
+        UserService userSerive)
+    {
         this.dataService = dataService;
+        this.dataPermissionService = dataPermissionService;
+        this.userService = userSerive;
     }
 
     @RequestMapping(value = "/api/data/{dataSourceId}", method = RequestMethod.GET)
@@ -45,5 +55,41 @@ public class DataApi
         DataStorageProvider dataStorage = dataService.getDataStorage(dataSource.getProvider());
         Path dataPath = dataStorage.getPath(dataSource);
         return new FileSystemResource(dataPath.toFile());
+    }
+
+    @RequestMapping(value = "/api/data/permissions/{dsIdent}/permission", method = RequestMethod.GET)
+    @ResponseBody
+    public DataPermission getPermission(@PathVariable("dsIdent") String dsIdent) {
+        return dataPermissionService.getPermissionByDataSourceName(dsIdent);
+    }
+
+    @RequestMapping(value = "/api/data/permissions/{ident}/remove", method = RequestMethod.POST)
+    @ResponseBody
+    public  boolean removeGrantedPermission(
+            @PathVariable("ident") String dataSourceIdent,
+            @RequestParam String user)
+    {
+        try {
+            User userFound = userService.getUserByEmail(user);
+            dataPermissionService.removeGrantedPermission(dataSourceIdent, userFound);
+        } catch (Throwable e) {
+            return false;
+        }
+        return true;
+    }
+
+    @RequestMapping(value = "/api/data/permissions/{ident}/add", method = RequestMethod.POST)
+    @ResponseBody
+    public  boolean addGrantedPermission(
+            @PathVariable("ident") String dataSourceIdent,
+            @RequestParam String user)
+    {
+        try {
+            User userFound = userService.getUserByEmail(user);
+            dataPermissionService.addGrantedPermission(dataSourceIdent, userFound);
+        } catch (Throwable e) {
+            return false;
+        }
+        return true;
     }
 }

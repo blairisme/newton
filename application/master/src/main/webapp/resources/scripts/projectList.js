@@ -1,3 +1,14 @@
+function findActiveDataTable(projectsTable, starredTable){
+    var currentTab = $("ul.nav-tabs li a.active").text();
+    var activeTable;
+    if(currentTab === "Your projects"){
+        activeTable = projectsTable;
+    } else if (currentTab === "Starred projects") {
+        activeTable = starredTable;
+    }
+    return activeTable;
+}
+
 $(document).ready( function() {
     // Create data tables
     var dTable, dTableStarred;
@@ -67,13 +78,4 @@ $(document).ready( function() {
 
 });
 
-function findActiveDataTable(projectsTable, starredTable){
-    var currentTab = $("ul.nav-tabs li a.active").text();
-    var activeTable;
-    if(currentTab === "Your projects"){
-        activeTable = projectsTable;
-    } else if (currentTab === "Starred projects") {
-        activeTable = starredTable;
-    }
-    return activeTable;
-}
+

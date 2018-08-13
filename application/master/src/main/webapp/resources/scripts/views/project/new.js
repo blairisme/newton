@@ -9,6 +9,34 @@
  * Author: Blair Butterworth
  */
 
+function addMember(id, name, email, image) {
+    $("#projectMemberInput").typeahead("close");
+    $("#projectMemberInput").typeahead("val", "");
+
+    $("#projectMembersListEmpty").hide();
+
+    $("#projectMembersList").append(
+        `<li id="listItem${id}" class="list-group-item project-list-item">
+            <img src="/resources/images/profile/${image}" class="rounded-circle avatar" alt="Profile picture"/>
+            <span>${name} (${email})</span>
+            <button type="button" class="btn btn-outline-primary remove_button" onclick="removeMember(${id})">Remove</button>
+        </li>`
+    );
+
+    $("#projectMembersData").append(
+        `<option id="dataItem${id}" value="${id}" selected="selected"></option>`
+    );
+}
+
+function removeMember(id) {
+    $(`#listItem${id}`).remove();
+    $(`#dataItem${id}`).remove();
+
+    if ($("#projectMembersList li").length === 0) {
+        $("#projectMembersListEmpty").show();
+    }
+}
+
 $(document).ready(function() {
     var matchingUsers = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace("value"),
@@ -26,7 +54,7 @@ $(document).ready(function() {
         minLength: 3,
         source: matchingUsers,
         templates: {
-            empty: `<span class="empty-message">No matching users</span>`,
+            empty: "<span class=\"empty-message\">No matching users</span>",
             suggestion: Handlebars.compile(
                 `<div>
                     <img src="/resources/images/profile/{{image}}" class="rounded-circle avatar" alt="Profile picture"/>
@@ -62,34 +90,3 @@ $(document).ready(function() {
         }
     });
 });
-
-
-
-function addMember(id, name, email, image) {
-    $("#projectMemberInput").typeahead("close");
-    $("#projectMemberInput").typeahead("val", "");
-
-    $("#projectMembersListEmpty").hide();
-
-    $("#projectMembersList").append(
-        `<li id="listItem${id}" class="list-group-item project-list-item">
-            <img src="/resources/images/profile/${image}" class="rounded-circle avatar" alt="Profile picture"/>
-            <span>${name} (${email})</span>
-            <button type="button" class="btn btn-outline-primary remove_button" onclick="removeMember(${id})">Remove</button>
-        </li>`
-    );
-
-    $("#projectMembersData").append(
-        `<option id="dataItem${id}" value="${id}" selected="selected"></option>`
-    );
-}
-
-function removeMember(id) {
-    console.log("called");
-    $(`#listItem${id}`).remove();
-    $(`#dataItem${id}`).remove();
-
-    if ($("#projectMembersList li").length == 0) {
-        $("#projectMembersListEmpty").show();
-    }
-}
