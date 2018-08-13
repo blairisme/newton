@@ -10,6 +10,7 @@
 package org.ucl.newton.ui;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -251,6 +252,9 @@ public class ExperimentController
 
     //Needs rewrite 
     private void relaxRepositoryPermissions(Resource repository) throws IOException {
+        if(SystemUtils.IS_OS_WINDOWS){
+            return;
+        }
         File[] files = repository.getFile().listFiles();
         if(files!=null){
             String permissions = "rwxrwxrwx";
