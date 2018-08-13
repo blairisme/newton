@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author Xiaolong Chen
  */
-public class FootStep extends FizzyoDataUnit{
+public class FootStep implements FizzyoDataUnit{
     private String id;
     private String date;
     private String userId;

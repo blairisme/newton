@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author Xiaolong Chen
  */
-public class PressureRecord extends FizzyoDataUnit{
+public class PressureRecord implements FizzyoDataUnit{
     private int goodBreaths;
     private int breaths;
     private int averageBreathLength;

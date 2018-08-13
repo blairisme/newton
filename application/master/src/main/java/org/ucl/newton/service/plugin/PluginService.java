@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.ucl.newton.common.exception.InvalidPluginException;
 import org.ucl.newton.common.lang.JarClassLoader;
 import org.ucl.newton.common.lang.JarInstanceLoader;
-
+import org.ucl.newton.sdk.plugin.NewtonPlugin;
 import org.ucl.newton.sdk.processor.DataProcessor;
 import org.ucl.newton.sdk.provider.DataProvider;
 import org.ucl.newton.sdk.publisher.DataPublisher;
@@ -27,7 +27,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
-
+import java.util.function.Consumer;
 
 /**
  * Instances of this interface provide access to plugin data.
@@ -37,7 +37,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Service
 public class PluginService implements ApplicationListener<ContextRefreshedEvent>
 {
-    //private PluginContext pluginContext;
+    private PluginContext pluginContext;
     private PluginRepository pluginRepository;
     private Collection<DataProvider> providers;
     private Collection<DataProcessor> processors;
@@ -45,16 +45,16 @@ public class PluginService implements ApplicationListener<ContextRefreshedEvent>
 
     @Inject
     public PluginService(PluginContext pluginContext, PluginRepository pluginRepository) {
-        //this.pluginContext = pluginContext;
+        this.pluginContext = pluginContext;
         this.pluginRepository = pluginRepository;
     }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-//        Consumer<NewtonPlugin> updateContext = plugin -> plugin.setContext(pluginContext);
-//        getDataProviders().forEach(updateContext);
-//        getDataProcessors().forEach(updateContext);
-//        getDataPublishers().forEach(updateContext);
+        Consumer<NewtonPlugin> updateContext = plugin -> plugin.setContext(pluginContext);
+        getDataProviders().forEach(updateContext);
+        getDataProcessors().forEach(updateContext);
+        getDataPublishers().forEach(updateContext);
     }
 
     public Plugin getPlugin(String identifier) {

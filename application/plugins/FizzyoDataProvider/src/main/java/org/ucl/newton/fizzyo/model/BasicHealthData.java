@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author Xiaolong Chen
  */
-public class BasicHealthData extends FizzyoDataUnit{
+public class BasicHealthData implements FizzyoDataUnit{
     private String id;
     private List<BasicData> data;
     private String date;

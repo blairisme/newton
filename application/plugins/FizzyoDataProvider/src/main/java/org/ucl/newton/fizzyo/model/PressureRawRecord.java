@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author Xiaolong Chen
  */
-public class PressureRawRecord extends FizzyoDataUnit{
+public class PressureRawRecord implements FizzyoDataUnit{
     private String id;
     private boolean processed;
     private String startTime;

@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author Xiaolong Chen
  */
-public class GameSession extends FizzyoDataUnit{
+public class GameSession implements FizzyoDataUnit{
     private String id;
     private String gameId;
     private String userId;
