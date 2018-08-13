@@ -7,22 +7,21 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.sdk.provider;
+package org.ucl.newton.sdk.plugin;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Implementors of this interface provide access to {@link DataSource}
- * persisted.
+ * Instances of this interface provide access to application persistence.
  *
  * @author Blair Butterworth
  * @author Xiaolong Chen
  */
-public interface DataStorage
+public interface PluginHostStorage
 {
-    InputStream getInputStream(DataSource dataSource) throws IOException;
+    InputStream getInputStream(String id) throws IOException;
 
-    OutputStream getOutputStream(DataSource dataSource) throws IOException;
+    OutputStream getOutputStream(String id) throws IOException;
 }

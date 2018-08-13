@@ -9,11 +9,14 @@
 
 package org.ucl.newton.service.plugin;
 
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.common.exception.InvalidPluginException;
 import org.ucl.newton.common.lang.JarClassLoader;
 import org.ucl.newton.common.lang.JarInstanceLoader;
+import org.ucl.newton.sdk.plugin.NewtonPlugin;
 import org.ucl.newton.sdk.processor.DataProcessor;
 import org.ucl.newton.sdk.provider.DataProvider;
 import org.ucl.newton.sdk.publisher.DataPublisher;
@@ -23,6 +26,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 /**
  * Instances of this interface provide access to plugin data.
@@ -30,16 +35,26 @@ import java.util.Collection;
  * @author Blair Butterworth
  */
 @Service
-public class PluginService
+public class PluginService implements ApplicationListener<ContextRefreshedEvent>
 {
+    private PluginContext pluginContext;
     private PluginRepository pluginRepository;
     private Collection<DataProvider> providers;
     private Collection<DataProcessor> processors;
     private Collection<DataPublisher> publishers;
 
     @Inject
-    public PluginService(PluginRepository pluginRepository) {
+    public PluginService(PluginContext pluginContext, PluginRepository pluginRepository) {
+        this.pluginContext = pluginContext;
         this.pluginRepository = pluginRepository;
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        Consumer<NewtonPlugin> updateContext = plugin -> plugin.setContext(pluginContext);
+        getDataProviders().forEach(updateContext);
+        getDataProcessors().forEach(updateContext);
+        getDataPublishers().forEach(updateContext);
     }
 
     public Plugin getPlugin(String identifier) {
@@ -72,7 +87,8 @@ public class PluginService
             JarClassLoader classLoader = JarClassLoader.getSystemClassLoader();
             classLoader.load(getPluginLocations());
             JarInstanceLoader instanceLoader = new JarInstanceLoader(classLoader);
-            return instanceLoader.getImplementors(type, "org.ucl");
+            Collection<T> result = instanceLoader.getImplementors(type, "org.ucl");
+            return new CopyOnWriteArrayList<>(result);
         }
         catch (ReflectiveOperationException | IOException error) {
             throw new InvalidPluginException(error);
@@ -80,7 +96,6 @@ public class PluginService
     }
 
     private Collection<URL> getPluginLocations() throws IOException {
-
         Collection<URL> result = new ArrayList<>();
         for (Plugin plugin: pluginRepository.getPlugins()) {
             Resource resource = plugin.asResource();

@@ -13,6 +13,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.scheduling.annotation.Async;
@@ -32,6 +34,7 @@ import javax.inject.Inject;
 @SuppressWarnings("unused")
 public class PersistenceInitializer implements ApplicationListener<ContextRefreshedEvent>
 {
+    private static Logger logger = LoggerFactory.getLogger(PersistenceInitializer.class);
     private SessionFactory sessionFactory;
 
     @Inject
@@ -48,7 +51,7 @@ public class PersistenceInitializer implements ApplicationListener<ContextRefres
             fullTextSession.createIndexer().startAndWait();
         }
         catch (InterruptedException error) {
-            error.printStackTrace();
+            logger.error("An error occurred during full text search initialization", error);
         }
     }
 

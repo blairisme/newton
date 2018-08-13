@@ -17,9 +17,13 @@ MAINTAINER Ziad Halabi <ziad.halabi.17@ucl.ac.uk>
 
 ARG master_host
 ARG master_port
+ARG application_host
+ARG application_port
 
 ENV newton_master_host $master_host
 ENV newton_master_port $master_port
+ENV newton_application_host $application_host
+ENV newton_application_port $application_port
 
 RUN mkdir -p /.newton_slave/
 

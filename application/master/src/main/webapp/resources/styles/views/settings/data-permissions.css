@@ -1,0 +1,30 @@
+.section-divider {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+.project-list-item {
+    padding: 1.25rem;
+}
+
+#couldNotRemovePermissionError {
+    display: none;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+#grantedInfoDiv {
+    display: none;
+}
+
+.empty-message {
+    text-align: center;
+}
+
+#userInput {
+    margin-top: 1em;
+}
+
+#grantedInfoDiv {
+    margin-top: 1em;
+}

@@ -62,9 +62,9 @@ public class HttpUtils
             SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext);
             CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
             Unirest.setHttpClient(httpclient);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        catch (Exception e) {
+            logger.error("Failed to configure certificate store", e);
         }
     }
 
@@ -82,8 +82,9 @@ public class HttpUtils
                 logger.info("status code:" + status);
                 return response.getBody();
             }
-        }catch (Exception e){
-            e.printStackTrace();
+        }
+        catch (Exception e){
+            logger.error("Failed to post", e);
         }
         return null;
     }
@@ -101,7 +102,7 @@ public class HttpUtils
                 logger.info("status code:" + status);
             }
         }catch (Exception e){
-            e.printStackTrace();
+            logger.error("Failed to get", e);
         }
         return null;
     }

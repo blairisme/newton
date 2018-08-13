@@ -4,19 +4,19 @@ import org.junit.Test;
 import org.ucl.newton.test.EqualsTester;
 import org.ucl.newton.test.ToStringTester;
 
-public class PermissionTest {
+public class DataPermissionTest {
 
     @Test
     public void testEquality() {
-        EqualsTester<Permission> equalsTester = new EqualsTester<>();
-        equalsTester.forType(Permission.class);
+        EqualsTester<DataPermission> equalsTester = new EqualsTester<>();
+        equalsTester.forType(DataPermission.class);
         equalsTester.test();
     }
 
     @Test
     public void testToString() {
-        ToStringTester<Permission> toStringTester = new ToStringTester<>();
-        toStringTester.forType(Permission.class);
+        ToStringTester<DataPermission> toStringTester = new ToStringTester<>();
+        toStringTester.forType(DataPermission.class);
         toStringTester.test();
     }
 }

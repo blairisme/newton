@@ -157,12 +157,12 @@ INSERT INTO plugin (id, identifier, location) VALUES (5, 'newton-DRE', 'classpat
 
 
 /*** Data Permissions ***/
-INSERT INTO permissions (permission_id, permission_owner, permission_ds_ident) VALUES (1, 2, 'newton-weather');
-INSERT INTO permissions (permission_id, permission_owner, permission_ds_ident) VALUES (2, 2, 'newton-fizzyo');
+INSERT INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (1, 2, 'newton-weather');
+INSERT INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (2, 2, 'newton-fizzyo');
 
-INSERT INTO Permission_granted (permission_id, user_id) VALUES (1, 1);
-INSERT INTO Permission_granted (permission_id, user_id) VALUES (1, 3);
-INSERT INTO Permission_granted (permission_id, user_id) VALUES (1, 4);
-INSERT INTO Permission_granted (permission_id, user_id) VALUES (1, 5);
-INSERT INTO Permission_granted (permission_id, user_id) VALUES (2, 1);
-INSERT INTO Permission_granted (permission_id, user_id) VALUES (2, 3);
+INSERT INTO permission_granted (permission_id, user_id) VALUES (1, 1);
+INSERT INTO permission_granted (permission_id, user_id) VALUES (1, 3);
+INSERT INTO permission_granted (permission_id, user_id) VALUES (1, 4);
+INSERT INTO permission_granted (permission_id, user_id) VALUES (1, 5);
+INSERT INTO permission_granted (permission_id, user_id) VALUES (2, 1);
+INSERT INTO permission_granted (permission_id, user_id) VALUES (2, 3);

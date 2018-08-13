@@ -1,9 +1,6 @@
 package org.ucl.newton.drepublisher;
 
-import org.ucl.newton.sdk.plugin.BasicConfiguration;
-import org.ucl.newton.sdk.plugin.BasicVisualization;
-import org.ucl.newton.sdk.plugin.PluginConfiguration;
-import org.ucl.newton.sdk.plugin.PluginVisualization;
+import org.ucl.newton.sdk.plugin.*;
 import org.ucl.newton.sdk.publisher.DataPublisher;
 import org.ucl.newton.sdk.publisher.FTPConfig;
 
@@ -37,6 +34,10 @@ public class DREDataPublisher implements DataPublisher {
     @Override
     public PluginVisualization getVisualization() {
         return new BasicVisualization("DRE Data publisher", "Publish data into DRE via FTP");
+    }
+
+    @Override
+    public void setContext(PluginHostContext context) {
     }
 
     @Override

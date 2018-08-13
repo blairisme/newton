@@ -10,10 +10,7 @@
 package org.ucl.newton.weather;
 
 import org.ucl.newton.common.concurrent.DaemonThreadFactory;
-import org.ucl.newton.sdk.plugin.BasicConfiguration;
-import org.ucl.newton.sdk.plugin.BasicVisualization;
-import org.ucl.newton.sdk.plugin.PluginConfiguration;
-import org.ucl.newton.sdk.plugin.PluginVisualization;
+import org.ucl.newton.sdk.plugin.*;
 import org.ucl.newton.sdk.provider.BasicDataProvider;
 import org.ucl.newton.sdk.provider.BasicDataSource;
 import org.ucl.newton.sdk.provider.DataSource;
@@ -35,11 +32,13 @@ public class WeatherDataProvider extends BasicDataProvider
 {
     private List<DataSource> dataSources;
     private ScheduledExecutorService scheduler;
+    private GetWeatherData handler;
 
     public WeatherDataProvider(){
         this.dataSources = new ArrayList<>();
         this.dataSources.add(new BasicDataSource(this, "weather", "Weather Data"));
         this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
+        this.handler = new GetWeatherData(this);
     }
 
     @Override
@@ -59,6 +58,10 @@ public class WeatherDataProvider extends BasicDataProvider
             "Gathers weather data from World Weather Online weather data service.");
     }
 
+    @Override
+    public void setContext(PluginHostContext context) {
+    }
+
     public DataSource getWeatherDataSource() {
         return dataSources.get(0);
     }
@@ -70,7 +73,7 @@ public class WeatherDataProvider extends BasicDataProvider
 
     @Override
     public void start() {
-        this.scheduler.scheduleAtFixedRate(new GetWeatherData(this), 0, 1, TimeUnit.HOURS); //run every hour
+        this.scheduler.scheduleAtFixedRate(handler, 0, 1, TimeUnit.HOURS); //run every hour
     }
 
     @Override

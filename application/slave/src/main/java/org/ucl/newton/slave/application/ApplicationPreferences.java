@@ -33,11 +33,11 @@ public class ApplicationPreferences
     }
 
     public String getApplicationHost() {
-        return getProperty("newton.slave.host", "localhost");
+        return getProperty("newton.application.host", "localhost");
     }
 
     public int getApplicationPort() {
-        return Integer.parseInt(getProperty("newton.slave.port", "8080"));
+        return Integer.parseInt(getProperty("newton.application.port", "8080"));
     }
 
     public Path getApplicationPath() {

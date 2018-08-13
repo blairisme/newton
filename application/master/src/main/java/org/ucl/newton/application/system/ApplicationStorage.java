@@ -10,9 +10,7 @@
 package org.ucl.newton.application.system;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
-import org.ucl.newton.common.file.IoFunction;
 import org.ucl.newton.common.file.PathUtils;
 
 import javax.inject.Inject;
@@ -39,35 +37,6 @@ public class ApplicationStorage
         return PathUtils.appendTrailingSeparator(rootPath.toString());
     }
 
-    public InputStream getInputStream(Path relativePath) throws IOException {
-        Path path = rootPath.resolve(relativePath);
-        File file = path.toFile();
-        return new FileInputStream(file);
-    }
-
-    public OutputStream getOutputStream(String group, String identifier) throws IOException {
-        return getOutputStream(Paths.get(group, identifier));
-    }
-
-    public OutputStream getOutputStream(Path relativePath) throws IOException {
-        Path path = rootPath.resolve(relativePath);
-        File file = path.toFile();
-        FileUtils.forceMkdirParent(file);
-
-        file.delete();
-        return new FileOutputStream(file);
-    }
-
-    public IoFunction<Path, OutputStream> getOutputStreamFactory(Path relativePath) {
-        return (path) -> getOutputStream(relativePath.resolve(path));
-    }
-
-    public void write(String group, String identifier, InputStream inputStream) throws IOException {
-        try (OutputStream outputStream = getOutputStream(group, identifier)) {
-            IOUtils.copy(inputStream, outputStream);
-        }
-    }
-
     public Path getApplicationDirectory() {
         return rootPath;
     }
@@ -84,6 +53,10 @@ public class ApplicationStorage
         return rootPath.resolve("plugins");
     }
 
+    public Path getPluginConfigDirectory() {
+        return getPluginsDirectory().resolve("configuration");
+    }
+
     public Path getProcessorDirectory() {
         return getPluginsDirectory().resolve("processor");
     }
@@ -92,7 +65,26 @@ public class ApplicationStorage
         return rootPath.resolve("data");
     }
 
+    public Path getDataDirectory(String child) {
+        return getDataDirectory().resolve(child);
+    }
+
     public Path getIndexDirectory() {
         return rootPath.resolve("index");
+    }
+
+    public InputStream getInputStream(Path relativePath) throws IOException {
+        Path path = rootPath.resolve(relativePath);
+        File file = path.toFile();
+        return new FileInputStream(file);
+    }
+
+    public OutputStream getOutputStream(Path relativePath) throws IOException {
+        Path path = rootPath.resolve(relativePath);
+        File file = path.toFile();
+        FileUtils.forceMkdirParent(file);
+
+        file.delete();
+        return new FileOutputStream(file);
     }
 }

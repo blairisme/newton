@@ -10,10 +10,7 @@
 package org.ucl.newton.fizzyo;
 
 import org.ucl.newton.common.concurrent.DaemonThreadFactory;
-import org.ucl.newton.sdk.plugin.BasicConfiguration;
-import org.ucl.newton.sdk.plugin.BasicVisualization;
-import org.ucl.newton.sdk.plugin.PluginConfiguration;
-import org.ucl.newton.sdk.plugin.PluginVisualization;
+import org.ucl.newton.sdk.plugin.*;
 import org.ucl.newton.sdk.provider.BasicDataProvider;
 import org.ucl.newton.sdk.provider.BasicDataSource;
 import org.ucl.newton.sdk.provider.DataSource;
@@ -33,10 +30,13 @@ public class FizzyoDataProvider extends BasicDataProvider
 {
     private ScheduledExecutorService scheduler;
     private Collection<DataSource> dataSources;
+    private GetFizzyoData handler;
 
     public FizzyoDataProvider(){
-        dataSources = new ArrayList<>();
-        dataSources.add(new BasicDataSource(this, "fizzyo", "Fizzyo Data"));
+        this.dataSources = new ArrayList<>();
+        this.dataSources.add(new BasicDataSource(this, "fizzyo", "Fizzyo Data"));
+        this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
+        this.handler = new GetFizzyoData(this);
     }
 
     @Override
@@ -54,6 +54,10 @@ public class FizzyoDataProvider extends BasicDataProvider
         return new BasicVisualization("Fizzyo Data Provider", "Obtains data from the Fizzyo cloud.");
     }
 
+    @Override
+    public void setContext(PluginHostContext context) {
+    }
+
     public DataSource getFizzyoDataSource() {
         return dataSources.iterator().next();
     }
@@ -65,8 +69,7 @@ public class FizzyoDataProvider extends BasicDataProvider
 
     @Override
     public void start() {
-        this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
-        this.scheduler.scheduleAtFixedRate(new GetFizzyoData(this),0,1,TimeUnit.HOURS); //run every hour
+        this.scheduler.scheduleAtFixedRate(handler, 0, 1, TimeUnit.HOURS); //run every hour
     }
 
     @Override

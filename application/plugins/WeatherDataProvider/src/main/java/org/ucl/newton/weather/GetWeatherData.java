@@ -13,6 +13,8 @@ import com.csvreader.CsvReader;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.weather.model.WeatherData;
 import org.ucl.newton.weather.model.WeatherProperty;
@@ -31,11 +33,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Instances of this class provide org.ucl.WeatherDataProvider.weather data to the Newton system.
+ * Instances of this class provide weather data to the Newton system.
  *
  * @author Xiaolong Chen
  */
-public class GetWeatherData implements Runnable {
+public class GetWeatherData implements Runnable
+{
+    private static Logger logger = LoggerFactory.getLogger(GetWeatherData.class);
     private WeatherDataProvider provider;
 
     public GetWeatherData(WeatherDataProvider provider){
@@ -133,11 +137,11 @@ public class GetWeatherData implements Runnable {
     private void writeToOutput(List<List<String>> list){
         DataStorage storage = provider.getStorage();
         DataSource dataSource = provider.getWeatherDataSource();
-        try {
-            OutputStream output = storage.getOutputStream(dataSource);
+        try (OutputStream output = storage.getOutputStream(dataSource)){
             FileUtils.writeCSV(output,list);
-        }catch (IOException e){
-            e.printStackTrace();
+        }
+        catch (IOException e){
+            logger.error("Failed to write weather data", e);
         }
 
     }
