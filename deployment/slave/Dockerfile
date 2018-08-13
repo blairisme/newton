@@ -27,6 +27,14 @@ ENV newton_application_port $application_port
 
 RUN mkdir -p /.newton_slave/
 
+
+RUN apt-get update && apt-get install -y python python-dev python-pip \
+    libxft-dev libfreetype6 libfreetype6-dev
+
+# Install matplotlib
+RUN pip install 'matplotlib==1.4.3'
+
+
 COPY ./libs/engine.jar engine.jar
 EXPOSE 8080
 
