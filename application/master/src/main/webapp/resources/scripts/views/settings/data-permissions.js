@@ -1,4 +1,15 @@
 
+
+function addUserToList(name, email, image) {
+    $("#grantedPermissionList").append(
+        "<li class=\"list-group-item project-list-item\" id=\"gp" + email.replace(/\./g, "").replace(/@/, "") + "\">" +
+        "<img src=\"/resources/images/profile/" + image + "\" class=\"rounded-circle avatar\" alt=\"Profile picture\"/>" +
+        "<span>" + name + " " + "(" + email + ")</span>" +
+        "<button type=\"button\" class=\"btn btn-outline-primary remove_button float-right\" value=\"" + email + "\">Remove</button>" +
+        "</li>"
+    );
+}
+
 function selectMember(id, name, email, image) {
     $("#userInput").typeahead("close");
     $("#userInput").typeahead("val", "");
@@ -37,16 +48,6 @@ function setGrantedPermissions(ident) {
             }
         }
     });
-}
-
-function addUserToList(name, email, image) {
-    $("#grantedPermissionList").append(
-        "<li class=\"list-group-item project-list-item\" id=\"gp" + email.replace(/\./g, "").replace(/@/, "") + "\">" +
-            "<img src=\"/resources/images/profile/" + image + "\" class=\"rounded-circle avatar\" alt=\"Profile picture\"/>" +
-            "<span>" + name + " " + "(" + email + ")</span>" +
-            "<button type=\"button\" class=\"btn btn-outline-primary remove_button float-right\" value=\"" + email + "\">Remove</button>" +
-        "</li>"
-    );
 }
 
 function removeGrantedPermission(ident, name, button) {
@@ -90,7 +91,7 @@ $(document).ready(function() {
         minLength: 3,
         source: matchingUsers,
         templates: {
-            empty: `<span class="empty-message">No matching users</span>`,
+            empty: "<span class=\"empty-message\">No matching users</span>",
             suggestion: Handlebars.compile(
                 `<div class="suggestion">
                     <img src="/resources/images/profile/{{image}}" class="rounded-circle avatar" alt="Profile picture"/>

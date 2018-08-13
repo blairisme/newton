@@ -1,5 +1,15 @@
 
 
+function setRoleRadio(role) {
+    if(role === "ADMIN") {
+        $("#adminRadio").prop("checked", true);
+    } else if(role === "ORGANISATIONLEAD") {
+        $("#orgLeadRadio").prop("checked", true);
+    } else if(role === "USER") {
+        $("#userRadio").prop("checked", true);
+    }
+}
+
 function selectMember(id, name, image, email) {
     $("#messageSuccess").hide();
     $("#userInput").typeahead("close");
@@ -21,16 +31,6 @@ function selectMember(id, name, image, email) {
             $("#selectedUser").show();
         }
     });
-}
-
-function setRoleRadio(role) {
-    if(role === "ADMIN") {
-        $("#adminRadio").prop("checked", true);
-    } else if(role === "ORGANISATIONLEAD") {
-        $("#orgLeadRadio").prop("checked", true);
-    } else if(role === "USER") {
-        $("#userRadio").prop("checked", true);
-    }
 }
 
 function setUserRole(email, role, name) {

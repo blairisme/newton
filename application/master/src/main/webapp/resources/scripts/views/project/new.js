@@ -32,7 +32,7 @@ function removeMember(id) {
     $(`#listItem${id}`).remove();
     $(`#dataItem${id}`).remove();
 
-    if ($("#projectMembersList li").length == 0) {
+    if ($("#projectMembersList li").length === 0) {
         $("#projectMembersListEmpty").show();
     }
 }
