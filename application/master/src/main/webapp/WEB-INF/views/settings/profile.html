@@ -39,12 +39,13 @@
                 <div th:text="'Number of projects starred: ' + ${numOfProjectsStarred}"></div>
             </div>
 
-
             <!-- Delete user -->
             <div class="section-divider">
                 <h1 class="page-title">Delete User</h1>
                 <div class="text-danger">Warning deleteing a user will permentatally delete this user and any data associated with them, this could include deleteing experimants and projects!</div>
-                <button type="button" class="btn btn-danger">Delete User</button>
+                <form th:action="@{'profile/delete'}" method="POST">
+                    <input type="submit" class="btn btn-danger delete-btn" value="Delete User"/>
+                </form>
             </div>
 
         </div>

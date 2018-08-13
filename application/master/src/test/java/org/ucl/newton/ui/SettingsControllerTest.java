@@ -57,4 +57,10 @@ public class SettingsControllerTest
         SettingsController controller = new SettingsController(userService, dataPermissionService, pluginService, projectService);
         Assert.assertEquals("settings/profile", controller.profile(new ModelMap()));
     }
+
+    @Test
+    public void deleteUserFailingTest(){
+        SettingsController controller = new SettingsController(userService, dataPermissionService, pluginService, projectService);
+        Assert.assertEquals("redirect:/profile", controller.deleteUser());
+    }
 }

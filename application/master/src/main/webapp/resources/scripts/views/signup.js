@@ -3,7 +3,7 @@ $(document).ready(function() {
 
     $("#StrengthProgressBar").zxcvbnProgressBar({ passwordInput: "#passwordInput" });
 
-    $('#passwordInput, #confirmPassword').on("keyup", function () {
+    $("#passwordInput, #confirmPassword").on("keyup", function () {
         if ($("#passwordInput").val() === $("#confirmPassword").val() || $("#passwordInput").val() === "") {
             $("#confirmPassword").removeClass("is-invalid");
             $("#passwordInput").removeClass("is-invalid");
