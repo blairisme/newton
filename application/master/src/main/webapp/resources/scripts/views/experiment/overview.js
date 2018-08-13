@@ -10,40 +10,10 @@
  * Author: John Wilkie
  */
 
-$(document).ready(function() {
-    var outcomeTable;
-
-    experimentExecuting = $('#experimentExecuting').val();
-    if (experimentExecuting === 'true') {
-        setTimeout(checkComplete, 2000);
-    }
-
-    $(".dropdown-menu li a").on("click", function(){
-        var selection = $(this).text();
-        $.ajax({
-            type: 'GET',
-            url: selection,
-            success: function(data) {
-                obj = data;
-                if(outcomeTable != null) {
-                    outcomeTable.destroy();
-                    $("#testOutcome thead").remove();
-                    $("#testOutcome tbody").remove();
-                }
-                buildHtmlTable(document.getElementById("testOutcome"),obj);
-                outcomeTable = $("#testOutcome").DataTable({
-                    dom: "t"
-                });
-            }
-        });
-    });
-
-});
-
 function checkComplete() {
-    experimentId = $('#experimentId').val();
+    var experimentId = $("#experimentId").val();
     $.ajax({
-        type: 'GET',
+        type: "GET",
         url: "/api/experiment/iscomplete?experiment=" + experimentId,
         success: function(data) {
             if (data === true) {
@@ -52,7 +22,7 @@ function checkComplete() {
             else {
                 setTimeout(checkComplete, 2000);
             }
-        },
+        }
     });
 }
 
@@ -65,11 +35,11 @@ function buildHtmlTable(selector, myList) {
     if(columns.length > 0) {
         $(selector).append("<tbody>");
         for (var i = 0; i < myList.length; i++) {
-            var row$ = $('<tr/>');
+            var row$ = $("<tr/>");
             for (var colIndex = 0; colIndex < columns.length; colIndex++) {
                 var cellValue = myList[i][columns[colIndex]];
                 if (cellValue == null) cellValue = "";
-                row$.append($('<td/>').html(cellValue));
+                row$.append($("<td/>").html(cellValue));
             }
             $(selector).append(row$);
         }
@@ -85,18 +55,18 @@ function buildHtmlTable(selector, myList) {
 // all records.
 function addAllColumnHeaders(myList, selector) {
     var columnSet = [];
-    var headerTr$ = $('<tr/>');
+    var headerTr$ = $("<tr/>");
 
     for (var i = 0; i < myList.length; i++) {
         var rowHash = myList[i];
         for (var key in rowHash) {
-            if ($.inArray(key, columnSet) == -1) {
+            if ($.inArray(key, columnSet) === -1) {
                 columnSet.push(key);
                 headerTr$.append($('<th/>').html(key));
             }
         }
     }
-    $(selector).append($('<thead/>').html(headerTr$));
+    $(selector).append($("<thead/>").html(headerTr$));
 
     return columnSet;
 }
@@ -113,3 +83,33 @@ function autoResize(id){
     document.getElementById(id).height= (newheight) + "px";
     document.getElementById(id).width= (newwidth) + "px";
 }
+
+$(document).ready(function() {
+    var outcomeTable;
+
+    experimentExecuting = $("#experimentExecuting").val();
+    if (experimentExecuting === "true") {
+        setTimeout(checkComplete, 2000);
+    }
+
+    $(".dropdown-menu li a").on("click", function(){
+        var selection = $(this).text();
+        $.ajax({
+            type: "GET",
+            url: selection,
+            success: function(data) {
+                var obj = data;
+                if(outcomeTable != null) {
+                    outcomeTable.destroy();
+                    $("#testOutcome thead").remove();
+                    $("#testOutcome tbody").remove();
+                }
+                buildHtmlTable(document.getElementById("testOutcome"),obj);
+                outcomeTable = $("#testOutcome").DataTable({
+                    dom: "t"
+                });
+            }
+        });
+    });
+
+});

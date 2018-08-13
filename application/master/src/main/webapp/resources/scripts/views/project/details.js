@@ -5,7 +5,7 @@ $(document).ready( function() {
         var id = $("#identifier").val();
         $(this).prop("disabled", true);
         $.ajax({
-            type: 'POST',
+            type: "POST",
             url: "/project/" + id + "?type=" + type,
             success: function(data) {
                 if(type === "Star") {
