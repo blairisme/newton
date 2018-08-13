@@ -20,12 +20,8 @@ import org.ucl.newton.sdk.provider.DataStorage;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 /**
  * Instances of this class provide data from Fizzyo.
@@ -36,129 +32,75 @@ public class GetFizzyoData implements Runnable
 {
     private static Logger logger = LoggerFactory.getLogger(GetFizzyoData.class);
 
-    private FizzyoToken fizzyoToken;
     private FizzyoDataProvider provider;
 
-//    private String clientId = "00dc0898-8ff9-11e8-9eb6-529269fb1459";
-//    private String sycSecret = "ml8rVoJX7axoJGggDo2xXJneyv4Ek36W7BErm0wMvbmMJOlKqAVzp0AbYAlO1nqV";
     public GetFizzyoData(FizzyoDataProvider provider){
         this.provider = provider;
     }
 
     @Override
     public void run() {
-        fizzyoToken = new FizzyoToken();
-        String accessToken = "9w3Bk61YQdJ6VrXR5vJN592dOGpJZn4W";
-        fizzyoToken.setAccessToken(accessToken);
 
-        Records records = getPacientRecords();
-        if(records == null)
+        SyncData syncData = getFizzyoSyncData();
+        if (syncData == null)
             return;
-        List<List<String>> listOfRecords = new ArrayList<>();
-        listOfRecords.add(getHeader());
-        for(PacientRecord record : records.getRecords()){
-            String patientRecordId = record.getId();
-            Pressures pressures = getPressures(patientRecordId);
+        syncData.getData().initMapper();
+        FizzyoData fizzyoData = syncData.getData();
 
-            for (PressureRecord pressureRecord : pressures.getPressure()){
-                String pressureRawId = pressureRecord.getPressureRawId();
-                PressureRaw pressureRaw = getPressureRaw(pressureRawId);
-                listOfRecords.add(getContent(pressureRecord,pressureRaw.getPressure()));
+        for(String name : syncData.getRequestedData()){
+
+            List<List<String>> listOfRecords = new ArrayList<>();
+            listOfRecords.add(fizzyoData.getKeys(name));
+            listOfRecords.addAll(fizzyoData.getValues(name));
+
+            if(listOfRecords.size()>1) {
+                writeToOutput(listOfRecords,name);
+                dataUpdated(name);
             }
-        }
-        if(!listOfRecords.isEmpty()) {
-            writeToOutput(listOfRecords);
-            provider.notifyDataUpdated(provider.getFizzyoDataSource());
+
         }
     }
 
-    private PressureRaw getPressureRaw(String pressureRawId) {
-        String url = "https://api-staging.fizzyo-ucl.co.uk/api/v1/pressure/" + pressureRawId + "/raw";
+    private SyncData getFizzyoSyncData() {
+
+        String clientId = "00000000-0000-0000-0000-000000000001";
+        String syncSecret = "A1oRkpQJ0dNX1z3RA2K2zKKaLOvE2MwzA1oRkpQJ0dNxxDoJNonZWDzaLOvE2Mwz";
+        String startData = "1470744743";
+        String endDate = "1533816743";
+        String requestData = "[ \"all\" ]";
+
+        String url = "https://api-staging.fizzyo-ucl.co.uk/api/v1/sync-data/interval";
         Map<String,String> header = new HashMap<>();
-        Map<String,Object> params = new HashMap<>();
-        header.put("Authorization", "Bearer "+ getFizzyoToken().getAccessToken());
+        Map<String,String> params = new HashMap<>();
+        header.put("Authorization","Bearer "+ clientId +","+ syncSecret);
+        params.put("clientId",clientId);
+        params.put("startDate",startData);
+        params.put("endDate", endDate);
+        params.put("requestedData",requestData);
+
         String data = HttpUtils.doGet(url,header,params);
         Gson gson = new Gson();
-        PressureRaw pressureRaw = gson.fromJson(data,PressureRaw.class);
-        return pressureRaw;
+        FizzyoResponse response = gson.fromJson(data,FizzyoResponse.class);
+        return response.getSyncData();
     }
 
-    private Pressures getPressures(String patientRecordId) {
-        String url = "https://api-staging.fizzyo-ucl.co.uk/api/v1/pressure/" + patientRecordId;
-        Map<String,String> header = new HashMap<>();
-        Map<String,Object> params = new HashMap<>();
-        header.put("Authorization", "Bearer "+ getFizzyoToken().getAccessToken());
-        String data = HttpUtils.doGet(url,header,params);
-        Gson gson = new Gson();
-        Pressures pressures = gson.fromJson(data,Pressures.class);
-        return pressures;
 
-    }
-
-    private Records getPacientRecords() {
-        String url = "https://api-staging.fizzyo-ucl.co.uk/api/v1/patient-records";
-        Map<String,String> header = new HashMap<>();
-        Map<String,Object> params = new HashMap<>();
-        header.put("Authorization","Bearer "+ getFizzyoToken().getAccessToken());
-        String data = HttpUtils.doGet(url,header,params);
-        Gson gson = new Gson();
-        Records records = gson.fromJson(data,Records.class);
-        return records;
-    }
-
-    private FizzyoToken getFizzyoToken() {
-        if(fizzyoToken!=null)
-            return fizzyoToken;
-        String authCode = getAuthCode();
-        if(authCode==null) {
-            FizzyoToken fizzyoToken = new FizzyoToken();
-            fizzyoToken.setAccessToken("i don't know");
-            return fizzyoToken;
+    private void dataUpdated(String name) {
+        for (DataSource dataSource: provider.getDataSources()){
+            if (dataSource.getName().equals(name))
+                provider.notifyDataUpdated(dataSource);
         }
-        String url = "https://api-staging.fizzyo-ucl.co.uk/api/v1/auth/token";
-        Map<String,String> header = new HashMap<>();
-        Map<String,Object> params = new HashMap<>();
-        params.put("redirectUri","https://staging.fizzyo-ucl.co.uk/login");
-        params.put("authCode",authCode);
-        String data = HttpUtils.doPost(url, header, params);
-        if(data == null)
-            return null;
-        logger.debug(data);
-        Gson gson = new Gson();
-        fizzyoToken = gson.fromJson(data,FizzyoToken.class);
-        return fizzyoToken;
     }
-
-    private String getAuthCode() {
-        Path path = Paths.get(System.getProperty("user.home")).resolve(".newton");
-        path = path.resolve("Fizzyo").resolve("authCode");
-        String authCode = FileUtils.readFile(path.toFile());
-        return authCode;
-    }
-
-    private List<String> getHeader() {
-        List<String> header = new ArrayList<>();
-        header.addAll(new PressureRecord().getKeys());
-        header.addAll(new PressureRawRecord().getKeys());
-
-        return header;
-    }
-
-    private List<String> getContent(PressureRecord pressureRecord, PressureRawRecord pressureRawRecord) {
-        List<String> content = new ArrayList<>();
-        content.addAll(pressureRecord.getValues());
-        content.addAll(pressureRawRecord.getValues());
-        return content;
-    }
-
-    private void writeToOutput(List<List<String>> list) {
+    private void writeToOutput(List<List<String>> list,String name) {
         DataStorage storage = provider.getStorage();
-        DataSource dataSource = provider.getFizzyoDataSource();
-        try (OutputStream output = storage.getOutputStream(dataSource)){
-            FileUtils.writeCSV(output, list);
-        }
-        catch (IOException e){
-            e.printStackTrace();
+        for(DataSource dataSource : provider.getDataSources()){
+            if (dataSource.getName().equals(name)) {
+                try (OutputStream output = storage.getOutputStream(dataSource)) {
+                    FileUtils.writeCSV(output, list);
+                } catch (IOException e) {
+                    logger.error("Failed to write Fizzyo data",e);
+                }
+            }
         }
     }
 }

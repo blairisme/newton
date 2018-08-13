@@ -51,7 +51,7 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        loadProviders();
+//        loadProviders();
     }
 
     private void loadProviders() {
@@ -79,14 +79,6 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
         return dataProviders;
     }
 
-//    public DataProvider getDataProvider(String identifier) throws UnknownEntityException {
-//        for (DataProvider dataProvider: getDataProviders()) {
-//            if (Objects.equals(dataProvider.getIdentifier(), identifier)) {
-//                return dataProvider;
-//            }
-//        }
-//        throw new UnknownEntityException(identifier);
-//    }
 
     public DataSource getDataSource(String identifier) throws UnknownEntityException {
         for (DataProvider dataProvider: getDataProviders()) {
@@ -99,14 +91,6 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
         throw new UnknownEntityException(identifier);
     }
 
-//    public Collection<DataSource> getDataSources() {
-//        Collection<DataSource> dataSources = new ArrayList<>();
-//
-//        for (DataProvider dataProvider: getDataProviders()) {
-//            dataSources.addAll(dataProvider.getDataSources());
-//        }
-//        return dataSources;
-//    }
 
     public DataStorageProvider getDataStorage(DataProvider dataProvider) {
         DataStorage dataStorage = dataProvider.getStorage();

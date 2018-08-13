@@ -34,9 +34,16 @@ public class FizzyoDataProvider extends BasicDataProvider
 
     public FizzyoDataProvider(){
         this.dataSources = new ArrayList<>();
-        this.dataSources.add(new BasicDataSource(this, "fizzyo", "Fizzyo Data"));
+
         this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
         this.handler = new GetFizzyoData(this);
+
+        this.dataSources.add(new BasicDataSource(this,"fizzyo","pressure-raw"));
+        this.dataSources.add(new BasicDataSource(this,"fizzyo","exercise-sessions"));
+        this.dataSources.add(new BasicDataSource(this,"fizzyo","foot-steps"));
+        this.dataSources.add(new BasicDataSource(this,"fizzyo","foot-steps-granular"));
+        this.dataSources.add(new BasicDataSource(this,"fizzyo","games-sessions"));
+        this.dataSources.add(new BasicDataSource(this,"fizzyo","heart-rate"));
     }
 
     @Override
@@ -56,6 +63,7 @@ public class FizzyoDataProvider extends BasicDataProvider
 
     @Override
     public void setContext(PluginHostContext context) {
+
     }
 
     public DataSource getFizzyoDataSource() {
@@ -69,6 +77,7 @@ public class FizzyoDataProvider extends BasicDataProvider
 
     @Override
     public void start() {
+
         this.scheduler.scheduleAtFixedRate(handler, 0, 1, TimeUnit.HOURS); //run every hour
     }
 
