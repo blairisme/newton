@@ -24,9 +24,15 @@ import org.ucl.newton.service.experiment.ExperimentOperations;
 import org.ucl.newton.service.experiment.ExperimentService;
 
 import javax.inject.Inject;
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Instances of this class provide experiment data and methods via REST.
@@ -68,6 +74,13 @@ public class ExperimentApi
     public void removeExperiment(@PathVariable("identifier") String identifier) {
         Experiment experiment = experimentService.getExperimentByIdentifier(identifier);
         experimentService.removeExperiment(experiment);
+    }
+
+    @RequestMapping(value = "/api/experiments", method = RequestMethod.GET)
+    public ExperimentDtoSet getExperiments(@RequestParam("project") String project) {
+        Collection<Experiment> experiments = experimentService.getExperimentsByProject(project);
+        List<ExperimentDto> result = experiments.stream().map(ExperimentDtoBuilder::fromExperiment).collect(Collectors.toList());
+        return new ExperimentDtoSet(result);
     }
 
     @RequestMapping(value = "/api/experiment/{experimentId}/repository", method = RequestMethod.GET)

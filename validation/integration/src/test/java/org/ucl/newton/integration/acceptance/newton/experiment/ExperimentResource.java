@@ -7,23 +7,23 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.integration.acceptance.newton.project;
+package org.ucl.newton.integration.acceptance.newton.experiment;
 
 import org.ucl.newton.common.network.RestResource;
 
 /**
- * Defines various project service endpoints exposed by the Newton REST API.
+ * Defines various experiment service endpoints exposed by the Newton REST API.
  *
  * @author Blair Butterworth
  */
-public enum ProjectResource implements RestResource
+public enum ExperimentResource implements RestResource
 {
-    Project     ("project"),
-    Projects    ("projects");
+    Experiment     ("experiment"),
+    Experiments    ("experiments");
 
     private String path;
 
-    ProjectResource(String path) {
+    ExperimentResource(String path) {
         this.path = path;
     }
 

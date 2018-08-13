@@ -26,6 +26,7 @@ import static java.util.stream.Collectors.toList;
  */
 public class ExperimentDtoBuilder
 {
+    private String identifier;
     private String name;
     private String description;
     private String creator;
@@ -44,6 +45,7 @@ public class ExperimentDtoBuilder
     public static ExperimentDto fromExperiment(Experiment experiment) {
         ExperimentDtoBuilder builder = new ExperimentDtoBuilder();
 
+        builder.setIdentifier(experiment.getIdentifier());
         builder.setName(experiment.getName());
         builder.setDescription(experiment.getDescription());
         builder.setCreator(experiment.getCreator().getEmail());
@@ -61,6 +63,10 @@ public class ExperimentDtoBuilder
         builder.setDataSourceIds(sources.stream().map(ExperimentDataSource::getCustomLocation).collect(toList()));
 
         return builder.build();
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public void setName(String name) {
@@ -117,6 +123,7 @@ public class ExperimentDtoBuilder
 
     public ExperimentDto build() {
         return new ExperimentDto(
+            identifier,
             name,
             description,
             creator,

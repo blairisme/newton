@@ -9,6 +9,7 @@
 
 package org.ucl.newton.service.experiment;
 
+import com.google.common.base.Strings;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +56,10 @@ public class ExperimentOperations
     }
 
     public Experiment createExperiment(ExperimentDto experimentDto) {
-        String experimentId = Identifier.create(experimentDto.getName());
+        String experimentId = experimentDto.getIdentifier();
+        if (Strings.isNullOrEmpty(experimentId)) {
+            experimentId = Identifier.create(experimentDto.getName());
+        }
         return createExperiment(experimentDto, experimentId);
     }
 
