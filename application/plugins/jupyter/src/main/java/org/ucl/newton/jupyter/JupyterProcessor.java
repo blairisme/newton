@@ -52,10 +52,6 @@ public class JupyterProcessor implements DataProcessor
     }
 
     @Override
-    public void setContext(PluginHostContext context) {
-    }
-
-    @Override
     public void process(CommandExecutor commandExecutor, Path script) throws DataProcessorException {
         String notebookPath = "\"" + script.toString() + "\"";
         String scriptPath = notebookPath.replace(".ipynb", ".py");

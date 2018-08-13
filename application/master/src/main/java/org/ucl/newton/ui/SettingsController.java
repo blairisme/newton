@@ -29,8 +29,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.function.Consumer;
 
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
 /**
  * Instances of this class provide an MVC controller for web pages used to
  * display settings, both for the system and for the users profile.
@@ -84,7 +82,7 @@ public class SettingsController
         return "settings/plugins";
     }
 
-    @RequestMapping(value="/settings/plugins/update", method=POST)
+    @RequestMapping(value="/settings/plugins/update", method=RequestMethod.POST)
     public String updatePlugins(@RequestBody MultiValueMap<String, String> formData) {
         Consumer<NewtonPlugin> updateConfiguration = plugin -> plugin.getConfiguration().update(formData);
         pluginService.getDataProviders().forEach(updateConfiguration);

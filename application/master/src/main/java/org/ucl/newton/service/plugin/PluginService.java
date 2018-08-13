@@ -37,7 +37,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Service
 public class PluginService implements ApplicationListener<ContextRefreshedEvent>
 {
-    private PluginContext pluginContext;
+    //private PluginContext pluginContext;
     private PluginRepository pluginRepository;
     private Collection<DataProvider> providers;
     private Collection<DataProcessor> processors;
@@ -45,7 +45,7 @@ public class PluginService implements ApplicationListener<ContextRefreshedEvent>
 
     @Inject
     public PluginService(PluginContext pluginContext, PluginRepository pluginRepository) {
-        this.pluginContext = pluginContext;
+        //this.pluginContext = pluginContext;
         this.pluginRepository = pluginRepository;
     }
 

@@ -39,9 +39,6 @@ public class ExperimentDtoBuilder
     private String[] dataSourceLocs;
     private String[] dataSourceIds;
 
-    public ExperimentDtoBuilder() {
-    }
-
     public static ExperimentDto fromExperiment(Experiment experiment) {
         ExperimentDtoBuilder builder = new ExperimentDtoBuilder();
 

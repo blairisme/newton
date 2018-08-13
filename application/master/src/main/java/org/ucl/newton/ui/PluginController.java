@@ -1,5 +1,6 @@
 package org.ucl.newton.ui;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.springframework.context.annotation.Scope;
@@ -47,7 +48,7 @@ public class PluginController {
     @RequestMapping(value = "/publisherSetting", method = RequestMethod.GET)
     public String getPublisher(@RequestParam(required=false) String id, ModelMap model){
         Collection<DataPublisher> publishers = publisherService.getPublishers();
-        if (id == null || id ==""){
+        if (Strings.isNullOrEmpty(id)){
             List<String> ids = new ArrayList<>();
             for(DataPublisher publisher : publishers){
                 ids.add(publisher.getIdentifier());
