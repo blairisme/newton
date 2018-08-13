@@ -1,45 +1,4 @@
-$(document).ready(function() {
-    var memberEmail;
-    var memberName;
 
-    var matchingUsers = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace("value"),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-
-        remote: {
-            url: "/api/users?matching=%QUERY",
-            wildcard: "%QUERY"
-        }
-    });
-
-    $("#userInput").typeahead(null, {
-        name: "users",
-        display: "name",
-        minLength: 3,
-        source: matchingUsers,
-        templates: {
-            empty: `<span class="empty-message">No matching users</span>`,
-            suggestion: Handlebars.compile(
-                `<div class="suggestion">
-                    <img src="/resources/images/profile/{{image}}" class="rounded-circle avatar" alt="Profile picture"/>
-                    <span><strong>{{name}}</strong> ({{email}})</span>
-                </div>`)
-        }
-    });
-
-    $("#userInput").bind("typeahead:select", function(ev, member) {
-        memberEmail = member.email;
-        memberName = member.name;
-        selectMember(member.id, member.name, member.image, member.email);
-    });
-
-    $("#setUserRoleBtn").click( function() {
-        $("#setUserRoleBtn").prop("disabled", true);
-        var role = $("input[name=optradio]:checked").val();
-        setUserRole(memberEmail, role, memberName);
-    });
-
-});
 
 function selectMember(id, name, image, email) {
     $("#messageSuccess").hide();
@@ -55,7 +14,7 @@ function selectMember(id, name, image, email) {
     );
 
     $.ajax({
-        type: 'GET',
+        type: "GET",
         url: "/api/userrole?username=" + email,
         success: function(data) {
             setRoleRadio(data, id);
@@ -88,3 +47,46 @@ function setUserRole(email, role, name) {
         }
     });
 }
+
+$(document).ready(function() {
+    var memberEmail;
+    var memberName;
+
+    var matchingUsers = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace("value"),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+        remote: {
+            url: "/api/users?matching=%QUERY",
+            wildcard: "%QUERY"
+        }
+    });
+
+    $("#userInput").typeahead(null, {
+        name: "users",
+        display: "name",
+        minLength: 3,
+        source: matchingUsers,
+        templates: {
+            empty: "<span class=\"empty-message\">No matching users</span>",
+            suggestion: Handlebars.compile(
+                `<div class="suggestion">
+                    <img src="/resources/images/profile/{{image}}" class="rounded-circle avatar" alt="Profile picture"/>
+                    <span><strong>{{name}}</strong> ({{email}})</span>
+                </div>`)
+        }
+    });
+
+    $("#userInput").bind("typeahead:select", function(ev, member) {
+        memberEmail = member.email;
+        memberName = member.name;
+        selectMember(member.id, member.name, member.image, member.email);
+    });
+
+    $("#setUserRoleBtn").click( function() {
+        $("#setUserRoleBtn").prop("disabled", true);
+        var role = $("input[name=optradio]:checked").val();
+        setUserRole(memberEmail, role, memberName);
+    });
+
+});

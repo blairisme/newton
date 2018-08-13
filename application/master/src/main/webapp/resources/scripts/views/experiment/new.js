@@ -1,39 +1,3 @@
-$(document).ready(function() {
-
-    $(".dropdown-menu a").click(function(e) {
-        e.preventDefault();
-        var selText = $(this).text();
-        $("#dropdownDsButton").text(selText);
-        var default_loc = "data/" + selText.split(' ').join('_').toLowerCase() + ".csv"; // temporary
-        $("#experimentDsLoc").val(default_loc);
-    });
-
-    $("#addDsBtn").click(function() {
-        var dsLoc = $("#experimentDsLoc").val();
-        var dsName = $("#dropdownDsButton").text();
-        if(dsLoc.length <= 0){
-            console.log("no location"); //convert to validation error
-        } else {
-            if ($("#dsListEmpty").is(":visible")) {
-                $("#dsListEmpty").hide();
-            }
-
-            if ($("#ds" + dsName).length != 0) {
-                console.log("duplication"); //convert to validation error
-            } else {
-                addDs(dsName, dsLoc);
-            }
-        }
-    });
-
-    $("#dsList").on("click", ".remove_button", function() {
-        var name = $(this).val();
-        removeDs(name);
-    });
-
-});
-
-
 function addDs(name, loc) {
     $("#dsList").append(
         "<li class=\"list-group-item project-list-item\" id=\"ds" + name + "\">" +
@@ -65,3 +29,40 @@ function removeDs(name) {
         dsListEmpty.prop("hidden", false);
     }
 }
+
+$(document).ready(function() {
+
+    $(".dropdown-menu a").click(function(e) {
+        e.preventDefault();
+        var selText = $(this).text();
+        $("#dropdownDsButton").text(selText);
+        var defaultLoc = "data/" + selText.split(" ").join("_").toLowerCase() + ".csv";
+        $("#experimentDsLoc").val(defaultLoc);
+    });
+
+    $("#addDsBtn").click(function() {
+        var dsLoc = $("#experimentDsLoc").val();
+        var dsName = $("#dropdownDsButton").text();
+        if(dsLoc.length <= 0){
+            console.log("no location"); //convert to validation error
+        } else {
+            if ($("#dsListEmpty").is(":visible")) {
+                $("#dsListEmpty").hide();
+            }
+
+            if ($("#ds" + dsName).length !== 0) {
+                console.log("duplication"); //convert to validation error
+            } else {
+                addDs(dsName, dsLoc);
+            }
+        }
+    });
+
+    $("#dsList").on("click", ".remove_button", function() {
+        var name = $(this).val();
+        removeDs(name);
+    });
+
+});
+
+
