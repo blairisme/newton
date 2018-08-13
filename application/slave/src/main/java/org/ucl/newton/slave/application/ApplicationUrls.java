@@ -40,13 +40,6 @@ public class ApplicationUrls
             URIBuilder builder = new URIBuilder();
             builder.setScheme(UriSchemes.HTTP);
             builder.setHost(preferences.getApplicationHost());
-            try {
-                builder.setHost(InetAddress.getLocalHost().getHostAddress());
-                
-                System.out.println("\n\n\n\n\n "+InetAddress.getLocalHost().getHostAddress()+"\n\n\n\n\n");
-            }catch (Exception e){
-                e.printStackTrace();
-            }
             builder.setPort(preferences.getApplicationPort());
             builder.setPath("files");
             return builder.build().toURL();
