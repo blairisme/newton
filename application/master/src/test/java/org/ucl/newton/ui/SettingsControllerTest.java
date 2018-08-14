@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.LinkedMultiValueMap;
+import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.service.data.DataPermissionService;
 import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.project.ProjectService;
@@ -26,6 +27,7 @@ public class SettingsControllerTest
     private DataPermissionService dataPermissionService;
     private PluginService pluginService;
     private ProjectService projectService;
+    private ApplicationStorage applicationStorage;
     private SettingsController controller;
 
     @Before
@@ -34,7 +36,8 @@ public class SettingsControllerTest
         dataPermissionService = Mockito.mock(DataPermissionService.class);
         pluginService = Mockito.mock(PluginService.class);
         projectService = Mockito.mock(ProjectService.class);
-        controller = new SettingsController(userService, dataPermissionService, pluginService, projectService);
+        applicationStorage = Mockito.mock(ApplicationStorage.class);
+        controller = new SettingsController(userService, dataPermissionService, pluginService, projectService, applicationStorage);
     }
 
     @Test
