@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/styles/signup.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/views/auth/signup.css"/>
 
     <script src="/resources/scripts/libraries/jquery.js"></script>
     <script src="/resources/scripts/libraries/popper.js"></script>
@@ -17,7 +17,7 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
     <script type="text/javascript" src="/resources/scripts/libraries/zxcvbn-bootstrap-strength-meter.js"></script>
-    <script type="text/javascript" src="/resources/scripts/views/signup.js"></script>
+    <script type="text/javascript" src="/resources/scripts/views/auth/signup.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -86,14 +86,12 @@
 
             <!-- Confirm password input -->
             <div class="form-group">
-                <input type="password" th:field="*{confirmPassword}"
+                <input type="password" id="confirmPassword"
                        placeholder="Confirm Password" class="form-control"
                         required />
                 <div id="passwordMsg">
                     <p class="text-danger">Passwords don't match!</p>
                 </div>
-                <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"
-                     class="validation-message alert alert-danger" role="alert"></div>
             </div>
 
             <button type="submit"

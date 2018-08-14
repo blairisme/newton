@@ -22,7 +22,6 @@ import org.ucl.newton.service.authentication.AuthenticationService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
 import javax.validation.Valid;
 
 /**
@@ -64,11 +63,10 @@ public class AuthenticationController
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String registerUser(@ModelAttribute("user") @Valid UserDto userDto,
                                BindingResult result) {
-        try {
-            User existing = userService.getUserByEmail(userDto.getEmail());
+
+        User existing = userService.getUserByEmail(userDto.getEmail());
+        if(existing != null) {
             result.rejectValue("email", null, "This email address has already been used to register an account");
-        } catch(NoResultException e) {
-            // user with email is not in db so carry on
         }
 
         if(result.hasErrors()) {
