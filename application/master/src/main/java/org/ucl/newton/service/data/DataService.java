@@ -74,20 +74,6 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
         }
     }
 
-    Collection<DataProvider> getDataProviders() {
-        loadProviders();
-        return dataProviders;
-    }
-
-//    public DataProvider getDataProvider(String identifier) throws UnknownEntityException {
-//        for (DataProvider dataProvider: getDataProviders()) {
-//            if (Objects.equals(dataProvider.getIdentifier(), identifier)) {
-//                return dataProvider;
-//            }
-//        }
-//        throw new UnknownEntityException(identifier);
-//    }
-
     public DataSource getDataSource(String identifier) throws UnknownEntityException {
         for (DataProvider dataProvider: getDataProviders()) {
             for (DataSource dataSource: dataProvider.getDataSources()) {
@@ -98,15 +84,6 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
         }
         throw new UnknownEntityException(identifier);
     }
-
-//    public Collection<DataSource> getDataSources() {
-//        Collection<DataSource> dataSources = new ArrayList<>();
-//
-//        for (DataProvider dataProvider: getDataProviders()) {
-//            dataSources.addAll(dataProvider.getDataSources());
-//        }
-//        return dataSources;
-//    }
 
     public DataStorageProvider getDataStorage(DataProvider dataProvider) {
         DataStorage dataStorage = dataProvider.getStorage();
@@ -120,5 +97,10 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
         DataStorageProvider dataStorage = new DataStorageProvider(applicationStorage);
         dataStorage.setProviderId(dataProvider.getIdentifier());
         return dataStorage;
+    }
+
+    private Collection<DataProvider> getDataProviders() {
+        loadProviders();
+        return dataProviders;
     }
 }

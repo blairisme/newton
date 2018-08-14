@@ -49,7 +49,7 @@ public class ProjectService
     }
 
     public void removeProject(ProjectDto project) throws RestException {
-        RestRequest request = server.delete("project/" + project.getIdentifier());
+        RestRequest request = server.delete(ProjectResource.Project.subPath(project.getIdentifier()));
         request.make();
     }
 

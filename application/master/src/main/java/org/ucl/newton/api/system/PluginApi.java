@@ -7,7 +7,7 @@
  *      https://opensource.org/licenses/MIT
  */
 
-package org.ucl.newton.api;
+package org.ucl.newton.api.system;
 
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;

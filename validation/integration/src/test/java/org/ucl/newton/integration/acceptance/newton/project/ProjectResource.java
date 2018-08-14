@@ -31,4 +31,8 @@ public enum ProjectResource implements RestResource
     public String getPath() {
         return path;
     }
+
+    public String subPath(String subPath) {
+        return path + "/" + subPath;
+    }
 }

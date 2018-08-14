@@ -1,3 +1,12 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.framework;
 
 /**
@@ -5,29 +14,18 @@ package org.ucl.newton.framework;
  *
  * @author John Wilkie
  */
-public enum ExperimentTriggerType {
-    Manual ("Manual"),
-    Onchange ("On data change");
+public enum ExperimentTriggerType
+{
+    Manual  ("Manual"),
+    Onchange("On data change");
 
     private final String name;
 
-    private ExperimentTriggerType(String name) {
+    ExperimentTriggerType(String name) {
         this.name = name;
     }
 
     public String getName() {
         return name;
     }
-
-    /*
-    mode1 ("Fancy Mode 1"),
-    mode2 ("Fancy Mode 2"),
-    mode3 ("Fancy Mode 3");
-
-    private final String name;
-
-    private Modes(String s) {
-        name = s;
-    }
-     */
 }

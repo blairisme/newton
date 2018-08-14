@@ -9,7 +9,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.DataPermission;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.service.data.DataPermissionRepository;
 
 import javax.inject.Inject;
 import java.util.ArrayList;

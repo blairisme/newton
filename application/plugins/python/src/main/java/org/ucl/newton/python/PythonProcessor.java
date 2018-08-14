@@ -45,10 +45,6 @@ public class PythonProcessor implements DataProcessor
     }
 
     @Override
-    public void setContext(PluginHostContext context) {
-    }
-
-    @Override
     public void process(CommandExecutor commandExecutor, Path scriptPath) throws DataProcessorException {
         String script = "\"" + scriptPath.toString() + "\"";
         commandExecutor.execute(asList(PYTHON_COMMAND, script));

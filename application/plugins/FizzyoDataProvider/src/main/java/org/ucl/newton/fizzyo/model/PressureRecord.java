@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a record type that stores pressure information.
+ * Instances of this class provide Fizzyo data to the Newton system.
  *
  * @author Xiaolong Chen
  */
-public class PressureRecord {
+public class PressureRecord implements FizzyoDataUnit{
     private int goodBreaths;
     private int breaths;
     private int averageBreathLength;
     private String id;
     private String startTime;
-    private  String endTime;
-    private  String averagePressure;
-    private  String pressureRawId;
-    private  String patientRecordId;
-
+    private String endTime;
+    private String averagePressure;
+    private String pressureRawId;
+    private String patientRecordId;
+    @Override
     public List<String> getKeys(){
         List<String> keys = new ArrayList<>();
         keys.add("patientRecordId");
@@ -30,6 +30,7 @@ public class PressureRecord {
         keys.add("averageBreathLength");
         return keys;
     }
+    @Override
     public List<String> getValues() {
         List<String> values = new ArrayList<>();
         values.add(patientRecordId);

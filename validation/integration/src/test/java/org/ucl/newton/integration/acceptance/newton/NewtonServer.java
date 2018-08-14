@@ -15,6 +15,7 @@ import org.ucl.newton.common.network.BasicAuthentication;
 import org.ucl.newton.common.network.MimeTypes;
 import org.ucl.newton.common.network.RestServer;
 import org.ucl.newton.common.serialization.JsonSerializer;
+import org.ucl.newton.integration.acceptance.newton.experiment.ExperimentService;
 import org.ucl.newton.integration.acceptance.newton.project.ProjectService;
 import org.ucl.newton.integration.acceptance.newton.user.UserService;
 
@@ -28,11 +29,13 @@ public class NewtonServer
 {
     private UserService userService;
     private ProjectService projectService;
+    private ExperimentService experimentService;
 
     public NewtonServer() {
         RestServer restServer = getRestServer();
         userService = new UserService(restServer);
         projectService = new ProjectService(restServer);
+        experimentService = new ExperimentService(restServer);
     }
 
     public UserService getUserService() {
@@ -41,6 +44,10 @@ public class NewtonServer
 
     public ProjectService getProjectService() {
         return projectService;
+    }
+
+    public ExperimentService getExperimentService() {
+        return experimentService;
     }
 
     private RestServer getRestServer() {

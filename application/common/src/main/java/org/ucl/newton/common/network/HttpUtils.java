@@ -68,7 +68,7 @@ public class HttpUtils
         }
     }
 
-    public static String doPost(String url, Map<String, String> header, Map<String, Object> params){
+    public static String doPost(String url, Map header, Map params){
 
         try{
             HttpRequestWithBody request =Unirest.post(url).headers(header);
@@ -89,7 +89,7 @@ public class HttpUtils
         return null;
     }
 
-    public static String doGet(String url, Map<String, String> header, Map<String, Object> params){
+    public static String doGet(String url, Map header, Map params){
         try {
             GetRequest request =Unirest.get(url).headers(header);
             request.queryString(params);

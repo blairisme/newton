@@ -33,13 +33,13 @@ public class FizzyoDataProviderTest {
     }
 
     @Test
-    public void getWeatherDataSource(){
+    public void getFizzyoDataSource(){
         DataSource dataSource = provider.getFizzyoDataSource();
         Assert.assertTrue(dataSource instanceof BasicDataSource);
     }
 
     @Test
     public void getDataSourcesTest(){
-        Assert.assertEquals(1,provider.getDataSources().size());
+        Assert.assertEquals(6,provider.getDataSources().size());
     }
 }

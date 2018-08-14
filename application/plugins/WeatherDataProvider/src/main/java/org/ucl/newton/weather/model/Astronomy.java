@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Instances of this class provide org.ucl.WeatherDataProvider.weather data to the Newton system.
+ * Instances of this class provide weather data to the Newton system.
  *
  * @author Xiaolong Chen
  */
@@ -38,49 +38,4 @@ public class Astronomy {
         return values;
     }
 
-    public String getSunrise() {
-        return sunrise;
-    }
-
-    public void setSunrise(String sunrise) { this.sunrise = sunrise; }
-
-    public String getSunset() {
-        return sunset;
-    }
-
-    public void setSunset(String sunset) {
-        this.sunset = sunset;
-    }
-
-    public String getMoonrise() {
-        return moonrise;
-    }
-
-    public void setMoonrise(String moonrise) {
-        this.moonrise = moonrise;
-    }
-
-    public String getMoonset() {
-        return moonset;
-    }
-
-    public void setMoonset(String moonset) {
-        this.moonset = moonset;
-    }
-
-    public String getMoonPhase() {
-        return moon_phase;
-    }
-
-    public void setMoonPhase(String moon_phase) {
-        this.moon_phase = moon_phase;
-    }
-
-    public String getMoonIllumination() {
-        return moon_illumination;
-    }
-
-    public void setMoonIllumination(String moon_illumination) {
-        this.moon_illumination = moon_illumination;
-    }
 }

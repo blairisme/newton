@@ -42,9 +42,12 @@ public class ExperimentConfigurationBuilder {
         return this;
     }
 
-    public ExperimentConfigurationBuilder setProcessorPluginId(String processorPluginName, Collection<DataProcessor> processors) {
-        for(DataProcessor processor: processors) {
-            if (processor.getVisualization().getName().equals(processorPluginName)) {
+    public ExperimentConfigurationBuilder setProcessorPluginId(String processorId, Collection<DataProcessor> processors) {
+        for (DataProcessor processor: processors) {
+            if (Objects.equals(processor.getIdentifier(), processorId)) {
+                processorPluginId = processor.getIdentifier();
+            }
+            else if (Objects.equals(processor.getVisualization().getName(), processorId)) {
                 processorPluginId = processor.getIdentifier();
             }
         }
@@ -57,9 +60,10 @@ public class ExperimentConfigurationBuilder {
     }
 
     public ExperimentConfigurationBuilder addDataSources(String[] dataSourceIds, String[] dataSourceLocs) {
-        // should check both arrays are equal length
         dataSources = new ArrayList<>();
-        if(dataSourceIds != null && dataSourceLocs != null) {
+        if (dataSourceIds != null && dataSourceLocs != null) {
+            Validate.isTrue(dataSourceIds.length == dataSourceLocs.length);
+
             for (int i = 0; i < dataSourceIds.length; i++) {
                 dataSources.add(new ExperimentDataSource(0, dataSourceIds[i], dataSourceLocs[i]));
             }

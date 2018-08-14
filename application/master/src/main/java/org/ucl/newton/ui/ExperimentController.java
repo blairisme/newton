@@ -9,22 +9,19 @@
 
 package org.ucl.newton.ui;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.SystemUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.ucl.newton.common.identifier.Identifier;
+import org.ucl.newton.api.experiment.ExperimentDto;
 import org.ucl.newton.engine.ExecutionEngine;
 import org.ucl.newton.framework.*;
+import org.ucl.newton.service.experiment.ExperimentOperations;
 import org.ucl.newton.service.experiment.ExperimentService;
-import org.ucl.newton.service.experiment.ExperimentStorage;
 import org.ucl.newton.service.jupyter.JupyterServer;
 import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.project.ProjectService;
@@ -32,12 +29,8 @@ import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
+
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.attribute.PosixFilePermissions;
-import java.util.ArrayList;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
@@ -55,7 +48,7 @@ public class ExperimentController
 
     private UserService userService;
     private ExperimentService experimentService;
-    private ExperimentStorage experimentStorage;
+    private ExperimentOperations experimentOperations;
     private ExecutionEngine executionEngine;
     private JupyterServer jupyterServer;
     private ProjectService projectService;
@@ -65,7 +58,7 @@ public class ExperimentController
     public ExperimentController(
         UserService userService,
         ExperimentService experimentService,
-        ExperimentStorage experimentStorage,
+        ExperimentOperations experimentOperations,
         ExecutionEngine executionEngine,
         JupyterServer jupyterServer,
         ProjectService projectService,
@@ -73,7 +66,7 @@ public class ExperimentController
     {
         this.userService = userService;
         this.experimentService = experimentService;
-        this.experimentStorage = experimentStorage;
+        this.experimentOperations = experimentOperations;
         this.executionEngine = executionEngine;
         this.jupyterServer = jupyterServer;
         this.projectService = projectService;
@@ -166,7 +159,7 @@ public class ExperimentController
     {
         try {
         Experiment toUpdate = experimentService.getExperimentByIdentifier(experimentIdentifier);
-        Experiment temp = createExperiment(experimentDto, experimentIdentifier, projectIdentifier);
+        Experiment temp = experimentOperations.createExperiment(experimentDto, experimentIdentifier);
         toUpdate.setDescription(temp.getDescription());
         toUpdate.getConfiguration().setTrigger(temp.getConfiguration().getTrigger());
         toUpdate.getConfiguration().setOutputPattern(temp.getConfiguration().getOutputPattern());
@@ -201,68 +194,11 @@ public class ExperimentController
         @ModelAttribute("experiment") @Valid ExperimentDto experimentDto,
         ModelMap model)
     {
-        String experimentId = Identifier.create(experimentDto.getName());
-        Experiment experiment = createExperiment(experimentDto, experimentId, projectId);
+        Experiment experiment = experimentOperations.createExperiment(experimentDto);
         experimentService.addExperiment(experiment);
-        populateRepository(experiment);
+        experimentOperations.populateRepository(experiment);
 
         return "redirect:/project/" + projectId;
     }
 
-    private Experiment createExperiment(ExperimentDto experimentDto, String experimentId, String projectId) {
-        ExperimentBuilder builder = new ExperimentBuilder();
-        builder.setName(experimentDto.getName());
-        builder.setIdentifier(experimentId);
-        builder.setDescription(experimentDto.getDescription());
-        builder.setCreator(userService.getAuthenticatedUser());
-        builder.setProject(projectService.getProjectByIdentifier(projectId, true));
-        builder.setExperimentVersions(new ArrayList<>());
-        builder.setConfiguration(createConfiguration(experimentDto, experimentId));
-        return builder.build();
-    }
-
-    private ExperimentConfiguration createConfiguration(ExperimentDto experimentDto, String experimentId) {
-        ExperimentConfigurationBuilder builder = new ExperimentConfigurationBuilder();
-        builder.setStorageConfiguration(createStorageConfiguration(experimentDto, experimentId));
-        builder.setProcessorPluginId(experimentDto.getSelectedTypeValue(), pluginService.getDataProcessors());
-        builder.addDataSources(experimentDto.getDataSourceIds(), experimentDto.getDataSourceLocs());
-        builder.setOutputPattern(experimentDto.getOutputPattern());
-        builder.setDisplayPattern(experimentDto.getSelectedTypeValue().equals("newton-jupyter") ? "*.html" : "");
-        builder.addTrigger(experimentDto.getSelectedTriggerValue());
-        return builder.build();
-    }
-
-    private StorageConfiguration createStorageConfiguration(ExperimentDto experimentDto, String experimentId) {
-        String location = experimentStorage.getRepositoryPath(experimentId).toString();
-        StorageType type = StorageType.Newton;
-        String script = experimentDto.getSelectedTypeValue().equals("newton-jupyter") ? "main.ipynb" : "main.py";
-        return new StorageConfiguration(0, type, location, script);
-    }
-
-    private void populateRepository(Experiment experiment) {
-        try {
-            Resource template = new ClassPathResource("/templates");
-            Resource repository = experiment.getConfiguration().getStorageConfiguration().getStorageLocation();
-            FileUtils.copyDirectory(template.getFile(), repository.getFile());
-            relaxRepositoryPermissions(repository);
-        } catch (IOException error) {
-            logger.error("Failed to populate repository", error);
-        }
-    }
-
-    //Needs rewrite 
-    private void relaxRepositoryPermissions(Resource repository) throws IOException {
-        if(SystemUtils.IS_OS_WINDOWS){
-            return;
-        }
-        File[] files = repository.getFile().listFiles();
-        if(files!=null){
-            String permissions = "rwxrwxrwx";
-            for(int i=0; i<files.length; i++){
-                Files.setPosixFilePermissions(files[i].toPath(), PosixFilePermissions.fromString(permissions));
-                Files.setPosixFilePermissions(files[i].getParentFile().toPath(), PosixFilePermissions.fromString(permissions));
-                Files.setPosixFilePermissions(files[i].getParentFile().getParentFile().toPath(), PosixFilePermissions.fromString(permissions));
-            }
-        }
-    }
 }

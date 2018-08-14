@@ -17,7 +17,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.ucl.newton.common.network.RestException;
-import org.ucl.newton.integration.acceptance.gherkin.Project;
 import org.ucl.newton.integration.acceptance.gherkin.User;
 import org.ucl.newton.integration.acceptance.newton.NewtonServer;
 import org.ucl.newton.integration.acceptance.newton.user.UserDto;

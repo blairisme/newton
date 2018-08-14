@@ -22,5 +22,6 @@ public interface NewtonPlugin
 
     PluginVisualization getVisualization();
 
-    void setContext(PluginHostContext context);
+    default void setContext(PluginHostContext context) {
+    }
 }

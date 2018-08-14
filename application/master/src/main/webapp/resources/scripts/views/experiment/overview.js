@@ -26,6 +26,27 @@ function checkComplete() {
     });
 }
 
+// Adds a header row to the table and returns the set of columns.
+// Need to do union of keys from all records as some records may not contain
+// all records.
+function addAllColumnHeaders(myList, selector) {
+    var columnSet = [];
+    var headerTr$ = $("<tr/>");
+
+    for (var i = 0; i < myList.length; i++) {
+        var rowHash = myList[i];
+        for (var key in rowHash) {
+            if ($.inArray(key, columnSet) === -1) {
+                columnSet.push(key);
+                headerTr$.append($("<th/>").html(key));
+            }
+        }
+    }
+    $(selector).append($("<thead/>").html(headerTr$));
+
+    return columnSet;
+}
+
 // Builds the HTML Table out of myList.s
 // Code heavily based on: https://stackoverflow.com/questions/5180382/convert-json-data-to-a-html-table
 function buildHtmlTable(selector, myList) {
@@ -50,27 +71,6 @@ function buildHtmlTable(selector, myList) {
     }
 }
 
-// Adds a header row to the table and returns the set of columns.
-// Need to do union of keys from all records as some records may not contain
-// all records.
-function addAllColumnHeaders(myList, selector) {
-    var columnSet = [];
-    var headerTr$ = $("<tr/>");
-
-    for (var i = 0; i < myList.length; i++) {
-        var rowHash = myList[i];
-        for (var key in rowHash) {
-            if ($.inArray(key, columnSet) === -1) {
-                columnSet.push(key);
-                headerTr$.append($('<th/>').html(key));
-            }
-        }
-    }
-    $(selector).append($("<thead/>").html(headerTr$));
-
-    return columnSet;
-}
-
 function autoResize(id){
     var newheight;
     var newwidth;
@@ -87,7 +87,7 @@ function autoResize(id){
 $(document).ready(function() {
     var outcomeTable;
 
-    experimentExecuting = $("#experimentExecuting").val();
+    var experimentExecuting = $("#experimentExecuting").val();
     if (experimentExecuting === "true") {
         setTimeout(checkComplete, 2000);
     }

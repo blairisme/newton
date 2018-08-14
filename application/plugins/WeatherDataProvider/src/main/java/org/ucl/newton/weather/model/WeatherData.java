@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Instances of this class provide org.ucl.WeatherDataProvider.weather data to the Newton system.
+ * Instances of this class provide weather data to the Newton system.
  *
  * @author Xiaolong Chen
  */
@@ -31,21 +31,5 @@ public class WeatherData {
         for(Weather we : weather)
             values.addAll(we.getValues());
         return values;
-    }
-
-    public List<Request> getRequest() {
-        return request;
-    }
-
-    public void setRequest(List<Request> request) {
-        this.request = request;
-    }
-
-    public List<Weather> getWeather() {
-        return weather;
-    }
-
-    public void setWeather(List<Weather> weather) {
-        this.weather = weather;
     }
 }
