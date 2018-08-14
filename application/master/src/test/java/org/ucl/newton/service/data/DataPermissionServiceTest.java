@@ -6,8 +6,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.ucl.newton.framework.DataPermission;
 import org.ucl.newton.framework.User;
-import org.ucl.newton.service.data.DataPermissionRepository;
-import org.ucl.newton.service.data.DataPermissionService;
 
 import java.util.ArrayList;
 import java.util.Collection;

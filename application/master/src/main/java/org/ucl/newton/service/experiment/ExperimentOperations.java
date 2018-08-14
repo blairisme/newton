@@ -68,7 +68,7 @@ public class ExperimentOperations
         builder.setName(experimentDto.getName());
         builder.setIdentifier(experimentId);
         builder.setDescription(experimentDto.getDescription());
-        builder.setCreator(userService.getAuthenticatedUser());
+        builder.setCreator(userService.getUserByEmail(experimentDto.getCreator()));
         builder.setProject(projectService.getProjectByIdentifier(experimentDto.getProject(), true));
         builder.setExperimentVersions(new ArrayList<>());
         builder.setConfiguration(createConfiguration(experimentDto, experimentId));

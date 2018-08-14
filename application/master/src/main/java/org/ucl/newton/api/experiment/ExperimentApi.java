@@ -13,7 +13,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.ucl.newton.application.system.ApplicationStorage;
@@ -39,7 +38,7 @@ import java.util.stream.Collectors;
  *
  * @author Blair Butterworth
  */
-@Controller
+@RestController
 @SuppressWarnings("unused")
 public class ExperimentApi
 {
@@ -73,7 +72,9 @@ public class ExperimentApi
     @RequestMapping(value = "/api/experiment/{identifier}", method = RequestMethod.DELETE)
     public void removeExperiment(@PathVariable("identifier") String identifier) {
         Experiment experiment = experimentService.getExperimentByIdentifier(identifier);
-        experimentService.removeExperiment(experiment);
+        if (experiment != null) {
+            experimentService.removeExperiment(experiment);
+        }
     }
 
     @RequestMapping(value = "/api/experiments", method = RequestMethod.GET)

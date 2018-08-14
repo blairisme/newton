@@ -60,7 +60,7 @@ public class ProjectSteps
     }
 
     @Then("^the project list should contain the following projects:$")
-    public void assertProjectCount(List<Project> projects) {
+    public void assertProjects(List<Project> projects) {
         Assert.assertEquals("http://localhost:9090/projects", driver.getCurrentUrl());
         List<WebElement> elements = driver.findElements(By.className("project-name"));
 

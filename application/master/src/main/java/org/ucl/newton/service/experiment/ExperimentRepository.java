@@ -6,6 +6,7 @@ import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.Experiment;
+import org.ucl.newton.service.authentication.HibernateUtils;
 
 import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -74,7 +75,7 @@ public class ExperimentRepository {
         criteria.select(experiments);
         criteria.where(builder.equal(experiments.get("identifier"), identifier));
 
-        return session.createQuery(criteria).getSingleResult();
+        return HibernateUtils.getSingleResultOrNull(session.createQuery(criteria));
     }
 
     @Transactional

@@ -42,9 +42,12 @@ public class ExperimentConfigurationBuilder {
         return this;
     }
 
-    public ExperimentConfigurationBuilder setProcessorPluginId(String processorPluginName, Collection<DataProcessor> processors) {
-        for(DataProcessor processor: processors) {
-            if (processor.getVisualization().getName().equals(processorPluginName)) {
+    public ExperimentConfigurationBuilder setProcessorPluginId(String processorId, Collection<DataProcessor> processors) {
+        for (DataProcessor processor: processors) {
+            if (Objects.equals(processor.getIdentifier(), processorId)) {
+                processorPluginId = processor.getIdentifier();
+            }
+            else if (Objects.equals(processor.getVisualization().getName(), processorId)) {
                 processorPluginId = processor.getIdentifier();
             }
         }
