@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.common.file.FileUtils;
-import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.sdk.publisher.DataPublisher;
 import org.ucl.newton.service.plugin.PluginService;
 
@@ -69,8 +68,8 @@ public class PublisherService  {
     }
 
     private File getDefaultConfig(String configFileName) {
-        Path path = PathUtils.getConfigurationPath().resolve(configFileName);
-        return path.toFile();
+        File file = new File(getClass().getResource("/configuration/"+configFileName).getFile());
+        return file;
     }
 
 

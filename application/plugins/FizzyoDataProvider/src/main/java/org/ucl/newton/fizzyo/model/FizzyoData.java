@@ -48,7 +48,7 @@ public class FizzyoData {
             return new ArrayList<>();
         for(Object unit : units) {
             FizzyoDataUnit a = (FizzyoDataUnit)unit;
-            return a.getValues();
+            return a.getKeys();
         }
         return null;
     }
