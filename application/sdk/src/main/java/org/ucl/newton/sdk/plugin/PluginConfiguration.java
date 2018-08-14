@@ -22,5 +22,7 @@ public interface PluginConfiguration
 {
     String getViewFragment();
 
-    void update(Map<String, List<String>> values);
+    Map<String, List<String>> getValues();
+
+    void setValues(Map<String, List<String>> values);
 }

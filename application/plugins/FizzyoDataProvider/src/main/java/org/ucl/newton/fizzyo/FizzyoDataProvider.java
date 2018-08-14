@@ -63,7 +63,6 @@ public class FizzyoDataProvider extends BasicDataProvider
 
     @Override
     public void setContext(PluginHostContext context) {
-
     }
 
     public DataSource getFizzyoDataSource() {
