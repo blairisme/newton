@@ -32,7 +32,7 @@ public class BasicConfiguration implements PluginConfiguration
     }
 
     @Override
-    public Map<String, List<String>> getValues() {
+    public Map<String, String> getValues() {
         return Collections.emptyMap();
     }
 
