@@ -26,6 +26,7 @@ import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
