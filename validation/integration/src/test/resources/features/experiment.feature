@@ -28,3 +28,13 @@ Scenario: View experiment list
     | identifier    | name          | description           | creator                           | project       |
     | experiment-1  | Experiment 1  | An experiment         | blair.butterworth.17@ucl.ac.uk    | project-1     |
     | experiment-2  | Experiment 2  | Another experiment    | blair.butterworth.17@ucl.ac.uk    | project-1     |
+
+Scenario: View experiment details
+  When the user browses to the experiment details page for experiment-1 (project-1)
+  Then the experiment details page should contain the following:
+    | identifier    | name          | description           | creator                           | project       |
+    | experiment-1  | Experiment 1  | An experiment         | blair.butterworth.17@ucl.ac.uk    | project-1     |
+
+Scenario: Run experiment
+  When the user browses to the experiment details page for experiment-1 (project-1)
+  And the user runs the experiment
