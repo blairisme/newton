@@ -22,7 +22,6 @@ import org.ucl.newton.service.authentication.AuthenticationService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
 import javax.validation.Valid;
 
 /**
