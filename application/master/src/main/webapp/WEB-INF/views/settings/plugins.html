@@ -35,32 +35,32 @@
             </li>
         </ul>
 
-        <div>
-            <h4>Plugin Settings</h4>
+        <div class="container-fluid restricted-width-container">
+            <div class="section-divider">
+                <h1 class="page-title">Plugin Settings</h1>
+                <p>A project contains all the files for your project, including the revision history.</p>
+                <a class="btn btn-primary float-right" th:href="@{'/settings/plugin/add'}">Add Plugin</a>
+                <!--<input id="projectIconInput" name="image" type="file" accept="image/*" class="custom-file-input" >-->
+            </div>
 
             <form id="projectDetails" action="/settings/plugins/update" method="POST">
-                <section class="form-section section-divider">
-                    <h4>Data Provider</h4>
-
-                    <div th:each="provider :${providers}">
-                        <span th:text="${provider.visualization.name}">Provider name</span>
-                        <div th:replace="${provider.configuration.viewFragment}"></div>
-                    </div>
+                <section th:each="provider :${providers}" class="form-section section-divider">
+                    <h4 th:text="${provider.visualization.name}">Provider plugin name</h4>
+                    <p th:text="${provider.visualization.description}">Provider plugin description</p>
+                    <div th:replace="${provider.configuration.viewFragment}"></div>
                 </section>
-
+                <section th:each="processor :${processors}" class="form-section section-divider">
+                    <h4 th:text="${processor.visualization.name}">Processor plugin name</h4>
+                    <p th:text="${processor.visualization.description}">Processor plugin description</p>
+                    <div th:replace="${processor.configuration.viewFragment}"></div>
+                </section>
+                <section th:each="publisher :${publishers}" class="form-section section-divider">
+                    <h4 th:text="${publisher.visualization.name}">Publisher plugin name</h4>
+                    <p th:text="${publisher.visualization.description}">Publisher plugin description</p>
+                    <div th:replace="${publisher.configuration.viewFragment}"></div>
+                </section>
                 <input type="submit" class="btn btn-primary" value="Save"/>
             </form>
-
-
-            <!--<section class="form-section section-divider">-->
-                <!--<h4>Data Processors</h4>-->
-
-                <!--<div th:each="processor :${processors}">-->
-                    <!--<span th:text="${processor.visualization.name}">Processor name</span>-->
-                    <!--<div th:replace="${processor.configuration.viewFragment}"></div>-->
-                <!--</div>-->
-            <!--</section>-->
-
         </div>
     </div>
 

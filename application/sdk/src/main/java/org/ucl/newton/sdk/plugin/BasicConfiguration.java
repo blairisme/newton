@@ -9,6 +9,7 @@
 
 package org.ucl.newton.sdk.plugin;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,11 @@ public class BasicConfiguration implements PluginConfiguration
     }
 
     @Override
-    public void update(Map<String, List<String>> values) {
+    public Map<String, List<String>> getValues() {
+        return Collections.emptyMap();
+    }
+
+    @Override
+    public void setValues(Map<String, List<String>> values) {
     }
 }
