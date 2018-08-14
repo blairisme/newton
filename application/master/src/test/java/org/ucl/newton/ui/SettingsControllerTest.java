@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.LinkedMultiValueMap;
 import org.ucl.newton.service.data.DataPermissionService;
 import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.project.ProjectService;
@@ -25,6 +26,7 @@ public class SettingsControllerTest
     private DataPermissionService dataPermissionService;
     private PluginService pluginService;
     private ProjectService projectService;
+    private SettingsController controller;
 
     @Before
     public void setUp() {
@@ -32,35 +34,36 @@ public class SettingsControllerTest
         dataPermissionService = Mockito.mock(DataPermissionService.class);
         pluginService = Mockito.mock(PluginService.class);
         projectService = Mockito.mock(ProjectService.class);
+        controller = new SettingsController(userService, dataPermissionService, pluginService, projectService);
     }
 
     @Test
-    public void systemSettingsRolesTest(){
-        SettingsController controller = new SettingsController(userService, dataPermissionService, pluginService, projectService);
+    public void systemSettingsRolesTest() {
         Assert.assertEquals("settings/roles", controller.roles(new ModelMap()));
     }
 
     @Test
-    public void systemSettingsDataPermissionsTest(){
-        SettingsController controller = new SettingsController(userService, dataPermissionService, pluginService, projectService);
+    public void systemSettingsDataPermissionsTest() {
         Assert.assertEquals("settings/data-permissions", controller.dataPermissions(new ModelMap()));
     }
 
     @Test
-    public void systemSettingsPluginsTest(){
-        SettingsController controller = new SettingsController(userService, dataPermissionService, pluginService, projectService);
+    public void systemSettingsPluginsTest() {
         Assert.assertEquals("settings/plugins", controller.viewPlugins(new ModelMap()));
     }
 
     @Test
-    public void profileTest(){
-        SettingsController controller = new SettingsController(userService, dataPermissionService, pluginService, projectService);
+    public void profileTest() {
         Assert.assertEquals("settings/profile", controller.profile(new ModelMap()));
     }
 
     @Test
-    public void deleteUserFailingTest(){
-        SettingsController controller = new SettingsController(userService, dataPermissionService, pluginService, projectService);
-        Assert.assertEquals("redirect:/profile", controller.deleteUser());
+    public void updatePluginTest() {
+        Assert.assertEquals("redirect:/settings/plugins", controller.updatePlugins(new LinkedMultiValueMap<>()));
+    }
+
+    @Test
+    public void deleteUserFailingTest() {
+        Assert.assertEquals("redirect:/logout", controller.deleteUser());
     }
 }

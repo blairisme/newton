@@ -9,15 +9,12 @@
 
 package org.ucl.newton.ui;
 
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.sdk.plugin.NewtonPlugin;
 import org.ucl.newton.sdk.processor.DataProcessor;
@@ -29,8 +26,6 @@ import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
@@ -118,11 +113,7 @@ public class SettingsController
     public String deleteUser() {
         try {
             userService.removeUser(userService.getAuthenticatedUser());
-            HttpServletRequest request =
-                    ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                            .getRequest();
-            new SecurityContextLogoutHandler().logout(request, null, null);
-            return "main/landing";
+            return "redirect:/logout";
         } catch (Throwable e) {
             return "redirect:/profile";
         }
