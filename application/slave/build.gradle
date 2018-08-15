@@ -49,7 +49,7 @@ jacoco {
   applyTo bootRun
 }
 
-task slaveStart(dependsOn: ['assemble', 'bootRun']) {
+task slaveStart(dependsOn: [':application:slave:assemble', ':application:slave:bootRun']) {
 }
 
 task slaveStopDaemon() {
@@ -58,7 +58,7 @@ task slaveStopDaemon() {
 task slaveStartDaemon(type: com.github.psxpaul.task.ExecFork) {
     workingDir = "$rootDir"
     commandLine = './gradlew'
-    args = ['slaveStart']
+    args = [':application:slave:slaveStart']
     waitForPort = 8080
     stopAfter = project.tasks.slaveStopDaemon
 }
