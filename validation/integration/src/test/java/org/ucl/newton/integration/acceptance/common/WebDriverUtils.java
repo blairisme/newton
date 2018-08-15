@@ -40,4 +40,19 @@ public class WebDriverUtils
     public static String getSpanText(WebElement element) {
         return element.getAttribute("innerText");
     }
+
+    public static void waitForElementToExist(WebDriver driver, By by, int period, int attempts) {
+        int count = 0;
+        while (! elementExists(driver, by) && count++ < attempts) {
+            sleepQuietly(period);
+        }
+    }
+
+    public static void sleepQuietly(long period) {
+        try {
+            Thread.sleep(period);
+        }
+        catch (InterruptedException e) {
+        }
+    }
 }
