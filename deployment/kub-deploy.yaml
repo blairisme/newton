@@ -96,7 +96,7 @@ kind: Deployment
 metadata:
   name: slave-newton
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
