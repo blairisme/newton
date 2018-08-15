@@ -9,6 +9,7 @@
 
 package org.ucl.newton.service.authentication;
 
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -20,6 +21,7 @@ import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 /**
  * Instances of this class provide access to persisted credential data.
@@ -61,7 +63,14 @@ public class CredentialRepository
         criteria.where(builder.equal(credentials.get("username"), username));
 
         Query<Credential> query = session.createQuery(criteria);
-        return HibernateUtils.getSingleResultOrNull(query);
+        return getSingleResultOrNull(query);
+    }
+
+    private <T> T getSingleResultOrNull(Query<T> query){
+        List<T> results = query.getResultList();
+        if (results.isEmpty()) return null;
+        else if (results.size() == 1) return results.get(0);
+        throw new NonUniqueResultException(results.size());
     }
 
     @Transactional
