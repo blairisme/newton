@@ -29,6 +29,7 @@ import javax.validation.Valid;
  * display the sign in page.
  *
  * @author Blair Butterworth
+ * @author John Wilkie
  */
 @Controller
 @SuppressWarnings("unused")

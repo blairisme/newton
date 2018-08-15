@@ -9,39 +9,241 @@
 
 package org.ucl.newton.ui;
 
-import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.springframework.ui.ModelMap;
-import org.ucl.newton.application.system.ApplicationStorage;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.ucl.newton.framework.Experiment;
+import org.ucl.newton.framework.Project;
+import org.ucl.newton.framework.User;
+import org.ucl.newton.sdk.provider.DataProvider;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
+import org.ucl.newton.testobjects.DummyExperimentFactory;
+import org.ucl.newton.testobjects.DummyProjectFactory;
+import org.ucl.newton.testobjects.DummyUserFactory;
+
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 public class ProjectControllerTest
 {
-    @Test
-    public void listTest(){
-        UserService userService = Mockito.mock(UserService.class);
-        ProjectService projectService = Mockito.mock(ProjectService.class);
-        ExperimentService experimentService = Mockito.mock(ExperimentService.class);
-        ApplicationStorage applicationStorage = Mockito.mock(ApplicationStorage.class);
-        PluginService pluginService = Mockito.mock(PluginService.class);
 
-        ProjectController controller = new ProjectController(userService, projectService, experimentService, applicationStorage, pluginService);
-        Assert.assertEquals("project/list", controller.list(new ModelMap()));
+    private MockMvc mockMvc;
+
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private ProjectService projectService;
+
+    @Mock
+    private ExperimentService experimentService;
+
+    @Mock
+    private PluginService pluginService;
+
+    @InjectMocks
+    private ProjectController projectController;
+
+    private User userZiad;
+    private DummyProjectFactory projectFactory;
+    private Project projectJiro;
+
+    @Before
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(projectController)
+                .build();
+        userZiad = DummyUserFactory.createUserZiad();
+        projectFactory = new DummyProjectFactory();
+        projectJiro = projectFactory.createProjectGoshJiro();
     }
 
     @Test
-    public void detailsTest(){
-        UserService userService = Mockito.mock(UserService.class);
-        ProjectService projectService = Mockito.mock(ProjectService.class);
-        ExperimentService experimentService = Mockito.mock(ExperimentService.class);
-        ApplicationStorage applicationStorage = Mockito.mock(ApplicationStorage.class);
-        PluginService pluginService = Mockito.mock(PluginService.class);
+    public void listTest() throws Exception {
+        Collection<Project> projects = projectFactory.getProjects(userZiad);
+        Collection<Project> starredProjects = projectFactory.getStarredProjects(userZiad);
 
-        ProjectController controller = new ProjectController(userService, projectService, experimentService, applicationStorage, pluginService);
-        Assert.assertEquals("project/details", controller.details("test", new ModelMap()));
+        when(userService.getAuthenticatedUser()).thenReturn(userZiad);
+        when(projectService.getProjects(userZiad)).thenReturn(projects);
+        when(projectService.getStarredProjects(userZiad)).thenReturn(starredProjects);
+
+        mockMvc.perform(get("/projects"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("user", userZiad))
+                .andExpect(model().attribute("projects", projects))
+                .andExpect(model().attribute("starredProjects", starredProjects))
+                .andExpect(view().name("project/list"));
     }
+
+    @Test
+    public void detailsTest() throws Exception {
+        String projectIdentifier = "gosh-jiro";
+        Collection<Experiment> experiments = new DummyExperimentFactory().getExperimentList(4);
+
+        when(userService.getAuthenticatedUser()).thenReturn(userZiad);
+        when(projectService.getProjectByIdentifier(projectIdentifier, true)).thenReturn(projectJiro);
+        when(experimentService.getExperimentsByProject(projectIdentifier)).thenReturn(experiments);
+
+        mockMvc.perform(get("/project/{name}", projectIdentifier))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("user", userZiad))
+                .andExpect(model().attribute("project", projectJiro))
+                .andExpect(model().attribute("experiments", experiments))
+                .andExpect(view().name("project/details"));
+    }
+
+    @Test
+    public void settingsTest() throws Exception {
+        String projectIdentifier = "gosh-jiro";
+        Collection<DataProvider> providers = new ArrayList<>();
+
+        when(userService.getAuthenticatedUser()).thenReturn(userZiad);
+        when(projectService.getProjectByIdentifier(projectIdentifier, true)).thenReturn(projectJiro);
+        when(pluginService.getDataProviders()).thenReturn(providers);
+
+        mockMvc.perform(get("/project/{name}/settings", projectIdentifier))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("user", userZiad))
+                .andExpect(model().attribute("project", projectJiro))
+                .andExpect(model().attribute("dataProviders", providers))
+                .andExpect(view().name("project/settings"));
+    }
+
+    @Test
+    public void newProjectTest() throws Exception {
+        Collection<DataProvider> providers = new ArrayList<>();
+
+        when(userService.getAuthenticatedUser()).thenReturn(userZiad);
+        when(pluginService.getDataProviders()).thenReturn(providers);
+
+        mockMvc.perform(get("/project/new"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("user", userZiad))
+                .andExpect(model().attribute("dataProviders", providers))
+                .andExpect(view().name("project/new"));
+    }
+
+    @Test
+    public void changeProjectStarTestStar() throws Exception {
+        String typeVal = "Star";
+        mockMvc.perform(post("/project/{name}", "project-ident").param("type", typeVal))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void changeProjectStarTestUnstar() throws Exception {
+        String typeVal = "Unstar";
+        mockMvc.perform(post("/project/{name}", "project-ident").param("type", typeVal))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteProjectTest() throws Exception {
+        mockMvc.perform(post("/project/{name}/delete", "project-ident"))
+                .andExpect(status().is(302))
+                .andExpect(redirectedUrl("/projects"));
+    }
+
+    @Test
+    public void persistNewProjectTest() throws Exception {
+        Collection<Integer> users = new ArrayList<>();
+        users.add(1);
+        users.add(2);
+        users.add(3);
+        users.add(4);
+
+        when(userService.getAuthenticatedUser()).thenReturn(userZiad);
+        when(userService.getUsers(users)).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(post("/project/new")
+                .param("name", "Project Name")
+                .param("description", "Project description")
+                .param("image", "somePathToImage")
+                .param("members", "1, 2, 3, 4")
+                .param("sources", "someSourceName"))
+                .andExpect(status().is(302))
+                .andExpect(redirectedUrl("/projects"));
+    }
+
+    @Test
+    public void persistNewProjectTestWithException() throws Exception {
+        Collection<Integer> users = new ArrayList<>();
+        users.add(1);
+
+        when(userService.getAuthenticatedUser()).thenReturn(null, userZiad);
+        when(userService.getUsers(users)).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(post("/project/new")
+                .param("name", "Project Name")
+                .param("description", "Project description")
+                .param("image", "somePathToImage")
+                .param("members", "1")
+                .param("sources", "someSourceName"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("error", "The validated object is null"))
+                .andExpect(model().attribute("user", userZiad))
+                .andExpect(view().name("project/new"));
+    }
+
+    @Test
+    public void updateProjectTest() throws Exception {
+        Collection<Integer> users = new ArrayList<>();
+        users.add(1);
+        String projectIdent = "project-jiro";
+        Collection<DataProvider> dataProviders = new ArrayList<>();
+        when(projectService.getProjectByIdentifier(projectIdent, true)).thenReturn(projectJiro);
+        when(pluginService.getDataProviders()).thenReturn(dataProviders);
+        when(userService.getAuthenticatedUser()).thenReturn(userZiad);
+        when(userService.getUsers(users)).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(post("/project/{ident}/settings", projectIdent)
+                .param("description", "Project description")
+                .param("image", "somePathToImage")
+                .param("members", "1")
+                .param("sources", "someSourceName"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("error", nullValue()))
+                .andExpect(model().attribute("user", userZiad))
+                .andExpect(model().attribute("project", projectJiro))
+                .andExpect(model().attribute("dataProviders", dataProviders))
+                .andExpect(view().name("project/settings"));
+    }
+
+    @Test
+    public void updateProjectTestWithException() throws Exception {
+        String projectIdent = "project-jiro";
+        Collection<DataProvider> dataProviders = new ArrayList<>();
+        when(projectService.getProjectByIdentifier(projectIdent, true)).thenReturn(null, projectJiro);
+        when(pluginService.getDataProviders()).thenReturn(dataProviders);
+        when(userService.getAuthenticatedUser()).thenReturn(userZiad);
+
+        mockMvc.perform(post("/project/{ident}/settings", projectIdent)
+                .param("description", "New description")
+                .param("image", "somePathToImage")
+                .param("members", "1")
+                .param("sources", "someSourceName"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("error", "Error: null"))
+                .andExpect(model().attribute("user", userZiad))
+                .andExpect(model().attribute("project", projectJiro))
+                .andExpect(model().attribute("dataProviders", dataProviders))
+                .andExpect(view().name("project/settings"));
+    }
+
 }
