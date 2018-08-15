@@ -1,18 +1,20 @@
 package org.ucl.newton.service.experiment;
 
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.ucl.newton.framework.Experiment;
-import org.ucl.newton.service.authentication.HibernateUtils;
 
 import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Instances of this class provide access to persisted experiment data.
@@ -75,7 +77,7 @@ public class ExperimentRepository {
         criteria.select(experiments);
         criteria.where(builder.equal(experiments.get("identifier"), identifier));
 
-        return HibernateUtils.getSingleResultOrNull(session.createQuery(criteria));
+        return getSingleResultOrNull(session.createQuery(criteria));
     }
 
     @Transactional
@@ -92,6 +94,13 @@ public class ExperimentRepository {
 
     private Session getSession() {
         return this.sessionFactory.getCurrentSession();
+    }
+
+    private <T> T getSingleResultOrNull(Query<T> query){
+        List<T> results = query.getResultList();
+        if (results.isEmpty()) return null;
+        else if (results.size() == 1) return results.get(0);
+        throw new NonUniqueResultException(results.size());
     }
 }
 

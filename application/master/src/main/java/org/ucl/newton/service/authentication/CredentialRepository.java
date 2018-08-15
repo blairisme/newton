@@ -66,13 +66,6 @@ public class CredentialRepository
         return getSingleResultOrNull(query);
     }
 
-    private <T> T getSingleResultOrNull(Query<T> query){
-        List<T> results = query.getResultList();
-        if (results.isEmpty()) return null;
-        else if (results.size() == 1) return results.get(0);
-        throw new NonUniqueResultException(results.size());
-    }
-
     @Transactional
     public void removeCredential(Credential credential) {
         Session session = getSession();
@@ -89,4 +82,10 @@ public class CredentialRepository
         return this.sessionFactory.getCurrentSession();
     }
 
+    private <T> T getSingleResultOrNull(Query<T> query){
+        List<T> results = query.getResultList();
+        if (results.isEmpty()) return null;
+        else if (results.size() == 1) return results.get(0);
+        throw new NonUniqueResultException(results.size());
+    }
 }
