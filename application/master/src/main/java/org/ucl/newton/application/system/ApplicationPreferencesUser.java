@@ -70,7 +70,8 @@ public class ApplicationPreferencesUser implements ApplicationPreferences
 
     @Override
     public String getSlaveHost() {
-        return getProperty("newton.slave.host", defaults.getSlaveHost());
+        return "ziad";
+      //  return getProperty("newton.slave.host", defaults.getSlaveHost());
     }
 
     @Override
