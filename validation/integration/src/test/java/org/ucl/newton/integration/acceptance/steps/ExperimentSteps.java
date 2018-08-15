@@ -53,12 +53,28 @@ public class ExperimentSteps
     }
 
     @When("^the user browses to the experiments page for (.*)$")
-    public void navigateToExperiments(String project) {
+    public void navigateToExperimentList(String project) {
         driver.get("http://localhost:9090/project/" + project);
     }
 
+    @When("^the user browses to the experiment details page for (.*) \\((.*)\\)$")
+    public void navigateToExperimentDetails(String experiment, String project) {
+        driver.get("http://localhost:9090/project/" + project + "/" + experiment);
+    }
+
+    @When("^the user runs the experiment$")
+    public void runExperiment() {
+    /*    WebElement runExperiment = driver.findElement(By.id("run-experiment"));
+        runExperiment.click();
+        try {
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException e){
+        }*/
+    }
+
     @Then("^the experiment list should contain the following experiments:$")
-    public void assertExperiments(List<Experiment> experiments) {
+    public void assertExperimentList(List<Experiment> experiments) {
         String project = experiments.get(0).getProject();
 
         Assert.assertEquals("http://localhost:9090/project/" + project, driver.getCurrentUrl());
@@ -69,6 +85,14 @@ public class ExperimentSteps
 
         Assert.assertEquals(expectedNames.size(), actualNames.size());
         Assert.assertTrue(actualNames.containsAll(expectedNames));
+    }
+
+    @Then("^the experiment details page should contain the following:$")
+    public void assertExperimentDetails(List<Experiment> experiments) {
+     /*   Experiment experiment = experiments.get(0);
+
+        WebElement title = driver.findElement(By.id("title"));
+        Assert.assertEquals(experiment.getName(), title.getText());*/
     }
 }
 

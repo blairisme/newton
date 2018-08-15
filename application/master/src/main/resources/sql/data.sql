@@ -149,11 +149,11 @@ INSERT INTO version_outcomes (ver_id, out_id) VALUES (2, 6);
 /* Slave configuration */
 INSERT INTO executors (id, address, username, password) VALUES (1, 'http://localhost:8080', 'user', 'password');
 
-INSERT INTO plugin (id, identifier, location) VALUES (1, 'newton-python', 'classpath:/plugins/processor/python.jar');
-INSERT INTO plugin (id, identifier, location) VALUES (2, 'newton-jupyter', 'classpath:/plugins/processor/jupyter.jar');
-INSERT INTO plugin (id, identifier, location) VALUES (3, 'newton-weather', 'classpath:/plugins/data/WeatherDataProvider.jar');
-INSERT INTO plugin (id, identifier, location) VALUES (4, 'newton-fizzyo', 'classpath:/plugins/data/FizzyoDataProvider.jar');
-INSERT INTO plugin (id, identifier, location) VALUES (5, 'newton-DRE', 'classpath:/plugins/publisher/DREDataPublisher.jar');
+INSERT INTO plugin (id, location) VALUES (1, 'classpath:/plugins/processor/python.jar');
+INSERT INTO plugin (id, location) VALUES (2, 'classpath:/plugins/processor/jupyter.jar');
+INSERT INTO plugin (id, location) VALUES (3, 'classpath:/plugins/data/WeatherDataProvider.jar');
+INSERT INTO plugin (id, location) VALUES (4, 'classpath:/plugins/data/FizzyoDataProvider.jar');
+INSERT INTO plugin (id, location) VALUES (5, 'classpath:/plugins/publisher/DREDataPublisher.jar');
 
 
 /*** Data Permissions ***/

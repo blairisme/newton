@@ -58,16 +58,16 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-auto statistics_container">
-                            <h1 class="page-title" th:text="${experiment.name}"></h1>
+                            <h1 id="title" class="page-title" th:text="${experiment.name}"></h1>
                             <div th:if="${version != null}">
-                                <p th:text="@{'Run date: ' + ${#dates.format(version.created, 'dd-MM-yyyy HH:mm')}}">Run date</p>
-                                <p th:text="@{'Run duration: ' + ${version.durationDescription}}">Run duration</p>
+                                <p id="date" th:text="@{'Run date: ' + ${#dates.format(version.created, 'dd-MM-yyyy HH:mm')}}">Run date</p>
+                                <p id="duration" th:text="@{'Run duration: ' + ${version.durationDescription}}">Run duration</p>
                             </div>
                         </div>
                         <div class="col-4 ml-auto">
                             <div class="control_container">
-                                <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/edit'}" role="button">Edit</a>
-                                <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/run'}" role="button">Run</a>
+                                <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/edit'}" role="button" id="edit-experiment">Edit</a>
+                                <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/run'}" role="button" id="run-experiment">Run</a>
                                 <a class="btn btn-primary" th:disabled="${version == null}" href="#" role="button">Publish</a>
                             </div>
                         </div>
