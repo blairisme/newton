@@ -104,6 +104,7 @@ gretty {
     contextPath = '/'
     httpPort = 9090
     jvmArgs = ['-Dnewton.profile=' + getProperty('run.profile')]
+    scanInterval = 0
 }
 
 task appStartDaemon(dependsOn: 'appBeforeIntegrationTest'){
