@@ -58,7 +58,7 @@ task slaveStopDaemon() {
 task slaveStartDaemon(type: com.github.psxpaul.task.ExecFork) {
     workingDir = "$rootDir"
     commandLine = './gradlew'
-    args = ['slaveStart']
+    args = ['bootRun']
     waitForPort = 8080
     stopAfter = project.tasks.slaveStopDaemon
 }
