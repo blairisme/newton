@@ -3,6 +3,7 @@ package org.ucl.newton.ui;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.apache.commons.io.IOUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -10,16 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.ucl.newton.application.system.ApplicationStorage;
-import org.ucl.newton.common.file.FileUtils;
+import org.ucl.newton.common.serialization.CsvSerializer;
 import org.ucl.newton.common.file.PathUtils;
 import org.ucl.newton.sdk.publisher.DataPublisher;
 import org.ucl.newton.sdk.publisher.FTPConfig;
 import org.ucl.newton.service.publisher.PublisherService;
+import org.apache.commons.io.FileUtils;
 
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -46,7 +49,7 @@ public class PluginController {
     }
 
     @RequestMapping(value = "/publisherSetting", method = RequestMethod.GET)
-    public String getPublisher(@RequestParam(required=false) String id, ModelMap model){
+    public String getPublisher(@RequestParam(required=false) String id, ModelMap model) throws IOException {
         Collection<DataPublisher> publishers = publisherService.getPublishers();
         if (Strings.isNullOrEmpty(id)){
             List<String> ids = new ArrayList<>();
@@ -78,7 +81,8 @@ public class PluginController {
             FTPConfig config = new FTPConfig(hostName,userName,userPassword,Integer.parseInt(port));
             try {
                 OutputStream output = storage.getOutputStream(Paths.get("publisher", publisher.getConfigName()));
-                FileUtils.writeToFile(output,config,FTPConfig.class);
+                Gson gson = new Gson();
+                IOUtils.write(gson.toJson(config, FTPConfig.class), output, StandardCharsets.UTF_8);
             }catch (IOException e){
                 e.printStackTrace();
             }
@@ -88,10 +92,10 @@ public class PluginController {
     }
 
     @RequestMapping(value = "/FizzyoData", method = RequestMethod.GET)
-    public String getData(ModelMap model){
+    public String getData(ModelMap model) throws IOException {
         Path path = Paths.get(storage.getRootPath());
         path = path.resolve("Fizzyo").resolve("authCode");
-        String authCode = FileUtils.readFile(path.toFile());
+        String authCode = FileUtils.readFileToString(path.toFile(), StandardCharsets.UTF_8);
 
         model.addAttribute("authCode",authCode);
         return "plugin/FizzyoData";
@@ -114,7 +118,7 @@ public class PluginController {
         Path path = Paths.get(storage.getRootPath());
         path = path.resolve("weather").resolve("setting");
 
-        List<String[]> properties = FileUtils.readCSV(path.toString());
+        List<String[]> properties = CsvSerializer.readCSV(path.toString());
 
         model.addAttribute("properties",properties);
 
@@ -133,7 +137,7 @@ public class PluginController {
 
         try {
             OutputStream output = storage.getOutputStream(Paths.get("weather","setting"));
-            FileUtils.writeCSV(output,properties);
+            CsvSerializer.writeCSV(output,properties);
         }
         catch (IOException e){
             e.printStackTrace();
@@ -141,14 +145,14 @@ public class PluginController {
         return "redirect:/weatherSetting";
     }
 
-    private void setModel(DataPublisher publisher, ModelMap model) {
+    private void setModel(DataPublisher publisher, ModelMap model) throws IOException {
         String configFileName = publisher.getConfigName();
         Path path = Paths.get(storage.getRootPath()).resolve("publisher").resolve(configFileName);
         File configFile = path.toFile();
         if (!configFile.exists())
             configFile = PathUtils.getConfigurationPath().resolve(configFileName).toFile();
 
-        String configStr = FileUtils.readFile(configFile);
+        String configStr = FileUtils.readFileToString(configFile, StandardCharsets.UTF_8);
         Gson gson = new Gson();
         JsonObject json = gson.fromJson(configStr,JsonObject.class);
         model.addAttribute("userName",json.get("userName").getAsString());
