@@ -8,6 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.*;
+import org.ucl.newton.testobjects.DummyExperimentFactory;
 
 import javax.inject.Inject;
 import java.nio.file.Path;
@@ -43,7 +44,7 @@ public class ExperimentRepositoryTest {
 
     @Test
     public void testGetExperimentByIdentifier() throws Exception {
-        Experiment expected = createExperiment("test experiment 1", "test-experiment-1");
+        Experiment expected = DummyExperimentFactory.createExperiment("test experiment 1", "test-experiment-1");
         Assert.assertEquals(expected.getIdentifier(), "test-experiment-1");
         repository.addExperiment(expected);
         Experiment actual = repository.getExperimentByIdentifier("test-experiment-1");
@@ -138,56 +139,6 @@ public class ExperimentRepositoryTest {
         Assert.assertEquals("data2.json", outcome.getName());
         Assert.assertEquals("experiment/experiment-1/versions/1/data2.json", outcome.getLocation());
         Assert.assertEquals(ExperimentOutcomeType.Data, outcome.getType());
-    }
-
-    private Experiment createExperiment(String name, String identifier) throws Exception {
-        ExperimentBuilder builder = new ExperimentBuilder();
-        builder.setName(name);
-        builder.setIdentifier(identifier);
-        builder.setDescription("A simple but brief experiment description");
-        builder.setCreator(createUser());
-        builder.setProject(createProject());
-        builder.setExperimentVersions(createVersions());
-        builder.setConfiguration(createExperimentConfiguration());
-        return builder.build();
-    }
-
-    private User createUser() {
-        return new User(4, "Xiaolong Chen", "xiaolong.chen@ucl.ac.uk", "pp_2.jpg");
-    }
-
-    private Project createProject() throws Exception {
-        User owner = new User(2, "admin", "admin@ucl.ac.uk", "pp_4.jpg");
-        return new Project(13, "gosh-apollo", "GOSH Project Apollo", "Project description",
-                "gosh.png", createDate("2017-07-07 10:09:08"), owner , new ArrayList<>(), new ArrayList<>());
-    }
-
-    private Date createDate(String date) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return dateFormat.parse(date);
-    }
-
-    private List<ExperimentVersion> createVersions() {
-        List<ExperimentVersion> versions = new ArrayList<>();
-        versions.add(new ExperimentVersion(1, new Date(), Duration.ZERO, createOutcomes()));
-        return versions;
-    }
-
-    private List<ExperimentOutcome> createOutcomes() {
-        List<ExperimentOutcome> outcomes = new ArrayList<>();
-        outcomes.add(new ExperimentOutcome(4,"outcome1", "somelocation", ExperimentOutcomeType.Data));
-        outcomes.add(new ExperimentOutcome(5,"logFile", "anotherlocation", ExperimentOutcomeType.Log));
-        return outcomes;
-    }
-
-    private ExperimentConfiguration createExperimentConfiguration() {
-        ExperimentConfigurationBuilder builder = new ExperimentConfigurationBuilder();
-        builder.setStorageConfiguration(new StorageConfiguration(0, StorageType.Newton, "experimentlocation", "main.ipynb"));
-        builder.setProcessorPluginId("Python");
-        builder.addDataSources(new String[]{"newton-weather", "newton-fizzyo"}, new String[]{"myproj/data1.csv", "myproj/data2.json"});
-        builder.setOutputPattern("outputs/*.csv");
-        builder.addTrigger("Manual");
-        return builder.build();
     }
 
 }

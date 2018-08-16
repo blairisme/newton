@@ -21,6 +21,7 @@ import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
+import org.ucl.newton.testobjects.DummyProjectFactory;
 
 import javax.inject.Inject;
 import java.text.ParseException;
@@ -43,7 +44,7 @@ public class ProjectRepositoryTest
 
     @Test
     public void addProjectTest() throws Exception {
-        Project expected = createProject("project-a", "project A");
+        Project expected = DummyProjectFactory.createDummyProject("project-a", "project A");
         repository.addProject(expected);
 
         Project actual = repository.getProjectByIdentifier("project-a");
@@ -52,8 +53,8 @@ public class ProjectRepositoryTest
 
     @Test(expected = NonUniqueResultException.class)
     public void testAddDuplicateProjects() throws Exception {
-        Project project1 = createProject("project-z", "project Z");
-        Project project2 = createProject("project-z", "project Z");
+        Project project1 = DummyProjectFactory.createDummyProject("project-z", "project Z");
+        Project project2 = DummyProjectFactory.createDummyProject("project-z", "project Z");
         repository.addProject(project1);
         repository.addProject(project2);
         repository.getProjectByIdentifier("project-z");
@@ -86,7 +87,7 @@ public class ProjectRepositoryTest
 
     @Test
     public void removeProjectTest() throws Exception {
-        Project project = createProject("project-b", "project B");
+        Project project = DummyProjectFactory.createDummyProject("project-b", "project B");
 
         repository.addProject(project);
         Project before = repository.getProjectByIdentifier("project-b");
@@ -100,7 +101,7 @@ public class ProjectRepositoryTest
     @Test
     public void testUpdateProject() throws Exception {
         User userBlair = new User(3, "Blair Butterworth", "blair.butterworth.17@ucl.ac.uk", "default.jpg");
-        Project newProject = createProject("project-d", "Project d");
+        Project newProject = DummyProjectFactory.createDummyProject("project-d", "Project d");
         repository.addProject(newProject);
         Project projectD = repository.getProjectEagerlyByIdentifier("project-d");
         Collection<User> projectMembers =  projectD.getMembers();
@@ -115,7 +116,7 @@ public class ProjectRepositoryTest
 
     @Test
     public void testProjectOwner() throws Exception {
-        Project expected = createProject("project-c", "project c");
+        Project expected = DummyProjectFactory.createDummyProject("project-c", "project c");
         repository.addProject(expected);
         Project actual = repository.getProjectByIdentifier("project-c");
         Assert.assertEquals(expected.getOwner(), actual.getOwner());
@@ -155,7 +156,7 @@ public class ProjectRepositoryTest
         List<Project> projects = repository.getProjectsStarredByUser(unknown);
         Assert.assertEquals(0, projects.size());
     }
-
+/*
     private Project createProject(String identifier, String name) throws Exception {
         ProjectBuilder projectBuilder = new ProjectBuilder();
         projectBuilder.setIdentifier(identifier);
@@ -184,4 +185,5 @@ public class ProjectRepositoryTest
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return dateFormat.parse(date);
     }
+    */
 }

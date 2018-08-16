@@ -108,7 +108,6 @@ public class ProjectController
         User user = userService.getAuthenticatedUser();
         model.addAttribute("user", user);
         model.addAttribute("project", projectService.getProjectByIdentifier(name, true));
-        model.addAttribute("starredProjects", projectService.getStarredProjects(user));
         model.addAttribute("dataProviders", pluginService.getDataProviders());
         return "project/settings";
     }
@@ -168,7 +167,7 @@ public class ProjectController
         try {
             Project projectToUpdate = projectService.getProjectByIdentifier(projectIdentifier, true);
             projectToUpdate.setDescription(description);
-            if(image.getOriginalFilename() != null && image.getOriginalFilename().length() != 0
+            if(image != null && image.getOriginalFilename().length() != 0
                     && !image.getOriginalFilename().equals(projectToUpdate.getImage())) {
                 projectToUpdate.setImage(persistProjectImage(image));
             }
@@ -177,7 +176,7 @@ public class ProjectController
             projectToUpdate.setLastUpdated(new Date());
             projectService.updateProject(projectToUpdate);
         } catch (Throwable exception) {
-            model.addAttribute("error", exception.getMessage());
+            model.addAttribute("error", "Error: " + exception.getMessage());
             model.addAttribute("user", userService.getAuthenticatedUser());
             model.addAttribute("project", projectService.getProjectByIdentifier(projectIdentifier, true));
             model.addAttribute("dataProviders", pluginService.getDataProviders());
@@ -188,6 +187,7 @@ public class ProjectController
         model.addAttribute("dataProviders", pluginService.getDataProviders());
         return "project/settings";
     }
+
 
     private String persistProjectImage(MultipartFile image) throws IOException {
         if (image != null && ! image.isEmpty()) {
