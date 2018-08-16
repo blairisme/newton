@@ -41,7 +41,7 @@ public class ApplicationUrls
             builder.setScheme(UriSchemes.HTTP);
             try {
                 builder.setHost(InetAddress.getLocalHost().getHostAddress());
-                builder.setHost("slave-newton");
+            //    builder.setHost("slave-newton");
             }catch (Exception e){
 
             }
