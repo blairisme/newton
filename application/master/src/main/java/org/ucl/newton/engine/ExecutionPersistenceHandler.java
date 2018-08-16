@@ -72,7 +72,8 @@ public class ExecutionPersistenceHandler
 
             Path output = downloadOutput(executionNode, executionResult, destination);
             Collection<Path> outputs = uncompressOutput(output, destination);
-
+            logger.info("output path="+output);
+            logger.info("outputs paths="+outputs.toString());
             FileUtils.deleteQuietly(output.toFile());
             persistExperiment(executionResult, outputs);
         }
@@ -92,6 +93,7 @@ public class ExecutionPersistenceHandler
     }
 
     private Path downloadOutput(ExecutionNode executionNode, ExecutionResult executionResult, Path destination) throws IOException {
+        logger.info("Results outputs="+executionResult.getOutputs());
         Path logPath = destination.resolve(OUTPUT_FILE_NAME);
         PathUtils.createNew(logPath);
         try(InputStream inputStream = executionNode.getOutput(executionResult);
