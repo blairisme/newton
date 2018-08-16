@@ -39,8 +39,13 @@ public class ApplicationUrls
         try {
             URIBuilder builder = new URIBuilder();
             builder.setScheme(UriSchemes.HTTP);
-            builder.setHost(preferences.getApplicationHost());
-            builder.setPort(preferences.getApplicationPort());
+            try {
+                builder.setHost(InetAddress.getLocalHost().getHostAddress());
+                builder.setHost("slave-newton");
+            }catch (Exception e){
+
+            }
+            builder.setPort(8080);
             builder.setPath("files");
             return builder.build().toURL();
         }
