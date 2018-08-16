@@ -19,6 +19,7 @@ import org.ucl.newton.slave.engine.RequestHandler;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -52,6 +53,11 @@ public class SlaveServer implements ExecutionNodeServer
     @Async("network")
     public void execute(ExecutionRequest request) throws ExecutionException {
         logger.info("Experiment execution requested: " + request);
+        try{
+            logger.info("*****IP="+InetAddress.getLocalHost().getHostAddress());
+        }catch (Exception e){
+            logger.error("****error getting ip", e);
+        }
         ListenableFuture<ExecutionResult> future = requestHandler.process(request);
         future.addCallback(new ExecutionObserver(this, request));
         requests.put(request, future);

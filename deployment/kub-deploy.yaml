@@ -131,6 +131,8 @@ metadata:
 data:
   slave_host: 'slave-newton'
   slave_port: '8080'
+  application_host: 'slave-newton'
+  application_port: '8080'
   database_host: 'database-newton'
   database_port: '3306'
   database_user: 'root'
