@@ -10,6 +10,9 @@ Welcome to Newton's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   overview
+   gettingstarted
+   development
 
 
 Indices and tables
