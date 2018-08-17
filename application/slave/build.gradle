@@ -49,18 +49,19 @@ jacoco {
   applyTo bootRun
 }
 
-task slaveStart(dependsOn: [':application:slave:assemble', ':application:slave:bootRun']) {
+task slaveStart(dependsOn: ['assemble', 'bootRun']) {
 }
 
 task slaveStopDaemon() {
 }
 
-task slaveStartDaemon(type: com.github.psxpaul.task.ExecFork) {
-    workingDir = "$rootDir"
-    commandLine = './gradlew'
-    args = [':application:slave:slaveStart', '--no-rebuild']
-    waitForPort = 8080
-    stopAfter = project.tasks.slaveStopDaemon
+task slaveStartDaemon(type: com.github.psxpaul.task.JavaExecFork, dependsOn: [assemble]) {
+  main = 'org.ucl.newton.slave.application.ApplicationLauncher'
+  classpath = sourceSets.main.runtimeClasspath
+  //jvmArgs = [ '-Dserver.port=8080', "-javaagent:$projectDir/gradle/jacocoagent.jar=destfile=build/jacoco/bootRun.exec,append=true,inclnolocationclasses=false,dumponexit=true,output=file,jmx=false" ]
+  jvmArgs = [ '-Dserver.port=8080' ]
+  waitForPort = 8080
+  stopAfter = project.tasks.slaveStopDaemon
 }
 
 task slaveStartDebug(dependsOn: ['assemble', 'bootRun']) {

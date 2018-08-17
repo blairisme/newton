@@ -30,11 +30,15 @@ public class ApplicationStorage
 
     @Inject
     public ApplicationStorage(ApplicationPreferences preferences) {
-        rootDirectory = preferences.getApplicationPath();
-        dataDirectory = rootDirectory.resolve("data");
-        processorDirectory = rootDirectory.resolve("processors");
-        workspaceDirectory = rootDirectory.resolve("workspaces");
-        tempDirectory = rootDirectory.resolve("temp");
+        this(preferences.getApplicationPath());
+    }
+
+    public ApplicationStorage(Path rootDirectory) {
+        this.rootDirectory = rootDirectory;
+        this.dataDirectory = rootDirectory.resolve("data");
+        this.processorDirectory = rootDirectory.resolve("processors");
+        this.workspaceDirectory = rootDirectory.resolve("workspaces");
+        this.tempDirectory = rootDirectory.resolve("temp");
     }
     
     public Path getRootDirectory() {

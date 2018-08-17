@@ -12,7 +12,7 @@ package org.ucl.newton.fizzyo;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.ucl.newton.common.file.FileUtils;
+import org.ucl.newton.common.serialization.CsvSerializer;
 import org.ucl.newton.common.network.HttpUtils;
 import org.ucl.newton.fizzyo.model.*;
 import org.ucl.newton.sdk.provider.DataSource;
@@ -90,7 +90,7 @@ public class GetFizzyoData implements Runnable
         for(DataSource dataSource : provider.getDataSources()){
             if (dataSource.getName().equals(name)) {
                 try (OutputStream output = storage.getOutputStream(dataSource)) {
-                    FileUtils.writeCSV(output, list);
+                    CsvSerializer.writeCSV(output, list);
                 } catch (IOException e) {
                     logger.error("Failed to write Fizzyo data",e);
                 }

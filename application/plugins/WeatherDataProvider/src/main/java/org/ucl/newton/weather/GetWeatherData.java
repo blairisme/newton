@@ -20,6 +20,8 @@ import org.ucl.newton.common.file.FileUtils;
 import org.ucl.newton.common.network.HttpUtils;
 import org.ucl.newton.sdk.provider.DataSource;
 import org.ucl.newton.sdk.provider.DataStorage;
+import org.ucl.newton.weather.model.WeatherData;
+import org.ucl.newton.weather.model.WeatherProperty;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -109,7 +111,7 @@ public class GetWeatherData implements Runnable
         DataStorage storage = provider.getStorage();
         DataSource dataSource = provider.getWeatherDataSource();
         try (OutputStream output = storage.getOutputStream(dataSource)){
-            FileUtils.writeCSV(output,list);
+            CsvSerializer.writeCSV(output,list);
         }
         catch (IOException e){
             logger.error("Failed to write weather data", e);

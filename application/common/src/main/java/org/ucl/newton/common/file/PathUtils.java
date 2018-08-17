@@ -18,7 +18,6 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -56,22 +55,6 @@ public class PathUtils
         return result;
     }
 
-    public static Collection<Path> getChildren(Path path) {
-        Collection<Path> result = new ArrayList<>();
-        File[] files = path.toFile().listFiles();
-
-        if (files != null) {
-            for (File file :files) {
-                result.add(file.toPath());
-            }
-        }
-        return result;
-    }
-
-    public static Collection<Path> findChildren(Path directory, String pattern) {
-        return findChildren(directory, Arrays.asList(pattern));
-    }
-
     public static Collection<Path> findChildren(Path directory, List<String> patterns) {
         Collection<File> files = FileUtils.findChildren(directory.toFile(), patterns);
         Collection<Path> result = new ArrayList<>(files.size());
@@ -85,14 +68,6 @@ public class PathUtils
         Collection<Path> result = new ArrayList<>();
         for (Path child: children) {
             result.add(root.resolve(child));
-        }
-        return result;
-    }
-
-    public static Collection<Path> relativize(Collection<Path> paths, Path root) {
-        Collection<Path> result = new ArrayList<>();
-        for (Path path: paths) {
-            result.add(root.relativize(path));
         }
         return result;
     }
@@ -114,6 +89,7 @@ public class PathUtils
             throw new IllegalArgumentException(error);
         }
     }
+
     public static Path getConfigurationPath(){
         return Paths.get("configuration");
     }

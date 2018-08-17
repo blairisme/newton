@@ -9,12 +9,14 @@
 
 package org.ucl.newton.application.system;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
+import org.ucl.newton.common.file.PathStreamProvider;
 import org.ucl.newton.common.file.PathUtils;
 
 import javax.inject.Inject;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -27,10 +29,12 @@ import java.nio.file.Paths;
 public class ApplicationStorage
 {
     private Path rootPath;
+    private PathStreamProvider rootStreamProvider;
 
     @Inject
     public ApplicationStorage(ApplicationPreferences applicationPreferences) {
         rootPath = Paths.get(applicationPreferences.getProgramDirectory());
+        rootStreamProvider = new PathStreamProvider(rootPath);
     }
 
     public String getRootPath() {
@@ -74,17 +78,10 @@ public class ApplicationStorage
     }
 
     public InputStream getInputStream(Path relativePath) throws IOException {
-        Path path = rootPath.resolve(relativePath);
-        File file = path.toFile();
-        return new FileInputStream(file);
+        return rootStreamProvider.getInputStream(relativePath);
     }
 
     public OutputStream getOutputStream(Path relativePath) throws IOException {
-        Path path = rootPath.resolve(relativePath);
-        File file = path.toFile();
-        FileUtils.forceMkdirParent(file);
-
-        file.delete();
-        return new FileOutputStream(file);
+        return rootStreamProvider.getOutputStream(relativePath);
     }
 }
