@@ -28,7 +28,24 @@ public class WeatherConfig extends BasicConfiguration {
     @Override
     public void setValues(Map<String, List<String>> values) {
 
+        if(values.containsKey("items"))
+            updateWeatherList(values.get("items"),values.get("key").get(0));
         writeToFile();
+    }
+
+    private void updateWeatherList(List<String> items, String key) {
+        List<WeatherProperty> newList = new ArrayList<>();
+        for(String item : items){
+            String[] i = item.split("_");
+            i[1] = i[1].replace('-',' ');
+
+            String[] property = new String[4];
+            System.arraycopy(i,0,property,0,i.length);
+            property[3] = key;
+            WeatherProperty newProperty = new WeatherProperty(property);
+            newList.add(newProperty);
+        }
+        weatherList = newList;
     }
 
     @Override

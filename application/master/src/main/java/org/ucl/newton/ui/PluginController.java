@@ -86,27 +86,6 @@
 ////        return "redirect:/publisherSetting";
 ////    }
 //
-////    @RequestMapping(value = "/FizzyoData", method = RequestMethod.GET)
-////    public String getData(ModelMap model){
-////        Path path = Paths.get(storage.getRootPath());
-////        path = path.resolve("Fizzyo").resolve("authCode");
-////        String authCode = FileUtils.readFile(path.toFile());
-////
-////        model.addAttribute("authCode",authCode);
-////        return "plugin/FizzyoData";
-////    }
-////
-////    @RequestMapping(value = "/SetAuthCode", method = RequestMethod.POST)
-////    public String setAuthCode(@RequestParam String authCode, ModelMap model){
-////        try{
-////            OutputStream output = storage.getOutputStream(Paths.get("Fizzyo","authCode"));
-////            output.write(authCode.getBytes("utf-8"));
-////            output.close();
-////        }catch (Exception e){
-////            e.printStackTrace();
-////        }
-////        return "redirect:/FizzyoData";
-////    }
 ////
 ////    @RequestMapping(value = "/weatherSetting", method = RequestMethod.GET)
 ////    public String list(ModelMap model) {

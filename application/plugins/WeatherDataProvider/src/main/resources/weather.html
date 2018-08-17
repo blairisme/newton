@@ -19,20 +19,20 @@
                     </tbody>
                 </table>
             </div>
-            <div class="form-group">
+            <div class="form-group col-lg-3">
                 <label for="city">City<span class="text-danger">*</span></label>
                 <input id="city" name="city" class="form-control" type="text"/>
             </div>
-            <div class="form-group">
+            <div class="form-group col-lg-3">
                 <label for="country">Country(Optional)</label>
                 <input id="country" name="country" class="form-control" type="text"/>
             </div>
-            <div class="form-group">
+            <div class="form-group col-lg-3">
                 <label for="date">Date<span class="text-danger">*</span></label>
                 <input id="date" name="date" class="form-control" type="date"/>
                 <input type="button" class="btn" value="add" onclick="addNewEntry()"/>
             </div>
-            <div class="form-group">
+            <div class="form-group col-lg-3">
                 <label for="key">Key<span class="text-danger">*</span></label>
                 <input id="key" name="key" class="form-control" type="text" required="required"/>
             </div>
@@ -44,7 +44,6 @@
         $(document).ready(function(){
             var allWeatherList = $("#allWeatherList").val();
             var weatherArray = allWeatherList.split(",");
-            alert(weatherArray);
             var key = null;
             for(var i in weatherArray){
                 var str = weatherArray[i];
