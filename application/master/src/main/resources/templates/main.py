@@ -1,4 +1,9 @@
 
 # TODO - Replae with your own code
+import math
 
-print(2)
+for x in range(20000):
+    y = x**x*x
+    z = math.sqrt(x)
+
+print ("done")
