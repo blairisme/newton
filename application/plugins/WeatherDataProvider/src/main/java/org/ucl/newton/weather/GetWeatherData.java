@@ -14,14 +14,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.ucl.newton.common.serialization.CsvSerializer;
 import org.ucl.newton.weather.model.WeatherData;
 import org.ucl.newton.weather.model.WeatherProperty;
-import org.ucl.newton.common.file.FileUtils;
 import org.ucl.newton.common.network.HttpUtils;
 import org.ucl.newton.sdk.provider.DataSource;
 import org.ucl.newton.sdk.provider.DataStorage;
-import org.ucl.newton.weather.model.WeatherData;
-import org.ucl.newton.weather.model.WeatherProperty;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -39,7 +37,7 @@ public class GetWeatherData implements Runnable
 {
     private static Logger logger = LoggerFactory.getLogger(GetWeatherData.class);
     private WeatherDataProvider provider;
-    private List<WeatherProperty> weatherList;
+    private WeatherConfig weatherConfig;
     public GetWeatherData(WeatherDataProvider provider){
         this.provider = provider;
     }
@@ -47,6 +45,7 @@ public class GetWeatherData implements Runnable
     @Override
     public void run() {
         List<List<String>> listOfRecord = new ArrayList<>();
+        List<WeatherProperty> weatherList = weatherConfig.getWeatherList();
         if(!weatherList.isEmpty())
             listOfRecord.add(getHeader());
         for (WeatherProperty property : weatherList){
@@ -124,8 +123,12 @@ public class GetWeatherData implements Runnable
         return weather;
     }
 
-    public void setWeatherList(List<WeatherProperty> weatherList) {
-        this.weatherList = weatherList;
+    public void setWeatherConfig(WeatherConfig weatherConfig) {
+        this.weatherConfig = weatherConfig;
+    }
+
+    public WeatherConfig getWeatherConfig() {
+        return weatherConfig;
     }
 }
 

@@ -3,7 +3,6 @@ package org.ucl.newton.drepublisher;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.ucl.newton.sdk.publisher.BasicFTPServer;
-import org.ucl.newton.sdk.publisher.FTPConfig;
 
 import java.io.File;
 import java.io.FileInputStream;

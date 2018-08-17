@@ -9,11 +9,10 @@
 
 package org.ucl.newton.fizzyo;
 
-import com.csvreader.CsvReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ucl.newton.common.concurrent.DaemonThreadFactory;
-import org.ucl.newton.fizzyo.model.FizzyoConfiguration;
+import org.ucl.newton.common.serialization.CsvSerializer;
 import org.ucl.newton.sdk.plugin.*;
 import org.ucl.newton.sdk.provider.BasicDataProvider;
 import org.ucl.newton.sdk.provider.BasicDataSource;
@@ -21,9 +20,9 @@ import org.ucl.newton.sdk.provider.DataSource;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -39,6 +38,7 @@ public class FizzyoDataProvider extends BasicDataProvider
     private ScheduledExecutorService scheduler;
     private Collection<DataSource> dataSources;
     private GetFizzyoData handler;
+
 
     public FizzyoDataProvider(){
         this.dataSources = new ArrayList<>();
@@ -61,7 +61,7 @@ public class FizzyoDataProvider extends BasicDataProvider
 
     @Override
     public PluginConfiguration getConfiguration() {
-        return new BasicConfiguration("fizzyo.html");
+        return handler.getConfiguration();
     }
 
     @Override
@@ -71,32 +71,24 @@ public class FizzyoDataProvider extends BasicDataProvider
 
     @Override
     public void setContext(PluginHostContext context) {
-
         InputStream input = null;
         try {
-            input = context.getStorage().getInputStream("configuration/FizzyoConfiguration");
+            input = context.getStorage().getInputStream("FizzyoConfiguration");
         }catch (IOException e){
             logger.error("Fail to load Fizzyo configuration and load default configuration instead:", e);
         }
         if (input == null)
             input = getClass().getResourceAsStream("/configuration/FizzyoConfiguration");
         FizzyoConfiguration configuration = readFizzyoConfiguration(input);
-        if (configuration == null)
-            configuration = new FizzyoConfiguration();
+        configuration.setContext(context);
         handler.setConfiguration(configuration);
     }
 
     private FizzyoConfiguration readFizzyoConfiguration(InputStream input) {
         FizzyoConfiguration configuration = null;
-        try {
-            CsvReader reader = new CsvReader(input,',',Charset.forName("utf-8"));
-            reader.readHeaders();
-            while (reader.readRecord()) {
-                configuration = new FizzyoConfiguration(reader.getValues());
-            }
-            reader.close();
-        }catch (IOException e){
-            logger.error("Fail to read Fizzyo configuration:", e);
+        List<String[]> configs = CsvSerializer.readCSV(input);
+        if(configs.size()>0){
+            configuration = new FizzyoConfiguration(configs.get(0));
         }
         return configuration;
     }
@@ -112,7 +104,6 @@ public class FizzyoDataProvider extends BasicDataProvider
 
     @Override
     public void start() {
-
         this.scheduler.scheduleAtFixedRate(handler, 0, 1, TimeUnit.HOURS); //run every hour
     }
 

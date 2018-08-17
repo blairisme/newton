@@ -9,10 +9,10 @@
 
 package org.ucl.newton.weather;
 
-import com.csvreader.CsvReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ucl.newton.common.concurrent.DaemonThreadFactory;
+import org.ucl.newton.common.serialization.CsvSerializer;
 import org.ucl.newton.sdk.plugin.*;
 import org.ucl.newton.sdk.provider.BasicDataProvider;
 import org.ucl.newton.sdk.provider.BasicDataSource;
@@ -21,7 +21,6 @@ import org.ucl.newton.weather.model.WeatherProperty;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -56,7 +55,7 @@ public class WeatherDataProvider extends BasicDataProvider
 
     @Override
     public PluginConfiguration getConfiguration() {
-        return new BasicConfiguration("weather.html");
+        return handler.getWeatherConfig();
     }
 
     @Override
@@ -70,29 +69,24 @@ public class WeatherDataProvider extends BasicDataProvider
     public void setContext(PluginHostContext context) {
         InputStream input = null;
         try {
-             input = context.getStorage().getInputStream("configuration/weatherList");
+             input = context.getStorage().getInputStream("weatherList");
         }catch (IOException e){
             logger.error("Fail to load weather configuration and load default configuration instead:", e);
         }
         if (input == null)
             input = getClass().getResourceAsStream("/configuration/weatherList");
         List<WeatherProperty> weatherList = readWeatherList(input);
-
-        handler.setWeatherList(weatherList);
+        WeatherConfig weatherConfig = new WeatherConfig(weatherList);
+        weatherConfig.setContext(context);
+        handler.setWeatherConfig(weatherConfig);
     }
 
     private List<WeatherProperty> readWeatherList(InputStream input) {
         List<WeatherProperty> weatherList = new ArrayList<>();
-        try {
-            CsvReader reader = new CsvReader(input,',',Charset.forName("utf-8"));
-            reader.readHeaders();
-            while (reader.readRecord()) {
-                WeatherProperty property = new WeatherProperty(reader.getValues());
-                weatherList.add(property);
-            }
-            reader.close();
-        }catch (IOException e){
-            logger.error("fail to read weatherList:",e);
+        List<String[]> properties = CsvSerializer.readCSV(input);
+        for(String[] property : properties){
+            WeatherProperty p = new WeatherProperty(property);
+            weatherList.add(p);
         }
         return weatherList;
 

@@ -68,7 +68,7 @@ public class GetFizzyoData implements Runnable
         Map<String,String> params = new HashMap<>();
         header.put("Authorization","Bearer "+ configuration.getClientId() +","+ configuration.getSyncSecret());
         params.put("clientId",configuration.getClientId());
-        params.put("startDate",configuration.getStartData());
+        params.put("startDate",configuration.getStartDate());
         params.put("endDate", configuration.getEndDate());
         params.put("requestedData",configuration.getRequestData());
 
@@ -101,4 +101,6 @@ public class GetFizzyoData implements Runnable
     public void setConfiguration(FizzyoConfiguration configuration) {
         this.configuration = configuration;
     }
+
+    public FizzyoConfiguration getConfiguration() { return configuration; }
 }

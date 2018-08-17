@@ -16,7 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.ucl.newton.common.file.FileUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +46,10 @@ public class CsvSerializer
         }
     }
 
-    public static List<String[]> readCSV(String path) {
+    public static List<String[]> readCSV(InputStream input) {
         List<String[]> list = new ArrayList<>();
         try {
-            CsvReader reader = new CsvReader(path,',');
+            CsvReader reader = new CsvReader(input,',',Charset.forName("utf-8"));
             reader.readHeaders();
             while(reader.readRecord()) {
                 list.add(reader.getValues());

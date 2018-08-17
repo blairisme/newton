@@ -4,7 +4,23 @@
     </head>
     <body>
         <div th:fragment="configuration">
-            <p class="empty-message">No configuration necessary</p>
+            <h1>DRE FTP configuration</h1>
+            <div class="form-group col-lg-3">
+                <label for="hostName">hostName</label>
+                <input id="hostName" name="hostName" class="form-control" th:value="${hostName}" type="text" />
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="port">port</label>
+                <input id="port" name="port" class="form-control" th:value="${port}" type="text"/>
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="userName">userName</label>
+                <input id="userName" name="userName" class="form-control" th:value="${userName}" type="text"/>
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="userPassword">userPassword</label>
+                <input id="userPassword" name="userPassword" class="form-control" th:value="${userPassword}" type="text"/>
+            </div>
         </div>
     </body>
 </html>
