@@ -34,7 +34,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class ApplicationSecurity extends WebSecurityConfigurerAdapter
 {
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and()
             .authorizeRequests()
                 .antMatchers("/**").hasAnyRole("API")
@@ -43,12 +43,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter
     }
 
     @Bean
-    protected PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    protected DaoAuthenticationProvider authenticationProvider() {
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -56,8 +51,13 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter
     }
 
     @Bean
+    protected PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     @Override
-    public UserDetailsService userDetailsService() {
+    protected UserDetailsService userDetailsService() {
         UserDetails user = User.withUsername("api@newton.com")
             .password("$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m")
             .roles("API")

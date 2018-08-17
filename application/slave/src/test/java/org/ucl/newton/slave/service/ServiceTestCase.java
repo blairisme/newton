@@ -1,3 +1,12 @@
+/*
+ * Newton (c) 2018
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ */
+
 package org.ucl.newton.slave.service;
 
 import com.google.common.base.Stopwatch;
@@ -18,6 +27,12 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 
+/**
+ * A base class for classes in the org.ucl.newton.slave.service package which
+ * performs common test set up.
+ *
+ * @author Blair Butterworth
+ */
 public class ServiceTestCase
 {
     protected Path tempDirectory;

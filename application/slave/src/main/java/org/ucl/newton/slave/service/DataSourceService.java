@@ -52,7 +52,7 @@ public class DataSourceService
 
         logger.info("Obtaining data sources");
         for (String dataSourceId: request.getDatasources()) {
-            Path dataSource =getDataSource(dataSourceId, logger);
+            Path dataSource = getDataSource(dataSourceId, logger);
 
             logger.info(" - Copying data source to repository");
             copyFileToDirectory(dataSource.toFile(), workspace.getData().toFile());
