@@ -11,6 +11,9 @@
 
  task documentation(type: Exec) {
    commandLine 'make', 'html'
+   doLast {
+     project.logger.lifecycle("Located here: ${projectDir}/_build/html/index.html")
+   }
  }
 
  task clean(type: Delete) {
