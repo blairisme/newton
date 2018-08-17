@@ -17,7 +17,9 @@ import org.mockito.Mockito;
 import org.ucl.newton.bridge.ExecutionCoordinator;
 import org.ucl.newton.bridge.ExecutionRequest;
 import org.ucl.newton.common.file.SystemPaths;
+import org.ucl.newton.slave.application.ApplicationPreferences;
 import org.ucl.newton.slave.application.ApplicationStorage;
+import org.ucl.newton.slave.application.ApplicationUrls;
 import org.ucl.newton.slave.engine.RequestContext;
 import org.ucl.newton.slave.engine.RequestLogger;
 import org.ucl.newton.slave.engine.RequestWorkspace;
@@ -51,6 +53,19 @@ public class ServiceTestCase
         return new ApplicationStorage(tempDirectory);
     }
 
+    protected ApplicationPreferences getApplicationPreferences() {
+        System.clearProperty("newton.master.host");
+        System.clearProperty("newton.master.port");
+        System.clearProperty("newton.application.host");
+        System.clearProperty("newton.application.port");
+        return new ApplicationPreferences();
+    }
+
+    protected ApplicationUrls getApplicationUrls() {
+        ApplicationPreferences preferences = getApplicationPreferences();
+        return new ApplicationUrls(preferences);
+    }
+
     protected ExecutionCoordinator getExecutionCoordinator() {
         ExecutionCoordinator executionCoordinator = Mockito.mock(ExecutionCoordinator.class);
         return executionCoordinator;
@@ -63,7 +78,7 @@ public class ServiceTestCase
     }
 
     protected RequestContext getRequestContext() {
-        return new RequestContext(getRequestWorkspace(), getRequestLogger(), Stopwatch.createUnstarted());
+        return new RequestContext(getRequestWorkspace(), getRequestLogger(), Stopwatch.createStarted());
     }
 
     protected RequestLogger getRequestLogger() {

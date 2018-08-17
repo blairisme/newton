@@ -15,6 +15,7 @@ import org.ucl.newton.bridge.ExecutionCoordinator;
 import org.ucl.newton.bridge.ExecutionRequest;
 import org.ucl.newton.common.archive.ZipUtils;
 import org.ucl.newton.common.exception.ConnectionException;
+
 import org.ucl.newton.common.file.FileUtils;
 import org.ucl.newton.slave.application.ApplicationStorage;
 import org.ucl.newton.slave.engine.RequestContext;
@@ -60,13 +61,13 @@ public class ExperimentService
         Path repositoryPath = storage.getTempDirectory().resolve(experimentId + ".zip");
         File repositoryFile = repositoryPath.toFile();
 
-        if (!repositoryFile.exists()) {
-            logger.info(" - Downloading experiment repository");
-            downloadRepository(experimentId, repositoryFile, logger);
+        if (repositoryFile.exists()) {
+            logger.info(" - Updating experiment repository cache");
+            FileUtils.delete(repositoryFile);
         }
-        else {
-            logger.info(" - Using cached experiment repository");
-        }
+        logger.info(" - Downloading experiment repository");
+        downloadRepository(experimentId, repositoryFile, logger);
+
         return repositoryPath;
     }
 

@@ -50,4 +50,8 @@ public class FileUtils
             throw new IOException("Unable to create new file");
         }
     }
+
+    public static void delete(File file) {
+        org.apache.commons.io.FileUtils.deleteQuietly(file);
+    }
 }

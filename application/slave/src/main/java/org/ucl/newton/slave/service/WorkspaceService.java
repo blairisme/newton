@@ -10,6 +10,7 @@
 package org.ucl.newton.slave.service;
 
 import com.google.common.base.Stopwatch;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.bridge.ExecutionRequest;
 import org.ucl.newton.bridge.ExecutionResult;
@@ -26,6 +27,7 @@ import org.ucl.newton.slave.engine.RequestLogger;
 import org.ucl.newton.slave.engine.RequestWorkspace;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -62,9 +64,28 @@ public class WorkspaceService
 
     public RequestContext createWorkspace(ExecutionRequest request) {
         RequestWorkspace workspace = new RequestWorkspace(storage.getWorkspaceDirectory(), request);
+        String initializeResult = initializeWorkspace(workspace);
+
         RequestLogger logger = new RequestLogger(workspace);
+        logger.info(initializeResult);
+
         Stopwatch timer = Stopwatch.createStarted();
         return new RequestContext(workspace, logger, timer);
+    }
+
+    private String initializeWorkspace(RequestWorkspace workspace) {
+        try {
+            File directory = workspace.getRoot().toFile();
+            if (directory.exists()) {
+                FileUtils.cleanDirectory(directory);
+                return "Cleared workspace";
+            }
+            directory.mkdirs();
+            return "Created workspace";
+        }
+        catch (IOException exception) {
+            return "Unable to clear workspace: " + exception.getMessage();
+        }
     }
 
     public ExecutionResult collateResults(ExecutionRequest request, RequestContext context) throws IOException {
