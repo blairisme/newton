@@ -4,7 +4,27 @@
     </head>
     <body>
         <div th:fragment="configuration">
-            <p class="empty-message">No configuration necessary</p>
+            <h1>Fizzyo plugin configuration</h1>
+            <div class="form-group col-lg-3">
+                <label for="clientId">clientId</label>
+                <input id="clientId" name="clientId" class="form-control" th:value="${clientId}" type="text" />
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="syncSecret">syncSecret</label>
+                <input id="syncSecret" name="syncSecret" class="form-control" th:value="${syncSecret}" type="text"/>
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="startDate">startDate</label>
+                <input id="startDate" name="startDate" class="form-control" th:value="${startDate}" type="text"/>
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="endDate">endDate</label>
+                <input id="endDate" name="endDate" class="form-control" th:value="${endDate}" type="text"/>
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="requestData">requestData</label>
+                <input id="requestData" name="requestData" class="form-control" th:value="${requestData}" type="text"/>
+            </div>
         </div>
     </body>
 </html>

@@ -4,23 +4,105 @@
     </head>
     <body>
         <div th:fragment="configuration">
+            <input id="allWeatherList" th:value="${allWeatherList}" hidden="hidden" />
+            <div class="form-group">
+                <table class="table" name="entryTable">
+                    <thead>
+                    <tr>
+                        <th>City</th>
+                        <th>Country</th>
+                        <th>Date</th>
+                    </tr>
+                    </thead>
+                    <tbody id="entries">
 
-            <div class="form-group col-lg-3">
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
                 <label for="city">City<span class="text-danger">*</span></label>
                 <input id="city" name="city" class="form-control" type="text"/>
             </div>
-            <div class="form-group col-lg-3">
+            <div class="form-group">
                 <label for="country">Country(Optional)</label>
                 <input id="country" name="country" class="form-control" type="text"/>
             </div>
-            <div class="form-group col-lg-3">
+            <div class="form-group">
                 <label for="date">Date<span class="text-danger">*</span></label>
                 <input id="date" name="date" class="form-control" type="date"/>
                 <input type="button" class="btn" value="add" onclick="addNewEntry()"/>
             </div>
-
-
+            <div class="form-group">
+                <label for="key">Key<span class="text-danger">*</span></label>
+                <input id="key" name="key" class="form-control" type="text" required="required"/>
+            </div>
+            <div id="items" class="form-control" hidden="hidden">
+            </div>
         </div>
     </body>
+    <script>
+        $(document).ready(function(){
+            var allWeatherList = $("#allWeatherList").val();
+            var weatherArray = allWeatherList.split(",");
+            alert(weatherArray);
+            var key = null;
+            for(var i in weatherArray){
+                var str = weatherArray[i];
+                var property = str.split("_");
+                var city = property[0];
+                var country = property[1];
+                var date = property[2];
+                key = property[3];
+                var id = buildId(city,country,date);
+                addEntry(id,city,country,date);
+            }
+            $("#key").val(key);
+        });
+        function addNewEntry() {
+            var city = $("#city").val();
+            var country = $("#country").val();
+            var date = $("#date").val();
+            if(city == null || city == ""){
+                alert("Please input city");
+                return;
+            }
+            if(date == null || date == ""){
+                alert("Please select a date");
+                return;
+            }
+            var id = buildId(city,country,date);
+            clearContent();
+            addEntry(id,city,country,date);
+
+        }
+        function addEntry(id,city,country,date) {
+
+            $("#entries").append(
+                `<tr id="tableItem${id}">
+                    <th>${city}</th>
+                    <th>${country}</th>
+                    <th>${date} <button class="btn btn-outline-primary" onclick="removeEntry('${id}')"> remove</button></th>
+                </tr>`
+            );
+            $("#items").append(
+                `<input id="item${id}" name="items" value="${id}"/>`
+            )
+
+        }
+        function buildId(city,country,date) {
+            var id = city + "_" + country.replace(' ','-') + "_" + date;
+            country.replace('-',' ');
+            return id;
+        }
+        function clearContent() {
+            $("#city").val("");
+            $("#country").val("");
+            $("#date").val("");
+        }
+        function removeEntry(id) {
+            $(`#tableItem${id}`).remove();
+            $(`#item${id}`).remove();
+        }
+    </script>
 
 </html>

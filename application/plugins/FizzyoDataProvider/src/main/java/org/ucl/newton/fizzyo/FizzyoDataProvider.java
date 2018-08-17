@@ -9,14 +9,20 @@
 
 package org.ucl.newton.fizzyo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.ucl.newton.common.concurrent.DaemonThreadFactory;
+import org.ucl.newton.common.serialization.CsvSerializer;
 import org.ucl.newton.sdk.plugin.*;
 import org.ucl.newton.sdk.provider.BasicDataProvider;
 import org.ucl.newton.sdk.provider.BasicDataSource;
 import org.ucl.newton.sdk.provider.DataSource;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -28,9 +34,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class FizzyoDataProvider extends BasicDataProvider
 {
+    private static Logger logger = LoggerFactory.getLogger(FizzyoDataProvider.class);
     private ScheduledExecutorService scheduler;
     private Collection<DataSource> dataSources;
     private GetFizzyoData handler;
+
 
     public FizzyoDataProvider(){
         this.dataSources = new ArrayList<>();
@@ -38,12 +46,12 @@ public class FizzyoDataProvider extends BasicDataProvider
         this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
         this.handler = new GetFizzyoData(this);
 
-        this.dataSources.add(new BasicDataSource(this,"fizzyo","pressure-raw"));
-        this.dataSources.add(new BasicDataSource(this,"fizzyo","exercise-sessions"));
-        this.dataSources.add(new BasicDataSource(this,"fizzyo","foot-steps"));
-        this.dataSources.add(new BasicDataSource(this,"fizzyo","foot-steps-granular"));
-        this.dataSources.add(new BasicDataSource(this,"fizzyo","games-sessions"));
-        this.dataSources.add(new BasicDataSource(this,"fizzyo","heart-rate"));
+        this.dataSources.add(new BasicDataSource(this,"pressure-raw","pressure-raw"));
+        this.dataSources.add(new BasicDataSource(this,"exercise-sessions","exercise-sessions"));
+        this.dataSources.add(new BasicDataSource(this,"foot-steps","foot-steps"));
+        this.dataSources.add(new BasicDataSource(this,"foot-steps-granular","foot-steps-granular"));
+        this.dataSources.add(new BasicDataSource(this,"games-sessions","games-sessions"));
+        this.dataSources.add(new BasicDataSource(this,"heart-rate","heart-rate"));
     }
 
     @Override
@@ -53,7 +61,7 @@ public class FizzyoDataProvider extends BasicDataProvider
 
     @Override
     public PluginConfiguration getConfiguration() {
-        return new BasicConfiguration("fizzyo.html");
+        return handler.getConfiguration();
     }
 
     @Override
@@ -63,6 +71,26 @@ public class FizzyoDataProvider extends BasicDataProvider
 
     @Override
     public void setContext(PluginHostContext context) {
+        InputStream input = null;
+        try {
+            input = context.getStorage().getInputStream("FizzyoConfiguration");
+        }catch (IOException e){
+            logger.error("Fail to load Fizzyo configuration and load default configuration instead:", e);
+        }
+        if (input == null)
+            input = getClass().getResourceAsStream("/configuration/FizzyoConfiguration");
+        FizzyoConfiguration configuration = readFizzyoConfiguration(input);
+        configuration.setContext(context);
+        handler.setConfiguration(configuration);
+    }
+
+    private FizzyoConfiguration readFizzyoConfiguration(InputStream input) {
+        FizzyoConfiguration configuration = null;
+        List<String[]> configs = CsvSerializer.readCSV(input);
+        if(configs.size()>0){
+            configuration = new FizzyoConfiguration(configs.get(0));
+        }
+        return configuration;
     }
 
     public DataSource getFizzyoDataSource() {
@@ -76,7 +104,6 @@ public class FizzyoDataProvider extends BasicDataProvider
 
     @Override
     public void start() {
-
         this.scheduler.scheduleAtFixedRate(handler, 0, 1, TimeUnit.HOURS); //run every hour
     }
 

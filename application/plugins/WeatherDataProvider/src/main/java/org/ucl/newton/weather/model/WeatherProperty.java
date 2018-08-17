@@ -10,13 +10,14 @@ public class WeatherProperty{
     private String country;
     private String date;
     private String key;
-    public WeatherProperty() {
-    }
     public WeatherProperty(String[] property){
         this.city = property[0];
         this.country = property[1];
         this.date = property[2];
         this.key = property[3];
+    }
+    public String getPropertyString(){
+        return city+"_"+country+"_"+date+"_"+key;
     }
     public String getCity() { return city; }
     public String getCountry() { return country; }
