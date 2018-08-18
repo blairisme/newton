@@ -105,6 +105,10 @@ gretty {
     httpPort = 9090
     jvmArgs = ['-Dnewton.profile=' + getProperty('run.profile')]
     scanInterval = 0
+
+    //httpsEnabled = true
+    //sslKeyStorePath = "$rootDir/deployment/certbot/config/letsencrypt/live/blairbutterworth.com/keystore.p12"
+    //sslKeyStorePassword = 'Newton*123'
 }
 
 task appStartDaemon(dependsOn: 'appBeforeIntegrationTest'){
