@@ -87,11 +87,11 @@
                         <li class="nav-item active" th:if="${not #lists.isEmpty(version.displayOutcomes)}">
                             <a class="nav-link active" data-toggle="tab" href="#visualizationTab">Visualization</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" th:if="${not #lists.isEmpty(version.dataOutcomes)}">
                             <a class="nav-link" th:classappend="${#lists.isEmpty(version.displayOutcomes)} ? show : ''" data-toggle="tab" href="#dataTab">Data</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#consoleTab">Console</a>
+                            <a class="nav-link" th:classappend="${#lists.isEmpty(version.dataOutcomes)} ? show : ''" data-toggle="tab" href="#consoleTab">Console</a>
                         </li>
                     </ul>
 
@@ -107,7 +107,7 @@
                             </div>
                         </div>
 
-                        <div id="dataTab" class="tab-pane fade" th:classappend="${#lists.isEmpty(version.displayOutcomes)} ? show : ''">
+                        <div id="dataTab" class="tab-pane fade" th:if="${not #lists.isEmpty(version.dataOutcomes)}" th:classappend="${#lists.isEmpty(version.displayOutcomes)} ? show : ''">
                             <ul class="list-group">
                                 <li th:each="outcome, iteration :${version.dataOutcomes}" class="list-group-item file_output">
                                     <img src="/resources/images/experiment/file.png" alt="file icon" width="20"/>
@@ -117,7 +117,7 @@
                             </ul>
                         </div>
 
-                        <div id="consoleTab" class="tab-pane fade">
+                        <div id="consoleTab" class="tab-pane fade" th:classappend="${#lists.isEmpty(version.dataOutcomes)} ? show : ''">
                             <object th:each="outcome, iteration :${version.logOutcomes}" th:data="@{'/resources/' + ${outcome.location}}" width="100%" height="1000px">Log Text</object>
                         </div>
                     </div>
