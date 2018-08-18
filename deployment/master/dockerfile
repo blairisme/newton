@@ -59,4 +59,5 @@ COPY ./config/ssl.ini /var/lib/jetty/start.d/ssl.ini
 COPY ./config/newton.keystore /var/lib/jetty/etc/newton.keystore
 COPY ./config/newton.keystore /var/lib/jetty/start.d/etc/newton.keystore
 
+USER root
 CMD /tmp/jetty/wait-for-it.sh database:3306 -t 60 -- java -jar $JETTY_HOME/start.jar -Djetty.port=9090
