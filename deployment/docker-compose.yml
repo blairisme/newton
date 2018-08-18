@@ -54,6 +54,7 @@ services:
         - master_port=9090
     ports:
       - "9090:9090"
+      - "8443:8443"
     depends_on:
       - database
       - jupyter

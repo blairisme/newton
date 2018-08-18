@@ -43,6 +43,7 @@ ENV newton_profile development
 
 COPY ./libs/master.war /var/lib/jetty/webapps/ROOT.war
 EXPOSE 9090
+EXPOSE 8443
 
 RUN mkdir -p /var/lib/jetty/.newton/experiment
 
@@ -54,16 +55,8 @@ USER jetty
 WORKDIR $JETTY_BASE
 RUN java -jar ${JETTY_HOME}/start.jar --add-to-startd=ssl,https
 RUN rm -rf /var/lib/jetty/start.d/ssl.ini
-RUN rm -rf /var/lib/jetty/start.d/etc/keystore
 COPY ./config/ssl.ini /var/lib/jetty/start.d/ssl.ini
-COPY ./config/keystore.p12 /var/lib/jetty/start.d/etc/keystore.p12
+COPY ./config/newton.keystore /var/lib/jetty/etc/newton.keystore
+COPY ./config/newton.keystore /var/lib/jetty/start.d/etc/newton.keystore
 
-USER root
-RUN apt-get update
-RUN apt-get install default-jdk -y
-RUN apt-get install git -y
-RUN git clone https://github.com/blairisme/newton.git /var/newton
-WORKDIR /var/newton
-CMD /tmp/jetty/wait-for-it.sh database:3306 -t 60 -- ./gradlew appStart
-
-#CMD /tmp/jetty/wait-for-it.sh database:3306 -t 60 -- java -jar $JETTY_HOME/start.jar -Djetty.port=9090
+CMD /tmp/jetty/wait-for-it.sh database:3306 -t 60 -- java -jar $JETTY_HOME/start.jar -Djetty.port=9090
