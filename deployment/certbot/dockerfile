@@ -34,5 +34,3 @@ WORKDIR /opt/certbot
 RUN ./certbot-auto --debug --os-packages-only --non-interactive
 RUN yum install httpd -y
 RUN tools/venv.sh
-
-#./certbot-auto certonly --manual -d blairbutterworth.com -d www.blairbutterworth.com --agree-tos --email "blair.butterworth.17@ucl.ac.uk"
