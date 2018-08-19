@@ -35,7 +35,6 @@ public class RestServer
     private Map<String, String> headers;
 
     @Inject
-    @SuppressWarnings("unused")
     public RestServer() {
         this.address = "http://localhost:9090/api";
         this.serializer = new JsonSerializer();
@@ -56,14 +55,6 @@ public class RestServer
         this.address = address.toString();
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public String getHeader(Object key) {
-        return this.headers.get(convert(key));
-    }
-
     public void setSerializer(Serializer serializer) {
         this.serializer = serializer;
     }
@@ -72,17 +63,8 @@ public class RestServer
         this.headers.put(convert(key), convert(value));
     }
 
-    public void removeHeader(Object key) {
-        this.headers.remove(convert(key));
-    }
-
     public void setHeader(Object key, Object value) {
         this.headers.put(convert(key), convert(value));
-    }
-
-    public void setHeaders(Map<Object, Object> values) {
-        this.headers.clear();
-        this.headers.putAll(convertHeaders(values));
     }
 
     public RestRequest get(RestResource resource) {
@@ -123,14 +105,6 @@ public class RestServer
         String url = combine(address, path);
         HttpRequest request = Unirest.delete(url).headers(headers);
         return newRestRequest(request, serializer);
-    }
-
-    protected Map<String, String> convertHeaders(Map<Object, Object> values) {
-        Map<String, String> result = new HashMap<>();
-        for (Map.Entry<Object, Object> entry: values.entrySet()){
-            result.put(convert(entry.getKey()), convert(entry.getValue()));
-        }
-        return result;
     }
 
     protected String convert(Object object) {
