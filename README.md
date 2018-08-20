@@ -42,7 +42,7 @@ To get started first clone the Newton repository.
 ```
 
 Once the repository has been cloned the system can be started either via
-[docker](#via-docker) or via the [command line](#via-command). Docker does not
+[Docker](#via-docker) or via the [command line](#via-command). Docker does not
 require the installation of additional software of frameworks but does take time
 to set up and requires more disk space.
 
@@ -65,7 +65,7 @@ the Newton user interface can be found [here](#via-location).
 
 <a name="via-command"></a>
 
-Via the Command Line
+### Via the Command Line
 
 The Newton system can also be run locally. To do so issue the following commands
 to start the various system components.
