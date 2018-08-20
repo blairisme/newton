@@ -58,12 +58,31 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-auto statistics_container">
-                            <h1 id="title" class="page-title" th:text="${experiment.name}"></h1>
+                            <div class="row">
+                                <div class="col-md-auto">
+                                    <h1 id="title" class="page-title" th:text="${experiment.name}"></h1>
+                                </div>
+
+                                <div class="dropdown col-md-auto" th:if="${version != null}">
+                                    <button id="version-switcher" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span th:text="@{'Version ' + ${version.number}}">Current Version</span>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="version-switcher">
+                                        <a class="dropdown-item"
+                                           th:each="otherVersion, iteration :${experiment.versionsReversed}"
+                                           th:text="@{'Version ' + ${otherVersion.number}}"
+                                           th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '?version=' + ${otherVersion.number}}">Version</a>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div th:if="${version != null}">
                                 <p id="date" th:text="@{'Run date: ' + ${#dates.format(version.created, 'dd-MM-yyyy HH:mm')}}">Run date</p>
                                 <p id="duration" th:text="@{'Run duration: ' + ${version.durationDescription}}">Run duration</p>
                             </div>
                         </div>
+
                         <div class="col-4 ml-auto">
                             <div class="control_container">
                                 <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/edit'}" role="button" id="edit-experiment">Edit</a>

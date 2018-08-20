@@ -17,6 +17,8 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.ucl.newton.service.experiment.MissingVersionException;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -123,18 +125,25 @@ public class Experiment
         return versions;
     }
 
+    public List<ExperimentVersion> getVersionsReversed() {
+        List<ExperimentVersion> result = new ArrayList<>(versions);
+        Collections.reverse(result);
+        return result;
+    }
+
     public boolean hasVersion() {
         return ! versions.isEmpty();
     }
 
-    public ExperimentVersion getVersion(int version) {
-        if (version < 0) {
+    public ExperimentVersion getVersion(int number) {
+        int index = number - 1;
+        if (index < 0) {
             throw new IllegalArgumentException();
         }
-        if (version >= versions.size()) {
-            throw new MissingVersionException(name, version);
+        if (index >= versions.size()) {
+            throw new MissingVersionException(name, index);
         }
-        return versions.get(version);
+        return versions.get(index);
     }
 
     public ExperimentVersion getLatestVersion() {
