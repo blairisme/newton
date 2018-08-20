@@ -1,6 +1,6 @@
-**[Getting Started](#Getting started)** |
+**[Getting Started](#getting-started)** |
 **[Documentation](https://newton.readthedocs.io/)** |
-**[License](#license)** |
+**[License](#licence)** |
 
 # Newton
 
@@ -31,6 +31,7 @@ Read the latest version of our documentation on
 [ReadTheDocs](https://newton.readthedocs.io/en/latest/).
 
 ---
+<a name="getting-started"></a>
 
 ## Getting started
 
@@ -87,7 +88,7 @@ Once started the Newton user interface can be found [here](#via-location).
 
 <a name="via-location"></a>
 
-###Locations
+### Locations
 
 Once started the Newton user interface can be found here.
 
@@ -105,11 +106,13 @@ might also be available.
     [Jupyter Hub] http://localhost:8000
 ```
 
-#### Note
+### Note
 
 Browsing to https://localhost:8443 may show an insecure warning. This is because
 the certificate Newton uses is only valid for http://blairbutterworth.com, not
 localhost. It is safe to accept the security warning and proceed.
+
+<a name="licence"></a>
 
 ## Licence
 
