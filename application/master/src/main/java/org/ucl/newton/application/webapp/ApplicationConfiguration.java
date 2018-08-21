@@ -63,6 +63,8 @@ public class ApplicationConfiguration implements WebMvcConfigurer, ApplicationCo
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/", "file:" + applicationStorage.getRootPath());
+        registry.addResourceHandler(".well-known/acme-challenge/**")
+                .addResourceLocations("/acme-challenge/");
     }
 
     @Bean

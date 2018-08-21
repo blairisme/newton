@@ -8,18 +8,9 @@
 # Author: Blair Butterworth
 #
 
-version: "3.6"
+version: "2.0"
 
 services:
-  # Configuration for the Lets Encrypt certificate authentication server
-  # certbot:
-  #   image: newton-certbot
-  #   build:
-  #     context: ./certbot
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-
   # Configuration for the Newton web app database
   database:
     image: newton-database
@@ -63,6 +54,7 @@ services:
         - master_port=9090
     ports:
       - "9090:9090"
+      - "8443:8443"
     depends_on:
       - database
       - jupyter

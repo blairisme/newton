@@ -80,8 +80,10 @@ public class FizzyoDataProvider extends BasicDataProvider
         if (input == null)
             input = getClass().getResourceAsStream("/configuration/FizzyoConfiguration");
         FizzyoConfiguration configuration = readFizzyoConfiguration(input);
-        configuration.setContext(context);
-        handler.setConfiguration(configuration);
+        if (configuration != null) {
+            configuration.setContext(context);
+            handler.setConfiguration(configuration);
+        }
     }
 
     private FizzyoConfiguration readFizzyoConfiguration(InputStream input) {

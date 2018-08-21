@@ -21,7 +21,7 @@
 }
 
 .statistics_container * {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .statistics_container p {
@@ -30,4 +30,8 @@
 
 .file_output a {
     float: right;
+}
+
+#version-switcher {
+    margin-top: 0.5rem;
 }

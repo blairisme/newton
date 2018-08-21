@@ -2,6 +2,9 @@ package org.ucl.newton.testobjects;
 
 import org.ucl.newton.framework.User;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class DummyUserFactory {
 
     public static User createUserAdmin() {
@@ -18,5 +21,13 @@ public class DummyUserFactory {
 
     public static User createUserZiad() {
         return new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk", "pp_3.jpg");
+    }
+
+    public static Collection<User> createListOfUsers(int n) {
+        Collection<User> userList = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            userList.add(new User(i, "User " + i, "user"  + i + "@ucl.ac.uk", "pp_" + i + ".jpg"));
+        }
+        return userList;
     }
 }

@@ -54,8 +54,10 @@ public class DREDataPublisher implements DataPublisher {
         if (input == null)
             input = getClass().getResourceAsStream("/configuration/DREFTPConfiguration");
         FTPConfig config = readFTPConfiguration(input);
-        config.setContext(context);
-        this.config = config;
+        if (config != null) {
+            config.setContext(context);
+            this.config = config;
+        }
     }
 
     private FTPConfig readFTPConfiguration(InputStream input) {

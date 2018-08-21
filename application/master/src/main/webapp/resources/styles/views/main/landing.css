@@ -1,0 +1,28 @@
+.content-grid {
+    display: grid;
+    grid-gap: 5rem;
+    grid-template-columns: 28rem 28rem;
+    max-width: 64rem;
+
+    margin-top: 8rem;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0.6rem 1rem;
+}
+
+.content-block {
+    display: block;
+}
+
+.content-block h1, p {
+    padding-bottom: 1em;
+}
+
+.computer-graphic {
+    width: 25rem;
+    content: url("/resources/images/front.png");
+}
+
+#signUpBtn {
+    margin-left: 1em;
+}
