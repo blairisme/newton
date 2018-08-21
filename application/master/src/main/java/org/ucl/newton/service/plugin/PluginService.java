@@ -25,9 +25,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.security.CodeSource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
@@ -41,8 +39,8 @@ public class PluginService implements ApplicationListener<ContextRefreshedEvent>
 {
     private PluginContext pluginContext;
     private PluginRepository pluginRepository;
-    private Collection<DataProvider> providers;
-    private Collection<DataProcessor> processors;
+    private List<DataProvider> providers;
+    private List<DataProcessor> processors;
     private Collection<DataPublisher> publishers;
 
     @Inject
@@ -89,14 +87,16 @@ public class PluginService implements ApplicationListener<ContextRefreshedEvent>
 
     public Collection<DataProvider> getDataProviders() {
         if (providers == null) {
-            providers = getPlugins(DataProvider.class);
+            providers = new ArrayList(getPlugins(DataProvider.class));
+            providers.sort(Comparator.comparing(o -> o.getVisualization().getName()));
         }
         return providers;
     }
 
     public Collection<DataProcessor> getDataProcessors() {
         if (processors == null) {
-            processors = getPlugins(DataProcessor.class);
+            processors = new ArrayList(getPlugins(DataProcessor.class));
+            processors.sort(Comparator.comparing(o -> o.getVisualization().getName()));
         }
         return processors;
     }
