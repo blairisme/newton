@@ -46,12 +46,11 @@ public class FizzyoData {
         List units = mapper.get(name);
         if (units.size() == 0)
             return new ArrayList<>();
-        for(Object unit : units) {
-            FizzyoDataUnit a = (FizzyoDataUnit)unit;
-            return a.getKeys();
-        }
-        return null;
+
+        FizzyoDataUnit a = (FizzyoDataUnit)units.get(0);
+        return a.getKeys();
     }
+
     public List<List<String>> getValues(String name){
         List units = mapper.get(name);
         if (units.size() == 0)
@@ -60,6 +59,7 @@ public class FizzyoData {
 
         return list;
     }
+
     private List<List<String>> getValues(List units){
         List<List<String>> list = new ArrayList<>();
         for(Object unit : units) {
@@ -68,8 +68,8 @@ public class FizzyoData {
         }
         return list;
     }
+
     public Map<String, List> getMapper() {
         return mapper;
     }
-
 }
