@@ -42,10 +42,14 @@ public class FizzyoConfiguration extends BasicConfiguration {
             this.clientId = values.get("clientId").get(0);
         if (values.get("syncSecret")!=null)
           this.syncSecret = values.get("syncSecret").get(0);
-        if (values.get("startDate")!=null)
-            this.startDate = values.get("startDate").get(0);
-        if (values.get("endDate")!=null)
-            this.endDate = values.get("endDate").get(0);
+        if (values.get("startDate")!=null) {
+            String timeStr = values.get("startDate").get(0) + " 00:00:00";
+            this.startDate = TimeUtils.timeToUnixStamp(timeStr);
+        }
+        if (values.get("endDate")!=null) {
+            String timeStr = values.get("endDate").get(0) + " 00:00:00";
+            this.endDate = TimeUtils.timeToUnixStamp(timeStr);
+        }
         if (values.get("requestData")!=null)
             this.requestData = values.get("requestData").get(0);
         writeToFile();
@@ -55,8 +59,8 @@ public class FizzyoConfiguration extends BasicConfiguration {
         Map<String, String> values = new HashMap<>();
         values.put("clientId",clientId);
         values.put("syncSecret",syncSecret);
-        values.put("startDate",startDate);
-        values.put("endDate",endDate);
+        values.put("startDate",TimeUtils.unixStampToTime(startDate).substring(0,10));
+        values.put("endDate",TimeUtils.unixStampToTime(endDate).substring(0,10));
         values.put("requestData",requestData);
         return values;
     }

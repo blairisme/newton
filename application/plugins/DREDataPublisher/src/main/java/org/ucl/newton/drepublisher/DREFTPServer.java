@@ -65,16 +65,13 @@ public class DREFTPServer extends BasicFTPServer {
     }
 
     private void close() {
-        if(ftpClient!=null){
-            if(connect()){
-                try {
-                    ftpClient.logout();
-                    ftpClient.disconnect();
-                    ftpClient = null;
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
+        if(ftpClient!=null && connect()){
+            try {
+                ftpClient.logout();
+                ftpClient.disconnect();
+                ftpClient = null;
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
     }

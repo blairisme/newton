@@ -9,7 +9,6 @@ import java.util.List;
  * @author Xiaolong Chen
  */
 public class Request {
-    private String type;
     private String query;
 
     public List<String> getKeys(){
