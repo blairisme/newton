@@ -43,7 +43,7 @@ To get started first clone the Newton repository.
 
 Once the repository has been cloned the system can be started either via
 [Docker](#via-docker) or via the [command line](#via-command). Docker does not
-require the installation of additional software of frameworks but does take time
+require the installation of additional software or frameworks but does take time
 to set up and requires more disk space.
 
 <a name="via-docker"></a>
