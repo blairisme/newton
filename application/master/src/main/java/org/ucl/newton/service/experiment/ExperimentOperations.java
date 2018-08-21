@@ -11,6 +11,7 @@ package org.ucl.newton.service.experiment;
 
 import com.google.common.base.Strings;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -24,7 +25,10 @@ import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
 
 /**
@@ -98,8 +102,25 @@ public class ExperimentOperations
             Resource template = new ClassPathResource("/templates");
             Resource repository = experiment.getConfiguration().getStorageConfiguration().getStorageLocation();
             FileUtils.copyDirectory(template.getFile(), repository.getFile());
+            relaxRepositoryPermissions(repository);
         } catch (IOException error) {
             logger.error("Failed to populate repository", error);
+        }
+    }
+
+    //Needs rewrite
+    private void relaxRepositoryPermissions(Resource repository) throws IOException {
+        if(SystemUtils.IS_OS_WINDOWS){
+            return;
+        }
+        File[] files = repository.getFile().listFiles();
+        if(files!=null){
+            String permissions = "rwxrwxrwx";
+            for(int i=0; i<files.length; i++){
+                Files.setPosixFilePermissions(files[i].toPath(), PosixFilePermissions.fromString(permissions));
+                Files.setPosixFilePermissions(files[i].getParentFile().toPath(), PosixFilePermissions.fromString(permissions));
+                Files.setPosixFilePermissions(files[i].getParentFile().getParentFile().toPath(), PosixFilePermissions.fromString(permissions));
+            }
         }
     }
 }
