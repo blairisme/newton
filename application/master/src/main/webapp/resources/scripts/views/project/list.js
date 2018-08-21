@@ -76,6 +76,26 @@ $(document).ready( function() {
 
     });
 
+    $(document).on("click", ".starIcon", function() {
+        var image = $(this);
+        var type = (image.hasClass("star") ? "Unstar" : "Star");
+        image.prop("disabled", true);
+        $.ajax({
+            type: "POST",
+            url: "/project/" + this.id + "?type=" + type,
+            success: function(data) {
+                if(type === "Star") {
+                    image.removeClass("no-star");
+                    image.addClass("star");
+                } else {
+                    image.removeClass("star");
+                    image.addClass("no-star");
+                }
+                image.prop("disabled", false);
+            }
+        });
+    });
+
 });
 
 
