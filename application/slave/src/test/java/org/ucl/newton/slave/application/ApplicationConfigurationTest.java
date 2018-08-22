@@ -9,6 +9,7 @@
 
 package org.ucl.newton.slave.application;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
@@ -37,6 +38,12 @@ public class ApplicationConfigurationTest
         configuration.addResourceHandlers(registry);
 
         Mockito.verify(registry).addResourceHandler("/files/**");
-        Mockito.verify(registration).addResourceLocations("file://" + rootDirectory.toString() + "/");
+
+        if (SystemUtils.IS_OS_WINDOWS) {
+            Mockito.verify(registration).addResourceLocations("file:" + rootDirectory.toString() + "/");
+        }
+        else {
+            Mockito.verify(registration).addResourceLocations("file://" + rootDirectory.toString() + "/");
+        }
     }
 }
