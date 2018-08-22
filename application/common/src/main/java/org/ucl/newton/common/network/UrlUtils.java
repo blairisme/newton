@@ -30,11 +30,18 @@ public class UrlUtils
     public static URL createUrl(URL base, Path path) throws MalformedURLException {
         try {
             URIBuilder builder = new URIBuilder(base.toURI());
-            builder.setPath(builder.getPath() + "/" + path);
+            builder.setPath(builder.getPath() + getUrlPath(path));
             return builder.build().toURL();
         }
         catch (URISyntaxException syntaxException) {
             throw new MalformedURLException(syntaxException.getMessage());
         }
+    }
+
+    private static String getUrlPath(Path filePath) {
+        String result = filePath.toString();
+        result = result.replace("\\", "/");
+        result = result.startsWith("/") ? result :  "/" + result;
+        return result;
     }
 }
