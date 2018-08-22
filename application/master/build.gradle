@@ -9,7 +9,7 @@
  * Author: Blair Butterworth
  * Author: Xiaolong Chen
  */
-
+import org.apache.tools.ant.taskdefs.condition.Os
 plugins {
   id "org.akhikhl.gretty" version "2.0.0"
 }
@@ -108,9 +108,12 @@ gretty {
     httpPort = 9090
     httpsPort = 8443
 
-    httpsEnabled = true
-    sslKeyStorePath = "$projectDir/config/keystore.p12"
-    sslKeyStorePassword = 'Newton*123'
+    if (! Os.isFamily(Os.FAMILY_WINDOWS)){
+        httpsEnabled = true
+        sslKeyStorePath = "$projectDir/config/keystore.p12"
+        sslKeyStorePassword = 'Newton*123'
+    }
+
 }
 
 task appStartDaemon(dependsOn: 'appBeforeIntegrationTest'){
