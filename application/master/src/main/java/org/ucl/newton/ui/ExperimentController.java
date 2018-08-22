@@ -158,13 +158,13 @@ public class ExperimentController
             RedirectAttributes redirectAttr)
     {
         try {
-        Experiment toUpdate = experimentService.getExperimentByIdentifier(experimentIdentifier);
-        Experiment temp = experimentOperations.createExperiment(experimentDto, experimentIdentifier);
-        toUpdate.setDescription(temp.getDescription());
-        toUpdate.getConfiguration().setTrigger(temp.getConfiguration().getTrigger());
-        toUpdate.getConfiguration().setOutputPattern(temp.getConfiguration().getOutputPattern());
-        toUpdate.getConfiguration().setExperimentDataSources(temp.getConfiguration().getExperimentDataSources());
-        experimentService.updateExperiment(toUpdate);
+            Experiment toUpdate = experimentService.getExperimentByIdentifier(experimentIdentifier);
+            Experiment temp = experimentOperations.createExperiment(experimentDto, experimentIdentifier);
+            toUpdate.setDescription(temp.getDescription());
+            toUpdate.getConfiguration().setTrigger(temp.getConfiguration().getTrigger());
+            toUpdate.getConfiguration().setOutputPattern(temp.getConfiguration().getOutputPattern());
+            toUpdate.getConfiguration().setExperimentDataSources(temp.getConfiguration().getExperimentDataSources());
+            experimentService.updateExperiment(toUpdate);
         } catch (Throwable e) {
             redirectAttr.addFlashAttribute("message", "Update failed " + e.getMessage());
             redirectAttr.addFlashAttribute("alertClass", "alert-danger");

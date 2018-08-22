@@ -31,23 +31,20 @@ public class Plugin
     @GeneratedValue(generator = "increment")
     private int id;
 
-    @Column(name = "identifier")
-    private String identifier;
-
     @Column(name = "location")
     private String location;
 
     public Plugin() {
+        this(0, "");
     }
 
-    public Plugin(int id, String identifier, String location) {
+    public Plugin(String location) {
+        this(0, location);
+    }
+
+    Plugin(int id, String location) {
         this.id = id;
-        this.identifier = identifier;
         this.location = location;
-    }
-
-    public int getId() {
-        return id;
     }
 
     Plugin setId(int id) {
@@ -55,8 +52,8 @@ public class Plugin
         return this;
     }
 
-    public String getIdentifier() {
-        return identifier;
+    public String getLocation() {
+        return location;
     }
 
     public Resource asResource() {
@@ -72,7 +69,6 @@ public class Plugin
         Plugin plugin = (Plugin)obj;
         return new EqualsBuilder()
             .append(id, plugin.id)
-            .append(identifier, plugin.identifier)
             .append(location, plugin.location)
             .isEquals();
     }
@@ -81,7 +77,6 @@ public class Plugin
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
             .append(id)
-            .append(identifier)
             .append(location)
             .toHashCode();
     }
@@ -90,7 +85,6 @@ public class Plugin
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", id)
-            .append("identifier", identifier)
             .append("location", location)
             .toString();
     }

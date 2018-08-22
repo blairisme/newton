@@ -3,7 +3,6 @@ package org.ucl.newton.drepublisher;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.ucl.newton.sdk.publisher.BasicFTPServer;
-import org.ucl.newton.sdk.publisher.FTPConfig;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -66,16 +65,13 @@ public class DREFTPServer extends BasicFTPServer {
     }
 
     private void close() {
-        if(ftpClient!=null){
-            if(connect()){
-                try {
-                    ftpClient.logout();
-                    ftpClient.disconnect();
-                    ftpClient = null;
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
+        if(ftpClient!=null && connect()){
+            try {
+                ftpClient.logout();
+                ftpClient.disconnect();
+                ftpClient = null;
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
     }

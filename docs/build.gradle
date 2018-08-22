@@ -1,0 +1,21 @@
+/*
+ * MIT License (c)
+ *
+ * This work is licensed under the MIT License. To view a copy of this
+ * license, visit
+ *
+ *      https://opensource.org/licenses/MIT
+ *
+ * Author: Blair Butterworth
+ */
+
+ task documentation(type: Exec) {
+   commandLine 'make', 'html'
+   doLast {
+     project.logger.lifecycle("Located here: ${projectDir}/_build/html/index.html")
+   }
+ }
+
+ task clean(type: Delete) {
+   delete file('_build')
+ }

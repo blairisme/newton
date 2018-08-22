@@ -10,6 +10,8 @@
  * Author: Xiaolong Chen
  */
 
+import org.apache.tools.ant.taskdefs.condition.Os
+
 plugins {
   id "org.akhikhl.gretty" version "2.0.0"
 }
@@ -102,8 +104,17 @@ project.tasks.war.dependsOn updateDREDataPublisherJar
 gretty {
     servletContainer = 'jetty9.4'
     contextPath = '/'
-    httpPort = 9090
     jvmArgs = ['-Dnewton.profile=' + getProperty('run.profile')]
+    scanInterval = 0
+
+    httpPort = 9090
+    httpsPort = 8443
+
+    if (! Os.isFamily(Os.FAMILY_WINDOWS)){
+      httpsEnabled = true
+      sslKeyStorePath = "$projectDir/config/keystore.p12"
+      sslKeyStorePassword = 'Newton*123'
+    }
 }
 
 task appStartDaemon(dependsOn: 'appBeforeIntegrationTest'){

@@ -17,7 +17,9 @@ MAINTAINER blair.butterworth.17@ucl.ac.uk
 
 #ENTRYPOINT [ "certbot" ]
 EXPOSE 80 443
-VOLUME /etc/letsencrypt /var/lib/letsencrypt
+VOLUME /etc/letsencrypt
+#VOLUME /etc/letsencrypt /var/lib/letsencrypt
+#./certbot/config/letsencrypt:/etc/letsencrypt
 
 ## Update Yum
 RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
@@ -32,6 +34,3 @@ WORKDIR /opt/certbot
 RUN ./certbot-auto --debug --os-packages-only --non-interactive
 RUN yum install httpd -y
 RUN tools/venv.sh
-RUN ./certbot-auto --help
-
-#./certbot-auto certonly --manual -d blairbutterworth.com -d www.blairbutterworth.com --agree-tos --email "blair.butterworth.17@ucl.ac.uk"

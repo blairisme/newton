@@ -3,3 +3,4 @@ exclude_paths:
   - '**/integration/**'
   - '**/resources/scripts/libraries/**'
   - '**/resources/styles/libraries/**'
+  - 'docs/**'

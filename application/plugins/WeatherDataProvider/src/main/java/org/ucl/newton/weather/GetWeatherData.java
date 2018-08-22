@@ -9,24 +9,20 @@
 
 package org.ucl.newton.weather;
 
-import com.csvreader.CsvReader;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.ucl.newton.common.file.PathUtils;
+import org.ucl.newton.common.serialization.CsvSerializer;
 import org.ucl.newton.weather.model.WeatherData;
 import org.ucl.newton.weather.model.WeatherProperty;
-import org.ucl.newton.common.file.FileUtils;
 import org.ucl.newton.common.network.HttpUtils;
 import org.ucl.newton.sdk.provider.DataSource;
 import org.ucl.newton.sdk.provider.DataStorage;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,15 +37,15 @@ public class GetWeatherData implements Runnable
 {
     private static Logger logger = LoggerFactory.getLogger(GetWeatherData.class);
     private WeatherDataProvider provider;
-
+    private WeatherConfig weatherConfig;
     public GetWeatherData(WeatherDataProvider provider){
         this.provider = provider;
     }
 
     @Override
     public void run() {
-        List<WeatherProperty> weatherList = getWeatherList();
         List<List<String>> listOfRecord = new ArrayList<>();
+        List<WeatherProperty> weatherList = weatherConfig.getWeatherList();
         if(!weatherList.isEmpty())
             listOfRecord.add(getHeader());
         for (WeatherProperty property : weatherList){
@@ -69,32 +65,8 @@ public class GetWeatherData implements Runnable
     //        String country = "united kingdom";                  // can be null
     //        String date = "2018-07-04";                         // required and format yyyy-mm-dd
     //        String key = "0252e94bd710446c908123539182906";     // required
-    private List<WeatherProperty> getWeatherList() {
-        List<WeatherProperty> weatherList = new ArrayList<>();
-        Path path = Paths.get(System.getProperty("user.home")).resolve(".newton");
-        path = path.resolve("weather").resolve("setting");
-        if(!path.toFile().exists())
-            path = getDefaultConfig();
-        if(path.toFile().exists()) {
-            try {
-                CsvReader reader = new CsvReader(path.toString(), ',');
-                reader.readHeaders();
-                while (reader.readRecord()) {
-                    WeatherProperty property = new WeatherProperty(reader.getValues());
-                    weatherList.add(property);
-                }
-                reader.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return  weatherList;
-    }
 
-    private Path getDefaultConfig() {
-        Path path = PathUtils.getConfigurationPath().resolve("weatherList");
-        return path;
-    }
+
 
     private String getDataFromWWO(WeatherProperty property) {
         String url = "https://api.worldweatheronline.com/premium/v1/past-weather.ashx";
@@ -138,7 +110,7 @@ public class GetWeatherData implements Runnable
         DataStorage storage = provider.getStorage();
         DataSource dataSource = provider.getWeatherDataSource();
         try (OutputStream output = storage.getOutputStream(dataSource)){
-            FileUtils.writeCSV(output,list);
+            CsvSerializer.writeCSV(output,list);
         }
         catch (IOException e){
             logger.error("Failed to write weather data", e);
@@ -151,5 +123,12 @@ public class GetWeatherData implements Runnable
         return weather;
     }
 
+    public void setWeatherConfig(WeatherConfig weatherConfig) {
+        this.weatherConfig = weatherConfig;
+    }
+
+    public WeatherConfig getWeatherConfig() {
+        return weatherConfig;
+    }
 }
 

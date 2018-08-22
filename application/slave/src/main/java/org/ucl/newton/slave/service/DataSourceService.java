@@ -52,7 +52,7 @@ public class DataSourceService
 
         logger.info("Obtaining data sources");
         for (String dataSourceId: request.getDatasources()) {
-            Path dataSource =getDataSource(dataSourceId, logger);
+            Path dataSource = getDataSource(dataSourceId, logger);
 
             logger.info(" - Copying data source to repository");
             copyFileToDirectory(dataSource.toFile(), workspace.getData().toFile());
@@ -65,13 +65,13 @@ public class DataSourceService
         Path dataSourcePath = storage.getDataDirectory().resolve(dataSourceId);
         File dataSourceFile = dataSourcePath.toFile();
 
-        if (!dataSourceFile.exists()) {
-            logger.info(" - Downloading data source (" + dataSourceId + ")");
-            downloadDataSource(dataSourceId, dataSourceFile, logger);
+        if (dataSourceFile.exists()) {
+            logger.info(" - Updating data source cache");
+            FileUtils.delete(dataSourceFile);
         }
-        else {
-            logger.info(" - Using cached data source (" + dataSourceId + ")");
-        }
+        logger.info(" - Downloading data source");
+        downloadDataSource(dataSourceId, dataSourceFile, logger);
+
         return dataSourcePath;
     }
 

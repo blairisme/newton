@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.Collection;
 
 /**
@@ -52,25 +51,6 @@ public class PluginRepository
         return session.createQuery(criteria).getResultList();
     }
 
-    @Transactional(readOnly=true)
-    public Plugin getPluginById(int id) {
-        Session session = getSession();
-        return session.get(Plugin.class, id);
-    }
-
-    @Transactional(readOnly=true)
-    public Plugin getPluginByIdentifier(String identifier) {
-        Session session = getSession();
-
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Plugin> criteria = builder.createQuery(Plugin.class);
-        Root<Plugin> projects = criteria.from(Plugin.class);
-
-        criteria.select(projects);
-        criteria.where(builder.equal(projects.get("identifier"), identifier));
-
-        return session.createQuery(criteria).getSingleResult();
-    }
     @Transactional
     public void removePlugin(Plugin plugin) {
         Session session = getSession();

@@ -20,7 +20,8 @@ INSERT IGNORE INTO credentials (id, user_id, username, password, role) VALUES (2
 INSERT IGNORE INTO credentials (id, user_id, username, password, role) VALUES (3, 3, 'api@newton.com', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'API');
 
 /* Slave configuration */
-INSERT IGNORE INTO plugin (id, identifier, location) VALUES (1, 'newton-python', 'classpath:/plugins/processor/python.jar');
-INSERT IGNORE INTO plugin (id, identifier, location) VALUES (2, 'newton-jupyter', 'classpath:/plugins/processor/jupyter.jar');
-INSERT IGNORE INTO plugin (id, identifier, location) VALUES (3, 'newton-weather', 'classpath:/plugins/data/WeatherDataProvider.jar');
-INSERT IGNORE INTO plugin (id, identifier, location) VALUES (4, 'newton-fizzyo', 'classpath:/plugins/data/FizzyoDataProvider.jar');
+INSERT IGNORE INTO plugin (id, location) VALUES (1, 'classpath:/plugins/processor/python.jar');
+INSERT IGNORE INTO plugin (id, location) VALUES (2, 'classpath:/plugins/processor/jupyter.jar');
+INSERT IGNORE INTO plugin (id, location) VALUES (3, 'classpath:/plugins/data/WeatherDataProvider.jar');
+INSERT IGNORE INTO plugin (id, location) VALUES (4, 'classpath:/plugins/data/FizzyoDataProvider.jar');
+INSERT IGNORE INTO plugin (id, location) VALUES (5, 'classpath:/plugins/publisher/DREDataPublisher.jar');

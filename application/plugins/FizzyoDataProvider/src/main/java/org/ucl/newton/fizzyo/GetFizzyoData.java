@@ -12,7 +12,7 @@ package org.ucl.newton.fizzyo;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.ucl.newton.common.file.FileUtils;
+import org.ucl.newton.common.serialization.CsvSerializer;
 import org.ucl.newton.common.network.HttpUtils;
 import org.ucl.newton.fizzyo.model.*;
 import org.ucl.newton.sdk.provider.DataSource;
@@ -33,7 +33,7 @@ public class GetFizzyoData implements Runnable
     private static Logger logger = LoggerFactory.getLogger(GetFizzyoData.class);
 
     private FizzyoDataProvider provider;
-
+    private FizzyoConfiguration configuration;
     public GetFizzyoData(FizzyoDataProvider provider){
         this.provider = provider;
     }
@@ -63,20 +63,14 @@ public class GetFizzyoData implements Runnable
 
     private SyncData getFizzyoSyncData() {
 
-        String clientId = "00000000-0000-0000-0000-000000000001";
-        String syncSecret = "A1oRkpQJ0dNX1z3RA2K2zKKaLOvE2MwzA1oRkpQJ0dNxxDoJNonZWDzaLOvE2Mwz";
-        String startData = "1470744743";
-        String endDate = "1533816743";
-        String requestData = "[ \"all\" ]";
-
         String url = "https://api-staging.fizzyo-ucl.co.uk/api/v1/sync-data/interval";
         Map<String,String> header = new HashMap<>();
         Map<String,String> params = new HashMap<>();
-        header.put("Authorization","Bearer "+ clientId +","+ syncSecret);
-        params.put("clientId",clientId);
-        params.put("startDate",startData);
-        params.put("endDate", endDate);
-        params.put("requestedData",requestData);
+        header.put("Authorization","Bearer "+ configuration.getClientId() +","+ configuration.getSyncSecret());
+        params.put("clientId",configuration.getClientId());
+        params.put("startDate",configuration.getStartDate());
+        params.put("endDate", configuration.getEndDate());
+        params.put("requestedData",configuration.getRequestData());
 
         String data = HttpUtils.doGet(url,header,params);
         Gson gson = new Gson();
@@ -96,11 +90,17 @@ public class GetFizzyoData implements Runnable
         for(DataSource dataSource : provider.getDataSources()){
             if (dataSource.getName().equals(name)) {
                 try (OutputStream output = storage.getOutputStream(dataSource)) {
-                    FileUtils.writeCSV(output, list);
+                    CsvSerializer.writeCSV(output, list);
                 } catch (IOException e) {
                     logger.error("Failed to write Fizzyo data",e);
                 }
             }
         }
     }
+
+    public void setConfiguration(FizzyoConfiguration configuration) {
+        this.configuration = configuration;
+    }
+
+    public FizzyoConfiguration getConfiguration() { return configuration; }
 }

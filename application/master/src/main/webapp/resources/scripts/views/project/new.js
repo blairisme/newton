@@ -14,18 +14,21 @@ function addMember(id, name, email, image) {
     $("#projectMemberInput").typeahead("val", "");
 
     $("#projectMembersListEmpty").hide();
+    var memberDataId = "#dataItem" + id;
 
-    $("#projectMembersList").append(
-        `<li id="listItem${id}" class="list-group-item project-list-item">
+    if($(memberDataId).length === 0) {
+        $("#projectMembersList").append(
+            `<li id="listItem${id}" class="list-group-item project-list-item">
             <img src="/resources/images/profile/${image}" class="rounded-circle avatar" alt="Profile picture"/>
             <span>${name} (${email})</span>
             <button type="button" class="btn btn-outline-primary remove_button" onclick="removeMember(${id})">Remove</button>
         </li>`
-    );
+        );
 
-    $("#projectMembersData").append(
-        `<option id="dataItem${id}" value="${id}" selected="selected"></option>`
-    );
+        $("#projectMembersData").append(
+            `<option id="dataItem${id}" value="${id}" selected="selected"></option>`
+        );
+    }
 }
 
 function removeMember(id) {

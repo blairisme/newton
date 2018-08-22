@@ -9,6 +9,7 @@
 
 package org.ucl.newton.slave.application;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -38,7 +39,15 @@ public class ApplicationConfiguration implements WebMvcConfigurer
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String path = getResourceRoot();
+        registry.addResourceHandler("/files/**").addResourceLocations(path);
+    }
+
+    private String getResourceRoot() {
         String path = applicationStorage.getRootDirectory().toString();
-        registry.addResourceHandler("/files/**").addResourceLocations("file://" + path + "/");
+        if (SystemUtils.IS_OS_WINDOWS) {
+            return "file:" + path.replace("\\", "/") + "/";
+        }
+        return "file://" + path + "/";
     }
 }

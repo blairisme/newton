@@ -12,7 +12,6 @@ package org.ucl.newton.common.network;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
-import com.mashape.unirest.request.HttpRequestWithBody;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -31,6 +30,7 @@ import java.util.Map;
  *
  * @author Xiaolong Chen
  */
+@SuppressWarnings("unchecked")
 public class HttpUtils
 {
     private static Logger logger = LoggerFactory.getLogger(HttpUtils.class);
@@ -66,27 +66,6 @@ public class HttpUtils
         catch (Exception e) {
             logger.error("Failed to configure certificate store", e);
         }
-    }
-
-    public static String doPost(String url, Map header, Map params){
-
-        try{
-            HttpRequestWithBody request =Unirest.post(url).headers(header);
-            request.fields(params);
-            HttpResponse<String> response = request.asString();
-            int status = response.getStatus();
-            if (status >= 200 && status <300){
-                return response.getBody();
-            }
-            else {
-                logger.info("status code:" + status);
-                return response.getBody();
-            }
-        }
-        catch (Exception e){
-            logger.error("Failed to post", e);
-        }
-        return null;
     }
 
     public static String doGet(String url, Map header, Map params){

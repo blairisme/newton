@@ -1,8 +1,14 @@
 package org.ucl.newton.drepublisher;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.ucl.newton.common.serialization.CsvSerializer;
 import org.ucl.newton.sdk.plugin.*;
 import org.ucl.newton.sdk.publisher.DataPublisher;
-import org.ucl.newton.sdk.publisher.FTPConfig;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * Instances of this class publish data into DRE.
@@ -10,6 +16,7 @@ import org.ucl.newton.sdk.publisher.FTPConfig;
  * @author Xiaolong Chen
  */
 public class DREDataPublisher implements DataPublisher {
+    private static Logger logger = LoggerFactory.getLogger(DREDataPublisher.class);
     private FTPConfig config;
     @Override
     public void start(String filePath) {
@@ -28,7 +35,7 @@ public class DREDataPublisher implements DataPublisher {
 
     @Override
     public PluginConfiguration getConfiguration() {
-        return new BasicConfiguration("dre.html");
+        return config;
     }
 
     @Override
@@ -38,20 +45,29 @@ public class DREDataPublisher implements DataPublisher {
 
     @Override
     public void setContext(PluginHostContext context) {
+        InputStream input = null;
+        try {
+            input = context.getStorage().getInputStream("DREFTPConfiguration");
+        }catch (IOException e){
+            logger.error("Fail to load DRE FTP configuration and load default configuration instead:", e);
+        }
+        if (input == null)
+            input = getClass().getResourceAsStream("/configuration/DREFTPConfiguration");
+        FTPConfig config = readFTPConfiguration(input);
+        if (config != null) {
+            config.setContext(context);
+            this.config = config;
+        }
     }
 
-    @Override
-    public String getConfigName() {
-        return "DREFTPConfig.json";
+    private FTPConfig readFTPConfiguration(InputStream input) {
+        FTPConfig config = null;
+        List<String[]> configs = CsvSerializer.readCSV(input);
+        if(configs.size()>0){
+            config = new FTPConfig(configs.get(0));
+        }
+
+        return config;
     }
 
-    @Override
-    public Class<?> getConfigClass() {
-        return FTPConfig.class;
-    }
-
-    @Override
-    public <T> void setConfig(T config) {
-        this.config = (FTPConfig) config;
-    }
 }

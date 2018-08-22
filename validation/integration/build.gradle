@@ -39,6 +39,9 @@ def getTasksByName(def name){
 }
 
 gradle.projectsEvaluated {
+    integrationTest.dependsOn getTasksByName('slaveStartDaemon')
     integrationTest.dependsOn getTasksByName('appStartDaemon')
+
     integrationTest.finalizedBy getTasksByName('appStopDaemon')
+    integrationTest.finalizedBy getTasksByName('slaveStopDaemon')
 }

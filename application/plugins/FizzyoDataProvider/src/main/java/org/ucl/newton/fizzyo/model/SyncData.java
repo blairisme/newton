@@ -8,8 +8,6 @@ import java.util.List;
  * @author Xiaolong Chen
  */
 public class SyncData {
-    private String id;
-    private String timestamp;
     private List<String> requestedData;
     private FizzyoData data;
 

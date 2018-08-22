@@ -1,5 +1,3 @@
-
-# TODO - Replae with your own code
 import math
 
 for x in range(20000):

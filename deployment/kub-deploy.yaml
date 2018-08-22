@@ -51,6 +51,7 @@ spec:
         image: newtonkubregistry.azurecr.io/blairisme/newton:latest
         ports:
         - containerPort: 9090
+        - containerPort: 8443
         volumeMounts:
         - name: shared-data
           mountPath: /root/.newton/experiment
@@ -88,6 +89,9 @@ spec:
   - name: jupyter2
     port: 8888
     targetPort: 8888
+  - name: sshport
+    port: 8443
+    targetPort: 8443
   selector:
     app: master-newton
 ---

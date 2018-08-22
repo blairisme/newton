@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/views/settings/plugins.css"/>
 
     <script src="/resources/scripts/libraries/jquery.js"></script>
     <script src="/resources/scripts/libraries/popper.js"></script>
@@ -35,32 +36,69 @@
             </li>
         </ul>
 
-        <div>
-            <h4>Plugin Settings</h4>
-
-            <form id="projectDetails" action="/settings/plugins/update" method="POST">
-                <section class="form-section section-divider">
-                    <h4>Data Provider</h4>
-
-                    <div th:each="provider :${providers}">
-                        <span th:text="${provider.visualization.name}">Provider name</span>
-                        <div th:replace="${provider.configuration.viewFragment}"></div>
+        <!-- Add Plugin Dialog -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Plugin</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
+                    <div class="modal-body">
+                        <form action="/settings/plugins/add" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label>Choose a plugin to upload</label>
+                                <div class="custom-file">
+                                    <input id="pluginInput" name="image" type="file" accept=".jar" class="custom-file-input" >
+                                    <label id="pluginLabel" class="custom-file-label" for="pluginInput">
+                                        Select plugin...
+                                    </label>
+                                    <div class="invalid-feedback">Please provide a JAR file.</div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid restricted-width-container">
+            <div class="section-divider container-fluid">
+                <div class="row">
+                    <div class="col-md-auto">
+                        <h1 class="page-title">Plugin Settings</h1>
+                        <p>A project contains all the files for your project, including the revision history.</p>
+                    </div>
+                    <div class="col-2 ml-auto">
+                        <button type="button" class="btn btn-primary add-button" data-toggle="modal" data-target="#exampleModal">Add Plugin</button>
+                    </div>
+                </div>
+            </div>
+
+            <form action="/settings/plugins/update" method="POST">
+                <section th:each="provider :${providers}" class="form-section section-divider">
+                    <h4 th:text="${provider.visualization.name}">Provider plugin name</h4>
+                    <p th:text="${provider.visualization.description}">Provider plugin description</p>
+                    <div th:replace="${provider.configuration.viewFragment}"></div>
                 </section>
-
-                <input type="submit" class="btn btn-primary" value="Save"/>
+                <section th:each="processor :${processors}" class="form-section section-divider">
+                    <h4 th:text="${processor.visualization.name}">Processor plugin name</h4>
+                    <p th:text="${processor.visualization.description}">Processor plugin description</p>
+                    <div th:replace="${processor.configuration.viewFragment}"></div>
+                </section>
+                <section th:each="publisher :${publishers}" class="form-section section-divider">
+                    <h4 th:text="${publisher.visualization.name}">Publisher plugin name</h4>
+                    <p th:text="${publisher.visualization.description}">Publisher plugin description</p>
+                    <div th:replace="${publisher.configuration.viewFragment}"></div>
+                </section>
+                <input type="submit" class="btn btn-primary save-button float-right" value="Save Changes"/>
             </form>
-
-
-            <!--<section class="form-section section-divider">-->
-                <!--<h4>Data Processors</h4>-->
-
-                <!--<div th:each="processor :${processors}">-->
-                    <!--<span th:text="${processor.visualization.name}">Processor name</span>-->
-                    <!--<div th:replace="${processor.configuration.viewFragment}"></div>-->
-                <!--</div>-->
-            <!--</section>-->
-
         </div>
     </div>
 

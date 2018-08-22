@@ -58,16 +58,35 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-auto statistics_container">
-                            <h1 class="page-title" th:text="${experiment.name}"></h1>
+                            <div class="row">
+                                <div class="col-md-auto">
+                                    <h1 id="title" class="page-title" th:text="${experiment.name}"></h1>
+                                </div>
+
+                                <div class="dropdown col-md-auto" th:if="${version != null}">
+                                    <button id="version-switcher" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span th:text="@{'Version ' + ${version.number}}">Current Version</span>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="version-switcher">
+                                        <a class="dropdown-item"
+                                           th:each="otherVersion, iteration :${experiment.versionsReversed}"
+                                           th:text="@{'Version ' + ${otherVersion.number}}"
+                                           th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '?version=' + ${otherVersion.number}}">Version</a>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div th:if="${version != null}">
-                                <p th:text="@{'Run date: ' + ${#dates.format(version.created, 'dd-MM-yyyy HH:mm')}}">Run date</p>
-                                <p th:text="@{'Run duration: ' + ${version.durationDescription}}">Run duration</p>
+                                <p id="date" th:text="@{'Run date: ' + ${#dates.format(version.created, 'dd-MM-yyyy HH:mm')}}">Run date</p>
+                                <p id="duration" th:text="@{'Run duration: ' + ${version.durationDescription}}">Run duration</p>
                             </div>
                         </div>
+
                         <div class="col-4 ml-auto">
                             <div class="control_container">
-                                <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/edit'}" role="button">Edit</a>
-                                <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/run'}" role="button">Run</a>
+                                <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/edit'}" role="button" id="edit-experiment">Edit</a>
+                                <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/run'}" role="button" id="run-experiment">Run</a>
                                 <a class="btn btn-primary" th:disabled="${version == null}" href="#" role="button">Publish</a>
                             </div>
                         </div>
@@ -84,14 +103,14 @@
                 <!-- Experiment result types -->
                 <div th:if="${version != null}">
                     <ul class="nav nav-tabs">
-                        <li class="nav-item active" th:if="${not #lists.isEmpty(version.displayOutcomes)}">
-                            <a class="nav-link active" data-toggle="tab" href="#visualizationTab">Visualization</a>
+                        <li class="nav-item" th:if="${not #lists.isEmpty(version.displayOutcomes)}">
+                            <a class="nav-link" data-toggle="tab" href="#visualizationTab">Visualization</a>
+                        </li>
+                        <li class="nav-item" th:if="${not #lists.isEmpty(version.dataOutcomes)}">
+                            <a class="nav-link" th:classappend="${#lists.isEmpty(version.displayOutcomes)} ? active : ''" data-toggle="tab" href="#dataTab">Data</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:classappend="${#lists.isEmpty(version.displayOutcomes)} ? show : ''" data-toggle="tab" href="#dataTab">Data</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#consoleTab">Console</a>
+                            <a class="nav-link" th:classappend="${#lists.isEmpty(version.dataOutcomes)} ? active : ''" data-toggle="tab" href="#consoleTab">Console</a>
                         </li>
                     </ul>
 
@@ -107,7 +126,9 @@
                             </div>
                         </div>
 
-                        <div id="dataTab" class="tab-pane fade" th:classappend="${#lists.isEmpty(version.displayOutcomes)} ? show : ''">
+                        <div id="dataTab" class="tab-pane fade"
+                             th:if="${not #lists.isEmpty(version.dataOutcomes)}"
+                             th:classappend="${#lists.isEmpty(version.displayOutcomes)} ? 'show active' : ''">
                             <ul class="list-group">
                                 <li th:each="outcome, iteration :${version.dataOutcomes}" class="list-group-item file_output">
                                     <img src="/resources/images/experiment/file.png" alt="file icon" width="20"/>
@@ -117,7 +138,8 @@
                             </ul>
                         </div>
 
-                        <div id="consoleTab" class="tab-pane fade">
+                        <div id="consoleTab" class="tab-pane fade"
+                             th:classappend="${#lists.isEmpty(version.dataOutcomes)} ? 'show active' : ''">
                             <object th:each="outcome, iteration :${version.logOutcomes}" th:data="@{'/resources/' + ${outcome.location}}" width="100%" height="1000px">Log Text</object>
                         </div>
                     </div>

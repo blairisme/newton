@@ -41,18 +41,26 @@ ENV newton_slave_port $slave_port
 ENV newton_master_host $master_host
 ENV newton_master_port $master_port
 ENV newton_profile development
+ENV user_home user_dir
 
 
 COPY ./libs/master.war /var/lib/jetty/webapps/ROOT.war
 EXPOSE 9090
-
+EXPOSE 8443
 
 RUN mkdir -p /var/lib/jetty/.newton/experiment
 
 USER root
 COPY ./config/wait-for-it.sh /tmp/jetty/wait-for-it.sh
 RUN chmod +x /tmp/jetty/wait-for-it.sh
-#USER jetty
+USER jetty
 
 WORKDIR $JETTY_BASE
+RUN java -jar ${JETTY_HOME}/start.jar --add-to-startd=ssl,https
+RUN rm -rf /var/lib/jetty/start.d/ssl.ini
+COPY ./config/ssl.ini /var/lib/jetty/start.d/ssl.ini
+COPY ./config/newton.keystore /var/lib/jetty/etc/newton.keystore
+COPY ./config/newton.keystore /var/lib/jetty/start.d/etc/newton.keystore
+
+USER root
 CMD /tmp/jetty/wait-for-it.sh database:3306 -t 60 -- java -jar $JETTY_HOME/start.jar -Djetty.port=9090
