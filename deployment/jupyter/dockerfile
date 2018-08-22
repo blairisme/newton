@@ -26,6 +26,7 @@ RUN easy_install-3.6 pip
 RUN pip3 install jupyterhub==0.9.1
 RUN pip3 install jupyterlab==0.32.1
 RUN pip3 install jupyterhub-jwtauthenticator==0.1
+RUN pip3 install matplotlib==2.2.3
 
 # Install libraries required by Jupyter applications
 RUN yum install nodejs npm -y
