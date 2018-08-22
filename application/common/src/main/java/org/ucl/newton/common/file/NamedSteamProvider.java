@@ -30,8 +30,10 @@ public class NamedSteamProvider implements StreamProvider<String>
     public InputStream getInputStream(String key) throws IOException {
         Path path = rootPath.resolve(key);
         File file = path.toFile();
-        FileUtils.createNew(file);
-        return new FileInputStream(file);
+        if (file.exists()) {
+            return new FileInputStream(file);
+        }
+        return null;
     }
 
     @Override
