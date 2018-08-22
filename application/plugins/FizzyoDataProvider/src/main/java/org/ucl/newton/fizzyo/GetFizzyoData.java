@@ -73,10 +73,13 @@ public class GetFizzyoData implements Runnable
         params.put("requestedData",configuration.getRequestData());
 
         String data = HttpUtils.doGet(url,header,params);
+
         Gson gson = new Gson();
         FizzyoResponse response = gson.fromJson(data,FizzyoResponse.class);
         return response.getSyncData();
     }
+
+
 
 
     private void dataUpdated(String name) {

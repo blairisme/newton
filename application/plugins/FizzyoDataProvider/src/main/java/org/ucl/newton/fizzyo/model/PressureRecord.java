@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class PressureRecord implements FizzyoDataUnit{
     private int goodBreaths;
-    private int breaths;
-    private int averageBreathLength;
+    private String breaths;
+    private String averageBreathLength;
     private String id;
     private String startTime;
     private String endTime;
@@ -36,18 +36,18 @@ public class PressureRecord implements FizzyoDataUnit{
         values.add(patientRecordId);
         values.add(startTime);
         values.add(endTime);
-        values.add(Integer.toString(breaths));
+        values.add(breaths);
         values.add(Integer.toString(goodBreaths));
         values.add(averagePressure);
-        values.add(Integer.toString(averageBreathLength));
+        values.add(averageBreathLength);
         return values;
     }
     public int getGoodBreaths() { return goodBreaths; }
     public void setGoodBreaths(int goodBreaths) { this.goodBreaths = goodBreaths; }
-    public int getBreaths() { return breaths; }
-    public void setBreaths(int breaths) { this.breaths = breaths; }
-    public int getAverageBreathLength() { return averageBreathLength; }
-    public void setAverageBreathLength(int averageBreathLength) { this.averageBreathLength = averageBreathLength; }
+    public String getBreaths() { return breaths; }
+    public void setBreaths(String breaths) { this.breaths = breaths; }
+    public String getAverageBreathLength() { return averageBreathLength; }
+    public void setAverageBreathLength(String averageBreathLength) { this.averageBreathLength = averageBreathLength; }
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
     public String getStartTime() { return startTime; }
