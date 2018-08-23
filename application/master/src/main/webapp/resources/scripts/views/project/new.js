@@ -18,22 +18,22 @@ function addMember(id, name, email, image) {
 
     if($(memberDataId).length === 0) {
         $("#projectMembersList").append(
-            `<li id="listItem${id}" class="list-group-item project-list-item">
-            <img src="/resources/images/profile/${image}" class="rounded-circle avatar" alt="Profile picture"/>
-            <span>${name} (${email})</span>
-            <button type="button" class="btn btn-outline-primary remove_button" onclick="removeMember(${id})">Remove</button>
-        </li>`
+            "<li id=\"listItem${id}\" class=\"list-group-item project-list-item\">" +
+            "<img src=\"/resources/images/profile/${image}\" class=\"rounded-circle avatar\" alt=\"Profile picture\"/>" +
+            "<span>${name} (${email})</span>" +
+            "<button type=\"button\" class=\"btn btn-outline-primary remove_button\" onclick=\"removeMember(${id})\">Remove</button>" +
+        "</li>"
         );
 
         $("#projectMembersData").append(
-            `<option id="dataItem${id}" value="${id}" selected="selected"></option>`
+            "<option id=\"dataItem${id}\" value=\"${id}\" selected=\"selected\"></option>"
         );
     }
 }
 
 function removeMember(id) {
-    $(`#listItem${id}`).remove();
-    $(`#dataItem${id}`).remove();
+    $("#listItem${id}").remove();
+    $("#dataItem${id}").remove();
 
     if ($("#projectMembersList li").length === 0) {
         $("#projectMembersListEmpty").show();
@@ -59,10 +59,10 @@ $(document).ready(function() {
         templates: {
             empty: "<span class=\"empty-message\">No matching users</span>",
             suggestion: Handlebars.compile(
-                `<div>
-                    <img src="/resources/images/profile/{{image}}" class="rounded-circle avatar" alt="Profile picture"/>
-                    <span><strong>{{name}}</strong> ({{email}})</span>
-                </div>`)
+                "<div>" +
+                    "<img src=\"/resources/images/profile/{{image}}\" class=\"rounded-circle avatar\" alt=\"Profile picture\"/>" +
+                    "<span><strong>{{name}}</strong> ({{email}})</span>" +
+                "</div>")
         }
     });
 
