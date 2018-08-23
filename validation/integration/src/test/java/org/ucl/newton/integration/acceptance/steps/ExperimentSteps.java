@@ -9,6 +9,7 @@
 
 package org.ucl.newton.integration.acceptance.steps;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -33,6 +34,7 @@ import static java.util.stream.Collectors.toList;
  * Cucumber steps that drive the experiment user interface.
  *
  * @author Blair Butterworth
+ * @author John Wilkie
  */
 public class ExperimentSteps
 {
@@ -50,6 +52,11 @@ public class ExperimentSteps
         ExperimentService experimentService = newton.getExperimentService();
         experimentService.removeExperiments(dtos);
         experimentService.addExperiments(dtos);
+    }
+
+    @Given("^the user is on the new experiment page for (.*)$")
+    public void onNewExperimentPage(String project) {
+        driver.get("http://localhost:9090/project/" + project + "/new");
     }
 
     @When("^the user browses to the experiments page for (.*)$")
@@ -71,6 +78,27 @@ public class ExperimentSteps
         runExperiment.click();
 
         WebDriverUtils.waitForElementToExist(driver, By.id("title"), 1000, 10);
+    }
+
+    @And("^clicks the new experiment button$")
+    public void clickNewExperimentButton() {
+        WebElement newExperimentButton = driver.findElement(By.id("newExpBtn"));
+        newExperimentButton.click();
+    }
+
+    @When("^the user enters the experiment details:$")
+    public void enterExperimentDetails(List<Experiment> experiments) {
+        Experiment experiment3 = experiments.get(0);
+
+        driver.findElement(By.id("experimentNameInput")).sendKeys(experiment3.getName());
+        driver.findElement(By.id("experimentDescInput")).sendKeys(experiment3.getDescription());
+
+    }
+
+    @And("^clicks the create experiment button$")
+    public void clickCreateNewExperiment() {
+        WebElement createExperimentButton = driver.findElement(By.id("createBtn"));
+        createExperimentButton.click();
     }
 
     @Then("^the experiment list should contain the following experiments:$")
@@ -97,5 +125,11 @@ public class ExperimentSteps
         WebElement title = driver.findElement(By.id("title"));
         Assert.assertEquals(experiment.getName(), title.getText());
     }
+
+    @Then("^the user should be on the new experiment page for (.*)$")
+    public void assertNewExperimentPage(String project) {
+        Assert.assertEquals("http://localhost:9090/project/" + project +"/new", driver.getCurrentUrl());
+    }
+
 }
 

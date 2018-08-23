@@ -3,16 +3,35 @@ package org.ucl.newton.fizzyo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.ucl.newton.sdk.plugin.PluginHostContext;
+import org.ucl.newton.sdk.plugin.PluginHostStorage;
 import org.ucl.newton.sdk.plugin.PluginVisualization;
 import org.ucl.newton.sdk.provider.BasicDataSource;
 import org.ucl.newton.sdk.provider.DataSource;
 
+import java.io.IOException;
+
+import static java.lang.Thread.sleep;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 public class FizzyoDataProviderTest {
     private FizzyoDataProvider provider;
-
+    private PluginHostContext context;
     @Before
     public void setUp() {
+
         provider = new FizzyoDataProvider();
+        context = () -> {
+            PluginHostStorage storage = mock(PluginHostStorage.class);
+            try {
+                when(storage.getInputStream(anyString())).thenReturn(getClass().getResourceAsStream("/configuration/FizzyoConfiguration"));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            return storage;
+        };
     }
 
     @Test
@@ -41,5 +60,11 @@ public class FizzyoDataProviderTest {
     @Test
     public void getDataSourcesTest(){
         Assert.assertEquals(6,provider.getDataSources().size());
+    }
+
+    @Test
+    public void startTest(){
+        provider.setContext(context);
+        provider.start();
     }
 }

@@ -43,7 +43,7 @@ public class WeatherDataProvider extends BasicDataProvider
 
     public WeatherDataProvider(){
         this.dataSources = new ArrayList<>();
-        this.dataSources.add(new BasicDataSource(this, "weather", "Weather Data"));
+        this.dataSources.add(new BasicDataSource(this, "weather.csv", "Weather Data"));
         this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
         this.handler = new GetWeatherData(this);
     }
