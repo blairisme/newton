@@ -1,14 +1,15 @@
 package org.ucl.newton.fizzyo;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.ucl.newton.common.file.FileUtils;
 import org.ucl.newton.sdk.provider.DataProviderObserver;
 import org.ucl.newton.sdk.provider.DataSource;
 import org.ucl.newton.sdk.provider.DataStorage;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -20,21 +21,28 @@ import static org.mockito.Mockito.*;
  */
 
 public class GetFizzyoDataTest {
+
     @Test
-    @Ignore //it need set authCode manually every time
-    public void GetFizzyoDataTest()throws IOException {
-        DataProviderObserver observer = mock(DataProviderObserver.class);
-        DataStorage storageProvider = mock(DataStorage.class);
-        when(storageProvider.getOutputStream(any(DataSource.class))).thenReturn(mock(OutputStream.class));
+    public void GetFizzyoDataTest() throws IOException{
+        FizzyoDataProvider provider = new FizzyoDataProvider();
 
-        FizzyoDataProvider dataProvider = new FizzyoDataProvider();
-        dataProvider.setStorage(storageProvider);
-        dataProvider.addObserver(observer);
+        GetFizzyoData getFizzyoData = new GetFizzyoData(provider);
+        String[] config = {"00000000-0000-0000-0000-000000000001","A1oRkpQJ0dNX1z3RA2K2zKKaLOvE2MwzA1oRkpQJ0dNxxDoJNonZWDzaLOvE2Mwz","1514764800","1533772800","[ \"all\" ]"};
+        FizzyoConfiguration fizzyoConfiguration = new FizzyoConfiguration(config);
 
-        GetFizzyoData getWeatherData = new GetFizzyoData(dataProvider);
-        getWeatherData.run();
+        DataProviderObserver observer = Mockito.mock(DataProviderObserver.class);
+        DataStorage storage = mock(DataStorage.class);
+        when(storage.getOutputStream(any(DataSource.class))).thenReturn(new FileOutputStream("test"));
 
-//        Mockito.verify(observer, times(1)).dataUpdated(Mockito.mock(DataSource.class));
-//        Mockito.verify(storageProvider, times(1)).getOutputStream(any(DataSource.class));
+        provider.setStorage(storage);
+        provider.addObserver(observer);
+
+        getFizzyoData.setConfiguration(fizzyoConfiguration);
+        getFizzyoData.run();
+        FileUtils.delete(new File("test"));
+
+        verify(storage,times(5)).getOutputStream(any(DataSource.class));
+        verify(observer, times(5)).dataUpdated(any(DataSource.class));
+
     }
 }

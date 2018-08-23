@@ -9,7 +9,9 @@
 
 package org.ucl.newton.slave.service;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 import org.ucl.newton.bridge.ExecutionRequest;
 import org.ucl.newton.bridge.ExecutionResult;
@@ -36,6 +38,7 @@ public class WorkspaceServiceTest extends ServiceTestCase
 {
     @Test
     public void createWorkspaceTest() {
+        Assume.assumeFalse("Only applies when run on Unix based systems", SystemUtils.IS_OS_WINDOWS);
         ApplicationUrls applicationUrls = getApplicationUrls();
         ApplicationStorage applicationStorage = getApplicationStorage();
         ApplicationPreferences applicationPreferences = getApplicationPreferences();
@@ -50,6 +53,7 @@ public class WorkspaceServiceTest extends ServiceTestCase
 
     @Test
     public void collateResultsTest() throws Exception {
+        Assume.assumeFalse("Only applies when run on Unix based systems", SystemUtils.IS_OS_WINDOWS);
         ApplicationUrls applicationUrls = getApplicationUrls();
         ApplicationStorage applicationStorage = getApplicationStorage();
         ApplicationPreferences applicationPreferences = getApplicationPreferences();

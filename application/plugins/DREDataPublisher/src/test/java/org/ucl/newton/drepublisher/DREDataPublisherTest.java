@@ -7,9 +7,6 @@ import org.ucl.newton.sdk.plugin.PluginHostContext;
 import org.ucl.newton.sdk.plugin.PluginHostStorage;
 import org.ucl.newton.sdk.plugin.PluginVisualization;
 
-import java.io.FileInputStream;
-
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

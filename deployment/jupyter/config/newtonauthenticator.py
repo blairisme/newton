@@ -1,3 +1,9 @@
+#
+# JWTAuthenticator by mogthesprog, licensed under Apache License 2.0
+#
+#       https://github.com/mogthesprog/jwtauthenticator
+#
+
 from jupyterhub.handlers import BaseHandler
 from jupyterhub.auth import Authenticator
 from jupyterhub.auth import LocalAuthenticator
