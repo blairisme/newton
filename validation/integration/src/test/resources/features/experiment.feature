@@ -38,3 +38,28 @@ Scenario: View experiment details
 Scenario: Run experiment
   When the user browses to the experiment details page for experiment-1 (project-1)
   And the user runs the experiment
+
+Scenario: View new experiment page
+  When the user browses to the experiments page for project-1
+  And clicks the new experiment button
+  Then the user should be on the new experiment page for project-1
+
+Scenario: Create new experiment
+  Given the user is on the new experiment page for project-1
+  When the user enters the experiment details:
+    | identifier    | name          | description           | creator                           | project       |
+    | experiment-3  | Experiment 3  | A third experiment    | blair.butterworth.17@ucl.ac.uk    | project-1     |
+  And clicks the create experiment button
+  Then the experiment list should contain the following experiments:
+    | identifier    | name          | description           | creator                           | project       |
+    | experiment-1  | Experiment 1  | An experiment         | blair.butterworth.17@ucl.ac.uk    | project-1     |
+    | experiment-2  | Experiment 2  | Another experiment    | blair.butterworth.17@ucl.ac.uk    | project-1     |
+    | experiment-3  | Experiment 3  | A third experiment    | blair.butterworth.17@ucl.ac.uk    | project-1     |
+
+Scenario: Create new experiment with empty name
+  Given the user is on the new experiment page for project-1
+  When the user enters the experiment details:
+    | identifier    | name          | description           | creator                           | project       |
+    | experiment-3  |               | A third experiment    | blair.butterworth.17@ucl.ac.uk    | project-1     |
+  And clicks the create experiment button
+  Then the user should be on the new experiment page for project-1
