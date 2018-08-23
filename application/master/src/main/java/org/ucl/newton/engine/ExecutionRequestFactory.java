@@ -28,7 +28,7 @@ public class ExecutionRequestFactory extends ExecutionRequestBuilder
 {
     public ExecutionRequestFactory setExperiment(Experiment experiment) {
         setExperiment(experiment.getIdentifier());
-        setVersion(Integer.toString(experiment.getVersions().size() + 1));
+        setVersion(Integer.toString((int)(Math.random()*10000000)));
 
         ExperimentConfiguration configuration = experiment.getConfiguration();
         setProcessor(configuration.getProcessorPluginId());

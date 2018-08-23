@@ -30,8 +30,8 @@ public class ApplicationConcurrency
     @Bean(name = "experiment")
     public Executor experimentExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(2);
+        executor.setCorePoolSize(1);
+        executor.setMaxPoolSize(1);
         executor.setQueueCapacity(500);
         executor.setDaemon(true);
         executor.setThreadNamePrefix("Experiment-");
