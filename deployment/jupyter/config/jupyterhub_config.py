@@ -1,3 +1,14 @@
+#
+# Newton (c)
+#
+# This work is licensed under the MIT License. To view a copy of this
+# license, visit
+#
+#      https://opensource.org/licenses/MIT
+#
+# Author: Blair Butterworth
+#
+
 import os
 import sys
 import inspect
@@ -11,10 +22,30 @@ if current_path not in sys.path:
 from newtonspawner import NewtonSpawner
 from newtonauthenticator import NewtonAuthenticator
 
+#------------------------------------------------------------------------------
+# Jupyter Hub Configuration
+#------------------------------------------------------------------------------
+
+#c.JupyterHub.ssl_key = '/etc/jupyterhub/privkey.pem'
+#c.JupyterHub.ssl_cert = '/etc/jupyterhub/fullchain.pem'
+
 
 #------------------------------------------------------------------------------
-# Spawner configuration
+# Newton Spawner configuration
 #------------------------------------------------------------------------------
+
+def create_dir_hook(spawner):
+    username = spawner.user.name
+    experiment = spawner.authenticator.experiment_id
+    experiment_data = '/home/newton/experiment/' + experiment + '/repository/data'
+    data_root = '/home/newton/data'
+
+    print(experiment_data)
+    print(data_root)
+
+    if not path.exists(experiment_data):
+        os.symlink(data_root, experiment_data)
+
 
 c.JupyterHub.spawner_class = NewtonSpawner
 c.Spawner.default_url = '/lab'
@@ -22,10 +53,11 @@ c.Spawner.ip = '0.0.0.0'
 c.Spawner.args = ['--allow-root']
 c.Spawner.notebook_dir = '/home/newton/experiment/{experiment_id}/repository'
 c.Spawner.disable_user_config = True
+c.Spawner.pre_spawn_hook = create_dir_hook
 
 
 #------------------------------------------------------------------------------
-# Authenticator configuration
+# Newton Authenticator configuration
 #------------------------------------------------------------------------------
 
 c.JupyterHub.authenticator_class = NewtonAuthenticator

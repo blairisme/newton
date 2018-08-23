@@ -32,7 +32,8 @@ services:
       - "8000:8000"
       - "8888:8888"
     volumes:
-      - experiment_repository:/home/newton/experiment
+      - experiment_repo:/home/newton/experiment
+      - experiment_data:/home/newton/data
     networks:
       - backend
 
@@ -61,7 +62,8 @@ services:
     networks:
       - backend
     volumes:
-      - experiment_repository:/root/.newton/experiment
+      - experiment_repo:/root/.newton/experiment
+      - experiment_data:/root/.newton/data
 
   # Configuration for the Slave service.
   slave:
@@ -82,4 +84,5 @@ networks:
   backend:
 
 volumes:
-  experiment_repository:
+  experiment_repo:
+  experiment_data:

@@ -38,6 +38,8 @@ COPY ./config/jupyterhub_config.py /etc/jupyterhub/jupyterhub_config.py
 COPY ./config/newtonspawner.py /etc/jupyterhub/newtonspawner.py
 COPY ./config/newtonauthenticator.py /etc/jupyterhub/newtonauthenticator.py
 COPY ./config/newton.key /etc/jupyterhub/newton.key
+COPY ./config/fullchain.pem /etc/jupyterhub/fullchain.pem
+COPY ./config/privkey.pem /etc/jupyterhub/privkey.pem
 
 RUN mkdir -p /home/newton/experiment
 RUN chmod -R a+rwx /home/newton/experiment
