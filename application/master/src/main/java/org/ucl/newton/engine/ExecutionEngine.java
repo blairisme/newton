@@ -75,7 +75,8 @@ public class ExecutionEngine implements ExecutionController, ExecutionPipelineOb
 
     @Override
     public void executionComplete(ExecutionTask task) {
-        logger.info("Experiment complete", task);
+        task.getStopwatch().stop();
+        logger.info("Experiment complete: " + task);
         tasks.remove(task.getExperiment().getIdentifier());
 
         if (task.hasError()) {

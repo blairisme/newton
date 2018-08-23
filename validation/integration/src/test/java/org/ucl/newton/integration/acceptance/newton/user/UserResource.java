@@ -19,7 +19,9 @@ import org.ucl.newton.common.network.RestResource;
 public enum UserResource implements RestResource
 {
     User    ("user"),
-    Users   ("users");
+    Users   ("users"),
+    UpdateRole ("updaterole"),
+    UserRole ("userrole");
 
     private String path;
 

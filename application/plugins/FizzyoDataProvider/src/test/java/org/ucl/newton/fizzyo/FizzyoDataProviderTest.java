@@ -63,7 +63,7 @@ public class FizzyoDataProviderTest {
     }
 
     @Test
-    public void startTest() throws Exception{
+    public void startTest(){
         provider.setContext(context);
         provider.start();
     }
