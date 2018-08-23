@@ -9,10 +9,13 @@
 
 package org.ucl.newton.engine;
 
+import com.google.common.base.Stopwatch;
 import org.ucl.newton.bridge.ExecutionFailure;
 import org.ucl.newton.bridge.ExecutionRequest;
 import org.ucl.newton.bridge.ExecutionResult;
 import org.ucl.newton.framework.Experiment;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Represents an request to execute an experiment and the results of doing so.
@@ -25,13 +28,19 @@ public class ExecutionTask
     private ExecutionRequest request;
     private ExecutionResult result;
     private String error;
+    private Stopwatch stopwatch;
 
     public ExecutionTask(Experiment experiment) {
         this.experiment = experiment;
+        stopwatch = Stopwatch.createStarted();
     }
 
     public Experiment getExperiment() {
         return experiment;
+    }
+
+    public Stopwatch getStopwatch(){
+        return stopwatch;
     }
 
     public void setExperiment(Experiment experiment) {
@@ -68,5 +77,16 @@ public class ExecutionTask
 
     public void setError(Throwable exception) {
         this.error = exception.getMessage();
+    }
+
+    @Override
+    public String toString() {
+        return "ExecutionTask{" +
+                "experiment=" + request.getExperiment() +
+                ", version=" + request.getVersion() +
+                ", results=" + (result==null ? "no results" : result.getOutputs()) +
+                ", error='" + error + '\'' +
+                ", elapsed time=" + stopwatch.elapsed(TimeUnit.MILLISECONDS) +
+                '}';
     }
 }
