@@ -18,10 +18,10 @@ function addMember(id, name, email, image) {
 
     if($(memberDataId).length === 0) {
         $("#projectMembersList").append(
-            "<li id=\"listItem${id}\" class=\"list-group-item project-list-item\">" +
-            "<img src=\"/resources/images/profile/${image}\" class=\"rounded-circle avatar\" alt=\"Profile picture\"/>" +
-            "<span>${name} (${email})</span>" +
-            "<button type=\"button\" class=\"btn btn-outline-primary remove_button\" onclick=\"removeMember(${id})\">Remove</button>" +
+            "<li id=\"listItem" + id + "\" class=\"list-group-item project-list-item\">" +
+            "<img src=\"/resources/images/profile/" + image + "\" class=\"rounded-circle avatar\" alt=\"Profile picture\"/>" +
+            "<span>" + name + " (" + email + ")</span>" +
+            "<button type=\"button\" class=\"btn btn-outline-primary remove_button\" onclick=\"removeMember(" + id + ")\">Remove</button>" +
         "</li>"
         );
 
@@ -32,8 +32,8 @@ function addMember(id, name, email, image) {
 }
 
 function removeMember(id) {
-    $("#listItem${id}").remove();
-    $("#dataItem${id}").remove();
+    $("#listItem" + id).remove();
+    $("#dataItem" + id).remove();
 
     if ($("#projectMembersList li").length === 0) {
         $("#projectMembersListEmpty").show();

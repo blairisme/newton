@@ -17,10 +17,10 @@ function selectMember(id, name, image, email) {
     $("#projectMembersList").empty();
 
     $("#projectMembersList").append(
-        `<div>
-            <img src="/resources/images/profile/${image}" class="rounded-circle avatar" alt="Profile picture"/>
-            <span>${name} (${email})</span>
-        </div>`
+        "<div>" +
+            "<img src=\"/resources/images/profile/" + image + "\" class=\"rounded-circle avatar\" alt=\"Profile picture\"/>" +
+            "<span>" + name + " (" + email + ")</span>" +
+        "</div>"
     );
 
     $.ajax({
@@ -70,10 +70,10 @@ $(document).ready(function() {
         templates: {
             empty: "<span class=\"empty-message\">No matching users</span>",
             suggestion: Handlebars.compile(
-                `<div class="suggestion">
-                    <img src="/resources/images/profile/{{image}}" class="rounded-circle avatar" alt="Profile picture"/>
-                    <span><strong>{{name}}</strong> ({{email}})</span>
-                </div>`)
+                "<div>" +
+                "<img src=\"/resources/images/profile/{{image}}\" class=\"rounded-circle avatar\" alt=\"Profile picture\"/>" +
+                "<span><strong>{{name}}</strong> ({{email}})</span>" +
+                "</div>")
         }
     });
 
