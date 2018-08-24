@@ -45,7 +45,7 @@ public class GetWeatherData implements Runnable
     @Override
     public void run() {
         List<List<String>> listOfRecord = new ArrayList<>();
-        List<WeatherProperty> weatherList = weatherConfig.getWeatherList();
+        List<WeatherProperty> weatherList = convertWeatherList(weatherConfig.getWeatherList());
         if(!weatherList.isEmpty())
             listOfRecord.add(getHeader());
         for (WeatherProperty property : weatherList){
@@ -58,6 +58,20 @@ public class GetWeatherData implements Runnable
             writeToOutput(listOfRecord);
             provider.notifyDataUpdated(provider.getWeatherDataSource());
         }
+    }
+
+    private List<WeatherProperty> convertWeatherList(List<WeatherProperty> weatherList) {
+        List<WeatherProperty> newList = new ArrayList<>();
+        for(WeatherProperty property : weatherList){
+            WeatherProperty temp = property.getClone();
+            int interval = Integer.parseInt(temp.getInterval());
+            while (interval >0){
+                newList.add(temp.getClone());
+                temp.descendDate();
+                interval = interval - 1;
+            }
+        }
+        return newList;
     }
 
     // list of properties need to be configured instead of hardcode
@@ -80,6 +94,7 @@ public class GetWeatherData implements Runnable
         String date = property.getDate();
         if (!Strings.isNullOrEmpty(date))
             params.put("date",date);
+
         String data = HttpUtils.doGet(url, header, params);
         return data;
     }
