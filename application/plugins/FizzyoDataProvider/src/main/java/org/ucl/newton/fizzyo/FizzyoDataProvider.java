@@ -46,12 +46,12 @@ public class FizzyoDataProvider extends BasicDataProvider
         this.scheduler = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
         this.handler = new GetFizzyoData(this);
 
-        this.dataSources.add(new BasicDataSource(this,"pressure-raw.csv","pressure-raw"));
-        this.dataSources.add(new BasicDataSource(this,"exercise-sessions.csv","exercise-sessions"));
-        this.dataSources.add(new BasicDataSource(this,"foot-steps.csv","foot-steps"));
-        this.dataSources.add(new BasicDataSource(this,"foot-steps-granular.csv","foot-steps-granular"));
-        this.dataSources.add(new BasicDataSource(this,"games-sessions.csv","games-sessions"));
-        this.dataSources.add(new BasicDataSource(this,"heart-rate.csv","heart-rate"));
+        this.dataSources.add(new BasicDataSource(this, "pressure-raw.csv", "Fizzyo pressure data (raw)"));
+        this.dataSources.add(new BasicDataSource(this, "exercise-sessions.csv", "Fizzyo exercise session data"));
+        this.dataSources.add(new BasicDataSource(this, "foot-steps.csv", "Fizzyo foot step data"));
+        this.dataSources.add(new BasicDataSource(this, "foot-steps-granular.csv", "Fizzyo foot step data (granular)"));
+        this.dataSources.add(new BasicDataSource(this, "games-sessions.csv", "Fizzyo game session data"));
+        this.dataSources.add(new BasicDataSource(this, "heart-rate.csv", "Fizzyo heart rate data"));
     }
 
     @Override
