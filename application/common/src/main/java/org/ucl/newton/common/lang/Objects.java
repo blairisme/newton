@@ -11,6 +11,8 @@ package org.ucl.newton.common.lang;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Instances of this class provide utility functions for use working with
@@ -26,6 +28,10 @@ public class Objects
 
     public static <T> Collection<T> ensureNotNull(Collection<T> values) {
         return ensureNotNull(values, new ArrayList<T>());
+    }
+
+    public static <K, V> Map<K, V> ensureNotNull(Map<K, V> values) {
+        return ensureNotNull(values, new HashMap<>());
     }
 
     public static <T> T ensureNotNull(T value, T alternative) {
