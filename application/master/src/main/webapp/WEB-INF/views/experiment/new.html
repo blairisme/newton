@@ -42,8 +42,8 @@
 
                 <!-- description -->
                 <div class="form-group">
-                    <label for="experimentDescInput">Experiment description <span class="text-danger">*</span></label>
-                    <input id="experimentDescInput" th:field="*{description}" type="text" class="form-control" placeholder="" required="required">
+                    <label for="experimentDescInput">Experiment description</label>
+                    <input id="experimentDescInput" th:field="*{description}" type="text" class="form-control" placeholder="">
                 </div>
 
                 <!-- run trigger -->
@@ -140,7 +140,9 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <th:block th:each="dataSource : ${project.dataSources}">
-                                <a class="dropdown-item" href="#" th:text="${dataSource}"></a>
+                                <a class="dropdown-item" href="#"
+                                   th:text="${dataSourceDetails.get(dataSource)?.name}"
+                                   th:value="${dataSourceDetails.get(dataSource)?.identifier}"></a>
                             </th:block>
                         </div>
                     </div>

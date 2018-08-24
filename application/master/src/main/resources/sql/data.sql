@@ -76,8 +76,8 @@ INSERT INTO project_starred (project_id, user_id) VALUES (8, 2);
 INSERT INTO project_starred (project_id, user_id) VALUES (13, 2);
 
 /* Project data sources */
-INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (1, 1, 'newton-weather');
-INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (2, 1, 'newton-fizzyo');
+INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (1, 1, 'weather.csv');
+INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (2, 1, 'heart-rate.csv');
 
 /* Insert into storage configuration */
 INSERT INTO storage_configuration (sc_id, sc_type, sc_location, sc_initial_script) VALUES (1, 'Newton', 'classpath:/experiment/experiment-1/repository', 'main.py');
@@ -112,7 +112,7 @@ INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, proj
 INSERT INTO experiments (exp_id, exp_identifier, exp_name, exp_description, project_id, creator_id, exp_config_id) VALUES (12, 'experiment-12', 'Gamification impact by game', 'Experiment description', 1, 1, 12);
 
 /* Insert into experiment data sources */
-INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (1, 'weather', 'someloc/input.csv');
+INSERT INTO eds (eds_id, ds_id, eds_custom_location) VALUES (1, 'weather.csv', 'someloc/input.csv');
 
 /* Insert into join table between experiments and experiment data sources */
 INSERT INTO experiment_eds_link (exp_config_id, eds_id) VALUES (1, 1);

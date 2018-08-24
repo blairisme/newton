@@ -66,9 +66,9 @@
 
                     <!-- description -->
                     <div class="form-group">
-                        <label for="experimentDescInput">Experiment description <span class="text-danger">*</span></label>
+                        <label for="experimentDescInput">Experiment description</label>
                         <input id="experimentDescInput" name="description" type="text" class="form-control"
-                               required="required" th:value="${experiment.description}">
+                               th:value="${experiment.description}">
                     </div>
 
                     <!-- run trigger -->
@@ -150,10 +150,10 @@
                     <p>Select which of the available data sources to use in this experiment.</p>
 
                     <ul id="dsList" class="list-group list-group-flush">
-                        <th:block th:each="dataSource : ${experiment.configuration.getExperimentDataSources()}" >
-                            <li class="list-group-item project-list-item" th:id="'ds' + ${dataSource.dataSourceId}">
+                        <th:block th:each="dataSource, iteration : ${experiment.configuration.getExperimentDataSources()}" >
+                            <li class="list-group-item project-list-item" th:id="'ds' + ${iteration.index}">
                                 <p class="float-left" th:inline="text">Name: [[${dataSource.dataSourceId}]] <br/>Location: [[${dataSource.customLocation}]] </p>
-                                <button type="button" class="btn btn-outline-primary remove_button float-right" th:value="${dataSource.dataSourceId}">Remove</button>
+                                <button type="button" class="btn btn-outline-primary remove_button float-right" th:value="${iteration.index}">Remove</button>
                             </li>
                         </th:block>
                         <p th:hidden="${experiment.configuration.getExperimentDataSources().size()} > 0 " id="dsListEmpty"

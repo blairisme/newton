@@ -48,7 +48,7 @@ public class DataApi
         this.userService = userSerive;
     }
 
-    @RequestMapping(value = "/api/data/{dataSourceId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/data/{dataSourceId:.+}", method = RequestMethod.GET)
     @ResponseBody
     public FileSystemResource getDataSource(@PathVariable("dataSourceId") String dataSourceId) {
         DataSource dataSource = dataService.getDataSource(dataSourceId);

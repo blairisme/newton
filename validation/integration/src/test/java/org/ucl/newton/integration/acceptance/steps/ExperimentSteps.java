@@ -36,6 +36,7 @@ import static java.util.stream.Collectors.toList;
  * @author Blair Butterworth
  * @author John Wilkie
  */
+@SuppressWarnings("unused")
 public class ExperimentSteps
 {
     private WebDriver driver;

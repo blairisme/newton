@@ -19,6 +19,7 @@ import org.ucl.newton.common.lang.JarInstanceLoader;
 import org.ucl.newton.sdk.plugin.NewtonPlugin;
 import org.ucl.newton.sdk.processor.DataProcessor;
 import org.ucl.newton.sdk.provider.DataProvider;
+import org.ucl.newton.sdk.provider.DataSource;
 import org.ucl.newton.sdk.publisher.DataPublisher;
 
 import javax.inject.Inject;
@@ -83,6 +84,14 @@ public class PluginService implements ApplicationListener<ContextRefreshedEvent>
         providers = null;
         processors = null;
         publishers = null;
+    }
+
+    public Collection<DataSource> getDataSources() {
+        Collection<DataSource> result = new ArrayList<>();
+        for (DataProvider dataProvider: getDataProviders()) {
+            result.addAll(dataProvider.getDataSources());
+        }
+        return result;
     }
 
     public Collection<DataProvider> getDataProviders() {

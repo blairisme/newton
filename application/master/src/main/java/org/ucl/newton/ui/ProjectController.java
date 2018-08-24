@@ -108,14 +108,14 @@ public class ProjectController
         User user = userService.getAuthenticatedUser();
         model.addAttribute("user", user);
         model.addAttribute("project", projectService.getProjectByIdentifier(name, true));
-        model.addAttribute("dataProviders", pluginService.getDataProviders());
+        model.addAttribute("dataSources", pluginService.getDataSources());
         return "project/settings";
     }
 
     @RequestMapping(value = "/project/new", method = RequestMethod.GET)
     public String newProject(ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());
-        model.addAttribute("dataProviders", pluginService.getDataProviders());
+        model.addAttribute("dataSources", pluginService.getDataSources());
         return "project/new";
     }
 
@@ -156,7 +156,7 @@ public class ProjectController
         }
     }
 
-    @PostMapping("/project/{ident}/settings")
+    @PostMapping("/project/{ident}/update")
     public String updateProject(
             @PathVariable("ident")String projectIdentifier,
             @RequestParam(required=false) String description,
@@ -177,15 +177,9 @@ public class ProjectController
             projectService.updateProject(projectToUpdate);
         } catch (Throwable exception) {
             model.addAttribute("error", "Error: " + exception.getMessage());
-            model.addAttribute("user", userService.getAuthenticatedUser());
-            model.addAttribute("project", projectService.getProjectByIdentifier(projectIdentifier, true));
-            model.addAttribute("dataProviders", pluginService.getDataProviders());
             return "project/settings";
         }
-        model.addAttribute("user", userService.getAuthenticatedUser());
-        model.addAttribute("project", projectService.getProjectByIdentifier(projectIdentifier, true));
-        model.addAttribute("dataProviders", pluginService.getDataProviders());
-        return "project/settings";
+        return "redirect:/project/" + projectIdentifier + "/settings";
     }
 
 
