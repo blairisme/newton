@@ -14,7 +14,8 @@ public class PublishDataTest {
     public void runTest() throws IOException {
         String[] configs = {"0.0.0.0","username","password","0"};
         FTPClient ftpClient = mock(FTPClient.class);
-        FTPConfig config = new FTPConfig(configs);
+        FTPConfig config = new FTPConfig();
+        config.setValues(configs);
         DREFTPServer dreftpServer = new DREFTPServer(config);
         dreftpServer.setFTPClient(ftpClient);
         when(ftpClient.getReplyCode()).thenReturn(200);

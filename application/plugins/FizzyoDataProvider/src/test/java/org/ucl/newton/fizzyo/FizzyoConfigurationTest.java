@@ -25,7 +25,8 @@ public class FizzyoConfigurationTest {
     @Before
     public void setUp() throws IOException {
         String[] configs = {"clientId","syncSecret","1514764800","1533772800","requestData"};
-        config = new FizzyoConfiguration(configs);
+        config = new FizzyoConfiguration();
+        config.setValues(configs);
 
         context = mock(PluginHostContext.class);
         storage = mock(PluginHostStorage.class);
