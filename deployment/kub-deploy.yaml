@@ -141,8 +141,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: slave-newton
-  minReplicas: 1
-  maxReplicas: 8
+  minReplicas: 3
+  maxReplicas: 3
   metrics:
   - type: Resource
     resource:
