@@ -120,14 +120,14 @@ public class GetFizzyoData implements Runnable
 
     private void dataUpdated(String name) {
         for (DataSource dataSource: provider.getDataSources()){
-            if (dataSource.getName().equals(name))
+            if (dataSource.getIdentifier().replace(".csv","").equals(name))
                 provider.notifyDataUpdated(dataSource);
         }
     }
     private void writeToOutput(List<List<String>> list,String name) {
         DataStorage storage = provider.getStorage();
         for(DataSource dataSource : provider.getDataSources()){
-            if (dataSource.getName().equals(name)) {
+            if (dataSource.getIdentifier().replace(".csv","").equals(name)) {
                 try (OutputStream output = storage.getOutputStream(dataSource)) {
                     CsvSerializer.writeCSV(output, list);
                 } catch (IOException e) {

@@ -30,7 +30,7 @@ public class Objects
         return ensureNotNull(values, new ArrayList<T>());
     }
 
-    public static <K, V> Map<K, V> ensureNotNull(Map<K, V> values) {
+    public static Map ensureNotNull(Map values) {
         return ensureNotNull(values, new HashMap<>());
     }
 

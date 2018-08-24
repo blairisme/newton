@@ -1,0 +1,31 @@
+{
+ "syncData": {
+        "id": "9c568fb5-e4e5-47fc-883f-079a53f4379a",
+        "timestamp": "2018-06-01T21:16:46.546Z",
+        "requestedData": [
+            "pressure-raw"
+        ],
+        "data": {
+            "pressure-raw": [
+                {
+                    "id": "12b3e6cf-a515-4b47-9e83-e7a4e404d566",
+                    "processed": false,
+                    "startTime": "2018-06-01T19:36:49.322Z",
+                    "endTime": "2018-06-01T19:48:17.870Z",
+                    "pressureValues": "1,2,3,4",
+                    "patientRecordId": "548ab33d-1f7e-418f-8729-7f4d9e9f0908",
+                    "algorithmVersion": 0
+                },
+                {
+                    "id": "24b3e6sd-a515-4b47-9e83-e7a4e404d566",
+                    "processed": false,
+                    "startTime": "2018-06-01T19:36:49.322Z",
+                    "endTime": "2018-06-01T19:48:17.870Z",
+                    "pressureValues": "1,2,3,4",
+                    "patientRecordId": "489ab33d-1f7e-418f-8729-7f4d9e9f0908",
+                    "algorithmVersion": 0
+                }
+            ]
+        }
+ }
+}
