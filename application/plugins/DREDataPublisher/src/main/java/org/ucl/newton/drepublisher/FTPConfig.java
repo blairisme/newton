@@ -35,8 +35,11 @@ public class FTPConfig extends BasicConfiguration {
     private String userPassword;
     private int port;
 
-    public FTPConfig(String[] config){
+    public FTPConfig(){
         super("dre.html");
+    }
+
+    public void setValues(String[] config) {
         this.hostName = config[0];
         this.userName = config[1];
         this.userPassword = config[2];

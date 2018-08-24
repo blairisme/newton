@@ -77,22 +77,21 @@ public class FizzyoDataProvider extends BasicDataProvider
         }catch (IOException e){
             logger.error("Fail to load Fizzyo configuration and load default configuration instead:", e);
         }
-        if (input == null)
+        if (input == null) {
             input = getClass().getResourceAsStream("/configuration/FizzyoConfiguration");
-        FizzyoConfiguration configuration = readFizzyoConfiguration(input);
-        if (configuration != null) {
-            configuration.setContext(context);
-            handler.setConfiguration(configuration);
         }
+        FizzyoConfiguration configuration = new FizzyoConfiguration();
+        readFizzyoConfiguration(configuration, input);
+
+        configuration.setContext(context);
+        handler.setConfiguration(configuration);
     }
 
-    private FizzyoConfiguration readFizzyoConfiguration(InputStream input) {
-        FizzyoConfiguration configuration = null;
+    private void readFizzyoConfiguration(FizzyoConfiguration configuration, InputStream input) {
         List<String[]> configs = CsvSerializer.readCSV(input);
         if(configs.size()>0){
-            configuration = new FizzyoConfiguration(configs.get(0));
+            configuration.setValues(configs.get(0));
         }
-        return configuration;
     }
 
     public DataSource getFizzyoDataSource() {

@@ -28,7 +28,8 @@ public class GetFizzyoDataTest {
 
         GetFizzyoData getFizzyoData = new GetFizzyoData(provider);
         String[] config = {"00000000-0000-0000-0000-000000000001","A1oRkpQJ0dNX1z3RA2K2zKKaLOvE2MwzA1oRkpQJ0dNxxDoJNonZWDzaLOvE2Mwz","1514764800","1533772800","[ \"all\" ]"};
-        FizzyoConfiguration fizzyoConfiguration = new FizzyoConfiguration(config);
+        FizzyoConfiguration fizzyoConfiguration = new FizzyoConfiguration();
+        fizzyoConfiguration.setValues(config);
 
         DataProviderObserver observer = Mockito.mock(DataProviderObserver.class);
         DataStorage storage = mock(DataStorage.class);
