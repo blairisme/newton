@@ -169,9 +169,20 @@
                 </div>
             </section>
 
+            <!-- Display settings -->
+            <section class="form-section section-divider">
+                <h4>Experiment Display Settings</h4>
+                <p>Use a pattern to select which files will be displayed on that experiments page after an experiment has run. To set multiple patterns, separate each pattern using a comma ",".</p>
+
+                <div class="form-group">
+                    <label for="experimentDisplayInput">Experiment display <span class="text-danger">*</span> (give a pattern to select files to display)</label>
+                    <input id="experimentDisplayInput" name="displayPattern" type="text" class="form-control" value="*.html" required="required">
+                </div>
+            </section>
+
             <input id="experimentCreator" name="creator" type="text" th:value="${user.email}" hidden="hidden">
             <input id="experimentProject" name="project" type="text" th:value="${project.identifier}" hidden="hidden">
-            <input id="experimentDisplayPattern" name="displayPattern" type="text" value="*.html" hidden="hidden">
+            <!--<input id="experimentDisplayPattern" name="displayPattern" type="text" value="*.html" hidden="hidden">-->
 
             <button class="btn btn-primary float-right" id="createBtn">Create Experiment</button>
         </form>
