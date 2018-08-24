@@ -23,6 +23,7 @@ import org.ucl.newton.common.exception.ConnectionException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -61,12 +62,14 @@ public class BasicHttpConnection
         this.headers = headers;
     }
 
-    public void setParameters(Map<String, String> parameters) {
+    public void setParameters(Map<String, String> parameters) throws URISyntaxException {
         Validate.notNull(address);
         Validate.notNull(parameters);
 
         URIBuilder builder = new URIBuilder(address);
         parameters.forEach((key, value) -> builder.addParameter(key, value));
+
+        address = builder.build();
     }
 
     public InputStream getInputStream() throws IOException {

@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,24 +81,32 @@ public class GetFizzyoData implements Runnable
     }
 
     private SyncData getFizzyoSyncData() {
-        String url = "https://api-staging.fizzyo-ucl.co.uk/api/v1/sync-data/interval";
-        Map<String,String> header = new HashMap<>();
-        Map<String,String> params = new HashMap<>();
-        header.put("Authorization","Bearer "+ configuration.getClientId() +","+ configuration.getSyncSecret());
-        params.put("clientId",configuration.getClientId());
-        params.put("startDate",configuration.getStartDate());
-        params.put("endDate", configuration.getEndDate());
-        params.put("requestedData",configuration.getRequestData());
+        try {
+            String url = "https://api-staging.fizzyo-ucl.co.uk/api/v1/sync-data/interval";
+            Map<String, String> header = new HashMap<>();
+            Map<String, String> params = new HashMap<>();
+            header.put("Authorization", "Bearer " + configuration.getClientId() + "," + configuration.getSyncSecret());
+            params.put("clientId", configuration.getClientId());
+            params.put("startDate", configuration.getStartDate());
+            params.put("endDate", configuration.getEndDate());
+            params.put("requestedData", configuration.getRequestData());
 
-        //String data = HttpUtils.doGet(url,header,params);
-        String data = doGet(URI.create(url), header, params);
+            //String data = HttpUtils.doGet(url,header,params);
+            String data = doGet(URI.create(url), header, params);
 
-        Gson gson = new Gson();
-        FizzyoResponse response = gson.fromJson(data,FizzyoResponse.class);
-        return response.getSyncData();
+            Gson gson = new Gson();
+            FizzyoResponse response = gson.fromJson(data, FizzyoResponse.class);
+            return response.getSyncData();
+        }
+        catch (Exception error) {
+            logger.warn("Failed to download Fizzyo data", error);
+            return null;
+        }
     }
 
-    private String doGet(URI url, Map<String,String> headers, Map<String,String> parameters) {
+    private String doGet(URI url, Map<String,String> headers, Map<String,String> parameters)
+            throws IOException, URISyntaxException
+    {
         connection.setAddress(url);
         connection.setHeaders(headers);
         connection.setParameters(parameters);
@@ -106,10 +115,6 @@ public class GetFizzyoData implements Runnable
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             IOUtils.copy(inputStream, outputStream);
             return outputStream.toString(StandardCharsets.UTF_8.name());
-        }
-        catch (IOException error) {
-            logger.warn("Failed to download Fizzyo data", error);
-            return null;
         }
     }
 
