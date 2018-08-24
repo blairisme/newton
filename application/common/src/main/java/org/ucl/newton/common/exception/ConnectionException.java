@@ -18,6 +18,10 @@ import java.io.IOException;
  */
 public class ConnectionException extends IOException
 {
+    public ConnectionException(String message) {
+        super(message);
+    }
+
     public ConnectionException(Throwable cause) {
         super("An error occurred communicating with a remote system", cause);
     }
