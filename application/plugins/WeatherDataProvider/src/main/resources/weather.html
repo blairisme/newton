@@ -12,6 +12,7 @@
                             <th>City</th>
                             <th>Country</th>
                             <th>Date</th>
+                            <th>Interval(previous days)</th>
                         </tr>
                     </thead>
                     <tbody id="entries">
@@ -21,21 +22,26 @@
             </div>
             <div class="form-group col-lg-3">
                 <label for="city">City<span class="text-danger">*</span></label>
-                <input id="city" name="city" class="form-control" type="text"/>
+                <input id="city" class="form-control" type="text"/>
             </div>
             <div class="form-group col-lg-3">
                 <label for="country">Country(Optional)</label>
-                <input id="country" name="country" class="form-control" type="text"/>
+                <input id="country" class="form-control" type="text"/>
             </div>
             <div class="form-group col-lg-3">
                 <label for="date">Date<span class="text-danger">*</span></label>
-                <input id="date" name="date" class="form-control" type="date"/>
+                <input id="date" class="form-control" type="date"/>
+            </div>
+            <div class="form-group col-lg-3">
+                <label for="interval">Interval<span class="text-danger">*</span></label>
+                <input id="interval" class="form-control" type="text" />
                 <input type="button" class="btn" value="add" onclick="addNewEntry()"/>
             </div>
             <div class="form-group col-lg-3">
                 <label for="key">Key<span class="text-danger">*</span></label>
                 <input id="key" name="key" class="form-control" type="text" required="required"/>
             </div>
+
             <div id="items" class="form-control" hidden="hidden">
             </div>
         </div>
@@ -52,8 +58,10 @@
                 var country = property[1];
                 var date = property[2];
                 key = property[3];
-                var id = buildId(city,country,date);
-                addEntry(id,city,country,date);
+                var interval = property[4];
+
+                var id = buildId(city,country,date,interval);
+                addEntry(id,city,country,date,interval);
             }
             $("#key").val(key);
         });
@@ -61,6 +69,7 @@
             var city = $("#city").val();
             var country = $("#country").val();
             var date = $("#date").val();
+            var interval = $("#interval").val();
             if(city == null || city == ""){
                 alert("Please input city");
                 return;
@@ -69,18 +78,24 @@
                 alert("Please select a date");
                 return;
             }
-            var id = buildId(city,country,date);
+            if(interval == null || interval ==""){
+                alert("Please input interval")
+                return;
+            }
+
+            var id = buildId(city,country,date,interval);
             clearContent();
-            addEntry(id,city,country,date);
+            addEntry(id,city,country,date,interval);
 
         }
-        function addEntry(id,city,country,date) {
+        function addEntry(id,city,country,date,interval) {
 
             $("#entries").append(
                 `<tr id="tableItem${id}">
                     <th>${city}</th>
                     <th>${country}</th>
-                    <th>${date} <button class="btn btn-outline-primary" onclick="removeEntry('${id}')"> remove</button></th>
+                    <th>${date} </th>
+                    <th>${interval} <button class="btn btn-outline-primary" onclick="removeEntry('${id}')"> remove</button></th>
                 </tr>`
             );
             $("#items").append(
@@ -88,8 +103,8 @@
             )
 
         }
-        function buildId(city,country,date) {
-            var id = city + "_" + country.replace(' ','-') + "_" + date;
+        function buildId(city,country,date,interval) {
+            var id = city + "_" + country.replace(' ','-') + "_" + date + "_" + interval;
             country.replace('-',' ');
             return id;
         }
@@ -97,6 +112,7 @@
             $("#city").val("");
             $("#country").val("");
             $("#date").val("");
+            $("#interval").val("");
         }
         function removeEntry(id) {
             $(`#tableItem${id}`).remove();

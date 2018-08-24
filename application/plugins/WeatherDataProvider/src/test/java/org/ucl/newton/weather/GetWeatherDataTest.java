@@ -38,7 +38,7 @@ public class GetWeatherDataTest
         provider.setStorage(storage);
         provider.addObserver(observer);
 
-        String[] properties = {"london","united kingdom","2018-08-1","0252e94bd710446c908123539182906"};
+        String[] properties = {"london","united kingdom","2018-08-1","0252e94bd710446c908123539182906","2"};
         List<WeatherProperty> weatherList = new ArrayList<>();
         weatherList.add(new WeatherProperty(properties));
         WeatherConfig config = new WeatherConfig(weatherList);
