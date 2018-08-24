@@ -9,7 +9,7 @@ from jupyterhub.auth import Authenticator
 from jupyterhub.auth import LocalAuthenticator
 from jupyterhub.utils import url_path_join
 from tornado import gen, web
-from traitlets import Unicode
+from traitlets import Unicode, List
 from jose import jwt
 from tornado.concurrent import run_on_executor
 
@@ -28,6 +28,7 @@ class LoginHandler(BaseHandler):
         audience = self.authenticator.expected_audience
         tokenParam = self.get_argument(param_name, default=False)
         experimentParam = self.authenticator.experiment_param_name
+        dataSourceParam = self.authenticator.data_source_param_name
 
         if auth_header_content and tokenParam:
            raise web.HTTPError(400)
@@ -57,7 +58,9 @@ class LoginHandler(BaseHandler):
 
         if not self.authenticator.system_user_exists(user):
             self.authenticator.add_system_user(user)
+
         self.authenticator.experiment_id = self.get_argument(experimentParam, default=False)
+        self.authenticator.data_sources = self.get_arguments(dataSourceParam)
 
         _url = url_path_join(self.hub.server.base_url, forward_url)
         next_url = self.get_argument('next', default=False)
@@ -147,6 +150,15 @@ class NewtonAuthenticator(LocalAuthenticator):
         default_value='experiment_id',
         config=True,
         help="""The name of the query parameter used to specify the experiment id""")
+
+    data_sources = List(Unicode(
+        config=True,
+        help="""The data sources used by the experiment being viewed"""))
+
+    data_source_param_name = Unicode(
+        default_value='data_source',
+        config=True,
+        help="""The name of the query parameter used to specify data sources""")
 
     def get_handlers(self, app):
         return [

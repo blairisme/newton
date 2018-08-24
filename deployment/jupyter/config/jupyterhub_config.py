@@ -35,16 +35,20 @@ from newtonauthenticator import NewtonAuthenticator
 #------------------------------------------------------------------------------
 
 def create_dir_hook(spawner):
-    username = spawner.user.name
-    experiment = spawner.authenticator.experiment_id
-    experiment_data = '/home/newton/experiment/' + experiment + '/repository/data'
-    data_root = '/home/newton/data'
+    experiment_id = spawner.authenticator.experiment_id
+    experiment_path = '/home/newton/experiment/' + experiment_id + '/repository/data/'
+    data_source_ids = spawner.authenticator.data_sources
+    data_source_path = '/home/newton/data/'
 
-    print(experiment_data)
-    print(data_root)
+    if not os.path.exists(experiment_path):
+        os.mkdir(experiment_path, 0o755)
 
-    if not path.exists(experiment_data):
-        os.symlink(data_root, experiment_data)
+    for data_source_id in data_source_ids:
+        source_path = data_source_path + data_source_id
+        destination_path = experiment_path + data_source_id
+
+        if path.exists(source_path) and not path.exists(destination_path):
+            os.symlink(source_path, destination_path)
 
 
 c.JupyterHub.spawner_class = NewtonSpawner
