@@ -23,7 +23,11 @@
     <!-- Page Content -->
     <div class="container-fluid restricted-width-container">
         <div class="section-divider">
-            <h1 class="page-title">New Experiment</h1>
+            <h1 class="page-title">
+                <a  href="/projects"> Projects</a>
+                <a  th:href="@{'/project/' + ${project.identifier}}" th:text="@{'/ '+${project.name}}" > / project name</a>
+                <a>/ New Experiment<a>
+            </h1>
             <p>Some description of an experiment.</p>
         </div>
 

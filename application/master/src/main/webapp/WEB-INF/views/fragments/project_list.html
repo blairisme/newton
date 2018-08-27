@@ -28,9 +28,7 @@
                     </td>
                     <td class="project-column project-state-container" th:attr="data-order=${project.getLastUpdatedAsEpoch()}">
                         <div class="aligned-cell aligned-right">
-                            <input type="hidden" th:value="${project.identifier}" />
-                            <span th:if="${starredProjects.contains(project)}"><img th:id="${project.identifier}" class="star starIcon"></span>
-                            <span th:unless="${starredProjects.contains(project)}"><img th:id="${project.identifier}" class="no-star starIcon"></span>
+                            <div th:id="${project.identifier}" class="starIcon" th:classappend="${starredProjects.contains(project)} ? star : no-star"></div>
                         </div>
                         <span th:text="${project.getLastUpdatedDescription()}" th:class="cell-text">last updated</span>
                     </td>

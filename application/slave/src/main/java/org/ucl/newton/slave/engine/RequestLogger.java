@@ -51,6 +51,7 @@ public class RequestLogger
         fileAppender.setContext(context);
         fileAppender.setEncoder(getEncoder(context));
         fileAppender.setAppend(false);
+        fileAppender.setPrudent(true);
         fileAppender.setFile(path.toString());
         fileAppender.start();
         return fileAppender;

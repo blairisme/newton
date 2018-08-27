@@ -32,7 +32,8 @@ $(document).ready( function() {
     });
 
     // Data table order when drop down changed
-    $(".dropdown-menu li a").on("click", function(){
+    $(".dropdown-menu li a").on("click", function(e){
+        e.preventDefault();
         var selText = $(this).text();
         $(this).parents(".dropdown").find(".btn").html(selText+"<span class=\"caret\"></span>");
         var tableToUpdate = findActiveDataTable(dTable, dTableStarred);

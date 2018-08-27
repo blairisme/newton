@@ -22,4 +22,5 @@ public class PublishData implements Runnable{
         if(file.exists())
             ftpServer.upload(file);
     }
+
 }

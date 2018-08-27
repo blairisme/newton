@@ -9,13 +9,17 @@
 .star {
     width: 1em;
     height: 1em;
-    content: url("/resources/images/star.svg");
+    background-image: url("/resources/images/star.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .no-star {
     width: 1em;
     height: 1em;
-    content: url("/resources/images/no-star.svg");
+    background-image: url("/resources/images/no-star.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .avatar {

@@ -12,6 +12,7 @@ package org.ucl.newton.framework;
 import org.apache.commons.lang3.Validate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class ExperimentBuilder
     private String identifier;
     private String name;
     private String description;
+    private Date updated;
     private User creator;
     private Project project;
     private List<ExperimentVersion> versions;
@@ -41,6 +43,7 @@ public class ExperimentBuilder
         identifier = experiment.getIdentifier();
         name = experiment.getName();
         description = experiment.getDescription();
+        updated = experiment.getUpdated();
         creator = experiment.getCreator();
         project = experiment.getProject();
         versions = experiment.getVersions();
@@ -92,6 +95,7 @@ public class ExperimentBuilder
             identifier,
             name,
             description,
+            new Date(),
             creator,
             project,
             versions,

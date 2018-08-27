@@ -24,9 +24,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.cert.X509Certificate;
 
 /**
  * A general purpose HTTP connection with support for basic authentication.
@@ -79,8 +84,9 @@ public class BasicHttpConnection
     public InputStream getInputStream(Predicate<StatusLine> statusStrategy) throws IOException {
         Validate.notNull(address);
         Validate.notNull(headers);
+        SSLContext sslcontext = createIgnoreVerifySSL();
 
-        HttpClientBuilder builder = HttpClientBuilder.create();
+        HttpClientBuilder builder = HttpClientBuilder.create().setSSLContext(sslcontext);
         HttpClient client = builder.build();
 
         HttpGet request = new HttpGet(address);
@@ -98,5 +104,27 @@ public class BasicHttpConnection
 
     public static Predicate<StatusLine> statusBetween(int fromCode, int toCode) {
         return predicate -> predicate.getStatusCode() >= fromCode && predicate.getStatusCode() < toCode;
+    }
+
+
+    public static SSLContext createIgnoreVerifySSL() {
+        try {
+            SSLContext sc = SSLContext.getInstance("SSL");
+            X509TrustManager trustManager = new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(X509Certificate[] x509Certificates, String s) {}
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] x509Certificates, String s) {}
+
+                @Override
+                public X509Certificate[] getAcceptedIssuers() { return null; }
+            };
+            sc.init(null, new TrustManager[] { trustManager }, new java.security.SecureRandom());
+            return sc;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }

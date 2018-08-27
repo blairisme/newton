@@ -81,6 +81,7 @@ public class ExperimentService
 
     public void updateExperiment(Experiment experiment) {
         Validate.notNull(experiment);
+        experiment.updated();
         repository.update(experiment);
     }
 }

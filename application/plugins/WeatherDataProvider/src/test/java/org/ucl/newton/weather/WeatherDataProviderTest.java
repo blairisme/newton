@@ -10,9 +10,6 @@ import org.ucl.newton.sdk.provider.BasicDataSource;
 import org.ucl.newton.sdk.provider.DataSource;
 
 import java.io.IOException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
