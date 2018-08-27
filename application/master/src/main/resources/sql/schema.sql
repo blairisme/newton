@@ -104,6 +104,7 @@ CREATE TABLE IF NOT EXISTS experiments (
     exp_identifier VARCHAR(45) NOT NULL,
     exp_name VARCHAR(45) NOT NULL,
     exp_description VARCHAR(500),
+    updated DATETIME NOT NULL,
     project_id INT NOT NULL,
     creator_id INT NOT NULL,
     exp_config_id INT NOT NULL,

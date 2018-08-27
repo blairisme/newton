@@ -12,21 +12,29 @@ package org.ucl.newton.weather;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.ucl.newton.common.network.BasicHttpConnection;
 import org.ucl.newton.common.serialization.CsvSerializer;
 import org.ucl.newton.weather.model.WeatherData;
 import org.ucl.newton.weather.model.WeatherProperty;
-import org.ucl.newton.common.network.HttpUtils;
 import org.ucl.newton.sdk.provider.DataSource;
 import org.ucl.newton.sdk.provider.DataStorage;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.ucl.newton.common.network.BasicHttpConnection.statusBetween;
 
 /**
  * Instances of this class provide weather data to the Newton system.
@@ -36,10 +44,16 @@ import java.util.Map;
 public class GetWeatherData implements Runnable
 {
     private static Logger logger = LoggerFactory.getLogger(GetWeatherData.class);
+
     private WeatherDataProvider provider;
     private WeatherConfig weatherConfig;
-    public GetWeatherData(WeatherDataProvider provider){
+    private BasicHttpConnection connection;
+
+    public GetWeatherData(WeatherDataProvider provider){ this(provider,new BasicHttpConnection()); }
+
+    public GetWeatherData(WeatherDataProvider provider, BasicHttpConnection connection){
         this.provider = provider;
+        this.connection = connection;
     }
 
     @Override
@@ -50,6 +64,7 @@ public class GetWeatherData implements Runnable
             listOfRecord.add(getHeader());
         for (WeatherProperty property : weatherList){
             String data = getDataFromWWO(property);
+
             if (data == null)
                 continue;
             listOfRecord.add(getContent(data));
@@ -83,20 +98,41 @@ public class GetWeatherData implements Runnable
 
 
     private String getDataFromWWO(WeatherProperty property) {
-        String url = "https://api.worldweatheronline.com/premium/v1/past-weather.ashx";
-        Map<String,String> header = new HashMap<>();
-        Map<String,Object> params = new HashMap<>();
-        params.put("key", property.getKey());
-        params.put("format","json");
+        try {
+            String url = "https://api.worldweatheronline.com/premium/v1/past-weather.ashx";
+            Map<String, String> header = new HashMap<>();
+            Map<String, String> params = new HashMap<>();
+            params.put("key", property.getKey());
+            params.put("format", "json");
 
-        String location = locationBuilder(property.getCity(),property.getCountry());    //location format q=city(,country)
-        params.put("q",location);
-        String date = property.getDate();
-        if (!Strings.isNullOrEmpty(date))
-            params.put("date",date);
+            String location = locationBuilder(property.getCity(), property.getCountry());    //location format q=city(,country)
+            params.put("q", location);
+            String date = property.getDate();
+            if (!Strings.isNullOrEmpty(date))
+                params.put("date", date);
 
-        String data = HttpUtils.doGet(url, header, params);
-        return data;
+//        String data = HttpUtils.doGet(url, header, params);
+            String data = doGet(URI.create(url), header, params);
+            return data;
+        }
+        catch (Exception error) {
+            logger.warn("Failed to download Weather data", error);
+            return null;
+        }
+    }
+
+    private String doGet(URI url, Map<String,String> headers, Map<String,String> parameters)
+            throws IOException, URISyntaxException
+    {
+        connection.setAddress(url);
+        connection.setHeaders(headers);
+        connection.setParameters(parameters);
+
+        try(InputStream inputStream = connection.getInputStream(statusBetween(200, 300));
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            IOUtils.copy(inputStream, outputStream);
+            return outputStream.toString(StandardCharsets.UTF_8.name());
+        }
     }
 
     private String locationBuilder(String city, String country) {
