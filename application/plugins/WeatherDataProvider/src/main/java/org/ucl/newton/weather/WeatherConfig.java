@@ -27,7 +27,6 @@ public class WeatherConfig extends BasicConfiguration {
     }
     @Override
     public void setValues(Map<String, List<String>> values) {
-
         if(values.containsKey("items"))
             updateWeatherList(values.get("items"),values.get("key").get(0));
         writeToFile();

@@ -1,0 +1,32 @@
+{
+  "data": {
+    "request": [
+      {
+        "type": "City",
+        "query": "London, United Kingdom"
+      }
+    ],
+    "weather": [
+      {
+        "date": "2018-08-08",
+        "astronomy": [
+          {
+            "sunrise": "05:35 AM",
+            "sunset": "08:36 PM",
+            "moonrise": "01:57 AM",
+            "moonset": "06:19 PM",
+            "moon_phase": "Waning Crescent",
+            "moon_illumination": "28"
+          }
+        ],
+        "maxtempC": "24",
+        "maxtempF": "74",
+        "mintempC": "17",
+        "mintempF": "63",
+        "totalSnow_cm": "0.0",
+        "sunHour": "13.5",
+        "uvIndex": "0"
+      }
+    ]
+  }
+}
