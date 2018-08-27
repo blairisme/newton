@@ -54,7 +54,10 @@ class LoginHandler(BaseHandler):
 
         username = self.retrieve_username(claims, username_claim_field)
         user = self.user_from_username(username)
-        self.set_login_cookie(user)
+
+        self.set_service_cookie(user)
+        self.set_session_cookie()
+        self.set_hub_cookie(user)
 
         if not self.authenticator.system_user_exists(user):
             self.authenticator.add_system_user(user)

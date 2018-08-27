@@ -21,11 +21,14 @@ task updateSlaveJar(type: Copy, dependsOn: ':application:slave:assemble') {
   rename '(.*)-(.*).jar', '$1.jar'
 }
 
-task systemStart(type: Exec, dependsOn: [updateMasterWar, updateSlaveJar]) {
+task assemble(dependsOn: ['updateMasterWar', 'updateSlaveJar']){
+}
+
+task systemStart(type: Exec, dependsOn: ['assemble']) {
   commandLine 'docker-compose', 'up', '--build'
 }
 
-task systemStartDaemon(type: Exec, dependsOn: [updateMasterWar, updateSlaveJar]) {
+task systemStartDaemon(type: Exec, dependsOn: ['assemble']) {
   commandLine 'docker-compose', 'up', '-d', '--build'
 }
 
