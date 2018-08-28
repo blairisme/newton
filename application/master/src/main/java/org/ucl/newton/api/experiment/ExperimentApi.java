@@ -23,10 +23,7 @@ import org.ucl.newton.service.experiment.ExperimentOperations;
 import org.ucl.newton.service.experiment.ExperimentService;
 
 import javax.inject.Inject;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
@@ -90,6 +87,10 @@ public class ExperimentApi
         Experiment experiment = experimentService.getExperimentByIdentifier(experimentId);
         StorageConfiguration storage = experiment.getConfiguration().getStorageConfiguration();
         Resource resource = storage.getStorageLocation();
+
+        File resourceDirectory = resource.getFile();
+        File dataDirectory = new File(resourceDirectory, "data");
+        FileUtils.deleteQuietly(dataDirectory);
 
         Path tempPath = applicationStorage.getTempDirectory();
         Path archive = tempPath.resolve(UUID.randomUUID().toString() + ".zip");
