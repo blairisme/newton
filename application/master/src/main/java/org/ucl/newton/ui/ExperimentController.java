@@ -210,4 +210,14 @@ public class ExperimentController
 
         return "redirect:/project/" + projectId;
     }
+
+    @PostMapping(value = "/project/{projName}/{expName}/remove")
+    public String deleteExperiment(
+            @PathVariable("projName") String projectIdentifier,
+            @PathVariable("expName") String experimentIdentifier)
+    {
+        Experiment toDelete = experimentService.getExperimentByIdentifier(experimentIdentifier);
+        experimentService.removeExperiment(toDelete);
+        return "redirect:/project/" + projectIdentifier;
+    }
 }
