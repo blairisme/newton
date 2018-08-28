@@ -22,6 +22,8 @@ import org.ucl.newton.common.identifier.Identifier;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
+import org.ucl.newton.sdk.provider.DataSource;
+import org.ucl.newton.service.data.DataPermissionService;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.project.ProjectService;
@@ -32,10 +34,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.ucl.newton.common.lang.Integers.stringToInt;
 import static org.ucl.newton.common.lang.Objects.ensureNotNull;
@@ -56,6 +57,7 @@ public class ProjectController
     private ExperimentService experimentService;
     private ApplicationStorage applicationStorage;
     private PluginService pluginService;
+    private DataPermissionService dataPermissionService;
 
     @Inject
     public ProjectController(
@@ -63,13 +65,15 @@ public class ProjectController
         ProjectService projectService,
         ExperimentService experimentService,
         ApplicationStorage applicationStorage,
-        PluginService pluginService)
+        PluginService pluginService,
+        DataPermissionService dataPermissionService)
     {
         this.userService = userService;
         this.projectService = projectService;
         this.experimentService = experimentService;
         this.applicationStorage = applicationStorage;
         this.pluginService = pluginService;
+        this.dataPermissionService = dataPermissionService;
     }
 
     @RequestMapping(value = "/projects", method = RequestMethod.GET)
@@ -108,15 +112,22 @@ public class ProjectController
         User user = userService.getAuthenticatedUser();
         model.addAttribute("user", user);
         model.addAttribute("project", projectService.getProjectByIdentifier(name, true));
-        model.addAttribute("dataSources", pluginService.getDataSources());
+        model.addAttribute("dataPermissions", dataPermissionService.getAllPermissionsForUser(user));
+        model.addAttribute("dataSources", getDataSourcesMappedById());
         return "project/settings";
     }
 
     @RequestMapping(value = "/project/new", method = RequestMethod.GET)
     public String newProject(ModelMap model) {
-        model.addAttribute("user", userService.getAuthenticatedUser());
-        model.addAttribute("dataSources", pluginService.getDataSources());
+        User user = userService.getAuthenticatedUser();
+        model.addAttribute("user", user);
+        model.addAttribute("dataPermissions", dataPermissionService.getAllPermissionsForUser(user));
+        model.addAttribute("dataSources", getDataSourcesMappedById());
         return "project/new";
+    }
+
+    private Map<String, DataSource> getDataSourcesMappedById() {
+        return pluginService.getDataSources().stream().collect(Collectors.toMap(DataSource::getIdentifier, Function.identity()));
     }
 
     @PostMapping(value = "/project/{name}/delete")

@@ -17,11 +17,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.ucl.newton.framework.DataPermission;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.sdk.provider.DataProvider;
 import org.ucl.newton.sdk.provider.DataSource;
+import org.ucl.newton.service.data.DataPermissionService;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.project.ProjectService;
@@ -32,6 +34,7 @@ import org.ucl.newton.testobjects.DummyUserFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.mockito.Mockito.when;
@@ -56,6 +59,9 @@ public class ProjectControllerTest
 
     @Mock
     private PluginService pluginService;
+
+    @Mock
+    private DataPermissionService dataPermissionService;
 
     @InjectMocks
     private ProjectController projectController;
@@ -113,30 +119,36 @@ public class ProjectControllerTest
     public void settingsTest() throws Exception {
         String projectIdentifier = "gosh-jiro";
         Collection<DataSource> dataSources = new ArrayList<>();
+        Collection<DataPermission> dataPermissions = new ArrayList<>();
 
         when(userService.getAuthenticatedUser()).thenReturn(userZiad);
         when(projectService.getProjectByIdentifier(projectIdentifier, true)).thenReturn(projectJiro);
         when(pluginService.getDataSources()).thenReturn(dataSources);
+        when(dataPermissionService.getAllPermissionsForUser(userZiad)).thenReturn(dataPermissions);
 
         mockMvc.perform(get("/project/{name}/settings", projectIdentifier))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("user", userZiad))
                 .andExpect(model().attribute("project", projectJiro))
-                .andExpect(model().attribute("dataSources", dataSources))
+                .andExpect(model().attribute("dataSources", new HashMap<String, DataSource>()))
+                .andExpect(model().attribute("dataPermissions", dataPermissions))
                 .andExpect(view().name("project/settings"));
     }
 
     @Test
     public void newProjectTest() throws Exception {
         Collection<DataSource> dataSources = new ArrayList<>();
+        Collection<DataPermission> dataPermissions = new ArrayList<>();
 
         when(userService.getAuthenticatedUser()).thenReturn(userZiad);
         when(pluginService.getDataSources()).thenReturn(dataSources);
+        when(dataPermissionService.getAllPermissionsForUser(userZiad)).thenReturn(dataPermissions);
 
         mockMvc.perform(get("/project/new"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("user", userZiad))
-                .andExpect(model().attribute("dataSources", dataSources))
+                .andExpect(model().attribute("dataPermissions", dataPermissions))
+                .andExpect(model().attribute("dataSources", new HashMap<String, DataSource>()))
                 .andExpect(view().name("project/new"));
     }
 

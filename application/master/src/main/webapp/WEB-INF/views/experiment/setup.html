@@ -152,23 +152,23 @@
 
                     <ul id="dsList" class="list-group list-group-flush">
                         <th:block th:each="dataSource, iteration : ${experiment.configuration.getExperimentDataSources()}" >
-                            <li class="list-group-item project-list-item" th:id="'ds' + ${iteration.index}">
-                                <p class="float-left" th:inline="text">Name: [[${dataSource.dataSourceId}]] <br/>Location: [[${dataSource.customLocation}]] </p>
-                                <button type="button" class="btn btn-outline-primary remove_button float-right" th:value="${iteration.index}">Remove</button>
-                            </li>
+                            <li class="list-group-item project-list-item" th:id="'ds' + ${#strings.replace(dataSource.dataSourceId, '.', '')}">
+                                <p class="float-left" th:inline="text">Name: [[${dataSourceDetails.get(dataSource.dataSourceId)?.name}]] <br/>Location: [[${dataSource.customLocation}]] </p>
+                                <button type="button" class="btn btn-outline-primary remove_button float-right" th:value="${#strings.replace(dataSource.dataSourceId, '.', '')}">Remove</button>
+                            </li> <!-- dataSourceDetails.get(dataSource)?.name -->
                         </th:block>
                         <p th:hidden="${experiment.configuration.getExperimentDataSources().size()} > 0 " id="dsListEmpty"
                            class="empty_message project-list-item">This experiment doesn't have any data sources yet. Use the form below to add data sources.</p>
                     </ul>
 
                     <select id="experimentDsDataIds" form="experimentDetails" name="dataSourceIds" multiple="multiple" hidden="hidden">
-                        <option th:each="dataSource : ${experiment.configuration.getExperimentDataSources()}" th:id="'dsId' + ${dataSource.dataSourceId}"
+                        <option th:each="dataSource : ${experiment.configuration.getExperimentDataSources()}" th:id="'dsId' + ${#strings.replace(dataSource.dataSourceId, '.', '')}"
                                 th:value="${dataSource.dataSourceId}" selected="selected">
                         </option>
                     </select>
 
                     <select id="experimentDsDataLoc" form="experimentDetails" name="dataSourceLocs" multiple="multiple" hidden="hidden">
-                        <option th:each="dataSource : ${experiment.configuration.getExperimentDataSources()}" th:id="'dsLoc' + ${dataSource.customLocation}"
+                        <option th:each="dataSource : ${experiment.configuration.getExperimentDataSources()}" th:id="'dsLoc' + ${#strings.replace(dataSource.dataSourceId, '.', '')}"
                                 th:value="${dataSource.customLocation}" selected="selected">
                         </option>
                     </select>
@@ -181,7 +181,9 @@
                             </button>
                             <div class="dropdown-menu ds-dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <th:block th:each="dataSource : ${project.dataSources}">
-                                    <a class="dropdown-item" href="#" th:text="${dataSource}"></a>
+                                    <a class="dropdown-item" href="#"
+                                       th:text="${dataSourceDetails.get(dataSource)?.name}"
+                                       th:value="${dataSourceDetails.get(dataSource)?.identifier}"></a>
                                 </th:block>
                             </div>
                         </div>

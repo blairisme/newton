@@ -96,9 +96,9 @@
                     <p>Choose which data sources are available to experiments in this project</p>
 
                     <ul>
-                        <li th:each="dataSource : ${dataSources}">
-                            <input type="checkbox" class="form-check-input" name="sources" th:value="${dataSource.identifier}" />
-                            <label th:text="${dataSource.name}"></label>
+                        <li th:each="dataPermission : ${dataPermissions}">
+                            <input type="checkbox" class="form-check-input" name="sources" th:value="${dataPermission.dataSourceIdentifier}" />
+                            <label th:text="${dataSources.get(dataPermission.dataSourceIdentifier)?.name}"></label>
                         </li>
                     </ul>
 

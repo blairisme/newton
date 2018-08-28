@@ -127,14 +127,21 @@
                         <p>Choose which data sources are available to experiments in this project</p>
 
                         <ul>
-                            <li th:each="dataSource : ${dataSources}" class="list-unstyled">
+                            <li th:each="dataPermission : ${dataPermissions}" class="list-unstyled">
                                 <input type="checkbox" class="form-check-input" name="sources"
-                                       th:value="${dataSource.identifier}"
+                                       th:value="${dataPermission.dataSourceIdentifier}"
                                        th:disabled="${project.owner.id} != ${user.id}"
-                                       th:checked="${project.dataSources.contains(dataSource.identifier)}"/>
-                                <label th:text="${dataSource.name}" class="list-unstyled"></label>
+                                       th:checked="${project.dataSources.contains(dataPermission.dataSourceIdentifier)}"/>
+                                <label th:text="${dataSources.get(dataPermission.dataSourceIdentifier)?.name}" class="list-unstyled"></label>
                             </li>
                         </ul>
+
+                        <!--<ul>
+                        <li th:each="dataPermission : ${dataPermissions}">
+                            <input type="checkbox" class="form-check-input" name="sources" th:value="${dataPermission.dataSourceIdentifier}" />
+                            <label th:text="${dataSources.get(dataPermission.dataSourceIdentifier)?.name}"></label>
+                        </li>
+                    </ul> -->
 
                     </section>
 

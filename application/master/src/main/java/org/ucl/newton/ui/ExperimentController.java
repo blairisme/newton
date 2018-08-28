@@ -154,8 +154,16 @@ public class ExperimentController
         model.addAttribute("storageValues", new StorageType[] {StorageType.Newton});
         model.addAttribute("typeValues", pluginService.getDataProcessors());
         model.addAttribute("experimentDto", new ExperimentDto());
+        model.addAttribute("dataSourceDetails", getDataSourcesMappedById());
         return "experiment/setup";
     }
+    /*model.addAttribute("user", userService.getAuthenticatedUser());
+        model.addAttribute("project", projectService.getProjectByIdentifier(projectName, true));
+        model.addAttribute("experiment", new ExperimentDto());
+        model.addAttribute("triggerValues", new String[] {"Manual", "On data change"});
+        model.addAttribute("storageValues", new String[] {"Newton"});
+        model.addAttribute("typeValues", pluginService.getDataProcessors());
+        model.addAttribute("dataSourceDetails", getDataSourcesMappedById()); */
 
     @PostMapping(value = "/project/{project}/{experiment}/setup")
     public String experimentUpdate(

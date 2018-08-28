@@ -173,6 +173,9 @@ INSERT INTO dataPermissions (permission_id, permission_owner, permission_ds_iden
 INSERT INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (2, 2, 'heart-rate.csv');
 INSERT INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (3, 2, 'exercise-sessions.csv');
 INSERT INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (4, 2, 'games-sessions.csv');
+INSERT INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (5, 2, 'pressure-raw.csv');
+INSERT INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (6, 2, 'foot-steps.csv');
+INSERT INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (7, 2, 'foot-steps-granular.csv');
 
 INSERT INTO permission_granted (permission_id, user_id) VALUES (1, 3);
 INSERT INTO permission_granted (permission_id, user_id) VALUES (1, 4);
