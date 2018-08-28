@@ -19,6 +19,8 @@
 ./gradlew integrationTest --exclude-task slaveStartDaemon
 
 kill -9 $(jobs -p)
+sleep 5s
 killall java
+sleep 5s
 
 ./gradlew report
