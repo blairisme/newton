@@ -29,8 +29,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Instances of this class represent a Jupyter server. Methods are provided to
@@ -52,11 +54,13 @@ public class JupyterServer
     private byte[] key;
     private String host;
     private int port;
+    private Random random;
 
     @Inject
     public JupyterServer(ApplicationPreferences applicationPreferences) {
         host = applicationPreferences.getJupyterHost();
         port = applicationPreferences.getJupyterPort();
+        random = new SecureRandom();
     }
 
     public URI getEditorUrl(User user, Experiment experiment) {
@@ -85,7 +89,8 @@ public class JupyterServer
     }
 
     private String getUser(User user) {
-        return USER_PREFIX + Integer.toString(user.getId());
+        //return USER_PREFIX + Integer.toString(user.getId());
+        return USER_PREFIX + Integer.toString(random.nextInt());
     }
 
     private byte[] getKey() throws IOException {

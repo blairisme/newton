@@ -5,7 +5,7 @@
 <head>
     <title>Newton - Experiment</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="icon" href="resources/images/common/favicon.ico">
+    <link rel="icon" href="/resources/images/common/favicon.ico">
 
     <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
@@ -23,7 +23,11 @@
     <!-- Page Content -->
     <div class="container-fluid restricted-width-container">
         <div class="section-divider">
-            <h1 class="page-title">New Experiment</h1>
+            <h1 class="page-title">
+                <a  href="/projects"> Projects</a>
+                <a  th:href="@{'/project/' + ${project.identifier}}" th:text="@{'/ '+${project.name}}" > / project name</a>
+                <a>/ New Experiment</a>
+            </h1>
             <p>Some description of an experiment.</p>
         </div>
 
@@ -138,7 +142,7 @@
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownDsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Select a datasource
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <div class="dropdown-menu" aria-labelledby="dropdownDsButton">
                             <th:block th:each="dataSource : ${project.dataSources}">
                                 <a class="dropdown-item" href="#"
                                    th:text="${dataSourceDetails.get(dataSource)?.name}"

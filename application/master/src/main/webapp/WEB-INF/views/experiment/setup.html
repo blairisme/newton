@@ -5,12 +5,13 @@
 <head>
     <title>Newton - Experiment Setup</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="icon" href="resources/images/common/favicon.ico">
+    <link rel="icon" href="/resources/images/common/favicon.ico">
 
     <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/data_tables.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/views/experiment/new.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/views/experiment/setup.css"/>
 
     <script src="/resources/scripts/libraries/jquery.js"></script>
     <script src="/resources/scripts/libraries/popper.js"></script>
@@ -225,9 +226,21 @@
 
                 <input id="experimentCreator" name="creator" type="text" th:value="${user.email}" hidden="hidden">
                 <input id="experimentProject" name="project" type="text" th:value="${project.identifier}" hidden="hidden">
-                <!--<input id="experimentDisplayPattern" name="displayPattern" type="text" value="*.html" hidden="hidden">-->
 
-                <button class="btn btn-primary float-right" id="createBtn">Update Experiment</button>
+                <!--<button class="btn btn-primary float-right" id="createBtn">Update Experiment</button>-->
+                <section class="form-section section-divider-thick section-button">
+                    <input type="submit" class="btn btn-primary float-right update-button" value="Update Experiment"/>
+                </section>
+            </form>
+
+            <!-- Delete experiment -->
+            <form th:action="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/remove'}" method="POST" >
+                <section class="form-section section-divider section-button">
+                    <h4>Delete Experiment</h4>
+                    <p class="text-danger">Warning deleting an experiment will permanently remove that experiment, any versions of that experiment!
+                        <input type="submit" class="btn btn-danger float-right delete-button" value="Delete" th:disabled="${project.owner.id} != ${user.id} and ${experiment.creator.id} != ${user.id}"/>
+                    </p>
+                </section>
             </form>
 
         </div>

@@ -23,16 +23,14 @@ public class FizzyoConfigurationTest {
     public PluginHostStorage storage;
     public PluginHostContext context;
     @Before
-    public void setUp() throws IOException {
+    public void setUp() {
         String[] configs = {"clientId","syncSecret","1514764800","1533772800","requestData"};
         config = new FizzyoConfiguration();
         config.setValues(configs);
 
         context = mock(PluginHostContext.class);
         storage = mock(PluginHostStorage.class);
-        when(storage.getOutputStream(anyString())).thenReturn(new FileOutputStream("test"));
-        when(context.getStorage()).thenReturn(storage);
-        config.setContext(context);
+
     }
     @Test
     public void getValuesTest(){
@@ -46,6 +44,10 @@ public class FizzyoConfigurationTest {
 
     @Test
     public void setValuesTest() throws IOException{
+        when(storage.getOutputStream(anyString())).thenReturn(new FileOutputStream("test"));
+        when(context.getStorage()).thenReturn(storage);
+        config.setContext(context);
+
         Map<String,List<String>> values = new HashMap<>();
         values.put("clientId",buildList("clientId"));
         values.put("syncSecret",buildList("syncSecret"));
