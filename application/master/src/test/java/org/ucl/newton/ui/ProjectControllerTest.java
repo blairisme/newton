@@ -40,6 +40,7 @@ import static org.hamcrest.core.IsNull.nullValue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -235,7 +236,6 @@ public class ProjectControllerTest
                 .andExpect(model().attribute("error", nullValue()))
                 .andExpect(model().attribute("user", userZiad))
                 .andExpect(model().attribute("project", projectJiro))
-                //.andExpect(model().attribute("dataSources", dataProviders))
                 .andExpect(view().name("project/settings"));
     }
 
@@ -252,9 +252,11 @@ public class ProjectControllerTest
                 .param("image", "somePathToImage")
                 .param("members", "1")
                 .param("sources", "someSourceName"))
-                .andExpect(status().isOk())
-                .andExpect(model().attribute("error", "Error: null"))
-                .andExpect(view().name("project/settings"));
+                .andDo(print())
+                .andExpect(status().is(302))
+                .andExpect(flash().attribute("message", "Update failed null"))
+                .andExpect(flash().attribute("alertClass", "alert-danger"))
+                .andExpect(redirectedUrl("/project/" + projectIdent + "/settings"));
     }
 
 }

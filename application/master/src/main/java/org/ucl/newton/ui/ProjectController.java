@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.common.identifier.Identifier;
 import org.ucl.newton.framework.Project;
@@ -174,7 +175,7 @@ public class ProjectController
             @RequestParam(required=false) MultipartFile image,
             @RequestParam(required=false) Collection<String> members,
             @RequestParam(required=false) Collection<String> sources,
-            ModelMap model) {
+            RedirectAttributes redirectAttr) {
         try {
             Project projectToUpdate = projectService.getProjectByIdentifier(projectIdentifier, true);
             projectToUpdate.setDescription(description);
@@ -187,9 +188,12 @@ public class ProjectController
             projectToUpdate.setLastUpdated(new Date());
             projectService.updateProject(projectToUpdate);
         } catch (Throwable exception) {
-            model.addAttribute("error", "Error: " + exception.getMessage());
-            return "project/settings";
+            redirectAttr.addFlashAttribute("message", "Update failed " + exception.getMessage());
+            redirectAttr.addFlashAttribute("alertClass", "alert-danger");
+            return "redirect:/project/" + projectIdentifier + "/settings";
         }
+        redirectAttr.addFlashAttribute("message", "Update was successful");
+        redirectAttr.addFlashAttribute("alertClass", "alert-success");
         return "redirect:/project/" + projectIdentifier + "/settings";
     }
 
