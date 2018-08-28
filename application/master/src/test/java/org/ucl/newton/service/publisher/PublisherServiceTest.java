@@ -15,7 +15,6 @@ import static org.mockito.Mockito.when;
 public class PublisherServiceTest {
 
     @Test
-    @Ignore
     public void getDREDataPublisherTest(){
         PluginService pluginService = mock(PluginService.class);
 

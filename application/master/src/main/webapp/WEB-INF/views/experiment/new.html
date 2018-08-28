@@ -142,7 +142,7 @@
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownDsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Select a datasource
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownDsButton">
+                        <div class="dropdown-menu ds-dropdown-menu" aria-labelledby="dropdownDsButton">
                             <th:block th:each="dataSource : ${project.dataSources}">
                                 <a class="dropdown-item" href="#"
                                    th:text="${dataSourceDetails.get(dataSource)?.name}"

@@ -15,8 +15,12 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.ucl.newton.common.network.RestException;
 import org.ucl.newton.integration.acceptance.common.WebDriverUtils;
 import org.ucl.newton.integration.acceptance.gherkin.Project;
@@ -27,6 +31,7 @@ import org.ucl.newton.integration.acceptance.newton.user.UserService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -93,6 +98,19 @@ public class ProjectSteps
         driver.findElement(By.id("projectDescriptionInput")).sendKeys(project.getDescription());
     }
 
+    @When("^the user clicks the star for project with identifier \"(.*)\"$")
+    public void starProject(String projectIdent) throws Exception {
+        Thread.sleep(4000);
+        driver.manage().window().maximize();
+        WebElement starIcon = driver.findElement((By.id(projectIdent)));
+        
+
+        Assert.assertTrue(hasClass(starIcon, "no-star"));
+        Assert.assertFalse(hasClass(starIcon, "star"));
+        Assert.assertTrue(starIcon.isDisplayed());
+        starIcon.click();
+    }
+
     @Then("^the project list should contain the following projects:$")
     public void assertProjects(List<Project> projects) {
         Assert.assertEquals("http://localhost:9090/projects", driver.getCurrentUrl());
@@ -108,6 +126,22 @@ public class ProjectSteps
     @Then("^the user should be on the new project page$")
     public void assertNewProjectsPage() {
         Assert.assertEquals("http://localhost:9090/project/new", driver.getCurrentUrl());
+    }
+
+    @Then("^the project with identifier \"(.*)\" will be starred$")
+    public void assertProjectStarred(String projectIdent) {
+        WebElement starIcon = driver.findElement((By.id(projectIdent)));
+        Assert.assertTrue(hasClass(starIcon,"star"));
+    }
+
+    private boolean hasClass(WebElement element, String classRequired) {
+        String classes = element.getAttribute("class");
+        for (String c : classes.split(" ")) {
+            if (c.equals(classRequired)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

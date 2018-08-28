@@ -32,9 +32,6 @@
                     <a class="nav-link active" href="#" sec:authorize="hasRole('ROLE_ADMIN')">User Roles</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{'/settings/data-permissions'}">Data Source Permissions</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" th:href="@{'/settings/plugins'}" sec:authorize="hasRole('ROLE_ADMIN')">Plugin Settings</a>
                 </li>
             </ul>

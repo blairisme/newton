@@ -26,10 +26,7 @@
 
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{'settings/roles'}" sec:authorize="hasRole('ROLE_ADMIN')">User Roles</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{'/settings/data-permissions'}">Data Source Permissions</a>
+                <a class="nav-link" th:href="@{'/settings/roles'}" sec:authorize="hasRole('ROLE_ADMIN')">User Roles</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link active" href="#" sec:authorize="hasRole('ROLE_ADMIN')">Plugin Settings</a>
