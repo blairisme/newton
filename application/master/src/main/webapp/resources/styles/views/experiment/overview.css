@@ -35,3 +35,10 @@
 #version-switcher {
     margin-top: 0.5rem;
 }
+
+#visualization-tab {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}

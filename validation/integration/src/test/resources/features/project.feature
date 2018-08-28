@@ -37,7 +37,8 @@ Scenario: View create new project page
   Then the user should be on the new project page
 
 Scenario: Create new project
-  Given the user logs in as "blair.butterworth.17@ucl.ac.uk" with "abc123" as their password
+  Given the user "blair.butterworth.17@ucl.ac.uk" has role "admin"
+  And the user logs in as "blair.butterworth.17@ucl.ac.uk" with "abc123" as their password
   And the user is on the new project page
   When the user enters the project details:
     | identifier      | name              | description       | owner                          | members                           | dataSources   |
@@ -50,10 +51,16 @@ Scenario: Create new project
     | new-project     | New Project       | Project desc      | blair.butterworth.17@ucl.ac.uk | blair.butterworth.17@ucl.ac.uk    |               |
 
 Scenario: Create project with blank name
-  Given the user logs in as "blair.butterworth.17@ucl.ac.uk" with "abc123" as their password
+  Given the user "blair.butterworth.17@ucl.ac.uk" has role "admin"
+  And the user logs in as "blair.butterworth.17@ucl.ac.uk" with "abc123" as their password
   And the user is on the new project page
   When the user enters the project details:
     | identifier      | name              | description       | owner                          | members                           | dataSources   |
     | new-project     |                   | Project desc      | blair.butterworth.17@ucl.ac.uk | blair.butterworth.17@ucl.ac.uk    |               |
   And the user clicks the create project button
   Then the user should be on the new project page
+
+#Scenario: Star a project
+#  Given the user logs in as "blair.butterworth.17@ucl.ac.uk" with "abc123" as their password
+#  When the user clicks the star for project with identifier "project-fizzyo"
+#  Then the project with identifier "project-fizzyo" will be starred

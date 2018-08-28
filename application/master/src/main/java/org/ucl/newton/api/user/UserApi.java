@@ -18,6 +18,7 @@ import org.ucl.newton.service.authentication.UnknownRoleException;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -47,6 +48,19 @@ public class UserApi
     @RequestMapping(value = "/api/users", method = RequestMethod.GET)
     public Collection<User> getUsers(@RequestParam(value="matching")String matching) {
         return userService.getUsers(matching);
+    }
+
+    @RequestMapping(value = "/api/privilegedusers", method = RequestMethod.GET)
+    public Collection<User> getPrivilegedUsers(@RequestParam(value="matching")String matching) {
+        Collection<User> matchingUsers = userService.getUsers(matching);
+        Collection<User> withPrivilege = new ArrayList<>();
+        for(User user: matchingUsers) {
+            Credential userCred = authService.getCredentials(user);
+            if(userCred.getRole() == UserRole.ADMIN || userCred.getRole() == UserRole.ORGANISATIONLEAD) {
+                withPrivilege.add(user);
+            }
+        }
+        return withPrivilege;
     }
 
     @RequestMapping(value = "/api/user", method = RequestMethod.DELETE)

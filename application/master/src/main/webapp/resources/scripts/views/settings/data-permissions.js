@@ -80,7 +80,7 @@ $(document).ready(function() {
         queryTokenizer: Bloodhound.tokenizers.whitespace,
 
         remote: {
-            url: "/api/users?matching=%QUERY",
+            url: "/api/privilegedusers?matching=%QUERY",
             wildcard: "%QUERY"
         }
     });

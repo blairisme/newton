@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.ucl.newton.application.persistence.DeveloperPersistenceConfiguration;
 import org.ucl.newton.framework.DataPermission;
 import org.ucl.newton.framework.User;
+import org.ucl.newton.testobjects.DummyUserFactory;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class DataPermissionRepositoryTest {
 
     @Test
     public void testAddRemovePermission() {
-        User userBlair = new User(3, "Blair Butterworth", "blair.butterworth.17@ucl.ac.uk", "profile.jpg");
+        User userBlair = DummyUserFactory.createUserBlair();
         DataPermission newDataPermission = new DataPermission(8, userBlair, "new-data-source", new ArrayList<>());
 
         int id = repository.addPermission(newDataPermission).getId();
@@ -37,7 +38,7 @@ public class DataPermissionRepositoryTest {
 
     @Test
     public void testUpdatePermission() {
-        User userXialong = new User(4, "Xiaolong Chen", "xiaolong.chen@ucl.ac.uk", "pp_2.jpg");
+        User userXialong = DummyUserFactory.createUserXiaolong();
 
         DataPermission dataPermission = repository.getPermissionByIdEagerly(2);
         Collection<User> grantedPermissions = dataPermission.getGrantedPermissions();
@@ -54,11 +55,11 @@ public class DataPermissionRepositoryTest {
 
     @Test
     public void testGetPermissionsOwnedByUser() {
-        User adminUser = new User(2, "admin", "admin@ucl.ac.uk", "pp_4.jpg");
-        User userUser = new User(1, "user", "user@ucl.ac.uk", "pp_1.jpg");
+        User adminUser = DummyUserFactory.createUserAdmin();
+        User userUser = DummyUserFactory.createUserUser();
 
         Collection<DataPermission> dataPermissions = repository.getPermissionsOwnedByUserEagerly(adminUser);
-        Assert.assertEquals(2, dataPermissions.size());
+        Assert.assertEquals(4, dataPermissions.size());
 
         dataPermissions = repository.getPermissionsOwnedByUserEagerly(userUser);
         Assert.assertEquals(0, dataPermissions.size());
@@ -66,15 +67,15 @@ public class DataPermissionRepositoryTest {
 
     @Test
     public void testGetPermissionsGrantedToAUser() {
-        User userBlair = new User(3, "Blair Butterworth", "blair.butterworth.17@ucl.ac.uk", "profile.jpg");
-        User userZiad = new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk", "pp_3.jpg");
-        User userJohn = new User(6, "John Wilkie", "john.wilkie.17@ucl.ac.uk", "pp_1.jpg");
+        User userBlair = DummyUserFactory.createUserBlair();
+        User userZiad = DummyUserFactory.createUserZiad();
+        User userJohn = DummyUserFactory.createUserJohn();
 
         Collection<DataPermission> dataPermissions = repository.getPermissionsGrantedToUser(userBlair);
-        Assert.assertEquals(2, dataPermissions.size());
+        Assert.assertEquals(4, dataPermissions.size());
 
         dataPermissions = repository.getPermissionsGrantedToUser(userZiad);
-        Assert.assertEquals(1, dataPermissions.size());
+        Assert.assertEquals(2, dataPermissions.size());
 
         dataPermissions = repository.getPermissionsGrantedToUser(userJohn);
         Assert.assertEquals(0, dataPermissions.size());

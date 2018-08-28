@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
-    image VARCHAR(100) NOT NULL,
+    image VARCHAR(200) NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -39,10 +39,10 @@ CREATE TABLE IF NOT EXISTS credentials (
 CREATE TABLE IF NOT EXISTS projects (
     id INT NOT NULL AUTO_INCREMENT,
     owner_id INT NOT NULL,
-    identifier VARCHAR(45) NOT NULL,
-    name VARCHAR(45) NOT NULL,
+    identifier VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL,
     description VARCHAR(200) NOT NULL,
-    image VARCHAR(45) NOT NULL,
+    image VARCHAR(200) NOT NULL,
     updated DATETIME NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT fk_project_owner FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS project_starred (
 CREATE TABLE IF NOT EXISTS project_datasources (
     pds_id INT NOT NULL AUTO_INCREMENT,
     pds_project INT NOT NULL,
-    pds_datasource VARCHAR(100) NOT NULL,
+    pds_datasource VARCHAR(200) NOT NULL,
     PRIMARY KEY (pds_id),
     CONSTRAINT fk_projds_project FOREIGN KEY (pds_project) REFERENCES projects(id) ON DELETE CASCADE
 );
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS storage_configuration (
     sc_id INT NOT NULL AUTO_INCREMENT,
     sc_type VARCHAR(20) NOT NULL,
     sc_location VARCHAR(200) NOT NULL,
-    sc_initial_script VARCHAR(100) NOT NULL,
+    sc_initial_script VARCHAR(200) NOT NULL,
     PRIMARY KEY (sc_id)
 );
 
@@ -101,9 +101,9 @@ CREATE TABLE IF NOT EXISTS experiment_config (
 /* Create experiment table to store data relating to experiments */
 CREATE TABLE IF NOT EXISTS experiments (
     exp_id INT NOT NULL AUTO_INCREMENT,
-    exp_identifier VARCHAR(45) NOT NULL,
-    exp_name VARCHAR(45) NOT NULL,
-    exp_description VARCHAR(500),
+    exp_identifier VARCHAR(100) NOT NULL,
+    exp_name VARCHAR(100) NOT NULL,
+    exp_description VARCHAR(200),
     updated DATETIME NOT NULL,
     project_id INT NOT NULL,
     creator_id INT NOT NULL,
@@ -117,8 +117,8 @@ CREATE TABLE IF NOT EXISTS experiments (
 /* Creates table for experiment data sources */
 CREATE TABLE IF NOT EXISTS eds (
     eds_id INT NOT NULL AUTO_INCREMENT,
-    ds_id VARCHAR(50) NULL,
-    eds_custom_location VARCHAR(100) NOT NULL,
+    ds_id VARCHAR(100) NULL,
+    eds_custom_location VARCHAR(200) NOT NULL,
     PRIMARY KEY (eds_id)
 );
 

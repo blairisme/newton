@@ -104,29 +104,29 @@
                 <div th:if="${version != null}">
                     <ul class="nav nav-tabs">
                         <li class="nav-item" th:if="${not #lists.isEmpty(version.displayOutcomes)}">
-                            <a class="nav-link" data-toggle="tab" href="#visualizationTab">Visualization</a>
+                            <a class="nav-link" data-toggle="tab" href="#visualization-tab">Visualization</a>
                         </li>
                         <li class="nav-item" th:if="${not #lists.isEmpty(version.dataOutcomes)}">
-                            <a class="nav-link" th:classappend="${#lists.isEmpty(version.displayOutcomes)} ? active : ''" data-toggle="tab" href="#dataTab">Data</a>
+                            <a class="nav-link" th:classappend="${#lists.isEmpty(version.displayOutcomes)} ? active : ''" data-toggle="tab" href="#data-tab">Data</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:classappend="${#lists.isEmpty(version.dataOutcomes)} ? active : ''" data-toggle="tab" href="#consoleTab">Console</a>
+                            <a class="nav-link" th:classappend="${#lists.isEmpty(version.dataOutcomes)} ? active : ''" data-toggle="tab" href="#console-tab">Console</a>
                         </li>
                     </ul>
 
                     <div class="tab-content">
-                        <div th:if="${not #lists.isEmpty(version.displayOutcomes)}" id="visualizationTab" class="tab-pane active fade show">
+                        <div th:if="${not #lists.isEmpty(version.displayOutcomes)}" id="visualization-tab" class="tab-pane active fade show">
                             <div th:each="outcome, iteration :${version.displayOutcomes}">
-                                <img th:if="${#strings.endsWith(outcome.location, '.png')}" th:src="@{'/resources/' + ${outcome.location}}"/>
-                                <img th:if="${#strings.endsWith(outcome.location, '.jpg')}" th:src="@{'/resources/' + ${outcome.location}}"/>
-                                <img th:if="${#strings.endsWith(outcome.location, '.jpeg')}" th:src="@{'/resources/' + ${outcome.location}}"/>
-                                <img th:if="${#strings.endsWith(outcome.location, '.bmp')}" th:src="@{'/resources/' + ${outcome.location}}"/>
-                                <iframe th:if="${#strings.endsWith(outcome.location, '.html')}" th:src="@{'/resources/' + ${outcome.location}}" id="iframe1" onLoad="autoResize('iframe1');" marginheight="0" frameborder="0"></iframe>
+                                <img th:if="${#strings.endsWith(outcome.location, '.png')}" th:src="@{'/resources/' + ${outcome.location}}" width="700"/>
+                                <img th:if="${#strings.endsWith(outcome.location, '.jpg')}" th:src="@{'/resources/' + ${outcome.location}}" width="700"/>
+                                <img th:if="${#strings.endsWith(outcome.location, '.jpeg')}" th:src="@{'/resources/' + ${outcome.location}}" width="700"/>
+                                <img th:if="${#strings.endsWith(outcome.location, '.bmp')}" th:src="@{'/resources/' + ${outcome.location}}" width="700"/>
+                                <iframe th:if="${#strings.endsWith(outcome.location, '.html')}" th:src="@{'/resources/' + ${outcome.location}}" id="iframe1" width="1200" onLoad="autoResize('iframe1');" marginheight="0" frameborder="0"></iframe>
                                 <object th:if="${#strings.endsWith(outcome.location, '.txt')}" th:src="@{'/resources/' + ${outcome.location}}" ></object>
                             </div>
                         </div>
 
-                        <div id="dataTab" class="tab-pane fade"
+                        <div id="data-tab" class="tab-pane fade"
                              th:if="${not #lists.isEmpty(version.dataOutcomes)}"
                              th:classappend="${#lists.isEmpty(version.displayOutcomes)} ? 'show active' : ''">
                             <ul class="list-group">
@@ -138,7 +138,7 @@
                             </ul>
                         </div>
 
-                        <div id="consoleTab" class="tab-pane fade"
+                        <div id="console-tab" class="tab-pane fade"
                              th:classappend="${#lists.isEmpty(version.dataOutcomes)} ? 'show active' : ''">
                             <object th:each="outcome, iteration :${version.logOutcomes}" th:data="@{'/resources/' + ${outcome.location}}" width="100%" height="1000px">Log Text</object>
                         </div>
