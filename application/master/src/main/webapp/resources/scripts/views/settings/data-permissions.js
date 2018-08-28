@@ -104,7 +104,7 @@ $(document).ready(function() {
         selectMember(member.id, member.name, member.email, member.image);
     });
 
-    $(".dropdown-menu a").click(function (e) {
+    $(".permission-dropdown-menu a").click(function (e) {
         e.preventDefault();
         var selText = $(this).text();
         $("#dropdownPermissionButton").text(selText);

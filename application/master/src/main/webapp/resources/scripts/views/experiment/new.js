@@ -34,7 +34,7 @@ function removeDs(elementId) {
 $(document).ready(function() {
     window.globalElementCounter = 0;
 
-    $(".dropdown-menu a").click(function(e) {
+    $(".ds-dropdown-menu a").click(function(e) {
         e.preventDefault();
 
         var selText = $(this).text();
