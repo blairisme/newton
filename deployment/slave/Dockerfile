@@ -34,6 +34,9 @@ RUN pip install 'matplotlib==1.4.3'
 RUN pip install 'jupyter==1.0.0'
 RUN pip install 'nbconvert==5.3.1'
 RUN pip install 'ipython==6.4.0'
+RUN pip install 'pandas==0.23.3'
+RUN pip install -U 'scikit-learn==0.19.2'
+RUN pip install 'scipy==1.1.0'
 
 COPY ./libs/engine.jar engine.jar
 EXPOSE 8080
