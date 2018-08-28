@@ -116,13 +116,15 @@
 
                     <div class="tab-content">
                         <div th:if="${not #lists.isEmpty(version.displayOutcomes)}" id="visualization-tab" class="tab-pane active fade show">
-                            <div th:each="outcome, iteration :${version.displayOutcomes}">
-                                <img th:if="${#strings.endsWith(outcome.location, '.png')}" th:src="@{'/resources/' + ${outcome.location}}" width="700"/>
-                                <img th:if="${#strings.endsWith(outcome.location, '.jpg')}" th:src="@{'/resources/' + ${outcome.location}}" width="700"/>
-                                <img th:if="${#strings.endsWith(outcome.location, '.jpeg')}" th:src="@{'/resources/' + ${outcome.location}}" width="700"/>
-                                <img th:if="${#strings.endsWith(outcome.location, '.bmp')}" th:src="@{'/resources/' + ${outcome.location}}" width="700"/>
-                                <iframe th:if="${#strings.endsWith(outcome.location, '.html')}" th:src="@{'/resources/' + ${outcome.location}}" id="iframe1" width="1200" onLoad="autoResize('iframe1');" marginheight="0" frameborder="0"></iframe>
-                                <object th:if="${#strings.endsWith(outcome.location, '.txt')}" th:src="@{'/resources/' + ${outcome.location}}" ></object>
+                            <div class="visualization-container">
+                                <div th:each="outcome, iteration :${version.displayOutcomes}">
+                                    <img th:if="${#strings.endsWith(outcome.location, '.png')}" th:src="@{'/resources/' + ${outcome.location}}" width="700"/>
+                                    <img th:if="${#strings.endsWith(outcome.location, '.jpg')}" th:src="@{'/resources/' + ${outcome.location}}" width="700"/>
+                                    <img th:if="${#strings.endsWith(outcome.location, '.jpeg')}" th:src="@{'/resources/' + ${outcome.location}}" width="700"/>
+                                    <img th:if="${#strings.endsWith(outcome.location, '.bmp')}" th:src="@{'/resources/' + ${outcome.location}}" width="700"/>
+                                    <iframe th:if="${#strings.endsWith(outcome.location, '.html')}" th:src="@{'/resources/' + ${outcome.location}}" id="iframe1" width="1200" onLoad="autoResize('iframe1');" marginheight="0" frameborder="0"></iframe>
+                                    <object th:if="${#strings.endsWith(outcome.location, '.txt')}" th:src="@{'/resources/' + ${outcome.location}}" ></object>
+                                </div>
                             </div>
                         </div>
 
