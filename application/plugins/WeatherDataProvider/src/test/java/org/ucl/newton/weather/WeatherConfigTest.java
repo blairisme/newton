@@ -26,7 +26,7 @@ public class WeatherConfigTest {
     public PluginHostContext context;
     public PluginHostStorage storage;
     @Before
-    public void setUp() throws IOException {
+    public void setUp(){
         String[] properties = {"city","country","date","key","interval"};
         WeatherProperty property = new WeatherProperty(properties);
         List<WeatherProperty> weatherList = new ArrayList<>();
@@ -35,9 +35,7 @@ public class WeatherConfigTest {
 
         context = mock(PluginHostContext.class);
         storage = mock(PluginHostStorage.class);
-        when(storage.getOutputStream(anyString())).thenReturn(new FileOutputStream("test"));
-        when(context.getStorage()).thenReturn(storage);
-        config.setContext(context);
+
     }
     @Test
     public void getValuesTest(){
@@ -46,6 +44,10 @@ public class WeatherConfigTest {
     }
     @Test
     public void setValuesTest() throws IOException{
+        when(storage.getOutputStream(anyString())).thenReturn(new FileOutputStream("test"));
+        when(context.getStorage()).thenReturn(storage);
+        config.setContext(context);
+
         Map<String,List<String>> values = new HashMap<>();
         values.put("items",buildList("city_country_date_interval"));
         values.put("key",buildList("key"));

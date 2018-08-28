@@ -24,16 +24,14 @@ public class FTPConfigTest {
     public PluginHostStorage storage;
     public PluginHostContext context;
     @Before
-    public void setUp() throws IOException {
+    public void setUp() {
         String[] configs = {"hostName","userName","userPassword","21"};
         config = new FTPConfig();
         config.setValues(configs);
 
         context = Mockito.mock(PluginHostContext.class);
         storage = Mockito.mock(PluginHostStorage.class);
-        Mockito.when(storage.getOutputStream(anyString())).thenReturn(new FileOutputStream("test"));
-        Mockito.when(context.getStorage()).thenReturn(storage);
-        config.setContext(context);
+
     }
     @Test
     public void getValuesTest(){
@@ -46,6 +44,10 @@ public class FTPConfigTest {
 
     @Test
     public void setValuesTest() throws IOException{
+        Mockito.when(storage.getOutputStream(anyString())).thenReturn(new FileOutputStream("test"));
+        Mockito.when(context.getStorage()).thenReturn(storage);
+        config.setContext(context);
+
         Map<String,List<String>> values = new HashMap<>();
         values.put("hostName",buildList("hostName"));
         values.put("userName",buildList("userName"));
