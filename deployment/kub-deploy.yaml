@@ -11,6 +11,7 @@ spec:
       containers:
       - name: database-newton
         image: newtonkubregistry.azurecr.io/blairisme/newton-database:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 3306
       imagePullSecrets:
@@ -51,6 +52,7 @@ spec:
         - configMapRef:
             name: my-env-var
         image: newtonkubregistry.azurecr.io/blairisme/newton:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 9090
         - containerPort: 8443
@@ -66,6 +68,7 @@ spec:
         - configMapRef:
             name: my-env-var
         image: newtonkubregistry.azurecr.io/blairisme/newton-jupyter:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
         - containerPort: 8888
@@ -117,6 +120,7 @@ spec:
         - configMapRef:
             name: my-env-var
         image: newtonkubregistry.azurecr.io/blairisme/newton-slave:latest
+        imagePullPolicy: Always
         resources:
           limits:
             cpu: 200m
