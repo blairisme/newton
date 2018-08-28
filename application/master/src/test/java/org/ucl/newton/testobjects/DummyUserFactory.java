@@ -7,8 +7,12 @@ import java.util.Collection;
 
 public class DummyUserFactory {
 
+    public static User createUserUser() {
+        return new User(1, "user", "user@ucl.ac.uk", "pp_1.jpg");
+    }
+
     public static User createUserAdmin() {
-        return new User(2, "admin", "admin@ucl.ac.uk", "pp_4.jpg"); //'admin', 'admin@ucl.ac.uk', 'pp_4.jpg'
+        return new User(2, "admin", "admin@ucl.ac.uk", "pp_4.jpg");
     }
 
     public static User createUserBlair() {
@@ -21,6 +25,10 @@ public class DummyUserFactory {
 
     public static User createUserZiad() {
         return new User(5, "Ziad Al Halabi", "ziad.halabi.17@ucl.ac.uk", "pp_3.jpg");
+    }
+
+    public static User createUserJohn() {
+        return new User(6, "John Wilkie", "john.wilkie.17@ucl.ac.uk", "pp_1.jpg");
     }
 
     public static Collection<User> createListOfUsers(int n) {
