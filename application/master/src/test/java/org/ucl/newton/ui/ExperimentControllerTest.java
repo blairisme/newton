@@ -228,4 +228,14 @@ public class ExperimentControllerTest {
                 .andExpect(redirectedUrl("/project/" + projectIdent));
     }
 
+    @Test
+    public void deleteExperimentTest() throws Exception {
+        String projectIdent = "some-project";
+        String experimentIdent = "some-experiment";
+
+        mockMvc.perform(post("/project/{name}/{expName}/remove", projectIdent, experimentIdent))
+                .andExpect(status().is(302))
+                .andExpect(redirectedUrl("/project/" + projectIdent));
+    }
+
 }

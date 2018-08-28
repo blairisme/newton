@@ -129,6 +129,7 @@ public class ExperimentConfiguration implements Serializable {
         }
         ExperimentConfiguration other = (ExperimentConfiguration)obj;
         return new EqualsBuilder()
+            .append(id, other.id)
             .append(storageConfig, other.storageConfig)
             .append(processorPluginId, other.processorPluginId)
             .append(outputPattern, other.outputPattern)
@@ -140,6 +141,7 @@ public class ExperimentConfiguration implements Serializable {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
+            .append(id)
             .append(storageConfig)
             .append(processorPluginId)
             .append(outputPattern)
