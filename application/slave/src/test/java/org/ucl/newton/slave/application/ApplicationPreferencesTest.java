@@ -11,7 +11,6 @@ package org.ucl.newton.slave.application;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.ucl.newton.common.lang.Integers;
 
 /**
  * Unit tests for the {@link ApplicationPreferences} class.

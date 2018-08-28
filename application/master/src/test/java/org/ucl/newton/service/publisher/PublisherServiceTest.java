@@ -3,7 +3,6 @@ package org.ucl.newton.service.publisher;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.sdk.publisher.DataPublisher;
 import org.ucl.newton.service.plugin.PluginService;
 
@@ -16,7 +15,6 @@ import static org.mockito.Mockito.when;
 public class PublisherServiceTest {
 
     @Test
-    @Ignore
     public void getDREDataPublisherTest(){
         PluginService pluginService = mock(PluginService.class);
 

@@ -36,6 +36,7 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Instances of this class are used to obtain the results of experiment
@@ -121,6 +122,7 @@ public class WorkspaceService
     private Collection<Path> getOutputs(RequestWorkspace workspace, List<String> patterns) {
         Collection<Path> contents = PathUtils.findChildren(workspace.getRoot(), patterns);
         contents.add(workspace.getLog());
+        contents = contents.stream().distinct().collect(Collectors.toList());
         return contents;
     }
 

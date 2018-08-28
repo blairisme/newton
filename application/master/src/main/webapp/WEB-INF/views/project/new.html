@@ -5,7 +5,7 @@
     <head>
         <title>Newton - Projects</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link rel="icon" href="resources/images/common/favicon.ico">
+        <link rel="icon" href="/resources/images/common/favicon.ico">
 
         <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/typeahead.css"/>
@@ -27,7 +27,10 @@
         <!-- Page Content -->
         <div class="container-fluid restricted-width-container">
             <div class="section-divider">
-                <h1 class="page-title">New Project</h1>
+                <h1 class="page-title">
+                    <a href="/projects"> Projects</a>
+                    <a> / New Project</a>
+                </h1>
                 <p>A project contains all the files for your project, including the revision history.</p>
             </div>
 
@@ -93,9 +96,9 @@
                     <p>Choose which data sources are available to experiments in this project</p>
 
                     <ul>
-                        <li th:each="provider : ${dataProviders}">
-                            <input type="checkbox" class="form-check-input" name="sources" th:value="${provider.getIdentifier()}" />
-                            <label th:text="${provider.getVisualization().getName()}"></label>
+                        <li th:each="dataSource : ${dataSources}">
+                            <input type="checkbox" class="form-check-input" name="sources" th:value="${dataSource.identifier}" />
+                            <label th:text="${dataSource.name}"></label>
                         </li>
                     </ul>
 

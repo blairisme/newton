@@ -5,16 +5,19 @@
     <head>
         <title>Newton - Projects</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link rel="icon" href="resources/images/common/favicon.ico"/>
+        <link rel="icon" href="/resources/images/common/favicon.ico"/>
 
         <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/data_tables.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
-        <link rel="stylesheet" type="text/css" href="/resources/styles/experiment.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/views/project/details.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/views/project/icons.css"/>
 
         <script src="/resources/scripts/libraries/jquery.js"></script>
         <script src="/resources/scripts/libraries/popper.js"></script>
         <script src="/resources/scripts/libraries/bootstrap.js"></script>
+        <script src="/resources/scripts/libraries/data_tables_jquery.js"></script>
+        <script src="/resources/scripts/libraries/data_tables_bootstrap.js"></script>
         <script type="text/javascript" src="/resources/scripts/views/project/details.js"></script>
         <script type="text/javascript" src="/resources/scripts/views/project/icons.js"></script>
     </head>
@@ -46,8 +49,30 @@
                 </li>
             </ul>
 
-
-            <table class="experiment-list">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <input class="form-control" id="filterInput" type="text" placeholder="Filter..">
+                </li>
+                <li class="nav-item ml-auto">
+                    <div class="dropdown" id="listOrderSelection">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Most recently updated
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#">Most recently updated</a></li>
+                            <li><a class="dropdown-item" href="#">Least recently updated</a></li>
+                            <li><a class="dropdown-item" href="#">Experiment name A-Z</a></li>
+                            <li><a class="dropdown-item" href="#">Experiment name Z-A</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <table class="experiment-list" id="experimentList">
+                <thead>
+                    <th>Icon</th>
+                    <th>Name</th>
+                    <th>Updated</th>
+                </thead>
                 <tr th:each="experiment, iteration : ${experiments}" class="experiment-row experiment-row-underline">
                     <td class="experiment-column experiment-icon-container">
                         <a href="#" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier}}">
@@ -61,8 +86,12 @@
                             <span th:text="${experiment.name}" class="experiment-name">experiment name</span>
                         </a>
                     </td>
+                    <td th:attr="data-order=${experiment.getLastUpdatedAsEpoch()}">
+                        <span th:text="${experiment.getLastUpdatedDescription()}" th:class="cell-text">last updated</span>
+                    </td>
                 </tr>
             </table>
+
         </div>
     </body>
 </html>

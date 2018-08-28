@@ -48,6 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
     private void setAuthorizedPaths(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/signup", "/resources/**", "/.well-known/**").permitAll()
+                .antMatchers("/settings/data-permissions").hasAnyRole("ADMIN", "ORGANISATIONLEAD")
                 .antMatchers("/settings/**").hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/**").hasAnyRole("API", "ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/**").hasAnyRole("API", "ADMIN")

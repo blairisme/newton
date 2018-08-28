@@ -15,6 +15,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Unit tests for the {@link Objects} class.
@@ -47,7 +48,7 @@ public class ObjectsTest
     @Test
     public void collectionDefaultTest() {
         Collection<String> expected = Collections.emptyList();
-        Collection<String> actual = Objects.ensureNotNull(null);
+        Collection<String> actual = Objects.ensureNotNull((List<String>)null);
         Assert.assertEquals(expected, actual);
     }
 }

@@ -1,0 +1,16 @@
+.section-button {
+    overflow: hidden;
+}
+
+.update-button {
+    margin-bottom: 1em;
+}
+
+.delete-button {
+    margin-bottom: 0.4em;
+}
+
+.section-divider-thick {
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #8c8c8c;
+}

@@ -6,7 +6,7 @@
 <head>
     <title>Newton - Data Permissions</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="icon" href="resources/images/common/favicon.ico">
+    <link rel="icon" href="/resources/images/common/favicon.ico">
 
     <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/typeahead.css"/>
@@ -25,22 +25,7 @@
 <div th:replace="fragments/header :: header"></div>
 
 <!-- Page Content -->
-<div class="container-fluid">
-    <h1 class="page-title">System Settings</h1>
-
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{'/settings/roles'}" sec:authorize="hasRole('ROLE_ADMIN')">User Roles</a>
-        </li>
-        <li class="nav-item active">
-            <a class="nav-link active" href="#">Data Source Permissions</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{'/settings/plugins'}" sec:authorize="hasRole('ROLE_ADMIN')">Plugin Settings</a>
-        </li>
-    </ul>
-
-    <div class="container-fluid restricted-width-container">
+<div class="container-fluid restricted-width-container">
 
         <div class="section-divider">
             <h1 class="page-title">Data Permission Settings</h1>
@@ -56,7 +41,7 @@
                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownPermissionButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Select a data source name
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-menu permission-dropdown-menu" aria-labelledby="dropdownMenuButton">
                      <th:block th:each="dataPermission : ${ownedPermission}">
                         <a class="dropdown-item" href="#" th:text="${dataPermission.dataSourceIdentifier}"></a>
                     </th:block>
@@ -98,7 +83,6 @@
             </ul>
         </div>
 
-    </div>
 </div>
 
 </body>

@@ -36,22 +36,42 @@ from newtonauthenticator import NewtonAuthenticator
 
 def create_dir_hook(spawner):
     username = spawner.user.name
-    experiment = spawner.authenticator.experiment_id
-    experiment_data = '/home/newton/experiment/' + experiment + '/repository/data'
-    data_root = '/home/newton/data'
+    experiment_id = spawner.authenticator.experiment_id
+    data_ids = spawner.authenticator.data_sources
 
-    print(experiment_data)
-    print(data_root)
+    experiment_source = '/home/newton/experiment/' + experiment_id + '/repository/'
+    experiment_destination = '/home/' + username + '/' + experiment_id
+    experiment_destination_parent = '/home/' + username
 
-    if not path.exists(experiment_data):
-        os.symlink(data_root, experiment_data)
+    data_source = '/home/newton/data/'
+    data_destination = experiment_destination + '/data/'
+
+    if not os.path.exists(experiment_destination_parent):
+        oldmask = os.umask(000)
+        os.makedirs(experiment_destination_parent, 0o777)
+        os.umask(oldmask)
+
+    if path.exists(experiment_source) and not path.exists(experiment_destination):
+        os.symlink(experiment_source, experiment_destination)
+
+    if not os.path.exists(data_destination):
+        oldmask = os.umask(000)
+        os.makedirs(data_destination, 0o777)
+        os.umask(oldmask)
+
+    for data_id in data_ids:
+        source_path = data_source + data_id
+        destination_path = data_destination + data_id
+
+        if path.exists(source_path) and not path.exists(destination_path):
+            os.symlink(source_path, destination_path)
 
 
 c.JupyterHub.spawner_class = NewtonSpawner
 c.Spawner.default_url = '/lab'
 c.Spawner.ip = '0.0.0.0'
 c.Spawner.args = ['--allow-root']
-c.Spawner.notebook_dir = '/home/newton/experiment/{experiment_id}/repository'
+c.Spawner.notebook_dir = '/home/{username}/{experiment_id}'
 c.Spawner.disable_user_config = True
 c.Spawner.pre_spawn_hook = create_dir_hook
 

@@ -204,8 +204,12 @@ public class ExperimentControllerTest {
         String experimentIdent = "experiment-1";
         String projectIdent = "projectIdent";
         URI editorUrl = new URI("someurl");
+
+        Experiment experiment = DummyExperimentFactory.createExperiment("Experiment 1", experimentIdent);
+        when(experimentService.getExperimentByIdentifier(experimentIdent)).thenReturn(experiment);
+
         when(userService.getAuthenticatedUser()).thenReturn(userZiad);
-        when(jupyterServer.getEditorUrl(userZiad, experimentIdent)).thenReturn(editorUrl);
+        when(jupyterServer.getEditorUrl(userZiad, experiment)).thenReturn(editorUrl);
 
         mockMvc.perform(get("/project/{project}/{experiment}/edit", projectIdent, experimentIdent))
                 .andExpect(status().is(302))
@@ -220,6 +224,16 @@ public class ExperimentControllerTest {
 
         mockMvc.perform(post("/project/{project}/new", projectIdent)
                 .flashAttr("experiment", experimentDto))
+                .andExpect(status().is(302))
+                .andExpect(redirectedUrl("/project/" + projectIdent));
+    }
+
+    @Test
+    public void deleteExperimentTest() throws Exception {
+        String projectIdent = "some-project";
+        String experimentIdent = "some-experiment";
+
+        mockMvc.perform(post("/project/{name}/{expName}/remove", projectIdent, experimentIdent))
                 .andExpect(status().is(302))
                 .andExpect(redirectedUrl("/project/" + projectIdent));
     }

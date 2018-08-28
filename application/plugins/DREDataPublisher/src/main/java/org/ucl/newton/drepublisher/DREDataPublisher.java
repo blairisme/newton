@@ -51,23 +51,20 @@ public class DREDataPublisher implements DataPublisher {
         }catch (IOException e){
             logger.error("Fail to load DRE FTP configuration and load default configuration instead:", e);
         }
-        if (input == null)
+        if (input == null) {
             input = getClass().getResourceAsStream("/configuration/DREFTPConfiguration");
-        FTPConfig config = readFTPConfiguration(input);
-        if (config != null) {
-            config.setContext(context);
-            this.config = config;
         }
+        FTPConfig config = new FTPConfig();
+        readFTPConfiguration(config, input);
+
+        config.setContext(context);
+        this.config = config;
     }
 
-    private FTPConfig readFTPConfiguration(InputStream input) {
-        FTPConfig config = null;
+    private void readFTPConfiguration(FTPConfig config, InputStream input) {
         List<String[]> configs = CsvSerializer.readCSV(input);
         if(configs.size()>0){
-            config = new FTPConfig(configs.get(0));
+            config.setValues(configs.get(0));
         }
-
-        return config;
     }
-
 }

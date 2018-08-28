@@ -1,3 +1,2 @@
-city,country,date,key
-london,united kingdom,2018-07-27,0252e94bd710446c908123539182906
-Tianjin,china,2018-08-01,0252e94bd710446c908123539182906
+city,country,date,key,interval
+london,united kingdom,2018-07-27,7c344b33801543f8802121232182408,1

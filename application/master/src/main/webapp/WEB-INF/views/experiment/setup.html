@@ -5,12 +5,13 @@
 <head>
     <title>Newton - Experiment Setup</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="icon" href="resources/images/common/favicon.ico">
+    <link rel="icon" href="/resources/images/common/favicon.ico">
 
     <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/data_tables.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/views/experiment/new.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/views/experiment/setup.css"/>
 
     <script src="/resources/scripts/libraries/jquery.js"></script>
     <script src="/resources/scripts/libraries/popper.js"></script>
@@ -66,9 +67,9 @@
 
                     <!-- description -->
                     <div class="form-group">
-                        <label for="experimentDescInput">Experiment description <span class="text-danger">*</span></label>
+                        <label for="experimentDescInput">Experiment description</label>
                         <input id="experimentDescInput" name="description" type="text" class="form-control"
-                               required="required" th:value="${experiment.description}">
+                               th:value="${experiment.description}">
                     </div>
 
                     <!-- run trigger -->
@@ -150,10 +151,10 @@
                     <p>Select which of the available data sources to use in this experiment.</p>
 
                     <ul id="dsList" class="list-group list-group-flush">
-                        <th:block th:each="dataSource : ${experiment.configuration.getExperimentDataSources()}" >
-                            <li class="list-group-item project-list-item" th:id="'ds' + ${dataSource.dataSourceId}">
+                        <th:block th:each="dataSource, iteration : ${experiment.configuration.getExperimentDataSources()}" >
+                            <li class="list-group-item project-list-item" th:id="'ds' + ${iteration.index}">
                                 <p class="float-left" th:inline="text">Name: [[${dataSource.dataSourceId}]] <br/>Location: [[${dataSource.customLocation}]] </p>
-                                <button type="button" class="btn btn-outline-primary remove_button float-right" th:value="${dataSource.dataSourceId}">Remove</button>
+                                <button type="button" class="btn btn-outline-primary remove_button float-right" th:value="${iteration.index}">Remove</button>
                             </li>
                         </th:block>
                         <p th:hidden="${experiment.configuration.getExperimentDataSources().size()} > 0 " id="dsListEmpty"
@@ -178,7 +179,7 @@
                             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownDsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Select a datasource
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="dropdown-menu ds-dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <th:block th:each="dataSource : ${project.dataSources}">
                                     <a class="dropdown-item" href="#" th:text="${dataSource}"></a>
                                 </th:block>
@@ -211,11 +212,35 @@
                     </div>
                 </section>
 
+                <!-- Display settings -->
+                <section class="form-section section-divider">
+                    <h4>Experiment Display Settings</h4>
+                    <p>Use a pattern to select which files will be displayed on that experiments page after an experiment has run. To set multiple patterns, separate each pattern using a comma ",".</p>
+
+                    <div class="form-group">
+                        <label for="experimentDisplayInput">Experiment display <span class="text-danger">*</span> (give a pattern to select files to display)</label>
+                        <input id="experimentDisplayInput" name="displayPattern" type="text" class="form-control"
+                               th:value="${experiment.configuration.displayPattern}" required="required">
+                    </div>
+                </section>
+
                 <input id="experimentCreator" name="creator" type="text" th:value="${user.email}" hidden="hidden">
                 <input id="experimentProject" name="project" type="text" th:value="${project.identifier}" hidden="hidden">
-                <input id="experimentDisplayPattern" name="displayPattern" type="text" value="*.html" hidden="hidden">
 
-                <button class="btn btn-primary float-right" id="createBtn">Update Experiment</button>
+                <!--<button class="btn btn-primary float-right" id="createBtn">Update Experiment</button>-->
+                <section class="form-section section-divider-thick section-button">
+                    <input type="submit" class="btn btn-primary float-right update-button" value="Update Experiment"/>
+                </section>
+            </form>
+
+            <!-- Delete experiment -->
+            <form th:action="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/remove'}" method="POST" >
+                <section class="form-section section-divider section-button">
+                    <h4>Delete Experiment</h4>
+                    <p class="text-danger">Warning deleting an experiment will permanently remove that experiment, any versions of that experiment!
+                        <input type="submit" class="btn btn-danger float-right delete-button" value="Delete" th:disabled="${project.owner.id} != ${user.id} and ${experiment.creator.id} != ${user.id}"/>
+                    </p>
+                </section>
             </form>
 
         </div>

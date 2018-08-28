@@ -27,8 +27,11 @@ public class FizzyoConfiguration extends BasicConfiguration {
     private String endDate;
     private String requestData;
 
-    public FizzyoConfiguration(String[] configuration){
+    public FizzyoConfiguration() {
         super("fizzyo.html");
+    }
+
+    public void setValues(String[] configuration) {
         this.clientId = configuration[0];
         this.syncSecret = configuration[1];
         this.startDate = configuration[2];
@@ -54,14 +57,25 @@ public class FizzyoConfiguration extends BasicConfiguration {
             this.requestData = values.get("requestData").get(0);
         writeToFile();
     }
+
     @Override
     public Map<String, String> getValues(){
         Map<String, String> values = new HashMap<>();
-        values.put("clientId",clientId);
-        values.put("syncSecret",syncSecret);
-        values.put("startDate",TimeUtils.unixStampToTime(startDate).substring(0,10));
-        values.put("endDate",TimeUtils.unixStampToTime(endDate).substring(0,10));
-        values.put("requestData",requestData);
+        if (clientId != null) {
+            values.put("clientId", clientId);
+        }
+        if (syncSecret != null) {
+            values.put("syncSecret", syncSecret);
+        }
+        if (startDate != null) {
+            values.put("startDate", TimeUtils.unixStampToTime(startDate).substring(0, 10));
+        }
+        if (endDate != null) {
+            values.put("endDate", TimeUtils.unixStampToTime(endDate).substring(0, 10));
+        }
+        if (requestData != null) {
+            values.put("requestData", requestData);
+        }
         return values;
     }
 
@@ -104,6 +118,7 @@ public class FizzyoConfiguration extends BasicConfiguration {
     public void setContext(PluginHostContext context){
         this.context = context;
     }
+
     public String getClientId() {
         return clientId;
     }

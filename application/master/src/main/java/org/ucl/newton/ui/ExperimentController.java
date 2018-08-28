@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.ucl.newton.api.experiment.ExperimentDto;
 import org.ucl.newton.engine.ExecutionEngine;
 import org.ucl.newton.framework.*;
+import org.ucl.newton.sdk.provider.DataSource;
 import org.ucl.newton.service.experiment.ExperimentOperations;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.jupyter.JupyterServer;
@@ -31,6 +32,9 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 
 import java.net.URI;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Instances of this class provide an MVC controller for web pages used to
@@ -109,7 +113,12 @@ public class ExperimentController
         model.addAttribute("triggerValues", new String[] {"Manual", "On data change"});
         model.addAttribute("storageValues", new String[] {"Newton"});
         model.addAttribute("typeValues", pluginService.getDataProcessors());
+        model.addAttribute("dataSourceDetails", getDataSourcesMappedById());
         return "experiment/new";
+    }
+
+    private Map<String, DataSource> getDataSourcesMappedById() {
+        return pluginService.getDataSources().stream().collect(Collectors.toMap(DataSource::getIdentifier, Function.identity()));
     }
 
     @GetMapping(value = "/project/{project}/{experiment}/run")
@@ -179,12 +188,15 @@ public class ExperimentController
     @GetMapping(value = "/project/{project}/{experiment}/edit")
     public String edit(
         @PathVariable("project") String project,
-        @PathVariable("experiment") String experiment,
+        @PathVariable("experiment") String experimentId,
         ModelMap model)
     {
         User user = userService.getAuthenticatedUser();
+        Experiment experiment = experimentService.getExperimentByIdentifier(experimentId);
+
         URI editorUrl = jupyterServer.getEditorUrl(user, experiment);
         String redirectPath = editorUrl.toString();
+
         return "redirect:" + redirectPath;
     }
 
@@ -199,6 +211,16 @@ public class ExperimentController
         experimentOperations.populateRepository(experiment);
 
         return "redirect:/project/" + projectId;
+    }
+
+    @PostMapping(value = "/project/{projName}/{expName}/remove")
+    public String deleteExperiment(
+            @PathVariable("projName") String projectIdentifier,
+            @PathVariable("expName") String experimentIdentifier)
+    {
+        Experiment toDelete = experimentService.getExperimentByIdentifier(experimentIdentifier);
+        experimentService.removeExperiment(toDelete);
+        return "redirect:/project/" + projectIdentifier;
     }
 
 }

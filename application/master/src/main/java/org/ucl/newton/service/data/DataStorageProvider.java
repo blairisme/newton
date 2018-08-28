@@ -29,18 +29,19 @@ import java.nio.file.Path;
 @Named
 public class DataStorageProvider implements DataStorage
 {
-    private String providerId;
+    //private String providerId;
     private NamedSteamProvider storageProvider;
     private ApplicationStorage applicationStorage;
 
     @Inject
     public DataStorageProvider(ApplicationStorage applicationStorage) {
         this.applicationStorage = applicationStorage;
+        this.storageProvider = new NamedSteamProvider(applicationStorage.getDataDirectory());
     }
 
     public void setProviderId(String providerId) {
-        this.providerId = providerId;
-        this.storageProvider = new NamedSteamProvider(applicationStorage.getDataDirectory(providerId));
+        //this.providerId = providerId;
+        //this.storageProvider = new NamedSteamProvider(applicationStorage.getDataDirectory(providerId));
     }
 
     @Override
@@ -55,7 +56,9 @@ public class DataStorageProvider implements DataStorage
 
     public Path getPath(DataSource dataSource) {
         Path dataDirectory = applicationStorage.getDataDirectory();
-        Path providerDirectory = dataDirectory.resolve(providerId);
-        return providerDirectory.resolve(dataSource.getIdentifier());
+        return dataDirectory.resolve(dataSource.getIdentifier());
+
+        //Path providerDirectory = dataDirectory.resolve(providerId);
+        //return providerDirectory.resolve(dataSource.getIdentifier());
     }
 }

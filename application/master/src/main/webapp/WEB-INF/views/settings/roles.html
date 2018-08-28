@@ -6,7 +6,7 @@
     <head>
         <title>Newton - Settings</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link rel="icon" href="resources/images/common/favicon.ico">
+        <link rel="icon" href="/resources/images/common/favicon.ico">
 
         <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
@@ -32,9 +32,6 @@
                     <a class="nav-link active" href="#" sec:authorize="hasRole('ROLE_ADMIN')">User Roles</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{'/settings/data-permissions'}">Data Source Permissions</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" th:href="@{'/settings/plugins'}" sec:authorize="hasRole('ROLE_ADMIN')">Plugin Settings</a>
                 </li>
             </ul>
@@ -45,7 +42,7 @@
                 <h1 class="page-title">Change user role</h1>
                 <p>Search for users in the system to change their assigned role</p>
 
-                <div class="form-group" width="100%">
+                <div class="form-group">
                     <input id="userInput" type="text" class="typeahead form-control" placeholder="Begin typing to find a user">
                 </div>
 

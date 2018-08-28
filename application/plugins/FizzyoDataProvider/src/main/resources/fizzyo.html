@@ -24,6 +24,7 @@
             <div class="form-group col-lg-3">
                 <label for="requestData">requestData</label>
                 <input id="requestData" name="requestData" class="form-control" th:value="${requestData}" type="text"/>
+                <span class="help-block">Array of datatypes to sync, e.g. ["pressure-raw", "heart-rate", "games-sessions"]. Can specify "all" to get all data. Allowed values: "all", "exercise-sessions", "foot-steps", "foot-steps-granular", "games-sessions", "heart-rate", "pressure-raw", "users", "patient-records"</span>
             </div>
         </div>
     </body>

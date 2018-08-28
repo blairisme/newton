@@ -19,6 +19,7 @@ import org.ucl.newton.common.serialization.JsonSerializer;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 
 /**
  * Instances of this class make requests to the remote system controlling
@@ -89,7 +90,8 @@ public class ExecutionCoordinatorClient implements ExecutionCoordinator
     @Override
     public InputStream getDataSource(String dataSourceId) {
         try {
-            URI address = getServerAddress("api/data/" + dataSourceId);
+            String path = URLEncoder.encode(dataSourceId, "UTF-8");
+            URI address = getServerAddress("api/data/" + path);
             BasicHttpConnection connection = getConnection(address);
             return connection.getInputStream();
         }
@@ -101,7 +103,8 @@ public class ExecutionCoordinatorClient implements ExecutionCoordinator
     @Override
     public InputStream getDataProcessor(String dataProcessorId) {
         try {
-            URI address = getServerAddress("api/plugin/processor/" + dataProcessorId);
+            String path = URLEncoder.encode(dataProcessorId, "UTF-8");
+            URI address = getServerAddress("api/plugin/processor/" + path);
             BasicHttpConnection connection = getConnection(address);
             return connection.getInputStream();
         }

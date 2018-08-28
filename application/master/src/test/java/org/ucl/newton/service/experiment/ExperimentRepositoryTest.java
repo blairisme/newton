@@ -13,10 +13,9 @@ import org.ucl.newton.testobjects.DummyExperimentFactory;
 import javax.inject.Inject;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DeveloperPersistenceConfiguration.class})
@@ -55,7 +54,7 @@ public class ExperimentRepositoryTest {
     public void testGetExperimentsForProject() {
         String fizzyoName = "project-fizzyo";
         Collection<Experiment> experiments = repository.getExperimentsForProject(fizzyoName);
-        Assert.assertEquals(12, experiments.size());
+        Assert.assertEquals(11, experiments.size());
         for(Experiment experiment: experiments){
             Assert.assertEquals(fizzyoName, experiment.getProject().getIdentifier());
         }
@@ -139,6 +138,21 @@ public class ExperimentRepositoryTest {
         Assert.assertEquals("data2.json", outcome.getName());
         Assert.assertEquals("experiment/experiment-1/versions/1/data2.json", outcome.getLocation());
         Assert.assertEquals(ExperimentOutcomeType.Data, outcome.getType());
+    }
+
+    @Test
+    public void testRemoveExperiment() {
+        Experiment experiment = repository.getExperimentById(5);
+        String fizzyoName = "project-fizzyo";
+        Collection<Experiment> experiments = repository.getExperimentsForProject(fizzyoName);
+        Assert.assertEquals(12, experiments.size());
+        Assert.assertTrue(experiments.contains(experiment));
+        repository.removeExperiment(experiment);
+
+        experiments = repository.getExperimentsForProject(fizzyoName);
+        Assert.assertEquals(11, experiments.size());
+        Assert.assertFalse(experiments.contains(experiment));
+
     }
 
 }

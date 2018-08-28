@@ -14,11 +14,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.ocpsoft.prettytime.PrettyTime;
 import org.ucl.newton.service.experiment.MissingVersionException;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,6 +47,9 @@ public class Experiment
 
     @Column(name = "exp_description")
     private String description;
+
+    @Column(name = "updated")
+    private Date updated;
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
@@ -73,6 +78,7 @@ public class Experiment
         String identifier,
         String name,
         String description,
+        Date updated,
         User creator,
         Project project,
         List<ExperimentVersion> versions,
@@ -82,6 +88,7 @@ public class Experiment
         this.identifier = identifier;
         this.name = name;
         this.description = description;
+        this.updated = updated;
         this.creator = creator;
         this.project = project;
         this.versions = versions;
@@ -111,6 +118,23 @@ public class Experiment
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public long getLastUpdatedAsEpoch() {
+        return updated.getTime();
+    }
+
+    public String getLastUpdatedDescription() {
+        PrettyTime timeFormatter = new PrettyTime();
+        return timeFormatter.format(updated);
+    }
+
+    public void updated() {
+        updated = new Date();
     }
 
     public User getCreator() {
