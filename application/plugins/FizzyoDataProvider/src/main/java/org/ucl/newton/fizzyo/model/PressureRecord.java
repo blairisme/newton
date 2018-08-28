@@ -12,11 +12,9 @@ public class PressureRecord implements FizzyoDataUnit{
     private int goodBreaths;
     private String breaths;
     private String averageBreathLength;
-    private String id;
     private String startTime;
     private String endTime;
     private String averagePressure;
-    private String pressureRawId;
     private String patientRecordId;
     @Override
     public List<String> getKeys(){
