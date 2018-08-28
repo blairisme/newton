@@ -27,6 +27,9 @@ RUN pip3 install jupyterhub==0.9.1
 RUN pip3 install jupyterlab==0.32.1
 RUN pip3 install jupyterhub-jwtauthenticator==0.1
 RUN pip3 install matplotlib==2.2.3
+RUN pip3 install 'pandas==0.23.3'
+RUN pip3 install -U 'scikit-learn==0.19.2'
+RUN pip3 install 'scipy==1.1.0'
 
 # Install libraries required by Jupyter applications
 RUN yum install nodejs npm -y
