@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class PressureRawRecord implements FizzyoDataUnit{
     private String id;
-    private boolean processed;
     private String startTime;
     private String endTime;
     private String pressureValues;
