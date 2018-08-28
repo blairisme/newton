@@ -41,7 +41,7 @@ $(document).ready(function() {
         $("#dropdownDsButton").text(selText);
 
         var selVal = $(this).attr("value");
-        $("#experimentDsLoc").attr("value", selVal)
+        $("#experimentDsLoc").attr("value", selVal);
 
         var defaultLoc = "data/" + selVal.split(" ").join("_").toLowerCase();
         defaultLoc = defaultLoc.endsWith(".csv") ? defaultLoc : defaultLoc + ".csv";
