@@ -78,6 +78,8 @@ INSERT INTO project_starred (project_id, user_id) VALUES (13, 2);
 /* Project data sources */
 INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (1, 1, 'weather.csv');
 INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (2, 1, 'heart-rate.csv');
+INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (3, 1, 'exercise-sessions.csv');
+INSERT INTO project_datasources (pds_id, pds_project, pds_datasource) VALUES (4, 1, 'games-sessions.csv');
 
 /* Insert into storage configuration */
 INSERT INTO storage_configuration (sc_id, sc_type, sc_location, sc_initial_script) VALUES (1, 'Newton', 'classpath:/experiment/experiment-1/repository', 'main.py');
