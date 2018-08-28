@@ -26,7 +26,7 @@
             <h1 class="page-title">
                 <a  href="/projects"> Projects</a>
                 <a  th:href="@{'/project/' + ${project.identifier}}" th:text="@{'/ '+${project.name}}" > / project name</a>
-                <a>/ New Experiment<a>
+                <a>/ New Experiment</a>
             </h1>
             <p>Some description of an experiment.</p>
         </div>
@@ -142,7 +142,7 @@
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownDsButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Select a datasource
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <div class="dropdown-menu" aria-labelledby="dropdownDsButton">
                             <th:block th:each="dataSource : ${project.dataSources}">
                                 <a class="dropdown-item" href="#"
                                    th:text="${dataSourceDetails.get(dataSource)?.name}"
