@@ -7,8 +7,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="icon" href="/resources/images/common/favicon.ico">
 
-        <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/typeahead.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/views/project/settings.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/views/project/new.css"/>
@@ -51,7 +51,7 @@
 
             <!-- Page Content -->
             <div class="container-fluid restricted-width-container">
-                
+
                 <form id="projectDetails" th:action="@{'/project/' + ${project.identifier} + '/update'}" method="POST" enctype="multipart/form-data" class="requires-validation" novalidate="novalidate">
                     <!-- General Settings -->
                     <section class="form-section section-divider">
