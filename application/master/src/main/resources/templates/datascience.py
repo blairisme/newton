@@ -1,11 +1,17 @@
 
+import matplotlib
+matplotlib.use('Agg')
+import warnings
+import matplotlib.cbook
+warnings.filterwarnings("ignore",category=matplotlib.cbook.mplDeprecation)
 import pandas as pd
 import matplotlib.pyplot as plt
+plt.rcParams.update({'figure.max_open_warning': 0})
+
 from collections import Counter
 from sklearn import model_selection
 from sklearn.linear_model import LinearRegression
 import numpy as np
-
 
 def get_exercise_sessions():
     df = pd.read_csv('data/exercise-sessions.csv')
@@ -18,7 +24,6 @@ def get_exercise_sessions():
 # Plots the Good Breaths versus Total Breaths for all patients
 def plot_users_goodbreath_gameId():
     df = get_exercise_sessions()
-    print(df.dtypes)
     users = list(Counter(df.patientRecordId))
     patientRecordId="patientRecordId"
     mean = df.groupby(["breaths", patientRecordId]).mean()
@@ -73,7 +78,6 @@ def join_weather_exercise():
         weather.append(temperature)
     df_exercise['weather'] = weather
     df_exercise = df_exercise[np.isfinite(df_exercise['weather'])]
-    print(df_exercise)
 
     return df_exercise
 
@@ -116,26 +120,29 @@ def linear_regression():
     regressor = LinearRegression()
     regressor.fit(X_train, y_train)
 
+    print("Regression Coefficients:\nWeather AveragePressure Breaths\n")
     print(regressor.coef_)
     file.write("Regression Coefficients:\nWeather AveragePressure Breaths\n")
     file.write(str(regressor.coef_))
 
     # Predicting the Test set results
     y_pred = regressor.predict(X_test)
+    print("\n\n Average Breath Predictions:\n")
     print(y_pred)
     file.write("\n\n Average Breath Predictions:\n\n")
     file.write(str(y_pred))
 
     rms = rmse(y_pred, y_test)
     file.write("\n\nRMSE= "+ str(rms))
-    print(rms)
+    print("\nRMSE= ", str(rms))
+
 
 
 
 try:
-  plot_users_goodbreath_gameId()
+    plot_users_goodbreath_gameId()
 except Exception as e:
-  print(e)
+    print(e)
 
 
 try:
