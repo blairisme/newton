@@ -4,7 +4,6 @@
     </head>
     <body>
         <div th:fragment="configuration">
-            <h1>Fizzyo plugin configuration</h1>
             <div class="form-group col-lg-3">
                 <label for="clientId">clientId</label>
                 <input id="clientId" name="clientId" class="form-control" th:value="${clientId}" type="text" />
@@ -21,11 +20,19 @@
                 <label for="endDate">endDate</label>
                 <input id="endDate" name="endDate" class="form-control" th:value="${endDate}" type="date"/>
             </div>
-            <div class="form-group col-lg-3">
+
+            <div class="form-group col-lg-12">
                 <label for="requestData">requestData</label>
-                <input id="requestData" name="requestData" class="form-control" th:value="${requestData}" type="text"/>
-                <span class="help-block">Array of datatypes to sync, e.g. ["pressure-raw", "heart-rate", "games-sessions"]. Can specify "all" to get all data. Allowed values: "all", "exercise-sessions", "foot-steps", "foot-steps-granular", "games-sessions", "heart-rate", "pressure-raw", "users", "patient-records"</span>
+                <div class="row">
+                    <div class="form-group col-lg-3">
+                        <input id="requestData" name="requestData" class="form-control" th:value="${requestData}" type="text"/>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <span class="help-block">Array of datatypes to sync, e.g. ["pressure-raw", "heart-rate", "games-sessions"]. Can specify "all" to get all data. Allowed values: "all", "exercise-sessions", "foot-steps", "foot-steps-granular", "games-sessions", "heart-rate", "pressure-raw", "users", "patient-records"</span>
+                    </div>
+                </div>
             </div>
+
         </div>
     </body>
 </html>

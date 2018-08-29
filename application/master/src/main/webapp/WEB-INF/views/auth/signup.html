@@ -69,7 +69,7 @@
                        placeholder="Email Address" class="form-control"
                        data-error="This email address is invalid" required />
                 <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-                     class="validation-message alert alert-danger" role="alert"></div>
+                     class="validation-message alert alert-danger" role="alert" id="emailAlert"></div>
             </div>
 
             <!-- Password input -->
