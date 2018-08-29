@@ -102,6 +102,20 @@ public class ProjectControllerTest
     }
 
     @Test
+    public void listStarredTest() throws Exception {
+        Collection<Project> starredProjects = projectFactory.getStarredProjects(userZiad);
+
+        when(userService.getAuthenticatedUser()).thenReturn(userZiad);
+        when(projectService.getStarredProjects(userZiad)).thenReturn(starredProjects);
+
+        mockMvc.perform(get("/projectsstarred"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("user", userZiad))
+                .andExpect(model().attribute("starredProjects", starredProjects))
+                .andExpect(view().name("project/list-starred"));
+    }
+
+    @Test
     public void detailsTest() throws Exception {
         String projectIdentifier = "gosh-jiro";
         Collection<Experiment> experiments = new DummyExperimentFactory().getExperimentList(4);

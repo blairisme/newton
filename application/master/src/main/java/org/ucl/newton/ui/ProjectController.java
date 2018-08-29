@@ -87,6 +87,14 @@ public class ProjectController
         return "project/list";
     }
 
+    @RequestMapping(value = "/projectsstarred", method = RequestMethod.GET)
+    public String listStarred(ModelMap model) {
+        User user = userService.getAuthenticatedUser();
+        model.addAttribute("user", user);
+        model.addAttribute("starredProjects", projectService.getStarredProjects(user));
+        return "project/list-starred";
+    }
+
     @RequestMapping(value = "/project/{name}", method = RequestMethod.GET)
     public String details(@PathVariable("name")String name, ModelMap model) {
         model.addAttribute("user", userService.getAuthenticatedUser());

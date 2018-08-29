@@ -28,10 +28,10 @@
         <div class="container-fluid">
 
             <!-- Page tabs -->
-            <div th:replace="fragments/list_tabs :: list_tabs(false)"></div>
+            <div th:replace="fragments/list_tabs :: list_tabs(true)"></div>
 
-            <!-- Projects -->
-            <div th:replace="fragments/project_list :: project_list(*{__@{projects}__}, 'projectList')"></div>
+            <!-- Starred projects -->
+            <div th:replace="fragments/project_list :: project_list(*{__@{starredProjects}__}, 'projectList')"></div>
 
         </div>
     </body>
