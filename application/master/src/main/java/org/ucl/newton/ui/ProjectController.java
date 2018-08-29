@@ -17,25 +17,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.common.identifier.Identifier;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.ProjectBuilder;
 import org.ucl.newton.framework.User;
+import org.ucl.newton.sdk.provider.DataSource;
+import org.ucl.newton.service.data.DataPermissionService;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.ucl.newton.common.lang.Integers.stringToInt;
 import static org.ucl.newton.common.lang.Objects.ensureNotNull;
@@ -56,6 +59,7 @@ public class ProjectController
     private ExperimentService experimentService;
     private ApplicationStorage applicationStorage;
     private PluginService pluginService;
+    private DataPermissionService dataPermissionService;
 
     @Inject
     public ProjectController(
@@ -63,13 +67,15 @@ public class ProjectController
         ProjectService projectService,
         ExperimentService experimentService,
         ApplicationStorage applicationStorage,
-        PluginService pluginService)
+        PluginService pluginService,
+        DataPermissionService dataPermissionService)
     {
         this.userService = userService;
         this.projectService = projectService;
         this.experimentService = experimentService;
         this.applicationStorage = applicationStorage;
         this.pluginService = pluginService;
+        this.dataPermissionService = dataPermissionService;
     }
 
     @RequestMapping(value = "/projects", method = RequestMethod.GET)
@@ -79,6 +85,14 @@ public class ProjectController
         model.addAttribute("projects", projectService.getProjects(user));
         model.addAttribute("starredProjects", projectService.getStarredProjects(user));
         return "project/list";
+    }
+
+    @RequestMapping(value = "/projectsstarred", method = RequestMethod.GET)
+    public String listStarred(ModelMap model) {
+        User user = userService.getAuthenticatedUser();
+        model.addAttribute("user", user);
+        model.addAttribute("starredProjects", projectService.getStarredProjects(user));
+        return "project/list-starred";
     }
 
     @RequestMapping(value = "/project/{name}", method = RequestMethod.GET)
@@ -108,15 +122,22 @@ public class ProjectController
         User user = userService.getAuthenticatedUser();
         model.addAttribute("user", user);
         model.addAttribute("project", projectService.getProjectByIdentifier(name, true));
-        model.addAttribute("dataSources", pluginService.getDataSources());
+        model.addAttribute("dataPermissions", dataPermissionService.getAllPermissionsForUser(user));
+        model.addAttribute("dataSources", getDataSourcesMappedById());
         return "project/settings";
     }
 
     @RequestMapping(value = "/project/new", method = RequestMethod.GET)
     public String newProject(ModelMap model) {
-        model.addAttribute("user", userService.getAuthenticatedUser());
-        model.addAttribute("dataSources", pluginService.getDataSources());
+        User user = userService.getAuthenticatedUser();
+        model.addAttribute("user", user);
+        model.addAttribute("dataPermissions", dataPermissionService.getAllPermissionsForUser(user));
+        model.addAttribute("dataSources", getDataSourcesMappedById());
         return "project/new";
+    }
+
+    private Map<String, DataSource> getDataSourcesMappedById() {
+        return pluginService.getDataSources().stream().collect(Collectors.toMap(DataSource::getIdentifier, Function.identity()));
     }
 
     @PostMapping(value = "/project/{name}/delete")
@@ -137,24 +158,24 @@ public class ProjectController
         @RequestParam(required=false) Collection<String> sources,
         ModelMap model)
     {
-        try {
-            ProjectBuilder projectBuilder = new ProjectBuilder();
-            projectBuilder.setName(name);
-            projectBuilder.setIdentifier(Identifier.create(name));
-            projectBuilder.setDescription(description);
-            projectBuilder.setImage(persistProjectImage(image));
-            projectBuilder.setOwner(userService.getAuthenticatedUser());
-            projectBuilder.setMembers(userService.getUsers(stringToInt(ensureNotNull(members))));
-            projectBuilder.setDataSources(sources);
-            projectService.addProject(projectBuilder.build());
-            return "redirect:/projects";
+        if(projectWithNameDoesNotExists(name)) {
+            try {
+                buildProject(name, description, image, members, sources);
+                return "redirect:/projects";
+            } catch (Throwable exception) {
+                model.addAttribute("error", exception.getMessage());
+            }
+        } else {
+            model.addAttribute("error", "A project with the name " + name + " already exists!");
         }
-        catch (Throwable exception) {
-            model.addAttribute("error", exception.getMessage());
-            model.addAttribute("user", userService.getAuthenticatedUser());
-            return "project/new";
-        }
+        User user = userService.getAuthenticatedUser();
+        model.addAttribute("user", user);
+        model.addAttribute("dataPermissions", dataPermissionService.getAllPermissionsForUser(user));
+        model.addAttribute("dataSources", getDataSourcesMappedById());
+        return "project/new";
     }
+
+
 
     @PostMapping("/project/{ident}/update")
     public String updateProject(
@@ -163,7 +184,7 @@ public class ProjectController
             @RequestParam(required=false) MultipartFile image,
             @RequestParam(required=false) Collection<String> members,
             @RequestParam(required=false) Collection<String> sources,
-            ModelMap model) {
+            RedirectAttributes redirectAttr) {
         try {
             Project projectToUpdate = projectService.getProjectByIdentifier(projectIdentifier, true);
             projectToUpdate.setDescription(description);
@@ -176,10 +197,41 @@ public class ProjectController
             projectToUpdate.setLastUpdated(new Date());
             projectService.updateProject(projectToUpdate);
         } catch (Throwable exception) {
-            model.addAttribute("error", "Error: " + exception.getMessage());
-            return "project/settings";
+            redirectAttr.addFlashAttribute("message", "Update failed " + exception.getMessage());
+            redirectAttr.addFlashAttribute("alertClass", "alert-danger");
+            return "redirect:/project/" + projectIdentifier + "/settings";
         }
+        redirectAttr.addFlashAttribute("message", "Update was successful");
+        redirectAttr.addFlashAttribute("alertClass", "alert-success");
         return "redirect:/project/" + projectIdentifier + "/settings";
+    }
+
+    private boolean projectWithNameDoesNotExists(String name) {
+        String identifier = Identifier.create(name);
+        try {
+            projectService.getProjectByIdentifier(identifier, false);
+        } catch (NoResultException e) {
+            return true;
+        }
+        return false;
+    }
+
+    private void buildProject(
+            String name,
+            String description,
+            MultipartFile image,
+            Collection<String> members,
+            Collection<String> sources) throws Exception
+    {
+        ProjectBuilder projectBuilder = new ProjectBuilder();
+        projectBuilder.setName(name);
+        projectBuilder.setIdentifier(Identifier.create(name));
+        projectBuilder.setDescription(description);
+        projectBuilder.setImage(persistProjectImage(image));
+        projectBuilder.setOwner(userService.getAuthenticatedUser());
+        projectBuilder.setMembers(userService.getUsers(stringToInt(ensureNotNull(members))));
+        projectBuilder.setDataSources(sources);
+        projectService.addProject(projectBuilder.build());
     }
 
 

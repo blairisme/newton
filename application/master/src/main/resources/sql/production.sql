@@ -25,3 +25,12 @@ INSERT IGNORE INTO plugin (id, location) VALUES (2, 'classpath:/plugins/processo
 INSERT IGNORE INTO plugin (id, location) VALUES (3, 'classpath:/plugins/data/WeatherDataProvider.jar');
 INSERT IGNORE INTO plugin (id, location) VALUES (4, 'classpath:/plugins/data/FizzyoDataProvider.jar');
 INSERT IGNORE INTO plugin (id, location) VALUES (5, 'classpath:/plugins/publisher/DREDataPublisher.jar');
+
+/* Data permissions */
+INSERT IGNORE INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (1, 2, 'weather.csv');
+INSERT IGNORE INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (2, 2, 'heart-rate.csv');
+INSERT IGNORE INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (3, 2, 'exercise-sessions.csv');
+INSERT IGNORE INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (4, 2, 'games-sessions.csv');
+INSERT IGNORE INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (5, 2, 'pressure-raw.csv');
+INSERT IGNORE INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (6, 2, 'foot-steps.csv');
+INSERT IGNORE INTO dataPermissions (permission_id, permission_owner, permission_ds_ident) VALUES (7, 2, 'foot-steps-granular.csv');

@@ -1,15 +1,13 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
->
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Newton - Data Permissions</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="icon" href="/resources/images/common/favicon.ico">
 
-    <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/typeahead.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/styles/views/settings/data-permissions.css"/>
 
@@ -25,16 +23,16 @@
 <div th:replace="fragments/header :: header"></div>
 
 <!-- Page Content -->
-<div class="container-fluid restricted-width-container">
+<section class="container-fluid restricted-width-container">
 
         <div class="section-divider">
             <h1 class="page-title">Data Permission Settings</h1>
-            <p>Control who can access data sources that you own and view which data souces you have been granted access to.</p>
+            <p>Control who can access data sources that you own and view which data sources you have been granted access to.</p>
         </div>
 
         <!-- Owned data dataPermission settings -->
-        <div class="section-divider">
-            <h6>Owned data sources</h6>
+        <section class="form-section section-divider">
+            <h4>Owned data sources</h4>
             <label for="permissionSelection">Data sources of which you are the owner. Select a data source to manage access to the data source.</label>
 
             <div class="dropdown" id="permissionSelection">
@@ -58,16 +56,20 @@
                     </li>
                 </ul>
 
-                <div class="form-group" width="100%">
-                    <input id="userInput" type="text" class="typeahead form-control" placeholder="Begin typing to find a user to grant data access to">
+                <div class="add_form_group" width="100%">
+                    <div class="form-group">
+                        <label for="userInput">Begin typing to select a user to grant use permission</label>
+                        <input id="userInput" type="text" class="typeahead form-control" placeholder="Begin typing to find a user to grant data access to">
+
+                    </div>
                 </div>
             </div>
 
-        </div>
+        </section>
 
         <!-- Granted data dataPermission list -->
-        <div class="section-divider">
-            <h6>Granted data sources</h6>
+        <section class="form-section section-divider">
+            <h4>Granted data sources</h4>
             <p>A list of data sources you have currently been granted access to.</p>
             <ul class="list-group list-group-flush">
                 <li th:if="${#lists.size(grantedPermission)} == 0" class="list-group-item project-list-item empty-message">
@@ -81,7 +83,7 @@
                     </li>
                 </th:block>
             </ul>
-        </div>
+        </section>
 
 </div>
 

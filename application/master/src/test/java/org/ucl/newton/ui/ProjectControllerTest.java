@@ -17,11 +17,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.ucl.newton.common.identifier.Identifier;
+import org.ucl.newton.framework.DataPermission;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.Project;
 import org.ucl.newton.framework.User;
 import org.ucl.newton.sdk.provider.DataProvider;
 import org.ucl.newton.sdk.provider.DataSource;
+import org.ucl.newton.service.data.DataPermissionService;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.project.ProjectService;
@@ -30,13 +33,16 @@ import org.ucl.newton.testobjects.DummyExperimentFactory;
 import org.ucl.newton.testobjects.DummyProjectFactory;
 import org.ucl.newton.testobjects.DummyUserFactory;
 
+import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -56,6 +62,9 @@ public class ProjectControllerTest
 
     @Mock
     private PluginService pluginService;
+
+    @Mock
+    private DataPermissionService dataPermissionService;
 
     @InjectMocks
     private ProjectController projectController;
@@ -93,6 +102,20 @@ public class ProjectControllerTest
     }
 
     @Test
+    public void listStarredTest() throws Exception {
+        Collection<Project> starredProjects = projectFactory.getStarredProjects(userZiad);
+
+        when(userService.getAuthenticatedUser()).thenReturn(userZiad);
+        when(projectService.getStarredProjects(userZiad)).thenReturn(starredProjects);
+
+        mockMvc.perform(get("/projectsstarred"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("user", userZiad))
+                .andExpect(model().attribute("starredProjects", starredProjects))
+                .andExpect(view().name("project/list-starred"));
+    }
+
+    @Test
     public void detailsTest() throws Exception {
         String projectIdentifier = "gosh-jiro";
         Collection<Experiment> experiments = new DummyExperimentFactory().getExperimentList(4);
@@ -113,30 +136,36 @@ public class ProjectControllerTest
     public void settingsTest() throws Exception {
         String projectIdentifier = "gosh-jiro";
         Collection<DataSource> dataSources = new ArrayList<>();
+        Collection<DataPermission> dataPermissions = new ArrayList<>();
 
         when(userService.getAuthenticatedUser()).thenReturn(userZiad);
         when(projectService.getProjectByIdentifier(projectIdentifier, true)).thenReturn(projectJiro);
         when(pluginService.getDataSources()).thenReturn(dataSources);
+        when(dataPermissionService.getAllPermissionsForUser(userZiad)).thenReturn(dataPermissions);
 
         mockMvc.perform(get("/project/{name}/settings", projectIdentifier))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("user", userZiad))
                 .andExpect(model().attribute("project", projectJiro))
-                .andExpect(model().attribute("dataSources", dataSources))
+                .andExpect(model().attribute("dataSources", new HashMap<String, DataSource>()))
+                .andExpect(model().attribute("dataPermissions", dataPermissions))
                 .andExpect(view().name("project/settings"));
     }
 
     @Test
     public void newProjectTest() throws Exception {
         Collection<DataSource> dataSources = new ArrayList<>();
+        Collection<DataPermission> dataPermissions = new ArrayList<>();
 
         when(userService.getAuthenticatedUser()).thenReturn(userZiad);
         when(pluginService.getDataSources()).thenReturn(dataSources);
+        when(dataPermissionService.getAllPermissionsForUser(userZiad)).thenReturn(dataPermissions);
 
         mockMvc.perform(get("/project/new"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("user", userZiad))
-                .andExpect(model().attribute("dataSources", dataSources))
+                .andExpect(model().attribute("dataPermissions", dataPermissions))
+                .andExpect(model().attribute("dataSources", new HashMap<String, DataSource>()))
                 .andExpect(view().name("project/new"));
     }
 
@@ -163,17 +192,19 @@ public class ProjectControllerTest
 
     @Test
     public void persistNewProjectTest() throws Exception {
+        String projectName = "Project Name";
         Collection<Integer> users = new ArrayList<>();
         users.add(1);
         users.add(2);
         users.add(3);
         users.add(4);
 
+        when(projectService.getProjectByIdentifier(Identifier.create(projectName), false)).thenThrow(new NoResultException());
         when(userService.getAuthenticatedUser()).thenReturn(userZiad);
         when(userService.getUsers(users)).thenReturn(new ArrayList<>());
 
         mockMvc.perform(post("/project/new")
-                .param("name", "Project Name")
+                .param("name", projectName)
                 .param("description", "Project description")
                 .param("image", "somePathToImage")
                 .param("members", "1, 2, 3, 4")
@@ -184,20 +215,44 @@ public class ProjectControllerTest
 
     @Test
     public void persistNewProjectTestWithException() throws Exception {
+        String projectName = "Project Name";
         Collection<Integer> users = new ArrayList<>();
         users.add(1);
 
+        when(projectService.getProjectByIdentifier(Identifier.create(projectName), false)).thenThrow(new NoResultException());
         when(userService.getAuthenticatedUser()).thenReturn(null, userZiad);
         when(userService.getUsers(users)).thenReturn(new ArrayList<>());
 
         mockMvc.perform(post("/project/new")
-                .param("name", "Project Name")
+                .param("name", projectName)
                 .param("description", "Project description")
                 .param("image", "somePathToImage")
                 .param("members", "1")
                 .param("sources", "someSourceName"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("error", "The validated object is null"))
+                .andExpect(model().attribute("user", userZiad))
+                .andExpect(view().name("project/new"));
+    }
+
+    @Test
+    public void persistNewProjectTestWithNameAlreadyUsed() throws Exception {
+        String projectName = "Project Name";
+        Collection<Integer> users = new ArrayList<>();
+        users.add(1);
+
+        when(projectService.getProjectByIdentifier(Identifier.create(projectName), false)).thenReturn(new Project());
+        when(userService.getAuthenticatedUser()).thenReturn(userZiad);
+        when(userService.getUsers(users)).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(post("/project/new")
+                .param("name", projectName)
+                .param("description", "Project description")
+                .param("image", "somePathToImage")
+                .param("members", "1")
+                .param("sources", "someSourceName"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("error", "A project with the name " + projectName + " already exists!"))
                 .andExpect(model().attribute("user", userZiad))
                 .andExpect(view().name("project/new"));
     }
@@ -223,7 +278,6 @@ public class ProjectControllerTest
                 .andExpect(model().attribute("error", nullValue()))
                 .andExpect(model().attribute("user", userZiad))
                 .andExpect(model().attribute("project", projectJiro))
-                //.andExpect(model().attribute("dataSources", dataProviders))
                 .andExpect(view().name("project/settings"));
     }
 
@@ -240,9 +294,11 @@ public class ProjectControllerTest
                 .param("image", "somePathToImage")
                 .param("members", "1")
                 .param("sources", "someSourceName"))
-                .andExpect(status().isOk())
-                .andExpect(model().attribute("error", "Error: null"))
-                .andExpect(view().name("project/settings"));
+                .andDo(print())
+                .andExpect(status().is(302))
+                .andExpect(flash().attribute("message", "Update failed null"))
+                .andExpect(flash().attribute("alertClass", "alert-danger"))
+                .andExpect(redirectedUrl("/project/" + projectIdent + "/settings"));
     }
 
 }

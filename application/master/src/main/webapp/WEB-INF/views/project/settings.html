@@ -7,8 +7,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="icon" href="/resources/images/common/favicon.ico">
 
-        <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/typeahead.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/views/project/settings.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/views/project/new.css"/>
@@ -19,7 +19,7 @@
         <script src="/resources/scripts/libraries/typeahead.js"></script>
         <script src="/resources/scripts/libraries/handlebars.js"></script>
         <script src="/resources/scripts/views/project/new.js"></script>
-        <script src="/resources/scripts/views/project/details.js"></script>
+        <script src="/resources/scripts/views/project/star.js"></script>
     </head>
     <body>
         <!-- Navigation -->
@@ -51,15 +51,14 @@
 
             <!-- Page Content -->
             <div class="container-fluid restricted-width-container">
-                <div th:if="${error != null}" class="alert alert-danger" role="alert" >
-                    <span th:text="${error}">Error message</span>
-                </div>
 
                 <form id="projectDetails" th:action="@{'/project/' + ${project.identifier} + '/update'}" method="POST" enctype="multipart/form-data" class="requires-validation" novalidate="novalidate">
                     <!-- General Settings -->
                     <section class="form-section section-divider">
                         <h4>General Project Settings</h4>
                         <p>Update your project name, description, icon, and other general settings.</p>
+
+                        <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
 
                         <div class="form-group">
                             <label for="projectNameInput">Project name <span class="text-danger">*</span></label>
@@ -109,13 +108,10 @@
                             </option>
                         </select>
 
-                        <div class="form-row add_form_group">
-                            <div class="form-group col-sm-10">
+                        <div class="add_form_group">
+                            <div class="form-group">
                                 <label for="projectMemberInput">Begin typing to select a new member</label>
                                 <input id="projectMemberInput" type="text" class="typeahead form-control" placeholder="" th:readonly="${project.owner.id} != ${user.id}">
-                            </div>
-                            <div class="form-group col-sm-2">
-                                <input type="button" class="btn btn-primary add_button" value="Add Member" th:disabled="${project.owner.id} != ${user.id}" />
                             </div>
                         </div>
 
@@ -127,12 +123,12 @@
                         <p>Choose which data sources are available to experiments in this project</p>
 
                         <ul>
-                            <li th:each="dataSource : ${dataSources}" class="list-unstyled">
+                            <li th:each="dataPermission : ${dataPermissions}" class="list-unstyled">
                                 <input type="checkbox" class="form-check-input" name="sources"
-                                       th:value="${dataSource.identifier}"
+                                       th:value="${dataPermission.dataSourceIdentifier}"
                                        th:disabled="${project.owner.id} != ${user.id}"
-                                       th:checked="${project.dataSources.contains(dataSource.identifier)}"/>
-                                <label th:text="${dataSource.name}" class="list-unstyled"></label>
+                                       th:checked="${project.dataSources.contains(dataPermission.dataSourceIdentifier)}"/>
+                                <label th:text="${dataSources.get(dataPermission.dataSourceIdentifier)?.name}" class="list-unstyled"></label>
                             </li>
                         </ul>
 
@@ -148,7 +144,7 @@
                 <form th:action="@{'/project/' + ${project.identifier} + '/delete'}" method="POST" >
                     <section class="form-section section-divider section-button">
                         <h4>Delete Project</h4>
-                        <p class="text-danger">Warning deleting a project will permanently remove that project, any experiments relating to that project!
+                        <p class="text-danger">Warning deleting a project will permanently remove that project, any experiments relating to that project! Only the person who created a project may delete it.
                             <input type="submit" class="btn btn-danger float-right delete-button" value="Delete" th:disabled="${project.owner.id} != ${user.id}"/>
                         </p>
                     </section>

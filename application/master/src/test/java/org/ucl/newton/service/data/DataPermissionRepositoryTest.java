@@ -59,7 +59,7 @@ public class DataPermissionRepositoryTest {
         User userUser = DummyUserFactory.createUserUser();
 
         Collection<DataPermission> dataPermissions = repository.getPermissionsOwnedByUserEagerly(adminUser);
-        Assert.assertEquals(4, dataPermissions.size());
+        Assert.assertEquals(7, dataPermissions.size());
 
         dataPermissions = repository.getPermissionsOwnedByUserEagerly(userUser);
         Assert.assertEquals(0, dataPermissions.size());

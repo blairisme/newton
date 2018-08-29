@@ -26,7 +26,7 @@ function selectMember(id, name, image, email) {
     $.ajax({
         type: "GET",
         url: "/api/userrole?username=" + email,
-        success: function(data) {
+        success(data) {
             setRoleRadio(data, id);
             $("#selectedUser").show();
         }
@@ -37,7 +37,7 @@ function setUserRole(email, role, name) {
     $.ajax({
         type: "POST",
         url: "/api/updaterole?username=" + email + "&role=" + role,
-        success: function(data) {
+        success(data) {
             $("#setUserRoleBtn").prop("disabled", false);
             $("#selectedUser").hide();
             $("#projectMembersList").empty();

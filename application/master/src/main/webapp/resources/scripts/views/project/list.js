@@ -1,34 +1,19 @@
-function findActiveDataTable(projectsTable, starredTable){
-    var currentTab = $("ul.nav-tabs li a.active").text();
-    var activeTable;
-    if(currentTab === "Your projects"){
-        activeTable = projectsTable;
-    } else if (currentTab === "Starred projects") {
-        activeTable = starredTable;
-    }
-    return activeTable;
-}
-
 $(document).ready( function() {
-    // Create data tables
-    var dTable, dTableStarred;
+    // Create data table
+    var dTable;
 
     dTable = $("#projectList").DataTable({
         "bLengthChange": false,
-        "iDisplayLength": 25,
+        "iDisplayLength": 10,
         "bFilter": true,
         "searching": true,
         "order": [[2, "desc"]],
-        dom: "t"
+        dom: "tp"
     });
 
-    dTableStarred = $("#projectListStarred").DataTable({
-        "bLengthChange": false,
-        "iDisplayLength": 25,
-        "bFilter": true,
-        "searching": true,
-        "order": [[2, "desc"]],
-        dom: "t"
+    // Update icons on page change
+    dTable.on("draw", function () {
+        setIcons();
     });
 
     // Data table order when drop down changed
@@ -36,45 +21,28 @@ $(document).ready( function() {
         e.preventDefault();
         var selText = $(this).text();
         $(this).parents(".dropdown").find(".btn").html(selText+"<span class=\"caret\"></span>");
-        var tableToUpdate = findActiveDataTable(dTable, dTableStarred);
         switch(selText){
             case "Most recently updated":
-                tableToUpdate.order([2, "desc"]).draw();
+                dTable.order([2, "desc"]).draw();
                 break;
 
             case "Least recently updated":
-                tableToUpdate.order([2, "asc"]).draw();
+                dTable.order([2, "asc"]).draw();
                 break;
 
             case "Project name A-Z":
-                tableToUpdate.order([1, "asc"]).draw();
+                dTable.order([1, "asc"]).draw();
                 break;
 
              case "Project name Z-A":
-                 tableToUpdate.order([1, "desc"]).draw();
+                 dTable.order([1, "desc"]).draw();
                 break;
         }
     });
 
     // data tables filter
     $("#filterInput").on("keyup", function(){
-        var tableToUpdate = findActiveDataTable(dTable, dTableStarred);
-        tableToUpdate.search($(this).val()).draw();
-    });
-
-    // Reset table on tab change
-    $("a[data-toggle=\"tab\"]").on("shown.bs.tab", function (e) {
-        var target = $(e.target).attr("href"); // activated tab
-        $("#filterInput").val("");
-        $("#dropdownMenuButton").html("Most recently updated"+"<span class=\"caret\"></span>");
-        if(target === "Starred projects") {
-            dTableStarred.search("").draw();
-            dTableStarred.order([2, "desc"]).draw();
-        } else {
-            dTable.search("").draw();
-            dTable.order([2, "desc"]).draw();
-        }
-
+        dTable.search($(this).val()).draw();
     });
 
     $(document).on("click", ".starIcon", function() {
@@ -84,7 +52,7 @@ $(document).ready( function() {
         $.ajax({
             type: "POST",
             url: "/project/" + this.id + "?type=" + type,
-            success: function(data) {
+            success(data) {
                 if(type === "Star") {
                     image.removeClass("no-star");
                     image.addClass("star");

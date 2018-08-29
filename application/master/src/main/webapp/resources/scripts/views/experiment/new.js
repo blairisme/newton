@@ -52,26 +52,26 @@ $(document).ready(function() {
         var dataSourceLocation = $("#experimentDsLoc").val();
         var dataSourceName = $("#dropdownDsButton").text();
         var dataSourceId = $("#experimentDsLoc").attr("value");
-        var elementId = window.globalElementCounter.toString();
-        window.globalElementCounter = window.globalElementCounter + 1;
+        var id = dataSourceId.replace(/\./g,"");
 
         if (dataSourceLocation.length <= 0) {
-            Console.log("no location"); //convert to validation error
+            // location is empty
         } else {
             if ($("#dsListEmpty").is(":visible")) {
                 $("#dsListEmpty").hide();
             }
 
-            if ($("#ds" + dataSourceName).length !== 0) {
-                Console.log("duplication"); //convert to validation error
+            if ($("#ds" + id).length !== 0) {
+                // already in list
             } else {
-                addDs(elementId, dataSourceId, dataSourceName, dataSourceLocation);
+                addDs(id, dataSourceId, dataSourceName, dataSourceLocation);
             }
         }
     });
 
     $("#dsList").on("click", ".remove_button", function() {
         var elementId = $(this).val();
+        elementId = elementId.replace(/\./g,"");
         removeDs(elementId);
     });
 

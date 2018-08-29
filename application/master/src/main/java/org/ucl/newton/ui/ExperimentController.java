@@ -156,6 +156,7 @@ public class ExperimentController
         model.addAttribute("storageValues", new StorageType[] {StorageType.Newton});
         model.addAttribute("typeValues", pluginService.getDataProcessors());
         model.addAttribute("experimentDto", new ExperimentDto());
+        model.addAttribute("dataSourceDetails", getDataSourcesMappedById());
         return "experiment/setup";
     }
 
@@ -204,13 +205,19 @@ public class ExperimentController
     public String persistNewExperiment(
         @PathVariable("project") String projectId,
         @ModelAttribute("experiment") @Valid ExperimentDto experimentDto,
-        ModelMap model)
+        RedirectAttributes redirectAttr)
     {
         Experiment experiment = experimentOperations.createExperiment(experimentDto);
-        experimentService.addExperiment(experiment);
-        experimentOperations.populateRepository(experiment);
-
-        return "redirect:/project/" + projectId;
+        Experiment fromRepository = experimentService.getExperimentByIdentifier(experiment.getIdentifier());
+        if(fromRepository == null) {
+            experimentService.addExperiment(experiment);
+            experimentOperations.populateRepository(experiment);
+            return "redirect:/project/" + projectId;
+        }
+        redirectAttr.addFlashAttribute("message", "Could not create experiment as an experiment " +
+                "with name " + experimentDto.getName() + " already exists");
+        redirectAttr.addFlashAttribute("alertClass", "alert-danger");
+        return "redirect:/project/" + projectId + "/new";
     }
 
     @PostMapping(value = "/project/{projName}/{expName}/remove")

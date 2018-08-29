@@ -19,7 +19,7 @@ function selectMember(id, name, email, image) {
         $.ajax({
             type: "POST",
             url: "/api/data/permissions/" + ident + "/add?user=" + email,
-            success: function (data) {
+            success(data) {
                 if (data) {
                     if ($("#grantedPermissionList li").length === 1) {
                         $("#emptyPermissionGroup").hide();
@@ -39,7 +39,8 @@ function setGrantedPermissions(ident) {
     $.ajax({
         type: "GET",
         url: "/api/data/permissions/" + ident + "/permission",
-        success: function(data) {
+        success(data) {
+            $("#emptyPermissionGroup").show();
             if(data.grantedPermissions.length > 0) {
                 $("#emptyPermissionGroup").hide();
                 $.each(data.grantedPermissions, function(i, user) {
@@ -55,7 +56,7 @@ function removeGrantedPermission(ident, name, button) {
     $.ajax({
         type: "POST",
         url: "/api/data/permissions/" + ident + "/remove?user=" + name,
-        success: function(data) {
+        success(data) {
             if(data) {
                 var id = "#gp" + name.replace(/\./g,"").replace(/@/, "");
                 $(id).remove();

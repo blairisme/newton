@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+    </head>
+    <body>
+        <div th:fragment="list_tabs(star)">
+            <!-- Title -->
+            <div>
+                <h1 class="page-title">Projects</h1>
+            </div>
+
+            <!-- Tabs and list filters -->
+            <ul class="nav nav-tabs">
+                <li class="nav-item" th:classappend="${star} ? '': active">
+                    <a class="nav-link" th:classappend="${star} ? '': active" href="/projects">Your projects</a>
+                </li>
+                <li class="nav-item" th:classappend="${star} ? active : ''">
+                    <a class="nav-link" th:classappend="${star} ? active : ''" href="/projectsstarred">Starred projects</a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <input class="form-control" id="filterInput" type="text" placeholder="Filter..">
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Most recently updated
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#">Most recently updated</a></li>
+                            <li><a class="dropdown-item" href="#">Least recently updated</a></li>
+                            <li><a class="dropdown-item" href="#">Project name A-Z</a></li>
+                            <li><a class="dropdown-item" href="#">Project name Z-A</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_ORGANISATIONLEAD')">
+                    <a class="btn btn-primary" href="/project/new" role="button" id="newProjectBtn">New Project</a>
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>
