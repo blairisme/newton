@@ -93,7 +93,7 @@ public class ExperimentOperations
     private StorageConfiguration createStorageConfiguration(ExperimentDto experimentDto, String experimentId) {
         StorageType type = StorageType.Newton;
         String location = experimentStorage.getRepositoryPath(experimentId).toString();
-        String script = experimentDto.getProcessor().equals("newton-jupyter") ? "main.ipynb" : "main.py";
+        String script = experimentDto.getProcessor().equals("Newton Jupyter Plugin") ? "main.ipynb" : "main.py";
         return new StorageConfiguration(0, type, location, script);
     }
 

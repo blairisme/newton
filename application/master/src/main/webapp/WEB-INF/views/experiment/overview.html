@@ -105,7 +105,7 @@
                 <div th:if="${version != null}">
                     <ul class="nav nav-tabs">
                         <li class="nav-item" th:if="${not #lists.isEmpty(version.displayOutcomes)}">
-                            <a class="nav-link" data-toggle="tab" href="#visualization-tab">Visualization</a>
+                            <a class="nav-link" th:classappend="${not #lists.isEmpty(version.displayOutcomes)} ? active : ''" data-toggle="tab" href="#visualization-tab">Visualization</a>
                         </li>
                         <li class="nav-item" th:if="${not #lists.isEmpty(version.dataOutcomes)}">
                             <a class="nav-link" th:classappend="${#lists.isEmpty(version.displayOutcomes)} ? active : ''" data-toggle="tab" href="#data-tab">Data</a>
