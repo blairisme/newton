@@ -9,8 +9,13 @@
 
 package org.ucl.newton.service.data;
 
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.ucl.newton.application.system.ApplicationStorage;
 import org.ucl.newton.common.exception.UnknownEntityException;
@@ -21,6 +26,8 @@ import org.ucl.newton.sdk.provider.DataStorage;
 import org.ucl.newton.service.plugin.PluginService;
 
 import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -36,6 +43,8 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 public class DataService implements ApplicationListener<ContextRefreshedEvent>
 {
+    private static Logger logger = LoggerFactory.getLogger(DataService.class);
+
     private PluginService pluginService;
     private ApplicationStorage applicationStorage;
     private Collection<DataProvider> dataProviders;
@@ -51,6 +60,7 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        loadDefaultData();
         loadProviders();
     }
 
@@ -94,13 +104,23 @@ public class DataService implements ApplicationListener<ContextRefreshedEvent>
     }
 
     private DataStorageProvider createDataStorage(DataProvider dataProvider) {
-        DataStorageProvider dataStorage = new DataStorageProvider(applicationStorage);
-        dataStorage.setProviderId(dataProvider.getIdentifier());
-        return dataStorage;
+        return new DataStorageProvider(applicationStorage);
     }
 
     private Collection<DataProvider> getDataProviders() {
         loadProviders();
         return dataProviders;
+    }
+
+    private void loadDefaultData() {
+        try {
+            Resource defaultData = new ClassPathResource("/data");
+            File source = defaultData.getFile();
+            File destination = applicationStorage.getDataDirectory().toFile();
+            FileUtils.copyDirectory(source, destination);
+        }
+        catch (IOException error){
+            logger.warn("Unable to copy default data", error);
+        }
     }
 }
