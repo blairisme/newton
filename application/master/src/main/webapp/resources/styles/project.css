@@ -69,3 +69,11 @@
 #newProjectBtn {
     margin-left: 1em;
 }
+
+#projectList_paginate {
+    margin-left: auto;
+}
+
+#projectListStarred_paginate {
+    margin-left: auto;
+}

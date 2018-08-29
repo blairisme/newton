@@ -15,20 +15,28 @@ $(document).ready( function() {
 
     dTable = $("#projectList").DataTable({
         "bLengthChange": false,
-        "iDisplayLength": 25,
+        "iDisplayLength": 10,
         "bFilter": true,
         "searching": true,
         "order": [[2, "desc"]],
-        dom: "t"
+        dom: "tp"
     });
 
     dTableStarred = $("#projectListStarred").DataTable({
         "bLengthChange": false,
-        "iDisplayLength": 25,
+        "iDisplayLength": 10,
         "bFilter": true,
         "searching": true,
         "order": [[2, "desc"]],
-        dom: "t"
+        dom: "tp"
+    });
+
+    dTable.on('draw', function () {
+        setIcons();
+    });
+
+    dTableStarred.on('draw', function () {
+        setIcons();
     });
 
     // Data table order when drop down changed

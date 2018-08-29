@@ -7,8 +7,12 @@ function getBgColor(letter) {
     return colors[index];
 }
 
-$(document).ready( function() {
+function setIcons() {
     $(".default-icon-text").each(function( ) {
         $(this).css("background-color", getBgColor($(this).text()));
     });
+}
+
+$(document).ready( function() {
+   setIcons();
 });
