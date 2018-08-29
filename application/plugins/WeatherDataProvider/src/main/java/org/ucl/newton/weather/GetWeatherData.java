@@ -64,12 +64,11 @@ public class GetWeatherData implements Runnable
             listOfRecord.add(getHeader());
         for (WeatherProperty property : weatherList){
             String data = getDataFromWWO(property);
-
             if (data == null)
                 continue;
             listOfRecord.add(getContent(data));
         }
-        if(!listOfRecord.isEmpty()) {
+        if(listOfRecord.size()>1) {
             writeToOutput(listOfRecord);
             provider.notifyDataUpdated(provider.getWeatherDataSource());
         }
