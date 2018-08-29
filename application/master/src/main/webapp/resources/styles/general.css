@@ -83,3 +83,9 @@
     margin-top: 1.25rem;
 }
 
+.delete-button {
+    margin-bottom: 0.4em;
+    display: block;
+    margin-left: auto;
+    margin-top: 1.2em;
+}

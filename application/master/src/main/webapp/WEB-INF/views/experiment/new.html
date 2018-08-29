@@ -28,7 +28,7 @@
                 <a  th:href="@{'/project/' + ${project.identifier}}" th:text="@{'/ '+${project.name}}" > / project name</a>
                 <a>/ New Experiment</a>
             </h1>
-            <p>Some description of an experiment.</p>
+            <p>An experiment represents a data transformation on analysis process. This creation page allows you to set up a new experiment.</p>
         </div>
 
         <form id="experimentDetails" th:action="@{'/project/' + ${project.identifier} + '/new'}" th:object="${experiment}"
@@ -188,7 +188,6 @@
 
             <input id="experimentCreator" name="creator" type="text" th:value="${user.email}" hidden="hidden">
             <input id="experimentProject" name="project" type="text" th:value="${project.identifier}" hidden="hidden">
-            <!--<input id="experimentDisplayPattern" name="displayPattern" type="text" value="*.html" hidden="hidden">-->
 
             <button class="btn btn-primary float-right" id="createBtn">Create Experiment</button>
         </form>

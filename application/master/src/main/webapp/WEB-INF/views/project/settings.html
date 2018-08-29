@@ -108,13 +108,10 @@
                             </option>
                         </select>
 
-                        <div class="form-row add_form_group">
-                            <div class="form-group col-sm-10">
+                        <div class="add_form_group">
+                            <div class="form-group">
                                 <label for="projectMemberInput">Begin typing to select a new member</label>
                                 <input id="projectMemberInput" type="text" class="typeahead form-control" placeholder="" th:readonly="${project.owner.id} != ${user.id}">
-                            </div>
-                            <div class="form-group col-sm-2">
-                                <input type="button" class="btn btn-primary add_button" value="Add Member" th:disabled="${project.owner.id} != ${user.id}" />
                             </div>
                         </div>
 
@@ -135,13 +132,6 @@
                             </li>
                         </ul>
 
-                        <!--<ul>
-                        <li th:each="dataPermission : ${dataPermissions}">
-                            <input type="checkbox" class="form-check-input" name="sources" th:value="${dataPermission.dataSourceIdentifier}" />
-                            <label th:text="${dataSources.get(dataPermission.dataSourceIdentifier)?.name}"></label>
-                        </li>
-                    </ul> -->
-
                     </section>
 
                     <section class="form-section section-divider-thick section-button">
@@ -154,7 +144,7 @@
                 <form th:action="@{'/project/' + ${project.identifier} + '/delete'}" method="POST" >
                     <section class="form-section section-divider section-button">
                         <h4>Delete Project</h4>
-                        <p class="text-danger">Warning deleting a project will permanently remove that project, any experiments relating to that project!
+                        <p class="text-danger">Warning deleting a project will permanently remove that project, any experiments relating to that project! Only the person who created a project may delete it.
                             <input type="submit" class="btn btn-danger float-right delete-button" value="Delete" th:disabled="${project.owner.id} != ${user.id}"/>
                         </p>
                     </section>

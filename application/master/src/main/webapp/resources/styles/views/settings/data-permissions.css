@@ -21,10 +21,12 @@
     text-align: center;
 }
 
-#userInput {
+#grantedInfoDiv {
     margin-top: 1em;
 }
 
-#grantedInfoDiv {
-    margin-top: 1em;
+.add_form_group {
+    margin-top: 1.25rem;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
 }

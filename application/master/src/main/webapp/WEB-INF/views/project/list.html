@@ -10,7 +10,7 @@
         <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/libraries/data_tables.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/general.css"/>
-        <link rel="stylesheet" type="text/css" href="/resources/styles/project.css"/>
+        <link rel="stylesheet" type="text/css" href="/resources/styles/views/project/list.css"/>
         <link rel="stylesheet" type="text/css" href="/resources/styles/views/project/icons.css"/>
 
         <script src="/resources/scripts/libraries/jquery.js"></script>
@@ -57,7 +57,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_ORGANISATIONLEAD')"> <!-- Should be org lead in he end -->
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_ORGANISATIONLEAD')">
                     <a class="btn btn-primary" href="/project/new" role="button" id="newProjectBtn">New Project</a>
                 </li>
             </ul>

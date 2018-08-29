@@ -229,7 +229,6 @@
                 <input id="experimentCreator" name="creator" type="text" th:value="${user.email}" hidden="hidden">
                 <input id="experimentProject" name="project" type="text" th:value="${project.identifier}" hidden="hidden">
 
-                <!--<button class="btn btn-primary float-right" id="createBtn">Update Experiment</button>-->
                 <section class="form-section section-divider-thick section-button">
                     <input type="submit" class="btn btn-primary float-right update-button" value="Update Experiment"/>
                 </section>
@@ -239,7 +238,7 @@
             <form th:action="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/remove'}" method="POST" >
                 <section class="form-section section-divider section-button">
                     <h4>Delete Experiment</h4>
-                    <p class="text-danger">Warning deleting an experiment will permanently remove that experiment, any versions of that experiment!
+                    <p class="text-danger">Warning deleting an experiment will permanently remove that experiment and any versions of that experiment! Only an experiment creator or project owner may delete an experiment.
                         <input type="submit" class="btn btn-danger float-right delete-button" value="Delete" th:disabled="${project.owner.id} != ${user.id} and ${experiment.creator.id} != ${user.id}"/>
                     </p>
                 </section>

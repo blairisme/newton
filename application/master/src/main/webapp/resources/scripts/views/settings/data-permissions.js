@@ -40,6 +40,7 @@ function setGrantedPermissions(ident) {
         type: "GET",
         url: "/api/data/permissions/" + ident + "/permission",
         success: function(data) {
+            $("#emptyPermissionGroup").show();
             if(data.grantedPermissions.length > 0) {
                 $("#emptyPermissionGroup").hide();
                 $.each(data.grantedPermissions, function(i, user) {

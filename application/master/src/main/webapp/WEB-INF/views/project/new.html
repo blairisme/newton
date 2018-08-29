@@ -18,7 +18,7 @@
         <script src="/resources/scripts/libraries/typeahead.js"></script>
         <script src="/resources/scripts/libraries/handlebars.js"></script>
         <script src="/resources/scripts/views/project/new.js"></script>
-        <script src="/resources/scripts/views/form_validation.js"></script>
+        <script src="/resources/scripts/views/project/form_validation.js"></script>
     </head>
     <body>
         <!-- Navigation -->
@@ -42,7 +42,7 @@
                 <!-- General Settings -->
                 <section class="form-section section-divider">
                     <h4>General Project Settings</h4>
-                    <p>Update your project name, description, icon, and other general settings.</p>
+                    <p>Set your project name, description, icon, and other general settings.</p>
 
                     <div class="form-group">
                         <label for="projectNameInput">Project name <span class="text-danger">*</span></label>
@@ -70,7 +70,7 @@
                 <!-- Project Members -->
                 <section class="form-section section-divider">
                     <h4>Project Members</h4>
-                    <p>Choose who can access this project.</p>
+                    <p>Choose who can access this project (you the creator of the project are automatically added).</p>
 
                     <ul id="projectMembersList" class="list-group list-group-flush">
                         <p id="projectMembersListEmpty" class="empty_message project-list-item">This project doesn't have any members yet. Use the form below to add a members.</p>
@@ -79,13 +79,10 @@
                     <select id="projectMembersData" form="projectDetails" name="members" multiple="multiple" hidden="hidden">
                     </select>
 
-                    <div class="form-row add_form_group">
-                        <div class="form-group col-sm-10">
+                    <div class="add_form_group">
+                        <div class="form-group">
                             <label for="projectMemberInput">Begin typing to select a new member</label>
                             <input id="projectMemberInput" type="text" class="typeahead form-control" placeholder="">
-                        </div>
-                        <div class="form-group col-sm-2">
-                            <input type="button" class="btn btn-primary add_button" value="Add Member" />
                         </div>
                     </div>
                 </section>
@@ -106,6 +103,8 @@
 
                 <input type="submit" class="btn btn-primary float-right create-button" id="createProjectBtn" value="Create Project"/>
             </form>
+
+            <input hidden="hidden" th:value="${user.id}" id="projectCreator"/>
         </div>
     
     </body>
