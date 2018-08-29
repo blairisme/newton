@@ -37,6 +37,7 @@ RUN pip install 'ipython==6.4.0'
 RUN pip install 'pandas==0.23.3'
 RUN pip install -U 'scikit-learn==0.19.2'
 RUN pip install 'scipy==1.1.0'
+RUN pip install 'seaborn==0.9.0'
 
 COPY ./libs/engine.jar engine.jar
 EXPOSE 8080
