@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.ucl.newton.api.experiment.ExperimentDto;
 import org.ucl.newton.api.experiment.ExperimentDtoBuilder;
+import org.ucl.newton.common.identifier.Identifier;
 import org.ucl.newton.engine.ExecutionEngine;
 import org.ucl.newton.framework.*;
 import org.ucl.newton.sdk.processor.DataProcessor;
@@ -222,10 +223,30 @@ public class ExperimentControllerTest {
         Experiment experiment = DummyExperimentFactory.createExperiment("Experiment 1", "experiment-1");
         ExperimentDto experimentDto = ExperimentDtoBuilder.fromExperiment(experiment);
 
+        when(experimentOperations.createExperiment(experimentDto)).thenReturn(experiment);
+        when(experimentService.getExperimentByIdentifier(Identifier.create("Experiment 1"))).thenReturn(null);
+
         mockMvc.perform(post("/project/{project}/new", projectIdent)
                 .flashAttr("experiment", experimentDto))
                 .andExpect(status().is(302))
                 .andExpect(redirectedUrl("/project/" + projectIdent));
+    }
+
+    @Test
+    public void persistNewExperimentAlreadyInDbTest() throws Exception {
+        String projectIdent = "projectIdent";
+        Experiment experiment = DummyExperimentFactory.createExperiment("Experiment 1", "experiment-1");
+        ExperimentDto experimentDto = ExperimentDtoBuilder.fromExperiment(experiment);
+
+        when(experimentOperations.createExperiment(experimentDto)).thenReturn(experiment);
+        when(experimentService.getExperimentByIdentifier("experiment-1")).thenReturn(experiment);
+
+        mockMvc.perform(post("/project/{project}/new", projectIdent)
+                .flashAttr("experiment", experimentDto))
+                .andExpect(status().is(302))
+                .andExpect(flash().attribute("message", "Could not create experiment as an experiment with name Experiment 1 already exists"))
+                .andExpect(flash().attribute("alertClass", "alert-danger"))
+                .andExpect(redirectedUrl("/project/" + projectIdent + "/new"));
     }
 
     @Test

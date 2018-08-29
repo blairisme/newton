@@ -31,6 +31,7 @@ import org.ucl.newton.service.project.ProjectService;
 import org.ucl.newton.service.user.UserService;
 
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -149,24 +150,24 @@ public class ProjectController
         @RequestParam(required=false) Collection<String> sources,
         ModelMap model)
     {
-        try {
-            ProjectBuilder projectBuilder = new ProjectBuilder();
-            projectBuilder.setName(name);
-            projectBuilder.setIdentifier(Identifier.create(name));
-            projectBuilder.setDescription(description);
-            projectBuilder.setImage(persistProjectImage(image));
-            projectBuilder.setOwner(userService.getAuthenticatedUser());
-            projectBuilder.setMembers(userService.getUsers(stringToInt(ensureNotNull(members))));
-            projectBuilder.setDataSources(sources);
-            projectService.addProject(projectBuilder.build());
-            return "redirect:/projects";
+        if(projectWithNameDoesNotExists(name)) {
+            try {
+                buildProject(name, description, image, members, sources);
+                return "redirect:/projects";
+            } catch (Throwable exception) {
+                model.addAttribute("error", exception.getMessage());
+            }
+        } else {
+            model.addAttribute("error", "A project with the name " + name + " already exists!");
         }
-        catch (Throwable exception) {
-            model.addAttribute("error", exception.getMessage());
-            model.addAttribute("user", userService.getAuthenticatedUser());
-            return "project/new";
-        }
+        User user = userService.getAuthenticatedUser();
+        model.addAttribute("user", user);
+        model.addAttribute("dataPermissions", dataPermissionService.getAllPermissionsForUser(user));
+        model.addAttribute("dataSources", getDataSourcesMappedById());
+        return "project/new";
     }
+
+
 
     @PostMapping("/project/{ident}/update")
     public String updateProject(
@@ -195,6 +196,34 @@ public class ProjectController
         redirectAttr.addFlashAttribute("message", "Update was successful");
         redirectAttr.addFlashAttribute("alertClass", "alert-success");
         return "redirect:/project/" + projectIdentifier + "/settings";
+    }
+
+    private boolean projectWithNameDoesNotExists(String name) {
+        String identifier = Identifier.create(name);
+        try {
+            projectService.getProjectByIdentifier(identifier, false);
+        } catch (NoResultException e) {
+            return true;
+        }
+        return false;
+    }
+
+    private void buildProject(
+            String name,
+            String description,
+            MultipartFile image,
+            Collection<String> members,
+            Collection<String> sources) throws Exception
+    {
+        ProjectBuilder projectBuilder = new ProjectBuilder();
+        projectBuilder.setName(name);
+        projectBuilder.setIdentifier(Identifier.create(name));
+        projectBuilder.setDescription(description);
+        projectBuilder.setImage(persistProjectImage(image));
+        projectBuilder.setOwner(userService.getAuthenticatedUser());
+        projectBuilder.setMembers(userService.getUsers(stringToInt(ensureNotNull(members))));
+        projectBuilder.setDataSources(sources);
+        projectService.addProject(projectBuilder.build());
     }
 
 

@@ -29,6 +29,7 @@
                 <a>/ New Experiment</a>
             </h1>
             <p>An experiment represents a data transformation on analysis process. This creation page allows you to set up a new experiment.</p>
+            <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
         </div>
 
         <form id="experimentDetails" th:action="@{'/project/' + ${project.identifier} + '/new'}" th:object="${experiment}"

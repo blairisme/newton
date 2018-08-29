@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.ucl.newton.common.identifier.Identifier;
 import org.ucl.newton.framework.DataPermission;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.framework.Project;
@@ -32,6 +33,7 @@ import org.ucl.newton.testobjects.DummyExperimentFactory;
 import org.ucl.newton.testobjects.DummyProjectFactory;
 import org.ucl.newton.testobjects.DummyUserFactory;
 
+import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -176,17 +178,19 @@ public class ProjectControllerTest
 
     @Test
     public void persistNewProjectTest() throws Exception {
+        String projectName = "Project Name";
         Collection<Integer> users = new ArrayList<>();
         users.add(1);
         users.add(2);
         users.add(3);
         users.add(4);
 
+        when(projectService.getProjectByIdentifier(Identifier.create(projectName), false)).thenThrow(new NoResultException());
         when(userService.getAuthenticatedUser()).thenReturn(userZiad);
         when(userService.getUsers(users)).thenReturn(new ArrayList<>());
 
         mockMvc.perform(post("/project/new")
-                .param("name", "Project Name")
+                .param("name", projectName)
                 .param("description", "Project description")
                 .param("image", "somePathToImage")
                 .param("members", "1, 2, 3, 4")
@@ -197,20 +201,44 @@ public class ProjectControllerTest
 
     @Test
     public void persistNewProjectTestWithException() throws Exception {
+        String projectName = "Project Name";
         Collection<Integer> users = new ArrayList<>();
         users.add(1);
 
+        when(projectService.getProjectByIdentifier(Identifier.create(projectName), false)).thenThrow(new NoResultException());
         when(userService.getAuthenticatedUser()).thenReturn(null, userZiad);
         when(userService.getUsers(users)).thenReturn(new ArrayList<>());
 
         mockMvc.perform(post("/project/new")
-                .param("name", "Project Name")
+                .param("name", projectName)
                 .param("description", "Project description")
                 .param("image", "somePathToImage")
                 .param("members", "1")
                 .param("sources", "someSourceName"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("error", "The validated object is null"))
+                .andExpect(model().attribute("user", userZiad))
+                .andExpect(view().name("project/new"));
+    }
+
+    @Test
+    public void persistNewProjectTestWithNameAlreadyUsed() throws Exception {
+        String projectName = "Project Name";
+        Collection<Integer> users = new ArrayList<>();
+        users.add(1);
+
+        when(projectService.getProjectByIdentifier(Identifier.create(projectName), false)).thenReturn(new Project());
+        when(userService.getAuthenticatedUser()).thenReturn(userZiad);
+        when(userService.getUsers(users)).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(post("/project/new")
+                .param("name", projectName)
+                .param("description", "Project description")
+                .param("image", "somePathToImage")
+                .param("members", "1")
+                .param("sources", "someSourceName"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("error", "A project with the name " + projectName + " already exists!"))
                 .andExpect(model().attribute("user", userZiad))
                 .andExpect(view().name("project/new"));
     }
