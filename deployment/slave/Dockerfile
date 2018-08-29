@@ -30,7 +30,7 @@ RUN mkdir -p /.newton_slave/
 RUN apt-get update
 RUN apt-get install -y python python-dev python-pip libxft-dev libfreetype6 libfreetype6-dev
 
-RUN pip install 'matplotlib==1.4.3'
+RUN pip install 'matplotlib==2.2.3'
 RUN pip install 'jupyter==1.0.0'
 RUN pip install 'nbconvert==5.3.1'
 RUN pip install 'ipython==6.4.0'
