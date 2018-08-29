@@ -31,11 +31,11 @@ $(document).ready( function() {
         dom: "tp"
     });
 
-    dTable.on('draw', function () {
+    dTable.on("draw", function () {
         setIcons();
     });
 
-    dTableStarred.on('draw', function () {
+    dTableStarred.on("draw", function () {
         setIcons();
     });
 
@@ -92,7 +92,7 @@ $(document).ready( function() {
         $.ajax({
             type: "POST",
             url: "/project/" + this.id + "?type=" + type,
-            success: function(data) {
+            success(data) {
                 if(type === "Star") {
                     image.removeClass("no-star");
                     image.addClass("star");

@@ -9,7 +9,7 @@ $(document).ready( function() {
         dom: "tp"
     });
 
-    dTable.on('draw', function () {
+    dTable.on("draw", function () {
         setIcons();
     });
 

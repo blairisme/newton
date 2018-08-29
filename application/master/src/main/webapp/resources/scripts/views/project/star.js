@@ -6,7 +6,7 @@ $(document).ready( function() {
         $.ajax({
             type: "POST",
             url: "/project/" + id + "?type=" + type,
-            success: function (data) {
+            success(data) {
                 if (type === "Star") {
                     $("#starBtn").html("Unstar");
                 } else {
