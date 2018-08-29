@@ -1,4 +1,5 @@
 location,date,sunrise,sunset,moonrise,moonset,moon_phase,moon_illumination,maxtempC,mintempC,totalSnow_cm,sunHour,uvIndex
+London United Kingdom,2018-08-28,06:06 AM,07:56 PM,09:03 PM,07:53 AM,Waning Gibbous,97,22,15,0.0,11.6,0
 London United Kingdom,2018-08-27,06:05 AM,07:58 PM,08:42 PM,06:46 AM,Full Moon,97,20,16,0.0,8.0,0
 London United Kingdom,2018-08-26,06:03 AM,08:00 PM,08:19 PM,05:41 AM,Full Moon,90,15,11,0.0,7.0,0
 London United Kingdom,2018-08-25,06:02 AM,08:02 PM,07:54 PM,04:37 AM,Full Moon,83,20,11,0.0,11.6,0
@@ -21,6 +22,7 @@ London United Kingdom,2018-08-09,05:36 AM,08:34 PM,02:55 AM,07:19 PM,Waning Cres
 London United Kingdom,2018-08-08,05:35 AM,08:36 PM,01:57 AM,06:19 PM,Waning Crescent,28,24,17,0.0,13.5,0
 London United Kingdom,2018-08-07,05:33 AM,08:38 PM,01:11 AM,05:11 PM,Waning Crescent,34,31,23,0.0,14.5,0
 London United Kingdom,2018-08-06,05:32 AM,08:40 PM,12:35 AM,03:58 PM,Waning Crescent,41,35,25,0.0,14.5,0
+London United Kingdom,2018-08-05,05:30 AM,08:42 PM,12:05 AM,02:43 PM,Waning Crescent,48,27,18,0.0,12.5,0
 London United Kingdom,2018-08-04,05:29 AM,08:43 PM,No moonrise,01:30 PM,Last Quarter,55,29,19,0.0,14.5,0
 London United Kingdom,2018-08-03,05:27 AM,08:45 PM,11:41 PM,12:18 PM,Last Quarter,62,33,24,0.0,14.5,0
 London United Kingdom,2018-08-02,05:26 AM,08:47 PM,11:18 PM,11:09 AM,Last Quarter,69,33,21,0.0,14.5,0
