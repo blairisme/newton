@@ -74,6 +74,7 @@
                                            th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '?version=' + ${otherVersion.number}}">Version</a>
                                         </a>
                                     </div>
+                                    <input type="hidden" id="versionNumber" th:value='${version.number}'/>
                                 </div>
                             </div>
 
@@ -87,7 +88,7 @@
                             <div class="control_container">
                                 <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/edit'}" role="button" id="edit-experiment">Edit</a>
                                 <a class="btn btn-primary" th:href="@{'/project/' + ${project.identifier} + '/' + ${experiment.identifier} + '/run'}" role="button" id="run-experiment">Run</a>
-                                <a class="btn btn-primary" th:disabled="${version == null}" href="#" role="button">Publish</a>
+                                <a class="btn btn-primary" th:disabled="${version == null}" href="#" role="button" id="publish-button">Publish</a>
                             </div>
                         </div>
                     </div>

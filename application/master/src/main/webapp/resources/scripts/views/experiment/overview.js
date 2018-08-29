@@ -112,4 +112,16 @@ $(document).ready(function() {
         });
     });
 
+    $("#publish-button").click(function() {
+        var experiment = $("#experimentId").val();
+        var version = $("#versionNumber").val();
+        $.ajax({
+            type: "POST",
+            url: "/api/plugin/publish?experiment=" + experiment + "&version=" + version,
+            success: function(data) {
+
+            }
+        });
+    });
+
 });
