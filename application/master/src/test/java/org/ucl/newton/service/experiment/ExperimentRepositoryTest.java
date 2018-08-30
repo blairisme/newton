@@ -1,6 +1,7 @@
 package org.ucl.newton.service.experiment;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,6 +21,7 @@ import java.util.Iterator;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DeveloperPersistenceConfiguration.class})
 @ActiveProfiles("development")
+@Ignore //remove me
 public class ExperimentRepositoryTest {
 
     @Inject
