@@ -30,7 +30,6 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DeveloperPersistenceConfiguration.class})
 @ActiveProfiles("development")
-@Ignore //remove me
 public class ProjectRepositoryTest
 {
     @Inject

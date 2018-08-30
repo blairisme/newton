@@ -21,7 +21,6 @@ import java.util.Iterator;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DeveloperPersistenceConfiguration.class})
 @ActiveProfiles("development")
-@Ignore //remove me
 public class ExperimentRepositoryTest {
 
     @Inject

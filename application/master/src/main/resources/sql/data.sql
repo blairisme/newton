@@ -28,7 +28,7 @@ INSERT INTO credentials (id, user_id, username, password, role) VALUES (6, 6, 'j
 INSERT INTO credentials (id, user_id, username, password, role) VALUES (7, 7, 'api@newton.com', '$2a$10$jECDv6NZWiMz2k9i9Fw50u5TW3Q4xZ8/gXCc86Q6lZ5.k9A2YrF7m', 'API');
 
 /* Projects */
-INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (1, 2, 'cancer-research', 'Cancer Research', 'A Description', 'gosh.png', '2018-06-20 12:34:56');
+INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (1, 2, 'project-fizzyo', 'Project Fizzyo', 'project Fizzyo Description', 'fizzyo.png', '2018-06-20 12:34:56');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (2, 2, 'uclh-mf', 'UCLH Mycosis Fungoides classification', 'Cancer Research Trial 4 Description', 'uclh.png', '2018-05-19 11:12:13');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (3, 2, 'gosh-jiro', 'GOSH Project Jiro', 'Project description ', 'gosh.png', '2018-04-07 10:09:08');
 INSERT INTO projects (id, owner_id, identifier, name, description, image, updated) VALUES (4, 2, 'gosh-icd', 'GOSH ICD prediction', 'Project description', 'gosh.png', '2018-03-07 10:09:08');
@@ -63,18 +63,6 @@ INSERT INTO project_membership (project_id, user_id) VALUES (10, 2);
 INSERT INTO project_membership (project_id, user_id) VALUES (11, 2);
 INSERT INTO project_membership (project_id, user_id) VALUES (12, 2);
 INSERT INTO project_membership (project_id, user_id) VALUES (13, 2);
-
-INSERT INTO project_membership (project_id, user_id) VALUES (4, 1);
-INSERT INTO project_membership (project_id, user_id) VALUES (5, 1);
-INSERT INTO project_membership (project_id, user_id) VALUES (6, 1);
-INSERT INTO project_membership (project_id, user_id) VALUES (7, 1);
-INSERT INTO project_membership (project_id, user_id) VALUES (8, 1);
-INSERT INTO project_membership (project_id, user_id) VALUES (9, 1);
-INSERT INTO project_membership (project_id, user_id) VALUES (10, 1);
-INSERT INTO project_membership (project_id, user_id) VALUES (11, 1);
-INSERT INTO project_membership (project_id, user_id) VALUES (12, 1);
-INSERT INTO project_membership (project_id, user_id) VALUES (13, 1);
-
 
 /* Project stars */
 INSERT INTO project_starred (project_id, user_id) VALUES (1, 1);
