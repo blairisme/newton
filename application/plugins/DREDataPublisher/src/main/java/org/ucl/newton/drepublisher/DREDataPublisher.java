@@ -25,7 +25,7 @@ public class DREDataPublisher implements DataPublisher {
         PublishData publishData = new PublishData(new DREFTPServer(config),filePath);
         Thread thread = new Thread(publishData);
         thread.setDaemon(true);
-        thread.run();
+        thread.start();
     }
 
     @Override

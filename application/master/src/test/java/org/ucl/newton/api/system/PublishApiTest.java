@@ -11,6 +11,7 @@ import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.sdk.publisher.DataPublisher;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.plugin.PluginService;
+import org.ucl.newton.service.publisher.PublisherService;
 import org.ucl.newton.testobjects.DummyExperimentFactory;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class PublishApiTest {
     private MockMvc mockMvc;
 
     @Mock
-    private PluginService pluginService;
+    private PublisherService publisherService;
 
     @Mock
     private ExperimentService experimentService;
@@ -49,13 +50,12 @@ public class PublishApiTest {
 
     @Test
     public void publishDataTest() throws Exception {
-        Collection<DataPublisher> publishers = new ArrayList<>();
-        publishers.add(publisher);
+
         Experiment experiment = DummyExperimentFactory.createExperiment("experiment-1", "Experiment 1");
 
-        when(pluginService.getDataPublishers()).thenReturn(publishers);
+        when(publisherService.getDREDataPublisher()).thenReturn(publisher);
         when(experimentService.getExperimentByIdentifier("experiment-1")).thenReturn(experiment);
-        when(publisher.getIdentifier()).thenReturn("newton-DRE");
+
 
         mockMvc.perform(post("/api/plugin/publish?experiment={experiment}&version={version}", "experiment-1", "1"))
                 .andExpect(status().isOk())
@@ -64,7 +64,7 @@ public class PublishApiTest {
 
     @Test
     public void publishDataNoPublisherTest() throws Exception {
-        when(pluginService.getDataPublishers()).thenReturn(new ArrayList<>());
+        when(publisherService.getDREDataPublisher()).thenReturn(null);
 
         mockMvc.perform(post("/api/plugin/publish?experiment={experiment}&version={version}", "experiment-1", "1"))
                 .andExpect(status().isOk())

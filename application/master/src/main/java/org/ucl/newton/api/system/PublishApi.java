@@ -10,6 +10,7 @@ import org.ucl.newton.framework.ExperimentVersion;
 import org.ucl.newton.sdk.publisher.DataPublisher;
 import org.ucl.newton.service.experiment.ExperimentService;
 import org.ucl.newton.service.plugin.PluginService;
+import org.ucl.newton.service.publisher.PublisherService;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -23,15 +24,15 @@ import java.util.Collection;
 @SuppressWarnings("unused")
 public class PublishApi {
 
-    private PluginService pluginService;
+    private PublisherService publisherService;
     private ExperimentService experimentService;
 
     @Inject
     public PublishApi(
-            PluginService pluginService,
+            PublisherService publisherService,
             ExperimentService experimentService)
     {
-        this.pluginService = pluginService;
+        this.publisherService = publisherService;
         this.experimentService = experimentService;
     }
 
@@ -40,8 +41,8 @@ public class PublishApi {
             @RequestParam(value="experiment") String experimentIdent,
             @RequestParam(value="version") String versionNum)
     {
-        String publisherIdentifier = "newton-DRE";
-        DataPublisher publisher = getPublisher(pluginService.getDataPublishers(), publisherIdentifier);
+
+        DataPublisher publisher = publisherService.getDREDataPublisher();
         if(publisher != null) {
             Experiment experiment = experimentService.getExperimentByIdentifier(experimentIdent);
             ExperimentVersion version = getVersion(experiment, versionNum);
@@ -66,12 +67,4 @@ public class PublishApi {
         return experiment.getVersion(Integer.parseInt(version));
     }
 
-    private DataPublisher getPublisher(Collection<DataPublisher> publishers, String requiredIdentifier) {
-        for(DataPublisher publisher :publishers) {
-            if(publisher.getIdentifier().equals(requiredIdentifier)) {
-                return publisher;
-            }
-        }
-        return null;
-    }
 }

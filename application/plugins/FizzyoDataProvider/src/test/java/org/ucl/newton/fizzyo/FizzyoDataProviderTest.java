@@ -52,12 +52,6 @@ public class FizzyoDataProviderTest {
     }
 
     @Test
-    public void getFizzyoDataSource(){
-        DataSource dataSource = provider.getFizzyoDataSource();
-        Assert.assertTrue(dataSource instanceof BasicDataSource);
-    }
-
-    @Test
     public void getDataSourcesTest(){
         Assert.assertEquals(6,provider.getDataSources().size());
     }

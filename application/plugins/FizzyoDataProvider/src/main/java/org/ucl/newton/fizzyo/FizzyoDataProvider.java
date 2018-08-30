@@ -94,10 +94,6 @@ public class FizzyoDataProvider extends BasicDataProvider
         }
     }
 
-    public DataSource getFizzyoDataSource() {
-        return dataSources.iterator().next();
-    }
-
     @Override
     public Collection<DataSource> getDataSources() {
         return dataSources;
