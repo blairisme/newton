@@ -103,7 +103,7 @@ public class WeatherDataProvider extends BasicDataProvider
 
     @Override
     public void start() {
-        this.scheduler.scheduleAtFixedRate(handler, 0, 1, TimeUnit.HOURS); //run every hour
+//        this.scheduler.scheduleAtFixedRate(handler, 0, 1, TimeUnit.HOURS); //run every hour
     }
 
     @Override
