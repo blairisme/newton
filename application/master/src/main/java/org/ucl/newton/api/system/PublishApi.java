@@ -9,7 +9,6 @@ import org.ucl.newton.framework.ExperimentOutcome;
 import org.ucl.newton.framework.ExperimentVersion;
 import org.ucl.newton.sdk.publisher.DataPublisher;
 import org.ucl.newton.service.experiment.ExperimentService;
-import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.publisher.PublisherService;
 
 import javax.inject.Inject;

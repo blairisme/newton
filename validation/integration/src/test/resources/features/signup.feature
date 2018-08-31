@@ -25,4 +25,3 @@ Scenario: Already a user registered with that email address
 Scenario: Passwords don't match
   When the user enters "New User 3" as their full name, "newemail3@ucl.ac.uk" as their email, "abc123" as their password and "123abc" as the reentered password
   Then the register button should be disabled
-  

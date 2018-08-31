@@ -9,18 +9,14 @@
 
 package org.ucl.newton.integration.acceptance.steps;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.interactions.Actions;
 import org.ucl.newton.common.network.RestException;
 import org.ucl.newton.integration.acceptance.common.WebDriverUtils;
 import org.ucl.newton.integration.acceptance.gherkin.Project;
@@ -29,9 +25,9 @@ import org.ucl.newton.integration.acceptance.newton.project.ProjectDto;
 import org.ucl.newton.integration.acceptance.newton.project.ProjectService;
 import org.ucl.newton.integration.acceptance.newton.user.UserService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -68,9 +64,23 @@ public class ProjectSteps
         userService.setRole(user, role);
     }
 
+    @Given("^the user is on the settings page for project \"(.*)\"$")
+    public void onSettingsPage(String projectIdent) {
+        driver.get("http://localhost:9090/project/" + projectIdent + "/settings");
+    }
+
     @Given("^the user is on the new project page$")
     public void navigateToNewProject() {
         driver.get("http://localhost:9090/project/new");
+    }
+
+    @Given("^user has already created a project with name \"(.*)\"$")
+    public void createProject(String name) {
+        navigateToNewProject();
+        List<Project> projects = new ArrayList<>();
+        projects.add(new Project("test-project", name, "Description ", "", "", ""));
+        enterProjectDetails(projects);
+        clickCreateProjectButton();
     }
 
     @When("^the user browses to the projects page$")
@@ -98,17 +108,19 @@ public class ProjectSteps
         driver.findElement(By.id("projectDescriptionInput")).sendKeys(project.getDescription());
     }
 
-    @When("^the user clicks the star for project with identifier \"(.*)\"$")
-    public void starProject(String projectIdent) throws Exception {
-        Thread.sleep(4000);
-        driver.manage().window().maximize();
-        WebElement starIcon = driver.findElement((By.id(projectIdent)));
-        
+    @When("^the delete project button is pressed$")
+    public void pressDeleteProjectButton() {
+        driver.findElement(By.className("delete-button")).click();
+    }
 
-        Assert.assertTrue(hasClass(starIcon, "no-star"));
-        Assert.assertFalse(hasClass(starIcon, "star"));
-        Assert.assertTrue(starIcon.isDisplayed());
-        starIcon.click();
+    @When("^the user changes the description to \"(.*)\"$")
+    public void changeDescription(String newDescription) {
+        driver.findElement(By.id("projectDescriptionInput")).sendKeys(newDescription);
+    }
+
+    @When("^the update button is pressed$")
+    public void pressUpdateButton() {
+        driver.findElement(By.className("update-button")).click();
     }
 
     @Then("^the project list should contain the following projects:$")
@@ -128,10 +140,22 @@ public class ProjectSteps
         Assert.assertEquals("http://localhost:9090/project/new", driver.getCurrentUrl());
     }
 
-    @Then("^the project with identifier \"(.*)\" will be starred$")
-    public void assertProjectStarred(String projectIdent) {
-        WebElement starIcon = driver.findElement((By.id(projectIdent)));
-        Assert.assertTrue(hasClass(starIcon,"star"));
+    @Then("^the delete button should be disabled$")
+    public void assertDeleteButtonDisabled() {
+        WebElement deleteButton = driver.findElement(By.className("delete-button"));
+        Assert.assertFalse(deleteButton.isEnabled());
+    }
+
+    @Then("^a project updated message should be shown$")
+    public void assertUpdateMessageShowing() {
+        WebElement successAlert = driver.findElement(By.className("alert-success"));
+        Assert.assertTrue(successAlert.isDisplayed());
+    }
+
+    @Then("^a warning message should be shown$")
+    public void assertWarningMessageshowing() {
+        WebElement dangerAlert = driver.findElement(By.className("alert-danger"));
+        Assert.assertTrue(dangerAlert.isDisplayed());
     }
 
     private boolean hasClass(WebElement element, String classRequired) {
