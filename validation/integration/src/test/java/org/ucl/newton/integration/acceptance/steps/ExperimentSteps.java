@@ -24,6 +24,7 @@ import org.ucl.newton.integration.acceptance.newton.NewtonServer;
 import org.ucl.newton.integration.acceptance.newton.experiment.ExperimentDto;
 import org.ucl.newton.integration.acceptance.newton.experiment.ExperimentService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,6 +59,20 @@ public class ExperimentSteps
     @Given("^the user is on the new experiment page for (.*)$")
     public void onNewExperimentPage(String project) {
         driver.get("http://localhost:9090/project/" + project + "/new");
+    }
+
+    @Given("^the user is on the experiment settings page for experiment \"(.*)\" in project \"(.*)\"$")
+    public void navigateToExperimentSettings(String experimentIdent, String projectIdent) {
+        driver.get("http://localhost:9090/project/" + projectIdent + "/" + experimentIdent + "/setup");
+    }
+
+    @Given("^the user has already created an experiment with name \"(.*)\" for project \"(.*)\"$")
+    public void createProject(String experimentName, String projectIdent) {
+        List<Experiment> experiments = new ArrayList<>();
+        experiments.add(new Experiment("test-experiment", experimentName, "", "", ""));
+        onNewExperimentPage(projectIdent);
+        enterExperimentDetails(experiments);
+        clickCreateNewExperiment();
     }
 
     @When("^the user browses to the experiments page for (.*)$")
@@ -102,6 +117,21 @@ public class ExperimentSteps
         createExperimentButton.click();
     }
 
+    @When("^the user presses the delete button$")
+    public void pressDeleteButton() {
+        driver.findElement(By.className("delete-button")).click();
+    }
+
+    @When("^the user changes the experiment description to \"(.*)\"$")
+    public void setExperimentDescription(String newDescription) {
+        driver.findElement(By.id("experimentDescInput")).sendKeys(newDescription);
+    }
+
+    @And("^presses the experiment update button$")
+    public void pressUpdateExperiment() {
+        driver.findElement(By.className("update-button")).click();
+    }
+
     @Then("^the experiment list should contain the following experiments:$")
     public void assertExperimentList(List<Experiment> experiments) {
         String project = experiments.get(0).getProject();
@@ -130,6 +160,28 @@ public class ExperimentSteps
     @Then("^the user should be on the new experiment page for (.*)$")
     public void assertNewExperimentPage(String project) {
         Assert.assertEquals("http://localhost:9090/project/" + project +"/new", driver.getCurrentUrl());
+    }
+
+    @Then("^the delete button should be deactivated$")
+    public void assertDeleteDeactivated() {
+        Assert.assertFalse(driver.findElement(By.className("delete-button")).isEnabled());
+    }
+
+    @Then("^the user should be on the experiments page for \"(.*)\"$")
+    public void assertOnExperimentsPage(String projectIdent) {
+        Assert.assertEquals("http://localhost:9090/project/" + projectIdent, driver.getCurrentUrl());
+    }
+
+    @Then("^the user should be shown a successful update message$")
+    public void assertSuccessfulUpdate() {
+        WebElement successMessage = driver.findElement(By.className("alert-success"));
+        Assert.assertEquals("Update was successful", successMessage.getText());
+    }
+
+    @Then("^a warning message should be shown for a duplicate experiment name \"(.*)\"$")
+    public void assertWarningMessage(String experimentName) {
+        WebElement alertMessage = driver.findElement(By.className("alert-danger"));
+        Assert.assertEquals("Could not create experiment as an experiment with name " + experimentName + " already exists", alertMessage.getText());
     }
 
 }
