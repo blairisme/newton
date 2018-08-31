@@ -28,15 +28,15 @@
                 <img th:src="'/resources/images/profile/' + ${user.image}" class="rounded-circle profile-pic" alt="Profile picture">
 
                 <!-- Name -->
-                <div th:text="'Name: ' + ${user.name}" ></div>
+                <div th:text="'Name: ' + ${user.name}" id="profileName"></div>
 
                 <!-- Email -->
-                <div th:text="'Email: ' + ${user.email}"></div>
+                <div th:text="'Email: ' + ${user.email}" id="profileEmail"></div>
 
                 <!-- Number of projects -->
-                <div th:text="'Number of projects owned: ' + ${numOfProjectsOwned}"></div>
-                <div th:text="'Number of projects a member of: ' + ${numProjectsAMemberOf}"></div>
-                <div th:text="'Number of projects starred: ' + ${numOfProjectsStarred}"></div>
+                <div th:text="'Number of projects owned: ' + ${numOfProjectsOwned}" id="profileNumProjectsOwned"></div>
+                <div th:text="'Number of projects a member of: ' + ${numProjectsAMemberOf}" id="profileNumProjectsMember"></div>
+                <div th:text="'Number of projects starred: ' + ${numOfProjectsStarred}" id="profileNumProjectsStarred"></div>
             </div>
 
             <!-- Delete user -->

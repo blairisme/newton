@@ -16,7 +16,6 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.ucl.newton.common.network.RestException;
 import org.ucl.newton.integration.acceptance.common.WebDriverUtils;
 import org.ucl.newton.integration.acceptance.gherkin.Project;
