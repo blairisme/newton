@@ -10,12 +10,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.ucl.newton.framework.Experiment;
 import org.ucl.newton.sdk.publisher.DataPublisher;
 import org.ucl.newton.service.experiment.ExperimentService;
-import org.ucl.newton.service.plugin.PluginService;
 import org.ucl.newton.service.publisher.PublisherService;
 import org.ucl.newton.testobjects.DummyExperimentFactory;
 
-import java.util.ArrayList;
-import java.util.Collection;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -70,4 +67,5 @@ public class PublishApiTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("false"));
     }
+
 }

@@ -71,7 +71,8 @@ public class UserApi
 
     @RequestMapping(value = "/api/userrole", method = RequestMethod.GET)
     public UserRole getUserRole(@RequestParam(value="username") String userName) {
-        Credential creds = (Credential)authService.loadUserByUsername(userName);
+        User user = userService.getUserByEmail(userName);
+        Credential creds = authService.getCredentials(user);
         return creds.getRole();
     }
 
