@@ -34,7 +34,7 @@ public class GetFizzyoDataTest {
         FizzyoDataProvider provider = new FizzyoDataProvider();
         GetFizzyoData getFizzyoData = new GetFizzyoData(provider, connection);
 
-        String[] config = {"00000000-0000-0000-0000-000000000001","A1oRkpQJ0dNX1z3RA2K2zKKaLOvE2MwzA1oRkpQJ0dNxxDoJNonZWDzaLOvE2Mwz","1514764800","1533772800","[ \"pressure-raw\" ]"};
+        String[] config = {"00000000-0000-0000-0000-000000000001","A1oRkpQJ0dNX1z3RA2K2zKKaLOvE2MwzA1oRkpQJ0dNxxDoJNonZWDzaLOvE2Mwz","1514764800","1533772800","[ \"all\" ]"};
         FizzyoConfiguration fizzyoConfiguration = new FizzyoConfiguration();
         fizzyoConfiguration.setValues(config);
 
@@ -49,7 +49,7 @@ public class GetFizzyoDataTest {
         getFizzyoData.run();
         FileUtils.deleteQuietly(new File("test"));
 
-        Mockito.verify(storage,times(1)).getOutputStream(Mockito.any(DataSource.class));
-        Mockito.verify(observer,times(1)).dataUpdated(Mockito.any(DataSource.class));
+        Mockito.verify(storage,times(6)).getOutputStream(Mockito.any(DataSource.class));
+        Mockito.verify(observer,times(6)).dataUpdated(Mockito.any(DataSource.class));
     }
 }

@@ -1,31 +1,202 @@
 {
- "syncData": {
-        "id": "9c568fb5-e4e5-47fc-883f-079a53f4379a",
-        "timestamp": "2018-06-01T21:16:46.546Z",
-        "requestedData": [
-            "pressure-raw"
-        ],
-        "data": {
-            "pressure-raw": [
-                {
-                    "id": "12b3e6cf-a515-4b47-9e83-e7a4e404d566",
-                    "processed": false,
-                    "startTime": "2018-06-01T19:36:49.322Z",
-                    "endTime": "2018-06-01T19:48:17.870Z",
-                    "pressureValues": "1,2,3,4",
-                    "patientRecordId": "548ab33d-1f7e-418f-8729-7f4d9e9f0908",
-                    "algorithmVersion": 0
-                },
-                {
-                    "id": "24b3e6sd-a515-4b47-9e83-e7a4e404d566",
-                    "processed": false,
-                    "startTime": "2018-06-01T19:36:49.322Z",
-                    "endTime": "2018-06-01T19:48:17.870Z",
-                    "pressureValues": "1,2,3,4",
-                    "patientRecordId": "489ab33d-1f7e-418f-8729-7f4d9e9f0908",
-                    "algorithmVersion": 0
-                }
-            ]
+  "syncData": {
+    "id": "9c568fb5-e4e5-47fc-883f-079a53f4379a",
+    "timestamp": "2018-06-01T21:16:46.546Z",
+    "requestedData": [
+      "pressure-raw",
+      "exercise-sessions",
+      "foot-steps",
+      "foot-steps-granular",
+      "games-sessions",
+      "heart-rate"
+    ],
+    "data": {
+      "pressure-raw": [
+        {
+          "id": "12b3e6cf-a515-4b47-9e83-e7a4e404d566",
+          "processed": false,
+          "startTime": "2018-06-01T19:36:49.322Z",
+          "endTime": "2018-06-01T19:48:17.870Z",
+          "pressureValues": "1,2,3,4",
+          "patientRecordId": "548ab33d-1f7e-418f-8729-7f4d9e9f0908",
+          "algorithmVersion": 0
+        },
+        {
+          "id": "24b3e6sd-a515-4b47-9e83-e7a4e404d566",
+          "processed": false,
+          "startTime": "2018-06-01T19:36:49.322Z",
+          "endTime": "2018-06-01T19:48:17.870Z",
+          "pressureValues": "1,2,3,4",
+          "patientRecordId": "489ab33d-1f7e-418f-8729-7f4d9e9f0908",
+          "algorithmVersion": 0
         }
- }
+      ],
+      "exercise-sessions": [
+        {
+          "id": "ed1caed9-00a7-425b-acc4-cc84019825b1",
+          "duration": {
+            "minutes": 4
+          },
+          "breaths": 5,
+          "patientRecordId": "548ab33d-1f7e-418f-8729-7f4d9e9f0908",
+          "startTime": "2018-06-01T19:36:49.322Z",
+          "endTime": "2018-06-01T19:48:17.870Z",
+          "goodBreaths": 3,
+          "averagePressure": "1.1",
+          "averageBreathLength": 2,
+          "pressureRawId": "12b3e6cf-a515-4b47-9e83-e7a4e404d566"
+        },
+        {
+          "id": "ed2sgdd9-00a7-425b-acc4-cc84019825b1",
+          "duration": {
+            "minutes": 4
+          },
+          "breaths": 5,
+          "patientRecordId": "763ab33d-1f7e-418f-8729-7f4d9e9f0908",
+          "startTime": "2018-06-01T19:36:49.322Z",
+          "endTime": "2018-06-01T19:48:17.870Z",
+          "goodBreaths": 3,
+          "averagePressure": "1.1",
+          "averageBreathLength": 2,
+          "pressureRawId": "64f3e6cf-a515-4b47-9e83-e7a4e404d566"
+        }
+      ],
+      "foot-steps": [
+        {
+          "id": "9e1d5cb8-ffb8-4a67-a5b2-671f15fca319",
+          "date": "2018-06-01T19:48:17.870Z",
+          "userId": "548ab33d-1f7e-418f-8729-7f4d9e9f0908",
+          "stepCount": 458
+        },
+        {
+          "id": "2r2d5cb8-ffb8-4a67-a5b2-671f15fca319",
+          "date": "2018-06-01T19:48:17.870Z",
+          "userId": "548ab33d-1f7e-418f-8729-7f4d9e9f0908",
+          "stepCount": 458
+        }
+      ],
+      "foot-steps-granular": [
+        {
+          "id": "deb31b78-8991-4f48-babe-011e71535eb7",
+          "data": [
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 0
+            },
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 10
+            },
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 10
+            },
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 15
+            }
+          ],
+          "date": "2018-06-01T19:48:17.870Z",
+          "userId": "548ab33d-1f7e-418f-8729-7f4d9e9f0908"
+        },
+        {
+          "id": "whe31b78-8991-4f48-babe-011e71535eb7",
+          "data": [
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 0
+            },
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 10
+            },
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 10
+            },
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 15
+            }
+          ],
+          "date": "2018-06-01T19:48:17.870Z",
+          "userId": "285ab33d-1f7e-418f-8729-7f4d9e9f0908"
+        }
+      ],
+      "games-sessions": [
+        {
+          "id": "215bd262-b640-421a-9acf-a797fab0d77b",
+          "score": 345,
+          "gameId": "cfd227be-2586-4085-afa7-48f98f6b5608",
+          "userId": "548ab33d-1f7e-418f-8729-7f4d9e9f0908",
+          "breathCount": 34,
+          "setCount": 4,
+          "startTime": "2018-06-01T19:36:49.322Z",
+          "endTime": "2018-06-01T19:48:17.870Z",
+          "goodBreathCount": 24,
+          "badBreathCount": 10
+        },
+        {
+          "id": "295hd262-b640-421a-9acf-a797fab0d77b",
+          "score": 345,
+          "gameId": "cfd227be-2586-4085-afa7-48f98f6b5608",
+          "userId": "596ab33d-1f7e-418f-8729-7f4d9e9f0908",
+          "breathCount": 34,
+          "setCount": 4,
+          "startTime": "2018-06-01T19:36:49.322Z",
+          "endTime": "2018-06-01T19:48:17.870Z",
+          "goodBreathCount": 24,
+          "badBreathCount": 10
+        }
+      ],
+      "heart-rate": [
+        {
+          "id": "3115b1d7-b4c1-4c5a-a417-f8b28ebeb5ed",
+          "data": [
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 60
+            },
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 60
+            },
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 60
+            },
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 60
+            }
+          ],
+          "date": "2018-06-01T19:48:17.870Z",
+          "userId": "548ab33d-1f7e-418f-8729-7f4d9e9f0908"
+        },
+        {
+          "id": "9648b1d7-b4c1-4c5a-a417-f8b28ebeb5ed",
+          "data": [
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 60
+            },
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 60
+            },
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 60
+            },
+            {
+              "Time": "2018-03-02T00:00:08",
+              "Value": 60
+            }
+          ],
+          "date": "2018-06-01T19:48:17.870Z",
+          "userId": "878ab33d-1f7e-418f-8729-7f4d9e9f0908"
+        }
+      ]
+    }
+  }
 }
