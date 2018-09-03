@@ -109,7 +109,7 @@ might also be available.
 ### Note
 
 Browsing to https://localhost:8443 may show an insecure warning. This is because
-the certificate Newton uses is only valid for http://blairbutterworth.com, not
+the certificate Newton uses is only valid for https://blairbutterworth.com, not
 localhost. It is safe to accept the security warning and proceed.
 
 <a name="licence"></a>
