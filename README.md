@@ -9,7 +9,7 @@
 [![Code Coverage](https://codecov.io/gh/blairisme/newton/branch/master/graph/badge.svg)](https://codecov.io/gh/blairisme/newton)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6d4ca6c355fc4a82aa773e7b5cf96585)](https://www.codacy.com/app/blairisme/newton?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=blairisme/newton&amp;utm_campaign=Badge_Grade)
 [![GitHub release](https://img.shields.io/badge/release-v0.1-blue.svg)](https://github.com/blairisme/newton/releases/tag/v0.1)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/blairisme/newton/blob/master/LICENSE
 
 Newton is a data analysis platform created by a team from the Computer Science
 department of University College London. It provides users the ability to carry
@@ -117,4 +117,4 @@ localhost. It is safe to accept the security warning and proceed.
 ## Licence
 
 Newton is licensed under the terms of the
-[MIT license](https://github.com/blairisme/newton/blob/master/LICENSE).
+[AGPL-3.0 license](https://github.com/blairisme/newton/blob/master/LICENSE).
